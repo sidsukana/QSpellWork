@@ -108,8 +108,20 @@
       <height>441</height>
      </rect>
     </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Sunken</enum>
+    </property>
     <property name="lineWidth">
      <number>1</number>
+    </property>
+    <property name="midLineWidth">
+     <number>0</number>
     </property>
     <property name="editTriggers">
      <set>QAbstractItemView::NoEditTriggers</set>
@@ -117,18 +129,30 @@
     <property name="tabKeyNavigation">
      <bool>true</bool>
     </property>
+    <property name="alternatingRowColors">
+     <bool>false</bool>
+    </property>
     <property name="selectionMode">
      <enum>QAbstractItemView::SingleSelection</enum>
     </property>
     <property name="selectionBehavior">
      <enum>QAbstractItemView::SelectRows</enum>
     </property>
+    <property name="textElideMode">
+     <enum>Qt::ElideMiddle</enum>
+    </property>
     <property name="gridStyle">
-     <enum>Qt::DashLine</enum>
+     <enum>Qt::SolidLine</enum>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
     </property>
     <property name="cornerButtonEnabled">
      <bool>false</bool>
     </property>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
     <attribute name="verticalHeaderMinimumSectionSize">
      <number>10</number>
     </attribute>

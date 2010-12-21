@@ -6,6 +6,8 @@ SpellWork::SpellWork(QWidget *parent)
 {
     setupUi(this);
 
+    model = NULL;
+
     LoadDBCStores();
 
     connect(SpellList, SIGNAL(clicked(QModelIndex)), this, SLOT(SlotFindFromList(QModelIndex)));
@@ -42,6 +44,12 @@ void SpellWork::SlotFind()
     SpellEntry const* spellInfo = NULL;
 
     SpellInfoBrowser->clear();
+    
+    if (model)
+    {
+        model->clear();
+        model = NULL;
+    }
 
     for (int i = 0; i < findLine_e1->text().size(); ++i)
     {
