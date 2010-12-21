@@ -17,10 +17,10 @@
    <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
      <rect>
-      <x>540</x>
-      <y>30</y>
-      <width>321</width>
-      <height>51</height>
+      <x>590</x>
+      <y>10</y>
+      <width>271</width>
+      <height>81</height>
      </rect>
     </property>
     <property name="title">
@@ -31,7 +31,7 @@
       <rect>
        <x>80</x>
        <y>20</y>
-       <width>151</width>
+       <width>101</width>
        <height>21</height>
       </rect>
      </property>
@@ -52,14 +52,37 @@
     <widget class="QPushButton" name="findButton">
      <property name="geometry">
       <rect>
-       <x>240</x>
+       <x>190</x>
        <y>20</y>
        <width>75</width>
-       <height>21</height>
+       <height>51</height>
       </rect>
      </property>
      <property name="text">
       <string>Find!</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="findLine_l2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>61</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Icon ID:</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="findLine_e2">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>50</y>
+       <width>101</width>
+       <height>20</height>
+      </rect>
      </property>
     </widget>
    </widget>
@@ -67,9 +90,9 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>31</y>
-      <width>511</width>
-      <height>201</height>
+      <y>11</y>
+      <width>571</width>
+      <height>221</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -115,6 +138,9 @@
    </property>
   </widget>
   <action name="actionExit">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Exit</string>
    </property>

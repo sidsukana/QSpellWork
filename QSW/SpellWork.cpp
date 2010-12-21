@@ -10,6 +10,7 @@ SpellWork::SpellWork(QWidget *parent)
 
 	connect(findButton, SIGNAL(clicked()), this, SLOT(SlotFind()));
     connect(actionAbout, SIGNAL(triggered()), this, SLOT(SlotAbout()));
+    connect(actionExit, SIGNAL(triggered()), this, SLOT(close()));
 }
 
 SpellWork::~SpellWork()
