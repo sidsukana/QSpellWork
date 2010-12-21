@@ -59,7 +59,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Find!</string>
+      <string>Search!</string>
      </property>
     </widget>
     <widget class="QLabel" name="findLine_l2">

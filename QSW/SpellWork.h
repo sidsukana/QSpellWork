@@ -8,6 +8,8 @@
 #include "ui_SpellWorkUI.h"
 #include "ui_AboutUI.h"
 
+#include "DBC/DBCStores.h"
+
 class SpellWork : public QMainWindow, public Ui::SpellWorkUI
 {
     Q_OBJECT
@@ -16,14 +18,17 @@ class SpellWork : public QMainWindow, public Ui::SpellWorkUI
         SpellWork(QWidget *parent = 0);
         ~SpellWork();
 
+        void ShowInfo(SpellEntry const* spellInfo);
+
     private slots:
         void SlotAbout();
-        void SlotFind();
-        void SlotFindFromList(const QModelIndex &index);
+        void SlotSearch();
+        void SlotSearchFromList(const QModelIndex &index);
 
     private:
         Ui::SpellWorkUI ui;
         QStandardItemModel *model;
+        SpellEntry const* m_spellInfo;
 };
 
 class About : public QDialog, public Ui::AboutUI
