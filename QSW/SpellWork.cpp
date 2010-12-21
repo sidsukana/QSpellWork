@@ -35,13 +35,42 @@ void SpellWork::SlotAbout()
 
 void SpellWork::SlotFind()
 {
-    SpellEntry const* spellInfo = sSpellStore.LookupEntry(findLine_e1->text().toInt());
+    bool isString = false;
 
-    if (spellInfo)
+    SpellEntry const* spellInfo = NULL;
+
+    SpellInfoBrowser->clear();
+
+    for (int i = 0; i < findLine_e1->text().size(); ++i)
     {
-        SpellInfoBrowser->clear();
-        SpellInfoBrowser->append(QString("Spell ID: %1").arg(spellInfo->Id));
-        SpellInfoBrowser->append(QString("Spell name: %1").arg((char*)spellInfo->SpellName[0]));
-        SpellInfoBrowser->append(QString("Spell description: %1").arg((char*)spellInfo->Description[0]));
+        if (findLine_e1->text().at(i) > QChar('9'))
+        {
+            isString = true;
+            break;
+        }
+    }
+
+    if (isString)
+    {
+        for (int i = 0; i < sSpellStore.GetNumRows(); i++)
+        {
+            spellInfo = sSpellStore.LookupEntry(i);
+            if (spellInfo && spellInfo->SpellName[0] == findLine_e1->text())
+            {
+                SpellInfoBrowser->append(QString("Spell ID: %1").arg(spellInfo->Id));
+                SpellInfoBrowser->append(QString("Spell name: %1").arg((char*)spellInfo->SpellName[0]));
+                SpellInfoBrowser->append(QString("Spell description: %1").arg((char*)spellInfo->Description[0]));
+            }
+        }
+    }
+    else
+    {
+        spellInfo = sSpellStore.LookupEntry(findLine_e1->text().toInt());
+        if (spellInfo)
+        {
+            SpellInfoBrowser->append(QString("Spell ID: %1").arg(spellInfo->Id));
+            SpellInfoBrowser->append(QString("Spell name: %1").arg((char*)spellInfo->SpellName[0]));
+            SpellInfoBrowser->append(QString("Spell description: %1").arg((char*)spellInfo->Description[0]));
+        }
     }
 }
