@@ -64,7 +64,7 @@ void SpellWork::SlotSearch()
             for (int i = 0; i < sSpellStore.GetNumRows(); i++)
             {
                 m_spellInfo = sSpellStore.LookupEntry(i);
-                if (m_spellInfo && m_spellInfo->SpellName[0] == findLine_e1->text())
+				if (m_spellInfo && QString(m_spellInfo->SpellName[0]).contains(findLine_e1->text(), Qt::CaseInsensitive))
                 {
                     count++;
                     QString sRank((char*)m_spellInfo->Rank[0]);
