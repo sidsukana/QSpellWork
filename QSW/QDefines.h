@@ -3,6 +3,32 @@
 
 #include <QtCore/QString>
 
+QString PreventionType[] =
+{
+    QString("SPELL_PREVENTION_TYPE_NONE"),
+    QString("SPELL_PREVENTION_TYPE_SILENCE"),
+    QString("SPELL_PREVENTION_TYPE_PACIFY")
+};
+
+QString DmgClass[] =
+{
+    QString("SPELL_DAMAGE_CLASS_NONE"),
+    QString("SPELL_DAMAGE_CLASS_MAGIC"),
+    QString("SPELL_DAMAGE_CLASS_MELEE"),
+    QString("SPELL_DAMAGE_CLASS_RANGED")
+};
+
+QString SchoolString[] =
+{
+    QString("SPELL_SCHOOL_NORMAL"),
+    QString("SPELL_SCHOOL_HOLY"),
+    QString("SPELL_SCHOOL_FIRE"),
+    QString("SPELL_SCHOOL_NATURE"),
+    QString("SPELL_SCHOOL_FROST"),
+    QString("SPELL_SCHOOL_SHADOW"),
+    QString("SPELL_SCHOOL_ARCANE")
+};
+
 QString EffectString[] =
 {
     QString("SPELL_EFFECT_NONE"),

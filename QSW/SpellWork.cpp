@@ -85,8 +85,8 @@ void SpellWork::SlotSearch()
             model->setHorizontalHeaderItem(0, new QStandardItem("ID"));
             model->setHorizontalHeaderItem(1, new QStandardItem("Name"));
             SpellList->setModel(model);
-            SpellList->setColumnWidth(0, 50);
-            SpellList->setColumnWidth(1, 185);
+            SpellList->setColumnWidth(0, 40);
+            SpellList->setColumnWidth(1, 195);
         }
         else
         {
@@ -110,6 +110,8 @@ void SpellWork::SlotSearch()
                 model->setHorizontalHeaderItem(0, new QStandardItem("ID"));
                 model->setHorizontalHeaderItem(1, new QStandardItem("Name"));
                 SpellList->setModel(model);
+                SpellList->setColumnWidth(0, 40);
+                SpellList->setColumnWidth(1, 195);
                 ShowInfo(m_spellInfo);
             }
         }
@@ -140,6 +142,8 @@ void SpellWork::SlotSearch()
         model->setHorizontalHeaderItem(0, new QStandardItem("ID"));
         model->setHorizontalHeaderItem(1, new QStandardItem("Name"));
         SpellList->setModel(model);
+        SpellList->setColumnWidth(0, 40);
+        SpellList->setColumnWidth(1, 195);
     }
 }
 
@@ -164,24 +168,66 @@ void SpellWork::ShowInfo(SpellEntry const* spellInfo)
     if (!spellInfo)
         return;
 
-    QString sRank((char*)spellInfo->Rank[0]);
+    QString line("==================================================");
 
-    SpellInfoBrowser->append(QString("ID: %0").arg(spellInfo->Id));
+    QString sName((char*)spellInfo->SpellName[0]);
+    QString sDescription((char*)spellInfo->Description[0]);
+    QString sRank((char*)spellInfo->Rank[0]);
+    QString sToolTip((char*)spellInfo->ToolTip[0]);
+    QString sSpellFamilyFlags(QString("%0").arg(spellInfo->SpellFamilyFlags, 16, 16, QChar('0')));
+    QString sAttributes(QString("%0").arg(spellInfo->Attributes, 8, 16, QChar('0')));
+    QString sAttributesEx(QString("%0").arg(spellInfo->AttributesEx, 8, 16, QChar('0')));
+    QString sAttributesEx2(QString("%0").arg(spellInfo->AttributesEx2, 8, 16, QChar('0')));
+    QString sAttributesEx3(QString("%0").arg(spellInfo->AttributesEx3, 8, 16, QChar('0')));
+    QString sAttributesEx4(QString("%0").arg(spellInfo->AttributesEx4, 8, 16, QChar('0')));
+
+    SpellInfoBrowser->append(QString("<b>ID:</b> %0").arg(spellInfo->Id));
 
     if (sRank.isEmpty())
-        SpellInfoBrowser->append(QString("Name: %0").arg((char*)spellInfo->SpellName[0]));
+        SpellInfoBrowser->append(QString("<b>Name:</b> %0").arg(sName));
     else
-        SpellInfoBrowser->append(QString("Name: %0 (%1)").arg((char*)spellInfo->SpellName[0]).arg((char*)m_spellInfo->Rank[0]));
+        SpellInfoBrowser->append(QString("<b>Name:</b> %0 (%1)").arg(sName).arg(sRank));
 
-    SpellInfoBrowser->append(QString("Description: %0").arg((char*)spellInfo->Description[0]));
-    SpellInfoBrowser->append(QString("=================================================="));
-    SpellInfoBrowser->append(QString("Category = %0, SpellIconID = %1, activeIconID = %2, SpellVisual = %3")
+    if (!sDescription.isEmpty())
+        SpellInfoBrowser->append(QString("<b>Description:</b> %0").arg(sDescription));
+
+    if (!sToolTip.isEmpty())
+        SpellInfoBrowser->append(QString("<b>ToolTip:</b> %0").arg(sToolTip));
+
+    SpellInfoBrowser->append(line);
+    SpellInfoBrowser->append(QString("Category = %0, SpellIconID = %1, ActiveIconID = %2, SpellVisual = %3")
         .arg(spellInfo->Category)
         .arg(spellInfo->SpellIconID)
         .arg(spellInfo->activeIconID)
         .arg(spellInfo->SpellVisual));
-    SpellInfoBrowser->append(QString("Power Type: %0").arg(StringSpellConst(spellInfo, POWER_TYPE_NAME)));
-    SpellInfoBrowser->append(QString("SpellFamily: %0").arg(StringSpellConst(spellInfo, SPELLFAMILY_NAME)));
+
+    SpellInfoBrowser->append(QString("SpellFamilyName = %0, SpellFamilyFlags = 0x%1\n").arg(StringSpellConst(spellInfo, SPELLFAMILY_NAME)).arg(sSpellFamilyFlags.toUpper()));
+
+    SpellInfoBrowser->append(QString("SpellSchool = %0 (%1)").arg(spellInfo->School).arg(SchoolString[spellInfo->School]));
+    SpellInfoBrowser->append(QString("DamageClass = %0 (%1)").arg(spellInfo->DmgClass).arg(DmgClass[spellInfo->DmgClass]));
+    SpellInfoBrowser->append(QString("PreventionType = %0 (%1)").arg(spellInfo->PreventionType).arg(PreventionType[spellInfo->PreventionType]));
+    
+    if (spellInfo->Attributes || spellInfo->AttributesEx || spellInfo->AttributesEx2 ||
+        spellInfo->AttributesEx3 || spellInfo->AttributesEx4)
+        SpellInfoBrowser->append(line);
+
+    if (spellInfo->Attributes)
+        SpellInfoBrowser->append(QString("Attributes: 0x%0").arg(sAttributes.toUpper()));
+    if (spellInfo->AttributesEx)
+        SpellInfoBrowser->append(QString("AttributesEx: 0x%0").arg(sAttributesEx.toUpper()));
+    if (spellInfo->AttributesEx2)
+        SpellInfoBrowser->append(QString("AttributesEx2: 0x%0").arg(sAttributesEx2.toUpper()));
+    if (spellInfo->AttributesEx3)
+        SpellInfoBrowser->append(QString("AttributesEx3: 0x%0").arg(sAttributesEx3.toUpper()));
+    if (spellInfo->AttributesEx4)
+        SpellInfoBrowser->append(QString("AttributesEx4: 0x%0").arg(sAttributesEx4.toUpper()));
+
+    SpellInfoBrowser->append(line);
+
+
+
+    if (spellInfo->manaCost || spellInfo->ManaCostPercentage)
+        SpellInfoBrowser->append(QString("Power Type = %0").arg(StringSpellConst(spellInfo, POWER_TYPE_NAME)));
 
     for (uint8 i = EFFECT_INDEX_0; i < MAX_EFFECT_INDEX; i++)
     {
@@ -190,6 +236,7 @@ void SpellWork::ShowInfo(SpellEntry const* spellInfo)
         else
             SpellInfoBrowser->append(QString("Effect %0: Id %1 (%2)").arg(i).arg(spellInfo->Effect[i]).arg(EffectString[spellInfo->Effect[i]]));
     }
+
 }
 
 QString SpellWork::StringSpellConst(SpellEntry const *spellInfo, StringConst strConst)
