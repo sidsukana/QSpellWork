@@ -176,6 +176,10 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\Defines.h"
+				>
+			</File>
+			<File
 				RelativePath=".\SpellWork.h"
 				>
 				<FileConfiguration
@@ -204,10 +208,6 @@
 			<Filter
 				Name="DBC"
 				>
-				<File
-					RelativePath=".\DBC\DBCEnums.h"
-					>
-				</File>
 				<File
 					RelativePath=".\DBC\DBCFileLoader.cpp"
 					>

@@ -9,6 +9,7 @@
 #include "ui_AboutUI.h"
 
 #include "DBC/DBCStores.h"
+#include "Defines.h"
 
 class SpellWork : public QMainWindow, public Ui::SpellWorkUI
 {
@@ -19,6 +20,7 @@ class SpellWork : public QMainWindow, public Ui::SpellWorkUI
         ~SpellWork();
 
         void ShowInfo(SpellEntry const* spellInfo);
+        QString StringSpellConst(SpellEntry const* spellInfo, StringConst strConst);
 
     private slots:
         void SlotAbout();

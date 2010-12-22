@@ -176,4 +176,65 @@ void SpellWork::ShowInfo(SpellEntry const* spellInfo)
         .arg(spellInfo->SpellIconID)
         .arg(spellInfo->activeIconID)
         .arg(spellInfo->SpellVisual));
+    SpellInfoBrowser->append(QString("Power Type: %0").arg(StringSpellConst(spellInfo, POWER_TYPE_NAME)));
+    SpellInfoBrowser->append(QString("SpellFamily: %0").arg(StringSpellConst(spellInfo, SPELLFAMILY_NAME)));
+}
+
+QString SpellWork::StringSpellConst(SpellEntry const *spellInfo, StringConst strConst)
+{
+    switch (strConst)
+    {
+        case POWER_TYPE_NAME:
+            switch (spellInfo->powerType)
+            {
+                case POWER_MANA:
+                    return QString("POWER_MANA");
+                case POWER_RAGE:
+                    return QString("POWER_RAGE");
+                case POWER_FOCUS:
+                    return QString("POWER_FOCUS");
+                case POWER_ENERGY:
+                    return QString("POWER_ENERGY");
+                case POWER_HAPPINESS:
+                    return QString("POWER_HAPPINESS");
+                case POWER_RUNES:
+                    return QString("POWER_RUNES");
+                case POWER_HEALTH:
+                    return QString("POWER_HEALTH");
+                default:
+                    return QString("POWER_UNKNOWN");
+            }
+            break;
+        case SPELLFAMILY_NAME:
+            switch (spellInfo->SpellFamilyName)
+            {
+                case SPELLFAMILY_GENERIC:
+                    return QString("SPELLFAMILY_GENERIC");
+                case SPELLFAMILY_MAGE:
+                    return QString("SPELLFAMILY_MAGE");
+                case SPELLFAMILY_WARRIOR:
+                    return QString("SPELLFAMILY_WARRIOR");
+                case SPELLFAMILY_WARLOCK:
+                    return QString("SPELLFAMILY_WARLOCK");
+                case SPELLFAMILY_PRIEST:
+                    return QString("SPELLFAMILY_PRIEST");
+                case SPELLFAMILY_DRUID:
+                    return QString("SPELLFAMILY_DRUID");
+                case SPELLFAMILY_ROGUE:
+                    return QString("SPELLFAMILY_ROGUE");
+                case SPELLFAMILY_HUNTER:
+                    return QString("SPELLFAMILY_HUNTER");
+                case SPELLFAMILY_PALADIN:
+                    return QString("SPELLFAMILY_PALADIN");
+                case SPELLFAMILY_SHAMAN:
+                    return QString("SPELLFAMILY_SHAMAN");
+                case SPELLFAMILY_POTION:
+                    return QString("SPELLFAMILY_POTION");
+                case SPELLFAMILY_DEATHKNIGHT:
+                    return QString("SPELLFAMILY_DEATHKNIGHT");
+                default:
+                    return QString("SPELLFAMILY_UNKNOWN");
+            }
+            break;
+    }
 }

@@ -1,7 +1,7 @@
 #ifndef DBCSTRUCTURE_H
 #define DBCSTRUCTURE_H
 
-#include "DBCEnums.h"
+#include "Defines.h"
 #include "Platform/Define.h"
 
 #include <map>
