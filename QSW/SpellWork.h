@@ -9,7 +9,6 @@
 #include "ui_AboutUI.h"
 
 #include "DBC/DBCStores.h"
-#include "Defines.h"
 
 class SpellWork : public QMainWindow, public Ui::SpellWorkUI
 {

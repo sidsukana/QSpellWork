@@ -7,7 +7,7 @@ enum StringConst
     SPELLFAMILY_NAME    = 1
 };
 
-enum SpellPower
+enum PowerType
 {
     POWER_MANA          = 0,
     POWER_RAGE          = 1,
@@ -33,6 +33,8 @@ enum SpellFamily
     SPELLFAMILY_POTION      = 13,
     SPELLFAMILY_DEATHKNIGHT = 15
 };
+
+#define TOTAL_SPELL_EFFECTS 130
 
 enum AbilytyLearnType
 {

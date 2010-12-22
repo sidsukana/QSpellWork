@@ -1,4 +1,5 @@
 #include "SpellWork.h"
+#include "QDefines.h"
 
 SpellWork::SpellWork(QWidget *parent)
     : QMainWindow(parent)
@@ -178,6 +179,14 @@ void SpellWork::ShowInfo(SpellEntry const* spellInfo)
         .arg(spellInfo->SpellVisual));
     SpellInfoBrowser->append(QString("Power Type: %0").arg(StringSpellConst(spellInfo, POWER_TYPE_NAME)));
     SpellInfoBrowser->append(QString("SpellFamily: %0").arg(StringSpellConst(spellInfo, SPELLFAMILY_NAME)));
+
+    for (uint8 i = EFFECT_INDEX_0; i < MAX_EFFECT_INDEX; i++)
+    {
+        if (!spellInfo->Effect[i])
+            SpellInfoBrowser->append(QString("Effect %0:  NO EFFECT").arg(i));
+        else
+            SpellInfoBrowser->append(QString("Effect %0: Id %1 (%2)").arg(i).arg(spellInfo->Effect[i]).arg(EffectString[spellInfo->Effect[i]]));
+    }
 }
 
 QString SpellWork::StringSpellConst(SpellEntry const *spellInfo, StringConst strConst)
@@ -237,4 +246,5 @@ QString SpellWork::StringSpellConst(SpellEntry const *spellInfo, StringConst str
             }
             break;
     }
+    return QString();
 }

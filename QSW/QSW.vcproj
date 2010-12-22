@@ -180,6 +180,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\QDefines.h"
+				>
+			</File>
+			<File
 				RelativePath=".\SpellWork.h"
 				>
 				<FileConfiguration
