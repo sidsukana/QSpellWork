@@ -95,6 +95,9 @@
         <property name="midLineWidth">
          <number>0</number>
         </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
         <property name="editTriggers">
          <set>QAbstractItemView::NoEditTriggers</set>
         </property>
@@ -117,11 +120,14 @@
          <enum>Qt::SolidLine</enum>
         </property>
         <property name="wordWrap">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="cornerButtonEnabled">
          <bool>false</bool>
         </property>
+        <attribute name="horizontalHeaderHighlightSections">
+         <bool>true</bool>
+        </attribute>
         <attribute name="verticalHeaderVisible">
          <bool>false</bool>
         </attribute>
@@ -140,7 +146,7 @@
      <x>0</x>
      <y>0</y>
      <width>880</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

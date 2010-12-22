@@ -14,6 +14,7 @@ SpellWork::SpellWork(QWidget *parent)
     connect(SpellList, SIGNAL(clicked(QModelIndex)), this, SLOT(SlotSearchFromList(QModelIndex)));
 
     connect(findButton, SIGNAL(clicked()), this, SLOT(SlotSearch()));
+    connect(findButton, SIGNAL(clicked()), SpellList, SLOT(resizeRowsToContents()));
     connect(actionAbout, SIGNAL(triggered()), this, SLOT(SlotAbout()));
     connect(actionExit, SIGNAL(triggered()), this, SLOT(close()));
 }
@@ -84,6 +85,8 @@ void SpellWork::SlotSearch()
             model->setHorizontalHeaderItem(0, new QStandardItem("ID"));
             model->setHorizontalHeaderItem(1, new QStandardItem("Name"));
             SpellList->setModel(model);
+            SpellList->setColumnWidth(0, 50);
+            SpellList->setColumnWidth(1, 185);
         }
         else
         {
