@@ -229,8 +229,8 @@ void SpellWork::ShowInfo(SpellEntry const* spellInfo)
     if (spellInfo->Targets)
         SpellInfoBrowser->append(QString("Targets Mask = 0x%0 (%1)").arg(sTargetMask.toUpper()).arg(CompareAttributes(spellInfo, TYPE_TARGETS)));
 
-    if (spellInfo->TargetCreatureType != 0)
-        SpellInfoBrowser->append(QString("Creature Type Mask"));//  = 0x%0 (%1)").arg(sCreatureTypeMask.toUpper()).arg(CompareAttributes(spellInfo, TYPE_CREATURE)));
+    if (spellInfo->TargetCreatureType)
+        SpellInfoBrowser->append(QString("Creature Type Mask = 0x%0 (%1)").arg(sCreatureTypeMask.toUpper()).arg(CompareAttributes(spellInfo, TYPE_CREATURE)));
 
     if (spellInfo->manaCost || spellInfo->ManaCostPercentage)
         SpellInfoBrowser->append(QString("Power Type = %0").arg(StringSpellConst(spellInfo, POWER_TYPE_NAME)));
@@ -312,7 +312,7 @@ QString SpellWork::CompareAttributes(SpellEntry const* spellInfo, AttrType attr)
     {
         case TYPE_ATTR:
         {
-            uint8 Max = sizeof(AttributesVal) / sizeof(AttributesVal[0]) + 1;
+            uint8 Max = sizeof(AttributesVal) / sizeof(AttributesVal[0]);
             for (uint8 i = 0; i < Max; i++)
             {
                 if (spellInfo->Attributes & AttributesVal[i])
@@ -328,7 +328,7 @@ QString SpellWork::CompareAttributes(SpellEntry const* spellInfo, AttrType attr)
         break;
         case TYPE_ATTR_EX:
         {
-            uint8 Max = sizeof(AttributesVal) / sizeof(AttributesVal[0]) + 1;
+            uint8 Max = sizeof(AttributesVal) / sizeof(AttributesVal[0]);
             for (uint8 i = 0; i < Max; i++)
             {
                 if (spellInfo->AttributesEx & AttributesVal[i])
@@ -344,7 +344,7 @@ QString SpellWork::CompareAttributes(SpellEntry const* spellInfo, AttrType attr)
         break;
         case TYPE_ATTR_EX2:
         {
-            uint8 Max = sizeof(AttributesVal) / sizeof(AttributesVal[0]) + 1;
+            uint8 Max = sizeof(AttributesVal) / sizeof(AttributesVal[0]);
             for (uint8 i = 0; i < Max; i++)
             {
                 if (spellInfo->AttributesEx2 & AttributesVal[i])
@@ -360,7 +360,7 @@ QString SpellWork::CompareAttributes(SpellEntry const* spellInfo, AttrType attr)
         break;
         case TYPE_ATTR_EX3:
         {
-            uint8 Max = sizeof(AttributesVal) / sizeof(AttributesVal[0]) + 1;
+            uint8 Max = sizeof(AttributesVal) / sizeof(AttributesVal[0]);
             for (uint8 i = 0; i < Max; i++)
             {
                 if (spellInfo->AttributesEx3 & AttributesVal[i])
@@ -376,7 +376,7 @@ QString SpellWork::CompareAttributes(SpellEntry const* spellInfo, AttrType attr)
         break;
         case TYPE_ATTR_EX4:
         {
-            uint8 Max = sizeof(AttributesVal) / sizeof(AttributesVal[0]) + 1;
+            uint8 Max = sizeof(AttributesVal) / sizeof(AttributesVal[0]);
             for (uint8 i = 0; i < Max; i++)
             {
                 if (spellInfo->AttributesEx4 & AttributesVal[i])
@@ -392,7 +392,7 @@ QString SpellWork::CompareAttributes(SpellEntry const* spellInfo, AttrType attr)
         break;
         case TYPE_TARGETS:
         {
-            uint8 Max = sizeof(TargetFlags) / sizeof(TargetFlags[0]) + 1;
+            uint8 Max = sizeof(TargetFlags) / sizeof(TargetFlags[0]);
             for (uint8 i = 0; i < Max; i++)
             {
                 if (spellInfo->Targets & TargetFlags[i])
@@ -408,7 +408,7 @@ QString SpellWork::CompareAttributes(SpellEntry const* spellInfo, AttrType attr)
         break;
         case TYPE_CREATURE:
         {
-            uint8 Max = sizeof(CreatureTypeFlags) / sizeof(CreatureTypeFlags[0]) + 1;
+            uint8 Max = sizeof(CreatureTypeFlags) / sizeof(CreatureTypeFlags[0]);
             for (uint8 i = 0; i < Max; i++)
             {
                 if (spellInfo->TargetCreatureType & CreatureTypeFlags[i])
