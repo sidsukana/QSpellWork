@@ -163,6 +163,66 @@ QString EffectString[] =
     QString("SPELL_EFFECT_129")
 };
 
+QString TargetFlagsString[] =
+{
+    QString("TARGET_FLAG_SELF"),
+    QString("TARGET_FLAG_UNUSED1"),
+    QString("TARGET_FLAG_UNIT"),
+    QString("TARGET_FLAG_UNUSED2"),
+    QString("TARGET_FLAG_UNUSED3"),
+    QString("TARGET_FLAG_ITEM"),
+    QString("TARGET_FLAG_SOURCE_LOCATION"),
+    QString("TARGET_FLAG_DEST_LOCATION"),
+    QString("TARGET_FLAG_OBJECT_UNK"),
+    QString("TARGET_FLAG_UNIT_UNK"),
+    QString("TARGET_FLAG_PVP_CORPSE"),
+    QString("TARGET_FLAG_UNIT_CORPSE"),
+    QString("TARGET_FLAG_OBJECT"),
+    QString("TARGET_FLAG_TRADE_ITEM"),
+    QString("TARGET_FLAG_STRING"),
+    QString("TARGET_FLAG_UNK1"),
+    QString("TARGET_FLAG_CORPSE"),
+    QString("TARGET_FLAG_UNK2")
+};
+
+uint64 CreatureTypeFlags[] =
+{
+    0x00000000,
+    0x00000001,
+    0x00000002,
+    0x00000004,
+    0x00000008,
+    0x00000010,
+    0x00000020,
+    0x00000040,
+    0x00000080,
+    0x00000100,
+    0x00000200,
+    0x00000400
+};
+
+uint64 TargetFlags[] =
+{
+    0x00000000,
+    0x00000001,
+    0x00000002,
+    0x00000004,
+    0x00000008,
+    0x00000010,
+    0x00000020,
+    0x00000040,
+    0x00000080,
+    0x00000100,
+    0x00000200,
+    0x00000400,
+    0x00000800,
+    0x00001000,
+    0x00002000,
+    0x00004000,
+    0x00008000,
+    0x00010000
+};
+
 uint64 AttributesVal[] =
 {
     0x00000001,
@@ -197,6 +257,22 @@ uint64 AttributesVal[] =
     0x20000000,
     0x40000000,
     0x80000000
+};
+
+QString CreatureTypeString[] =
+{
+    QString("NONE"),
+    QString("BEAST"),
+    QString("DRAGONKIN"),
+    QString("DEMON"),
+    QString("ELEMENTAL"),
+    QString("GIANT"),
+    QString("UNDEAD"),
+    QString("HUMANOID"),
+    QString("CRITTER"),
+    QString("MECHANICAL"),
+    QString("NOT_SPECIFIED"),
+    QString("TOTEM")
 };
 
 QString AttributesString[] =

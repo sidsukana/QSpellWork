@@ -180,6 +180,8 @@ void SpellWork::ShowInfo(SpellEntry const* spellInfo)
     QString sAttributesEx2(QString("%0").arg(spellInfo->AttributesEx2, 8, 16, QChar('0')));
     QString sAttributesEx3(QString("%0").arg(spellInfo->AttributesEx3, 8, 16, QChar('0')));
     QString sAttributesEx4(QString("%0").arg(spellInfo->AttributesEx4, 8, 16, QChar('0')));
+    QString sTargetMask(QString("%0").arg(spellInfo->Targets, 8, 16, QChar('0')));
+    QString sCreatureTypeMask(QString("%0").arg(spellInfo->TargetCreatureType, 8, 16, QChar('0')));
 
     SpellInfoBrowser->append(QString("<b>ID:</b> %0").arg(spellInfo->Id));
 
@@ -224,7 +226,11 @@ void SpellWork::ShowInfo(SpellEntry const* spellInfo)
 
     SpellInfoBrowser->append(line);
 
+    if (spellInfo->Targets)
+        SpellInfoBrowser->append(QString("Targets Mask = 0x%0 (%1)").arg(sTargetMask.toUpper()).arg(CompareAttributes(spellInfo, TYPE_TARGETS)));
 
+    if (spellInfo->TargetCreatureType != 0)
+        SpellInfoBrowser->append(QString("Creature Type Mask"));//  = 0x%0 (%1)").arg(sCreatureTypeMask.toUpper()).arg(CompareAttributes(spellInfo, TYPE_CREATURE)));
 
     if (spellInfo->manaCost || spellInfo->ManaCostPercentage)
         SpellInfoBrowser->append(QString("Power Type = %0").arg(StringSpellConst(spellInfo, POWER_TYPE_NAME)));
@@ -302,12 +308,12 @@ QString SpellWork::StringSpellConst(SpellEntry const *spellInfo, StringConst str
 QString SpellWork::CompareAttributes(SpellEntry const* spellInfo, AttrType attr)
 {
     QString str("");
-    uint8 max = sizeof(AttributesVal) / sizeof(AttributesVal[0]) + 1;
     switch (attr)
     {
         case TYPE_ATTR:
         {
-            for (uint8 i = 0; i < max; i++)
+            uint8 Max = sizeof(AttributesVal) / sizeof(AttributesVal[0]) + 1;
+            for (uint8 i = 0; i < Max; i++)
             {
                 if (spellInfo->Attributes & AttributesVal[i])
                 {   
@@ -322,7 +328,8 @@ QString SpellWork::CompareAttributes(SpellEntry const* spellInfo, AttrType attr)
         break;
         case TYPE_ATTR_EX:
         {
-            for (uint8 i = 0; i < max; i++)
+            uint8 Max = sizeof(AttributesVal) / sizeof(AttributesVal[0]) + 1;
+            for (uint8 i = 0; i < Max; i++)
             {
                 if (spellInfo->AttributesEx & AttributesVal[i])
                 {   
@@ -337,7 +344,8 @@ QString SpellWork::CompareAttributes(SpellEntry const* spellInfo, AttrType attr)
         break;
         case TYPE_ATTR_EX2:
         {
-            for (uint8 i = 0; i < max; i++)
+            uint8 Max = sizeof(AttributesVal) / sizeof(AttributesVal[0]) + 1;
+            for (uint8 i = 0; i < Max; i++)
             {
                 if (spellInfo->AttributesEx2 & AttributesVal[i])
                 {   
@@ -352,7 +360,8 @@ QString SpellWork::CompareAttributes(SpellEntry const* spellInfo, AttrType attr)
         break;
         case TYPE_ATTR_EX3:
         {
-            for (uint8 i = 0; i < max; i++)
+            uint8 Max = sizeof(AttributesVal) / sizeof(AttributesVal[0]) + 1;
+            for (uint8 i = 0; i < Max; i++)
             {
                 if (spellInfo->AttributesEx3 & AttributesVal[i])
                 {   
@@ -367,11 +376,44 @@ QString SpellWork::CompareAttributes(SpellEntry const* spellInfo, AttrType attr)
         break;
         case TYPE_ATTR_EX4:
         {
-            for (uint8 i = 0; i < max; i++)
+            uint8 Max = sizeof(AttributesVal) / sizeof(AttributesVal[0]) + 1;
+            for (uint8 i = 0; i < Max; i++)
             {
                 if (spellInfo->AttributesEx4 & AttributesVal[i])
                 {   
                     QString tstr(QString("%0, ").arg(AttributesEx4String[i]));
+                    str += tstr;
+                }
+            }
+            if (!str.isEmpty())
+                str.chop(2);
+            return str;
+        }
+        break;
+        case TYPE_TARGETS:
+        {
+            uint8 Max = sizeof(TargetFlags) / sizeof(TargetFlags[0]) + 1;
+            for (uint8 i = 0; i < Max; i++)
+            {
+                if (spellInfo->Targets & TargetFlags[i])
+                {   
+                    QString tstr(QString("%0, ").arg(TargetFlagsString[i]));
+                    str += tstr;
+                }
+            }
+            if (!str.isEmpty())
+                str.chop(2);
+            return str;
+        }
+        break;
+        case TYPE_CREATURE:
+        {
+            uint8 Max = sizeof(CreatureTypeFlags) / sizeof(CreatureTypeFlags[0]) + 1;
+            for (uint8 i = 0; i < Max; i++)
+            {
+                if (spellInfo->TargetCreatureType & CreatureTypeFlags[i])
+                {   
+                    QString tstr(QString("%0, ").arg(CreatureTypeString[i]));
                     str += tstr;
                 }
             }
