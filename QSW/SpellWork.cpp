@@ -204,23 +204,23 @@ void SpellWork::ShowInfo(SpellEntry const* spellInfo)
     SpellInfoBrowser->append(QString("SpellFamilyName = %0, SpellFamilyFlags = 0x%1\n").arg(StringSpellConst(spellInfo, SPELLFAMILY_NAME)).arg(sSpellFamilyFlags.toUpper()));
 
     SpellInfoBrowser->append(QString("SpellSchool = %0 (%1)").arg(spellInfo->School).arg(SchoolString[spellInfo->School]));
-    SpellInfoBrowser->append(QString("DamageClass = %0 (%1)").arg(spellInfo->DmgClass).arg(DmgClass[spellInfo->DmgClass]));
-    SpellInfoBrowser->append(QString("PreventionType = %0 (%1)").arg(spellInfo->PreventionType).arg(PreventionType[spellInfo->PreventionType]));
+    SpellInfoBrowser->append(QString("DamageClass = %0 (%1)").arg(spellInfo->DmgClass).arg(DmgClassString[spellInfo->DmgClass]));
+    SpellInfoBrowser->append(QString("PreventionType = %0 (%1)").arg(spellInfo->PreventionType).arg(PreventionTypeString[spellInfo->PreventionType]));
     
     if (spellInfo->Attributes || spellInfo->AttributesEx || spellInfo->AttributesEx2 ||
         spellInfo->AttributesEx3 || spellInfo->AttributesEx4)
         SpellInfoBrowser->append(line);
 
     if (spellInfo->Attributes)
-        SpellInfoBrowser->append(QString("Attributes: 0x%0").arg(sAttributes.toUpper()));
+        SpellInfoBrowser->append(QString("Attributes: 0x%0 (%1)").arg(sAttributes.toUpper()).arg(CompareAttributes(spellInfo, TYPE_ATTR)));
     if (spellInfo->AttributesEx)
-        SpellInfoBrowser->append(QString("AttributesEx: 0x%0").arg(sAttributesEx.toUpper()));
+        SpellInfoBrowser->append(QString("AttributesEx: 0x%0 (%1)").arg(sAttributesEx.toUpper()).arg(CompareAttributes(spellInfo, TYPE_ATTR_EX)));
     if (spellInfo->AttributesEx2)
-        SpellInfoBrowser->append(QString("AttributesEx2: 0x%0").arg(sAttributesEx2.toUpper()));
+        SpellInfoBrowser->append(QString("AttributesEx2: 0x%0 (%1)").arg(sAttributesEx2.toUpper()).arg(CompareAttributes(spellInfo, TYPE_ATTR_EX2)));
     if (spellInfo->AttributesEx3)
-        SpellInfoBrowser->append(QString("AttributesEx3: 0x%0").arg(sAttributesEx3.toUpper()));
+        SpellInfoBrowser->append(QString("AttributesEx3: 0x%0 (%1)").arg(sAttributesEx3.toUpper()).arg(CompareAttributes(spellInfo, TYPE_ATTR_EX3)));
     if (spellInfo->AttributesEx4)
-        SpellInfoBrowser->append(QString("AttributesEx4: 0x%0").arg(sAttributesEx4.toUpper()));
+        SpellInfoBrowser->append(QString("AttributesEx4: 0x%0 (%1)").arg(sAttributesEx4.toUpper()).arg(CompareAttributes(spellInfo, TYPE_ATTR_EX4)));
 
     SpellInfoBrowser->append(line);
 
@@ -297,4 +297,89 @@ QString SpellWork::StringSpellConst(SpellEntry const *spellInfo, StringConst str
             break;
     }
     return QString();
+}
+
+QString SpellWork::CompareAttributes(SpellEntry const* spellInfo, AttrType attr)
+{
+    QString str("");
+    uint8 max = sizeof(AttributesVal) / sizeof(AttributesVal[0]) + 1;
+    switch (attr)
+    {
+        case TYPE_ATTR:
+        {
+            for (uint8 i = 0; i < max; i++)
+            {
+                if (spellInfo->Attributes & AttributesVal[i])
+                {   
+                    QString tstr(QString("%0, ").arg(AttributesString[i]));
+                    str += tstr;
+                }
+            }
+            if (!str.isEmpty())
+                str.chop(2);
+            return str;
+        }
+        break;
+        case TYPE_ATTR_EX:
+        {
+            for (uint8 i = 0; i < max; i++)
+            {
+                if (spellInfo->AttributesEx & AttributesVal[i])
+                {   
+                    QString tstr(QString("%0, ").arg(AttributesExString[i]));
+                    str += tstr;
+                }
+            }
+            if (!str.isEmpty())
+                str.chop(2);
+            return str;
+        }
+        break;
+        case TYPE_ATTR_EX2:
+        {
+            for (uint8 i = 0; i < max; i++)
+            {
+                if (spellInfo->AttributesEx2 & AttributesVal[i])
+                {   
+                    QString tstr(QString("%0, ").arg(AttributesEx2String[i]));
+                    str += tstr;
+                }
+            }
+            if (!str.isEmpty())
+                str.chop(2);
+            return str;
+        }
+        break;
+        case TYPE_ATTR_EX3:
+        {
+            for (uint8 i = 0; i < max; i++)
+            {
+                if (spellInfo->AttributesEx3 & AttributesVal[i])
+                {   
+                    QString tstr(QString("%0, ").arg(AttributesEx3String[i]));
+                    str += tstr;
+                }
+            }
+            if (!str.isEmpty())
+                str.chop(2);
+            return str;
+        }
+        break;
+        case TYPE_ATTR_EX4:
+        {
+            for (uint8 i = 0; i < max; i++)
+            {
+                if (spellInfo->AttributesEx4 & AttributesVal[i])
+                {   
+                    QString tstr(QString("%0, ").arg(AttributesEx4String[i]));
+                    str += tstr;
+                }
+            }
+            if (!str.isEmpty())
+                str.chop(2);
+            return str;
+        }
+        break;
+    }
+    return str;
 }

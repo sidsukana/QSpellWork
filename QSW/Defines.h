@@ -1,6 +1,15 @@
 #ifndef DEFINES_H
 #define DEFINES_H
 
+enum AttrType
+{
+    TYPE_ATTR,
+    TYPE_ATTR_EX,
+    TYPE_ATTR_EX2,
+    TYPE_ATTR_EX3,
+    TYPE_ATTR_EX4
+};
+
 enum StringConst
 {
     POWER_TYPE_NAME     = 0,
@@ -73,5 +82,6 @@ enum SpellEffectIndex
 };
 
 #define MAX_EFFECT_INDEX 3
+
 
 #endif

@@ -3,14 +3,14 @@
 
 #include <QtCore/QString>
 
-QString PreventionType[] =
+QString PreventionTypeString[] =
 {
     QString("SPELL_PREVENTION_TYPE_NONE"),
     QString("SPELL_PREVENTION_TYPE_SILENCE"),
     QString("SPELL_PREVENTION_TYPE_PACIFY")
 };
 
-QString DmgClass[] =
+QString DmgClassString[] =
 {
     QString("SPELL_DAMAGE_CLASS_NONE"),
     QString("SPELL_DAMAGE_CLASS_MAGIC"),
@@ -161,6 +161,222 @@ QString EffectString[] =
     QString("SPELL_EFFECT_127"),
     QString("SPELL_EFFECT_128"),
     QString("SPELL_EFFECT_129")
+};
+
+uint64 AttributesVal[] =
+{
+    0x00000001,
+    0x00000002,
+    0x00000004,
+    0x00000008,
+    0x00000010,
+    0x00000020,
+    0x00000040,
+    0x00000080,
+    0x00000100,
+    0x00000200,
+    0x00000400,
+    0x00000800,
+    0x00001000,
+    0x00002000,
+    0x00004000,
+    0x00008000,
+    0x00010000,
+    0x00020000,
+    0x00040000,
+    0x00080000,
+    0x00100000,
+    0x00200000,
+    0x00400000,
+    0x00800000,
+    0x01000000,
+    0x02000000,
+    0x04000000,
+    0x08000000,
+    0x10000000,
+    0x20000000,
+    0x40000000,
+    0x80000000
+};
+
+QString AttributesString[] =
+{
+    QString("SPELL_ATTR_UNK0"),
+    QString("SPELL_ATTR_RANGED"),
+    QString("SPELL_ATTR_ON_NEXT_SWING_1"),
+    QString("SPELL_ATTR_UNK3"),
+    QString("SPELL_ATTR_UNK4"),
+    QString("SPELL_ATTR_TRADESPELL"),
+    QString("SPELL_ATTR_PASSIVE"),
+    QString("SPELL_ATTR_UNK7"),
+    QString("SPELL_ATTR_UNK8"),
+    QString("SPELL_ATTR_UNK9"),
+    QString("SPELL_ATTR_ON_NEXT_SWING_2"),
+    QString("SPELL_ATTR_UNK11"),
+    QString("SPELL_ATTR_DAYTIME_ONLY"),
+    QString("SPELL_ATTR_NIGHT_ONLY"),
+    QString("SPELL_ATTR_INDOORS_ONLY"),
+    QString("SPELL_ATTR_OUTDOORS_ONLY"),
+    QString("SPELL_ATTR_NOT_SHAPESHIFT"),
+    QString("SPELL_ATTR_ONLY_STEALTHED"),
+    QString("SPELL_ATTR_UNK18"),
+    QString("SPELL_ATTR_LEVEL_DAMAGE_CALCULATION"),
+    QString("SPELL_ATTR_STOP_ATTACK_TARGET"),
+    QString("SPELL_ATTR_IMPOSSIBLE_DODGE_PARRY_BLOCK"),
+    QString("SPELL_ATTR_UNK22"),
+    QString("SPELL_ATTR_UNK23"),
+    QString("SPELL_ATTR_CASTABLE_WHILE_MOUNTED"),
+    QString("SPELL_ATTR_DISABLED_WHILE_ACTIVE"),
+    QString("SPELL_ATTR_UNK26"),
+    QString("SPELL_ATTR_CASTABLE_WHILE_SITTING"),
+    QString("SPELL_ATTR_CANT_USED_IN_COMBAT"),
+    QString("SPELL_ATTR_UNAFFECTED_BY_INVULNERABILITY"),
+    QString("SPELL_ATTR_UNK30"),
+    QString("SPELL_ATTR_CANT_CANCEL")
+};
+
+QString AttributesExString[] =
+{
+    QString("SPELL_ATTR_EX_UNK0"),
+    QString("SPELL_ATTR_EX_DRAIN_ALL_POWER"),
+    QString("SPELL_ATTR_EX_CHANNELED_1"),
+    QString("SPELL_ATTR_EX_UNK3"),
+    QString("SPELL_ATTR_EX_UNK4"),
+    QString("SPELL_ATTR_EX_NOT_BREAK_STEALTH"),
+    QString("SPELL_ATTR_EX_CHANNELED_2"),
+    QString("SPELL_ATTR_EX_NEGATIVE"),
+    QString("SPELL_ATTR_EX_NOT_IN_COMBAT_TARGET"),
+    QString("SPELL_ATTR_EX_UNK9"),
+    QString("SPELL_ATTR_EX_NO_INITIAL_AGGRO"),
+    QString("SPELL_ATTR_EX_UNK11"),
+    QString("SPELL_ATTR_EX_UNK12"),
+    QString("SPELL_ATTR_EX_UNK13"),
+    QString("SPELL_ATTR_EX_UNK14"),
+    QString("SPELL_ATTR_EX_DISPEL_AURAS_ON_IMMUNITY"),
+    QString("SPELL_ATTR_EX_UNAFFECTED_BY_SCHOOL_IMMUNE"),
+    QString("SPELL_ATTR_EX_UNK17"),
+    QString("SPELL_ATTR_EX_UNK18"),
+    QString("SPELL_ATTR_EX_UNK19"),
+    QString("SPELL_ATTR_EX_REQ_TARGET_COMBO_POINTS"),
+    QString("SPELL_ATTR_EX_UNK21"),
+    QString("SPELL_ATTR_EX_REQ_COMBO_POINTS"),
+    QString("SPELL_ATTR_EX_UNK23"),
+    QString("SPELL_ATTR_EX_UNK24"),
+    QString("SPELL_ATTR_EX_UNK25"),
+    QString("SPELL_ATTR_EX_UNK26"),
+    QString("SPELL_ATTR_EX_UNK27"),
+    QString("SPELL_ATTR_EX_UNK28"),
+    QString("SPELL_ATTR_EX_UNK29"),
+    QString("SPELL_ATTR_EX_UNK30"),
+    QString("SPELL_ATTR_EX_UNK31")
+};
+
+QString AttributesEx2String[] =
+{
+    QString("SPELL_ATTR_EX2_UNK0"),
+    QString("SPELL_ATTR_EX2_UNK1"),
+    QString("SPELL_ATTR_EX2_CANT_REFLECTED"),
+    QString("SPELL_ATTR_EX2_UNK3"),
+    QString("SPELL_ATTR_EX2_UNK4"),
+    QString("SPELL_ATTR_EX2_AUTOREPEAT_FLAG"),
+    QString("SPELL_ATTR_EX2_UNK6"),
+    QString("SPELL_ATTR_EX2_UNK7"),
+    QString("SPELL_ATTR_EX2_UNK8"),
+    QString("SPELL_ATTR_EX2_UNK9"),
+    QString("SPELL_ATTR_EX2_UNK10"),
+    QString("SPELL_ATTR_EX2_HEALTH_FUNNEL"),
+    QString("SPELL_ATTR_EX2_UNK12"),
+    QString("SPELL_ATTR_EX2_UNK13"),
+    QString("SPELL_ATTR_EX2_UNK14"),
+    QString("SPELL_ATTR_EX2_UNK15"),
+    QString("SPELL_ATTR_EX2_UNK16"),
+    QString("SPELL_ATTR_EX2_UNK17"),
+    QString("SPELL_ATTR_EX2_UNK18"),
+    QString("SPELL_ATTR_EX2_NOT_NEED_SHAPESHIFT"),
+    QString("SPELL_ATTR_EX2_UNK20"),
+    QString("SPELL_ATTR_EX2_DAMAGE_REDUCED_SHIELD"),
+    QString("SPELL_ATTR_EX2_UNK22"),
+    QString("SPELL_ATTR_EX2_UNK23"),
+    QString("SPELL_ATTR_EX2_UNK24"),
+    QString("SPELL_ATTR_EX2_UNK25"),
+    QString("SPELL_ATTR_EX2_UNK26"),
+    QString("SPELL_ATTR_EX2_UNK27"),
+    QString("SPELL_ATTR_EX2_UNK28"),
+    QString("SPELL_ATTR_EX2_CANT_CRIT"),
+    QString("SPELL_ATTR_EX2_UNK30"),
+    QString("SPELL_ATTR_EX2_FOOD_BUFF")
+};
+
+QString AttributesEx3String[] =
+{
+    QString("SPELL_ATTR_EX3_UNK0"),
+    QString("SPELL_ATTR_EX3_UNK1"),
+    QString("SPELL_ATTR_EX3_UNK2"),
+    QString("SPELL_ATTR_EX3_UNK3"),
+    QString("SPELL_ATTR_EX3_UNK4"),
+    QString("SPELL_ATTR_EX3_UNK5"),
+    QString("SPELL_ATTR_EX3_UNK6"),
+    QString("SPELL_ATTR_EX3_UNK7"),
+    QString("SPELL_ATTR_EX3_UNK8"),
+    QString("SPELL_ATTR_EX3_UNK9"),
+    QString("SPELL_ATTR_EX3_MAIN_HAND"),
+    QString("SPELL_ATTR_EX3_BATTLEGROUND"),
+    QString("SPELL_ATTR_EX3_CAST_ON_DEAD"),
+    QString("SPELL_ATTR_EX3_UNK13"),
+    QString("SPELL_ATTR_EX3_UNK14"),
+    QString("SPELL_ATTR_EX3_UNK15"),
+    QString("SPELL_ATTR_EX3_UNK16"),
+    QString("SPELL_ATTR_EX3_UNK17"),
+    QString("SPELL_ATTR_EX3_UNK18"),
+    QString("SPELL_ATTR_EX3_UNK19"),
+    QString("SPELL_ATTR_EX3_DEATH_PERSISTENT"),
+    QString("SPELL_ATTR_EX3_UNK21"),
+    QString("SPELL_ATTR_EX3_REQ_WAND"),
+    QString("SPELL_ATTR_EX3_UNK23"),
+    QString("SPELL_ATTR_EX3_REQ_OFFHAND"),
+    QString("SPELL_ATTR_EX3_UNK25"),
+    QString("SPELL_ATTR_EX3_UNK26"),
+    QString("SPELL_ATTR_EX3_UNK27"),
+    QString("SPELL_ATTR_EX3_UNK28"),
+    QString("SPELL_ATTR_EX3_UNK29"),
+    QString("SPELL_ATTR_EX3_UNK30"),
+    QString("SPELL_ATTR_EX3_UNK31")
+};
+
+QString AttributesEx4String[] =
+{
+    QString("SPELL_ATTR_EX4_UNK0"),
+    QString("SPELL_ATTR_EX4_UNK1"),
+    QString("SPELL_ATTR_EX4_UNK2"),
+    QString("SPELL_ATTR_EX4_UNK3"),
+    QString("SPELL_ATTR_EX4_UNK4"),
+    QString("SPELL_ATTR_EX4_UNK5"),
+    QString("SPELL_ATTR_EX4_NOT_STEALABLE"),
+    QString("SPELL_ATTR_EX4_UNK7"),
+    QString("SPELL_ATTR_EX4_UNK8"),
+    QString("SPELL_ATTR_EX4_UNK9"),
+    QString("SPELL_ATTR_EX4_SPELL_VS_EXTEND_COST"),
+    QString("SPELL_ATTR_EX4_UNK11"),
+    QString("SPELL_ATTR_EX4_UNK12"),
+    QString("SPELL_ATTR_EX4_UNK13"),
+    QString("SPELL_ATTR_EX4_UNK14"),
+    QString("SPELL_ATTR_EX4_UNK15"),
+    QString("SPELL_ATTR_EX4_NOT_USABLE_IN_ARENA"),
+    QString("SPELL_ATTR_EX4_USABLE_IN_ARENA"),
+    QString("SPELL_ATTR_EX4_UNK18"),
+    QString("SPELL_ATTR_EX4_UNK19"),
+    QString("SPELL_ATTR_EX4_UNK20"),
+    QString("SPELL_ATTR_EX4_UNK21"),
+    QString("SPELL_ATTR_EX4_UNK22"),
+    QString("SPELL_ATTR_EX4_UNK23"),
+    QString("SPELL_ATTR_EX4_UNK24"),
+    QString("SPELL_ATTR_EX4_UNK25"),
+    QString("SPELL_ATTR_EX4_CAST_ONLY_IN_OUTLAND"),
+    QString("SPELL_ATTR_EX4_UNK27"),
+    QString("SPELL_ATTR_EX4_UNK28"),
+    QString("SPELL_ATTR_EX4_UNK29"),
+    QString("SPELL_ATTR_EX4_UNK30"),
+    QString("SPELL_ATTR_EX4_UNK31")
 };
 
 #endif

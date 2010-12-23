@@ -20,6 +20,7 @@ class SpellWork : public QMainWindow, public Ui::SpellWorkUI
 
         void ShowInfo(SpellEntry const* spellInfo);
         QString StringSpellConst(SpellEntry const* spellInfo, StringConst strConst);
+        QString CompareAttributes(SpellEntry const* spellInfo, AttrType attr);
 
     private slots:
         void SlotAbout();
