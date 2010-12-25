@@ -519,4 +519,188 @@ QString FormString[] =
     QString("FORM_SPIRITOFREDEMPTION")
 };
 
+QString ItemClassString[] =
+{
+    QString("CONSUMABLE"),
+    QString("CONTAINER"),
+    QString("WEAPON"),
+    QString("GEM"),
+    QString("ARMOR"),
+    QString("REAGENT"),
+    QString("PROJECTILE"),
+    QString("TRADE_GOODS"),
+    QString("GENERIC"),
+    QString("RECIPE"),
+    QString("MONEY"),
+    QString("QUIVER"),
+    QString("QUEST"),
+    QString("KEY"),
+    QString("PERMANENT"),
+    QString("MISC")
+};
+
+uint64 ItemSubWeaponMask[] =
+{
+    0x00000001,
+    0x00000002,
+    0x00000004,
+    0x00000008,
+    0x00000010,
+    0x00000020,
+    0x00000040,
+    0x00000080,
+    0x00000100,
+    0x00000200,
+    0x00000400,
+    0x00000800,
+    0x00001000,
+    0x00002000,
+    0x00004000,
+    0x00008000,
+    0x00010000,
+    0x00020000,
+    0x00040000,
+    0x00080000
+};
+
+QString ItemSubWeaponString[] =
+{
+    QString("AXE"),
+    QString("AXE2"),
+    QString("BOW"),
+    QString("GUN"),
+    QString("MACE"),
+    QString("MACE2"),
+    QString("POLEARM"),
+    QString("SWORD"),
+    QString("SWORD2"),
+    QString("OBSOLETE"),
+    QString("STAFF"),
+    QString("EXOTIC"),
+    QString("EXOTIC2"),
+    QString("FIST"),
+    QString("MISC"),
+    QString("DAGGER"),
+    QString("THROWN"),
+    QString("SPEAR"),
+    QString("CROSSBOW"),
+    QString("WAND"),
+    QString("FISHING_POLE")
+};
+
+uint64 ItemSubArmorMask[] =
+{
+    0x00000001,
+    0x00000002,
+    0x00000004,
+    0x00000008,
+    0x00000010,
+    0x00000020,
+    0x00000040,
+    0x00000080,
+    0x00000100,
+    0x00000200,
+    0x00000400
+};
+
+QString ItemSubArmorString[] =
+{
+    QString("MISC"),
+    QString("CLOTH"),
+    QString("LEATHER"),
+    QString("MAIL"),
+    QString("PLATE"),
+    QString("BUCKLER"),
+    QString("SHIELD"),
+    QString("LIBRAM"),
+    QString("IDOL"),
+    QString("TOTEM"),
+    QString("SIGIL")
+};
+
+uint64 ItemSubMiscMask[] =
+{
+    0x00000001,
+    0x00000002,
+    0x00000004,
+    0x00000008,
+    0x00000010
+};
+
+QString ItemSubMiscString[] =
+{
+    QString("JUNK"),
+    QString("REAGENT"),
+    QString("PET"),
+    QString("HOLIDAY"),
+    QString("OTHER"),
+    QString("MOUNT")
+};
+
+uint64 InventoryTypeMask[] =
+{
+    0x00000001,
+    0x00000002,
+    0x00000004,
+    0x00000008,
+    0x00000010,
+    0x00000020,
+    0x00000040,
+    0x00000080,
+    0x00000100,
+    0x00000200,
+    0x00000400,
+    0x00000800,
+    0x00001000,
+    0x00002000,
+    0x00004000,
+    0x00008000,
+    0x00010000,
+    0x00020000,
+    0x00040000,
+    0x00080000,
+    0x00100000,
+    0x00200000,
+    0x00400000,
+    0x00800000,
+    0x01000000,
+    0x02000000,
+    0x04000000,
+    0x08000000,
+    0x10000000
+};
+
+QString InventoryTypeString[] =
+{
+    QString("NON_EQUIP"),
+    QString("HEAD"),
+    QString("NECK"),
+    QString("SHOULDERS"),
+    QString("BODY"),
+    QString("CHEST"),
+    QString("WAIST"),
+    QString("LEGS"),
+    QString("FEET"),
+    QString("WRISTS"),
+    QString("HANDS"),
+    QString("FINGER"),
+    QString("TRINKET"),
+    QString("WEAPON"),
+    QString("SHIELD"),
+    QString("RANGED"),
+    QString("CLOAK"),
+    QString("WEAPON_2H"),
+    QString("BAG"),
+    QString("TABARD"),
+    QString("ROBE"),
+    QString("WEAPONMAINHAND"),
+    QString("WEAPONOFFHAND"),
+    QString("HOLDABLE"),
+    QString("AMMO"),
+    QString("THROWN"),
+    QString("RANGEDRIGHT"),
+    QString("QUIVER"),
+    QString("RELIC")
+};
+
 #endif

@@ -241,6 +241,48 @@ void SpellWork::ShowInfo(SpellEntry const* spellInfo)
 
     AppendSkillLine(spellInfo);
 
+    SpellInfoBrowser->append(QString("Spell Level = %0, BaseLevel %1, MaxLevel %2, MaxTargetLevel %3")
+        .arg(spellInfo->spellLevel)
+        .arg(spellInfo->baseLevel)
+        .arg(spellInfo->maxLevel)
+        .arg(spellInfo->MaxTargetLevel));
+
+    if (spellInfo->EquippedItemClass != -1)
+    {
+        SpellInfoBrowser->append(QString("EquippedItemClass = %0 (%1)").arg(spellInfo->EquippedItemClass).arg(ItemClassString[spellInfo->EquippedItemClass]));
+
+        if (spellInfo->EquippedItemSubClassMask)
+        {
+            QString sItemSubClassMask(QString("%0").arg(spellInfo->EquippedItemSubClassMask, 8, 16, QChar('0')));
+            switch (spellInfo->EquippedItemClass)
+            {
+                case 2: // WEAPON
+                SpellInfoBrowser->append(QString("SubClass mask 0x%0 (%1)")
+                    .arg(sItemSubClassMask.toUpper())
+                    .arg(CompareAttributes(spellInfo, TYPE_ITEM_WEAPON)));
+                    break;
+                case 4: // ARMOR
+                SpellInfoBrowser->append(QString("SubClass mask 0x%0 (%1)")
+                    .arg(sItemSubClassMask.toUpper())
+                    .arg(CompareAttributes(spellInfo, TYPE_ITEM_ARMOR)));
+                    break;
+                case 15: // MISC
+                SpellInfoBrowser->append(QString("SubClass mask 0x%0 (%1)")
+                    .arg(sItemSubClassMask.toUpper())
+                    .arg(CompareAttributes(spellInfo, TYPE_ITEM_MISC)));
+                    break;
+            }
+        }
+
+        if (spellInfo->EquippedItemInventoryTypeMask)
+        {
+            QString sItemInventoryMask(QString("%0").arg(spellInfo->EquippedItemInventoryTypeMask, 8, 16, QChar('0')));
+            SpellInfoBrowser->append(QString("InventoryType mask = 0x%0 (%1)")
+                .arg(sItemInventoryMask.toUpper())
+                .arg(CompareAttributes(spellInfo, TYPE_ITEM_INVENTORY)));
+        }
+    }
+
     if (spellInfo->manaCost || spellInfo->ManaCostPercentage)
         SpellInfoBrowser->append(QString("Power Type = %0").arg(StringSpellConst(spellInfo, POWER_TYPE_NAME)));
 
@@ -455,6 +497,70 @@ QString SpellWork::CompareAttributes(SpellEntry const* spellInfo, AttrType attr)
                 if (spellInfo->StancesNot & FormMask[i])
                 {   
                     QString tstr(QString("%0, ").arg(FormString[i]));
+                    str += tstr;
+                }
+            }
+            if (!str.isEmpty())
+                str.chop(2);
+            return str;
+        }
+        break;
+        case TYPE_ITEM_WEAPON:
+        {
+            uint8 Max = sizeof(ItemSubWeaponMask) / sizeof(ItemSubWeaponMask[0]);
+            for (uint8 i = 0; i < Max; i++)
+            {
+                if (spellInfo->EquippedItemSubClassMask & ItemSubWeaponMask[i])
+                {   
+                    QString tstr(QString("%0, ").arg(ItemSubWeaponString[i]));
+                    str += tstr;
+                }
+            }
+            if (!str.isEmpty())
+                str.chop(2);
+            return str;
+        }
+        break;
+        case TYPE_ITEM_ARMOR:
+        {
+            uint8 Max = sizeof(ItemSubArmorMask) / sizeof(ItemSubArmorMask[0]);
+            for (uint8 i = 0; i < Max; i++)
+            {
+                if (spellInfo->EquippedItemSubClassMask & ItemSubArmorMask[i])
+                {   
+                    QString tstr(QString("%0, ").arg(ItemSubArmorString[i]));
+                    str += tstr;
+                }
+            }
+            if (!str.isEmpty())
+                str.chop(2);
+            return str;
+        }
+        break;
+        case TYPE_ITEM_MISC:
+        {
+            uint8 Max = sizeof(ItemSubMiscMask) / sizeof(ItemSubMiscMask[0]);
+            for (uint8 i = 0; i < Max; i++)
+            {
+                if (spellInfo->EquippedItemSubClassMask & ItemSubMiscMask[i])
+                {   
+                    QString tstr(QString("%0, ").arg(ItemSubMiscString[i]));
+                    str += tstr;
+                }
+            }
+            if (!str.isEmpty())
+                str.chop(2);
+            return str;
+        }
+        break;
+        case TYPE_ITEM_INVENTORY:
+        {
+            uint8 Max = sizeof(InventoryTypeMask) / sizeof(InventoryTypeMask[0]);
+            for (uint8 i = 0; i < Max; i++)
+            {
+                if (spellInfo->EquippedItemInventoryTypeMask & InventoryTypeMask[i])
+                {   
+                    QString tstr(QString("%0, ").arg(InventoryTypeString[i]));
                     str += tstr;
                 }
             }
