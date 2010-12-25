@@ -455,4 +455,68 @@ QString AttributesEx4String[] =
     QString("SPELL_ATTR_EX4_UNK31")
 };
 
+// Check...
+uint64 FormMask[] =
+{
+    0x00000001,
+    0x00000002,
+    0x00000004,
+    0x00000008,
+    0x00000010,
+    0x00000020,
+    0x00000040,
+    0x00000080,
+    0x00000100,
+    0x00000200,
+    0x00000400,
+    0x00000800,
+    0x00001000,
+    /*
+    0x00002000,
+    0x00004000,
+    0x00008000,
+    0x00010000,
+    0x00020000,
+    */
+    0x00040000,
+    0x00080000,
+    /*
+    0x00100000,
+    0x00200000,
+    0x00400000,
+    0x00800000,
+    0x01000000,
+    0x02000000,
+    0x04000000,
+    0x08000000,
+    */
+    0x10000000,
+    0x20000000,
+    0x40000000,
+    0x80000000
+};
+
+QString FormString[] =
+{
+    QString("FORM_NONE"),
+    QString("FORM_CAT"),
+    QString("FORM_TREE"),
+    QString("FORM_TRAVEL"),
+    QString("FORM_AQUA"),
+    QString("FORM_BEAR"),
+    QString("FORM_AMBIENT"),
+    QString("FORM_GHOUL"),
+    QString("FORM_DIREBEAR"),
+    QString("FORM_CREATUREBEAR"),
+    QString("FORM_CREATURECAT"),
+    QString("FORM_GHOSTWOLF"),
+    QString("FORM_BATTLESTANCE"),
+    QString("FORM_DEFENSIVESTANCE"),
+    QString("FORM_BERSERKERSTANCE"),
+    QString("FORM_SHADOW"),
+    QString("FORM_STEALTH"),
+    QString("FORM_MOONKIN"),
+    QString("FORM_SPIRITOFREDEMPTION")
+};
+
 #endif

@@ -182,6 +182,7 @@ void SpellWork::ShowInfo(SpellEntry const* spellInfo)
     QString sAttributesEx4(QString("%0").arg(spellInfo->AttributesEx4, 8, 16, QChar('0')));
     QString sTargetMask(QString("%0").arg(spellInfo->Targets, 8, 16, QChar('0')));
     QString sCreatureTypeMask(QString("%0").arg(spellInfo->TargetCreatureType, 8, 16, QChar('0')));
+    QString sFormMask(QString("%0").arg(spellInfo->Stances, 8, 16, QChar('0')));
 
     SpellInfoBrowser->append(QString("<b>ID:</b> %0").arg(spellInfo->Id));
 
@@ -231,6 +232,12 @@ void SpellWork::ShowInfo(SpellEntry const* spellInfo)
 
     if (spellInfo->TargetCreatureType)
         SpellInfoBrowser->append(QString("Creature Type Mask = 0x%0 (%1)").arg(sCreatureTypeMask.toUpper()).arg(CompareAttributes(spellInfo, TYPE_CREATURE)));
+
+    if (spellInfo->Stances)
+        SpellInfoBrowser->append(QString("Stances: 0x%0 (%1)").arg(sFormMask.toUpper()).arg(CompareAttributes(spellInfo, TYPE_FORMS)));
+
+    if (spellInfo->StancesNot)
+        SpellInfoBrowser->append(QString("Stances not: 0x%0 (%1)").arg(sFormMask.toUpper()).arg(CompareAttributes(spellInfo, TYPE_FORMS_NOT)));
 
     if (spellInfo->manaCost || spellInfo->ManaCostPercentage)
         SpellInfoBrowser->append(QString("Power Type = %0").arg(StringSpellConst(spellInfo, POWER_TYPE_NAME)));
@@ -414,6 +421,38 @@ QString SpellWork::CompareAttributes(SpellEntry const* spellInfo, AttrType attr)
                 if (spellInfo->TargetCreatureType & CreatureTypeFlags[i])
                 {   
                     QString tstr(QString("%0, ").arg(CreatureTypeString[i]));
+                    str += tstr;
+                }
+            }
+            if (!str.isEmpty())
+                str.chop(2);
+            return str;
+        }
+        break;
+        case TYPE_FORMS:
+        {
+            uint8 Max = sizeof(FormMask) / sizeof(FormMask[0]);
+            for (uint8 i = 0; i < Max; i++)
+            {
+                if (spellInfo->Stances & FormMask[i])
+                {   
+                    QString tstr(QString("%0, ").arg(FormString[i]));
+                    str += tstr;
+                }
+            }
+            if (!str.isEmpty())
+                str.chop(2);
+            return str;
+        }
+        break;
+        case TYPE_FORMS_NOT:
+        {
+            uint8 Max = sizeof(FormMask) / sizeof(FormMask[0]);
+            for (uint8 i = 0; i < Max; i++)
+            {
+                if (spellInfo->StancesNot & FormMask[i])
+                {   
+                    QString tstr(QString("%0, ").arg(FormString[i]));
                     str += tstr;
                 }
             }

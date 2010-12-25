@@ -9,7 +9,9 @@ enum AttrType
     TYPE_ATTR_EX3,
     TYPE_ATTR_EX4,
     TYPE_TARGETS,
-    TYPE_CREATURE
+    TYPE_CREATURE,
+    TYPE_FORMS,
+    TYPE_FORMS_NOT
 };
 
 enum StringConst
