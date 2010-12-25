@@ -198,6 +198,10 @@ void SpellWork::ShowInfo(SpellEntry const* spellInfo)
         SpellInfoBrowser->append(QString("<b>ToolTip:</b> %0").arg(sToolTip));
 
     SpellInfoBrowser->append(line);
+
+     if (spellInfo->modalNextSpell)
+        SpellInfoBrowser->append(QString("ModalNextSpell: %0").arg(spellInfo->modalNextSpell));
+
     SpellInfoBrowser->append(QString("Category = %0, SpellIconID = %1, ActiveIconID = %2, SpellVisual = %3")
         .arg(spellInfo->Category)
         .arg(spellInfo->SpellIconID)
@@ -282,6 +286,33 @@ void SpellWork::ShowInfo(SpellEntry const* spellInfo)
                 .arg(CompareAttributes(spellInfo, TYPE_ITEM_INVENTORY)));
         }
     }
+
+    SpellInfoBrowser->append(QString());
+
+    SpellInfoBrowser->append(QString("Category = %0").arg(spellInfo->Category));
+    SpellInfoBrowser->append(QString("DispelType = %0 (%1)").arg(spellInfo->Dispel).arg(DispelTypeString[spellInfo->Dispel]));
+    SpellInfoBrowser->append(QString("Mechanic = %0 (%1)").arg(spellInfo->Mechanic).arg(MechanicString[spellInfo->Mechanic]));
+
+    for (int i = 0; i < sSpellRangeStore.GetNumRows(); i++)
+    {
+        SpellRangeEntry const *range = sSpellRangeStore.LookupEntry(i);
+        if (range && range->ID == spellInfo->rangeIndex)
+        {
+            SpellInfoBrowser->append(QString("SpellRange: (Id %0) \"%1\": MinRange = %2, MaxRange = %3")
+                .arg(range->ID)
+                .arg((char*)range->Name[0])
+                .arg(range->minRange)
+                .arg(range->maxRange));
+            break;
+        }
+    }
+
+    if (spellInfo->speed)
+        SpellInfoBrowser->append(QString("Speed: %0").arg(spellInfo->speed, 0, 'f', 2));
+
+    if (spellInfo->StackAmount)
+        SpellInfoBrowser->append(QString("Stackable up to %0").arg(spellInfo->StackAmount));
+    
 
     if (spellInfo->manaCost || spellInfo->ManaCostPercentage)
         SpellInfoBrowser->append(QString("Power Type = %0").arg(StringSpellConst(spellInfo, POWER_TYPE_NAME)));

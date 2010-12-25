@@ -703,4 +703,54 @@ QString InventoryTypeString[] =
     QString("RELIC")
 };
 
+QString MechanicString[] =
+{
+    QString("MECHANIC_NONE"),
+    QString("MECHANIC_CHARM"),
+    QString("MECHANIC_DISORIENTED"),
+    QString("MECHANIC_DISARM"),
+    QString("MECHANIC_DISTRACT"),
+    QString("MECHANIC_FEAR"),
+    QString("MECHANIC_FUMBLE"),
+    QString("MECHANIC_ROOT"),
+    QString("MECHANIC_PACIFY"),
+    QString("MECHANIC_SILENCE"),
+    QString("MECHANIC_SLEEP"),
+    QString("MECHANIC_SNARE"),
+    QString("MECHANIC_STUN"),
+    QString("MECHANIC_FREEZE"),
+    QString("MECHANIC_KNOCKOUT"),
+    QString("MECHANIC_BLEED"),
+    QString("MECHANIC_BANDAGE"),
+    QString("MECHANIC_POLYMORPH"),
+    QString("MECHANIC_BANISH"),
+    QString("MECHANIC_SHIELD"),
+    QString("MECHANIC_SHACKLE"),
+    QString("MECHANIC_MOUNT"),
+    QString("MECHANIC_PERSUADE"),
+    QString("MECHANIC_TURN"),
+    QString("MECHANIC_HORROR"),
+    QString("MECHANIC_INVULNERABILITY"),
+    QString("MECHANIC_INTERRUPT"),
+    QString("MECHANIC_DAZE"),
+    QString("MECHANIC_DISCOVERY"),
+    QString("MECHANIC_IMMUNE_SHIELD"),
+    QString("MECHANIC_SAPPED")
+};
+
+QString DispelTypeString[] =
+{
+    QString("DISPEL_NONE"),
+    QString("DISPEL_MAGIC"),
+    QString("DISPEL_CURSE"),
+    QString("DISPEL_DISEASE"),
+    QString("DISPEL_POISON"),
+    QString("DISPEL_STEALTH"),
+    QString("DISPEL_INVISIBILITY"),
+    QString("DISPEL_ALL"),
+    QString("DISPEL_SPE_NPC_ONLY"),
+    QString("DISPEL_ENRAGE"),
+    QString("DISPEL_ZG_TICKET")
+};
+
 #endif
