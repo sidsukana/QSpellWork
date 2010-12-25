@@ -239,6 +239,8 @@ void SpellWork::ShowInfo(SpellEntry const* spellInfo)
     if (spellInfo->StancesNot)
         SpellInfoBrowser->append(QString("Stances not: 0x%0 (%1)").arg(sFormMask.toUpper()).arg(CompareAttributes(spellInfo, TYPE_FORMS_NOT)));
 
+    AppendSkillLine(spellInfo);
+
     if (spellInfo->manaCost || spellInfo->ManaCostPercentage)
         SpellInfoBrowser->append(QString("Power Type = %0").arg(StringSpellConst(spellInfo, POWER_TYPE_NAME)));
 
@@ -463,4 +465,26 @@ QString SpellWork::CompareAttributes(SpellEntry const* spellInfo, AttrType attr)
         break;
     }
     return str;
+}
+
+void SpellWork::AppendSkillLine(SpellEntry const *spellInfo)
+{
+    for (int i = 0; i < sSkillLineAbilityStore.GetNumRows(); i++)
+    {
+        SkillLineAbilityEntry const *skillInfo = sSkillLineAbilityStore.LookupEntry(i);
+        if (skillInfo && skillInfo->spellId == spellInfo->Id)
+        {
+            SkillLineEntry const *skill = sSkillLineStore.LookupEntry(skillInfo->skillId);
+            SpellInfoBrowser->append(QString("Skill (Id %0) \"%1\", ReqSkillValue = %2, Forward Spell = %3, MinMaxValue (%4, %5), CharacterPoints (%6, %7)")
+                .arg(skill->id)
+                .arg((char*)skill->name[0])
+                .arg(skillInfo->req_skill_value)
+                .arg(skillInfo->forward_spellid)
+                .arg(skillInfo->min_value)
+                .arg(skillInfo->max_value)
+                .arg(skillInfo->charPoints[0])
+                .arg(skillInfo->charPoints[1]));
+            break;
+        }
+    }
 }

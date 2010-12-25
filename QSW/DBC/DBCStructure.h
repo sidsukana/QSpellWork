@@ -40,8 +40,7 @@ struct SkillLineAbilityEntry
     uint32    learnOnGetSkill;                              // 9 can be 1 or 2 for spells learned on get skill
     uint32    max_value;                                    // 10
     uint32    min_value;                                    // 11
-    uint32    Unk3;                                         // 12 unknown
-    uint32    Unk4;                                         // 13 unknown
+    uint32    charPoints[2];                                // 12-13
     uint32    reqtrainpoints;                               // 14
 };
 
