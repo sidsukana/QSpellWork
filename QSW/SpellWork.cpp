@@ -183,6 +183,9 @@ void SpellWork::ShowInfo(SpellEntry const* spellInfo)
     QString sTargetMask(QString("%0").arg(spellInfo->Targets, 8, 16, QChar('0')));
     QString sCreatureTypeMask(QString("%0").arg(spellInfo->TargetCreatureType, 8, 16, QChar('0')));
     QString sFormMask(QString("%0").arg(spellInfo->Stances, 8, 16, QChar('0')));
+    QString sIF(QString("%0").arg(spellInfo->InterruptFlags, 8, 16, QChar('0')));
+    QString sAIF(QString("%0").arg(spellInfo->AuraInterruptFlags, 8, 16, QChar('0')));
+    QString sCIF(QString("%0").arg(spellInfo->ChannelInterruptFlags, 8, 16, QChar('0')));
 
     SpellInfoBrowser->append(QString("<b>ID:</b> %0").arg(spellInfo->Id));
 
@@ -261,17 +264,17 @@ void SpellWork::ShowInfo(SpellEntry const* spellInfo)
             switch (spellInfo->EquippedItemClass)
             {
                 case 2: // WEAPON
-                SpellInfoBrowser->append(QString("SubClass mask 0x%0 (%1)")
+                SpellInfoBrowser->append(QString("  SubClass mask 0x%0 (%1)")
                     .arg(sItemSubClassMask.toUpper())
                     .arg(CompareAttributes(spellInfo, TYPE_ITEM_WEAPON)));
                     break;
                 case 4: // ARMOR
-                SpellInfoBrowser->append(QString("SubClass mask 0x%0 (%1)")
+                SpellInfoBrowser->append(QString("  SubClass mask 0x%0 (%1)")
                     .arg(sItemSubClassMask.toUpper())
                     .arg(CompareAttributes(spellInfo, TYPE_ITEM_ARMOR)));
                     break;
                 case 15: // MISC
-                SpellInfoBrowser->append(QString("SubClass mask 0x%0 (%1)")
+                SpellInfoBrowser->append(QString("  SubClass mask 0x%0 (%1)")
                     .arg(sItemSubClassMask.toUpper())
                     .arg(CompareAttributes(spellInfo, TYPE_ITEM_MISC)));
                     break;
@@ -281,7 +284,7 @@ void SpellWork::ShowInfo(SpellEntry const* spellInfo)
         if (spellInfo->EquippedItemInventoryTypeMask)
         {
             QString sItemInventoryMask(QString("%0").arg(spellInfo->EquippedItemInventoryTypeMask, 8, 16, QChar('0')));
-            SpellInfoBrowser->append(QString("InventoryType mask = 0x%0 (%1)")
+            SpellInfoBrowser->append(QString("  InventoryType mask = 0x%0 (%1)")
                 .arg(sItemInventoryMask.toUpper())
                 .arg(CompareAttributes(spellInfo, TYPE_ITEM_INVENTORY)));
         }
@@ -312,10 +315,51 @@ void SpellWork::ShowInfo(SpellEntry const* spellInfo)
 
     if (spellInfo->StackAmount)
         SpellInfoBrowser->append(QString("Stackable up to %0").arg(spellInfo->StackAmount));
-    
+
+    AppendCastTimeLine(spellInfo);
+
+    if (spellInfo->RecoveryTime || spellInfo->CategoryRecoveryTime || spellInfo->StartRecoveryCategory)
+    {
+        SpellInfoBrowser->append(QString("RecoveryTime: %0 ms, CategoryRecoveryTime: %1 ms").arg(spellInfo->RecoveryTime).arg(spellInfo->CategoryRecoveryTime));
+        SpellInfoBrowser->append(QString("StartRecoveryCategory = %0, StartRecoveryTime = %1 ms").arg(spellInfo->StartRecoveryCategory).arg(float(spellInfo->StartRecoveryTime), 0, 'f', 2));
+    }
+
+    AppendDurationLine(spellInfo);
 
     if (spellInfo->manaCost || spellInfo->ManaCostPercentage)
-        SpellInfoBrowser->append(QString("Power Type = %0").arg(StringSpellConst(spellInfo, POWER_TYPE_NAME)));
+    {
+        SpellInfoBrowser->append(QString("Power Type = %0, Cost %1")
+            .arg(StringSpellConst(spellInfo, POWER_TYPE_NAME))
+            .arg(spellInfo->manaCost));
+
+        if (spellInfo->manaCostPerlevel)
+            SpellInfoBrowser->append(QString("  + lvl * %0")
+            .arg(spellInfo->manaCostPerlevel));
+
+        if (spellInfo->manaPerSecond)
+            SpellInfoBrowser->append(QString("  + %0 Per Second")
+            .arg(spellInfo->manaPerSecond));
+
+        if (spellInfo->manaPerSecondPerLevel)
+            SpellInfoBrowser->append(QString("  + lvl * %0")
+            .arg(spellInfo->manaPerSecondPerLevel));
+    }
+
+    SpellInfoBrowser->append(QString());
+
+    SpellInfoBrowser->append(QString("Interrupt Flags: 0x%0, AuraIF 0x%1, ChannelIF 0x%2")
+        .arg(sIF.toUpper())
+        .arg(sAIF.toUpper())
+        .arg(sCIF.toUpper()));
+
+    if (spellInfo->CasterAuraState)
+        SpellInfoBrowser->append(QString("CasterAuraState = %0 (%1)").arg(spellInfo->CasterAuraState).arg(AuraStateString[spellInfo->CasterAuraState]));
+
+    if (spellInfo->TargetAuraState)
+        SpellInfoBrowser->append(QString("TargetAuraState = %0 (%1)").arg(spellInfo->TargetAuraState).arg(AuraStateString[spellInfo->TargetAuraState]));
+
+    if (spellInfo->RequiresSpellFocus)
+        SpellInfoBrowser->append(QString("Requires Spell Focus %0").arg(spellInfo->RequiresSpellFocus));
 
     for (uint8 i = EFFECT_INDEX_0; i < MAX_EFFECT_INDEX; i++)
     {
@@ -621,6 +665,38 @@ void SpellWork::AppendSkillLine(SpellEntry const *spellInfo)
                 .arg(skillInfo->max_value)
                 .arg(skillInfo->charPoints[0])
                 .arg(skillInfo->charPoints[1]));
+            break;
+        }
+    }
+}
+
+void SpellWork::AppendCastTimeLine(SpellEntry const *spellInfo)
+{
+    for (int i = 0; i < sSpellCastTimesStore.GetNumRows(); i++)
+    {
+        SpellCastTimesEntry const *castInfo = sSpellCastTimesStore.LookupEntry(i);
+        if (castInfo && spellInfo->CastingTimeIndex && spellInfo->CastingTimeIndex == castInfo->ID)
+        {
+            SpellInfoBrowser->append(QString("CastingTime (Id %0) = %1")
+                .arg(castInfo->ID)
+                .arg(float(castInfo->CastTime) / 1000, 0, 'f', 2));
+            break;
+        }
+    }
+}
+
+void SpellWork::AppendDurationLine(SpellEntry const *spellInfo)
+{
+    for (int i = 0; i < sSpellDurationStore.GetNumRows(); i++)
+    {
+        SpellDurationEntry const *durationInfo = sSpellDurationStore.LookupEntry(i);
+        if (durationInfo && spellInfo->DurationIndex && spellInfo->DurationIndex == durationInfo->ID)
+        {
+            SpellInfoBrowser->append(QString("Duration: ID (%0)  %1, %2, %3")
+                .arg(durationInfo->ID)
+                .arg(durationInfo->Duration[0])
+                .arg(durationInfo->Duration[1])
+                .arg(durationInfo->Duration[2]));
             break;
         }
     }

@@ -753,4 +753,16 @@ QString DispelTypeString[] =
     QString("DISPEL_ZG_TICKET")
 };
 
+QString AuraStateString[] =
+{
+    QString("NONE"),
+    QString("AURA_STATE_DEFENSE"),
+    QString("AURA_STATE_HEALTHLESS_20_PERCENT"),
+    QString("AURA_STATE_BERSERKING"),
+    QString("AURA_STATE_FROZEN"),
+    QString("AURA_STATE_JUDGEMENT"),
+    QString("AURA_STATE_UNKNOWN6"),
+    QString("AURA_STATE_HUNTER_PARRY")
+};
+
 #endif
