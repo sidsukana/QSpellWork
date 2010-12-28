@@ -361,14 +361,95 @@ void SpellWork::ShowInfo(SpellEntry const* spellInfo)
     if (spellInfo->RequiresSpellFocus)
         SpellInfoBrowser->append(QString("Requires Spell Focus %0").arg(spellInfo->RequiresSpellFocus));
 
+    if (spellInfo->procFlags)
+    {
+        QString sProcFlags(QString("%0").arg(spellInfo->procFlags, 8, 16, QChar('0')));
+        SpellInfoBrowser->append(QString("<b>Proc flag 0x%0, chance = %1, charges - %2</b>")
+            .arg(sProcFlags.toUpper())
+            .arg(spellInfo->procChance)
+            .arg(spellInfo->procCharges));
+        SpellInfoBrowser->append(line);
+        
+        int i = 0;
+        uint64 proc = spellInfo->procFlags;
+        while (proc != 0)
+        {
+            if ((proc & 1) != 0)
+                SpellInfoBrowser->append(QString("  %0").arg(ProcFlagDesc[i]));
+            i++;
+            proc >>= 1;
+        }
+    }
+    else
+    {
+        SpellInfoBrowser->append(QString("Chance = %0, charges - %1")
+            .arg(spellInfo->procChance)
+            .arg(spellInfo->procCharges));
+    }
+
+    SpellInfoBrowser->append(line);
+
+    AppendSpellEffectInfo(spellInfo);
+
+    
+
+}
+
+void SpellWork::AppendSpellEffectInfo(SpellEntry const *spellInfo)
+{
     for (uint8 i = EFFECT_INDEX_0; i < MAX_EFFECT_INDEX; i++)
     {
         if (!spellInfo->Effect[i])
-            SpellInfoBrowser->append(QString("Effect %0:  NO EFFECT").arg(i));
+        {
+            SpellInfoBrowser->append(QString("<b>Effect %0:  NO EFFECT</b>").arg(i));
+            SpellInfoBrowser->append(QString());
+        }
         else
-            SpellInfoBrowser->append(QString("Effect %0: Id %1 (%2)").arg(i).arg(spellInfo->Effect[i]).arg(EffectString[spellInfo->Effect[i]]));
-    }
+        {
+            QString _BasePoints(QString("BasePoints = %0").arg(spellInfo->EffectBasePoints[i] + 1));
+            
+            QString _RealPoints;
+            if (spellInfo->EffectRealPointsPerLevel[i] != 0)
+                _RealPoints = QString(" + Level * %0").arg(spellInfo->EffectRealPointsPerLevel[i], 0, 'f', 2);
 
+            QString _DieSides;
+            if (1 < spellInfo->EffectDieSides[i])
+            {
+                if (spellInfo->EffectRealPointsPerLevel[i] != 0)
+                    _DieSides = QString(" to %0 + lvl * %1")
+                        .arg(spellInfo->EffectBasePoints[i] + 1 + spellInfo->EffectDieSides[i])
+                        .arg(spellInfo->EffectRealPointsPerLevel[i], 0, 'f', 2);
+                else
+                    _DieSides = QString(" to %0").arg(spellInfo->EffectBasePoints[i] + 1 + spellInfo->EffectDieSides[i]);
+            }
+
+            QString _PointsPerCombo;
+            if (spellInfo->EffectPointsPerComboPoint[i] != 0)
+                _PointsPerCombo = QString(" + combo * %0").arg(spellInfo->EffectPointsPerComboPoint[i], 0, 'f', 2);
+
+            QString _DmgMultiplier;
+            if (spellInfo->DmgMultiplier[i] != 1.0f)
+                _DmgMultiplier = QString(" x %0").arg(spellInfo->DmgMultiplier[i], 0, 'f', 2);
+                
+            QString _Result = _BasePoints + _RealPoints + _DieSides + _PointsPerCombo + _DmgMultiplier;
+            SpellInfoBrowser->append(QString("<b>Effect %0: Id %1 (%2)</b>").arg(i).arg(spellInfo->Effect[i]).arg(EffectString[spellInfo->Effect[i]]));
+            SpellInfoBrowser->append(_Result);
+
+            if (spellInfo->EffectMultipleValue[i] != 0)
+                SpellInfoBrowser->append(QString(", Multiple = %0").arg(spellInfo->EffectMultipleValue[i], 0, 'f', 2));
+
+            SpellInfoBrowser->append(QString("Targets (%0, %1) (%2, %3)")
+                .arg(spellInfo->EffectImplicitTargetA[i])
+                .arg(spellInfo->EffectImplicitTargetB[i])
+                .arg(EffectTargetString[spellInfo->EffectImplicitTargetA[i]])
+                .arg(EffectTargetString[spellInfo->EffectImplicitTargetB[i]]));
+            
+            //AURAS
+
+            //
+
+        }
+    }
 }
 
 QString SpellWork::StringSpellConst(SpellEntry const *spellInfo, StringConst strConst)

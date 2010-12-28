@@ -765,4 +765,132 @@ QString AuraStateString[] =
     QString("AURA_STATE_HUNTER_PARRY")
 };
 
+QString ProcFlagDesc[] =
+{
+    //00 0x00000001 000000000000000000000001 -
+    QString("00 Killed by aggressor that receive experience or honor"),
+    //01 0x00000002 000000000000000000000010 -
+    QString("01 Kill that yields experience or honor"),
+    //02 0x00000004 000000000000000000000100 -
+    QString("02 Successful melee attack"),
+    //03 0x00000008 000000000000000000001000 -
+    QString("03 Taken damage from melee strike hit"),
+    //04 0x00000010 000000000000000000010000 -
+    QString("04 Successful attack by Spell that use melee weapon"),
+    //05 0x00000020 000000000000000000100000 -
+    QString("05 Taken damage by Spell that use melee weapon"),
+    //06 0x00000040 000000000000000001000000 -
+    QString("06 Successful Ranged attack(and wand spell cast)"),
+    //07 0x00000080 000000000000000010000000 -
+    QString("07 Taken damage from ranged attack"),
+    //08 0x00000100 000000000000000100000000 -
+    QString("08 Successful Ranged attack by Spell that use ranged weapon"),
+    //09 0x00000200 000000000000001000000000 -
+    QString("09 Taken damage by Spell that use ranged weapon"),
+    //10 0x00000400 000000000000010000000000 -
+    QString("10 Successful ??? spell hit"),
+    //11 0x00000800 000000000000100000000000 -
+    QString("11 Taken ??? spell hit"),
+    //12 0x00001000 000000000001000000000000 -
+    QString("12 Successful ??? spell cast"),
+    //13 0x00002000 000000000010000000000000 -
+    QString("13 Taken ??? spell hit"),
+    //14 0x00004000 000000000100000000000000 -
+    QString("14 Successful cast positive spell"),
+    //15 0x00008000 000000001000000000000000 -
+    QString("15 Taken positive spell hit"),
+    //16 0x00010000 000000010000000000000000 -
+    QString("16 Successful damage from harmful spell cast (каст дамажащего спелла)"),
+    //17 0x00020000 000000100000000000000000 -
+    QString("17 Taken spell damage"),
+    //18 0x00040000 000001000000000000000000 -
+    QString("18 Deal periodic damage"),
+    //19 0x00080000 000010000000000000000000 -
+    QString("19 Taken periodic damage"),
+    //20 0x00100000 000100000000000000000000 -
+    QString("20 Taken any damage"),
+    //21 0x00200000 001000000000000000000000 -
+    QString("21 On trap activation (ѕри срабатывании ловушки)"),
+    //22 0x00800000 010000000000000000000000 -
+    QString("22 Taken off-hand melee attacks"),
+    //23 0x00800000 100000000000000000000000 -
+    QString("23 Successful off-hand melee attacks"),
+    QString("24"),
+    QString("25"),
+    QString("26"),
+    QString("27"),
+    QString("28"),
+    QString("29"),
+    QString("30"),
+    QString("31")
+};
+
+QString EffectTargetString[] =
+{
+    QString("NO_TARGET"),
+    QString("TARGET_SELF"),
+    QString("TARGET_RANDOM_ENEMY_CHAIN_IN_AREA"),
+    QString("TARGET_RANDOM_FRIEND_CHAIN_IN_AREA"),
+    QString("TARGET_4"),
+    QString("TARGET_PET"),
+    QString("TARGET_CHAIN_DAMAGE"),
+    QString("TARGET_AREAEFFECT_INSTANT"),
+    QString("TARGET_AREAEFFECT_CUSTOM"),
+    QString("TARGET_INNKEEPER_COORDINATES"),
+    QString("TARGET_10"),
+    QString("TARGET_11"),
+    QString("TARGET_12"),
+    QString("TARGET_13"),
+    QString("TARGET_14"),
+    QString("TARGET_ALL_ENEMY_IN_AREA"),
+    QString("TARGET_ALL_ENEMY_IN_AREA_INSTANT"),
+    QString("TARGET_TABLE_X_Y_Z_COORDINATES"),
+    QString("TARGET_EFFECT_SELECT"),
+    QString("TARGET_19"),
+    QString("TARGET_ALL_PARTY_AROUND_CASTER"),
+    QString("TARGET_SINGLE_FRIEND"),
+    QString("TARGET_CASTER_COORDINATES"),
+    QString("TARGET_GAMEOBJECT"),
+    QString("TARGET_IN_FRONT_OF_CASTER"),
+    QString("TARGET_DUELVSPLAYER"),
+    QString("TARGET_GAMEOBJECT_ITEM"),
+    QString("TARGET_MASTER"),
+    QString("TARGET_ALL_ENEMY_IN_AREA_CHANNELED"),
+    QString("TARGET_29"),
+    QString("TARGET_ALL_FRIENDLY_UNITS_AROUND_CASTER"),
+    QString("TARGET_ALL_FRIENDLY_UNITS_IN_AREA"),
+    QString("TARGET_MINION"),
+    QString("TARGET_ALL_PARTY"),
+    QString("TARGET_ALL_PARTY_AROUND_CASTER_2"),
+    QString("TARGET_SINGLE_PARTY"),
+    QString("TARGET_ALL_HOSTILE_UNITS_AROUND_CASTER"),
+    QString("TARGET_AREAEFFECT_PARTY"),
+    QString("TARGET_SCRIPT"),
+    QString("TARGET_SELF_FISHING"),
+    QString("TARGET_FOCUS_OR_SCRIPTED_GAMEOBJECT"),
+    QString("TARGET_TOTEM_EARTH"),
+    QString("TARGET_TOTEM_WATER"),
+    QString("TARGET_TOTEM_AIR"),
+    QString("TARGET_TOTEM_FIRE"),
+    QString("TARGET_CHAIN_HEAL"),
+    QString("TARGET_SCRIPT_COORDINATES"),
+    QString("TARGET_DYNAMIC_OBJECT_FRONT"),
+    QString("TARGET_DYNAMIC_OBJECT_BEHIND"),
+    QString("TARGET_DYNAMIC_OBJECT_LEFT_SIDE"),
+    QString("TARGET_DYNAMIC_OBJECT_RIGHT_SIDE"),
+    QString("TARGET_51"),
+    QString("TARGET_AREAEFFECT_CUSTOM_2"),
+    QString("TARGET_CURRENT_ENEMY_COORDINATES"),
+    QString("TARGET_LARGE_FRONTAL_CONE"),
+    QString("TARGET_55"),
+    QString("TARGET_ALL_RAID_AROUND_CASTER"),
+    QString("TARGET_SINGLE_FRIEND_2"),
+    QString("TARGET_58"),
+    QString("TARGET_59"),
+    QString("TARGET_NARROW_FRONTAL_CONE"),
+    QString("TARGET_AREAEFFECT_PARTY_AND_CLASS"),
+    QString("TARGET_62"),
+    QString("TARGET_DUELVSPLAYER_COORDINATES")
+};
+
 #endif

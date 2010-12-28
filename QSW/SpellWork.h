@@ -22,6 +22,7 @@ class SpellWork : public QMainWindow, public Ui::SpellWorkUI
         void AppendSkillLine(SpellEntry const *spellInfo);
         void AppendCastTimeLine(SpellEntry const *spellInfo);
         void AppendDurationLine(SpellEntry const *spellInfo);
+        void AppendSpellEffectInfo(SpellEntry const *spellInfo);
         QString StringSpellConst(SpellEntry const* spellInfo, StringConst strConst);
         QString CompareAttributes(SpellEntry const* spellInfo, AttrType attr);
 
