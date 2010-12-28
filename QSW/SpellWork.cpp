@@ -444,12 +444,66 @@ void SpellWork::AppendSpellEffectInfo(SpellEntry const *spellInfo)
                 .arg(EffectTargetString[spellInfo->EffectImplicitTargetA[i]])
                 .arg(EffectTargetString[spellInfo->EffectImplicitTargetB[i]]));
             
-            //AURAS
+            AppendAuraInfo(spellInfo, i);
 
-            //
-
+            uint32 rIndex = spellInfo->EffectRadiusIndex[i];
+            if (rIndex != 0)
+            {
+                SpellRadiusEntry const *spellRadius = sSpellRadiusStore.LookupEntry(rIndex);
+                if (spellRadius)
+                    SpellInfoBrowser->append(QString("Radius (Id %0) %1").arg(rIndex).arg(spellRadius->Radius, 0, 'f', 2));
+                else
+                    SpellInfoBrowser->append(QString("Radius (Id %0) Not found").arg(rIndex));
+            }
         }
     }
+}
+
+void SpellWork::AppendAuraInfo(SpellEntry const *spellInfo, int index)
+{
+    QString sAura(AuraName[spellInfo->EffectApplyAuraName[index]]);
+    int misc = spellInfo->EffectMiscValue[index];
+
+    if (spellInfo->EffectApplyAuraName[index] == 0)
+    {
+        if (spellInfo->EffectMiscValue[index] != 0)
+            SpellInfoBrowser->append(QString("EffectMiscValue = %0").arg(spellInfo->EffectMiscValue[index]));
+
+        if (spellInfo->EffectAmplitude[index] != 0)
+            SpellInfoBrowser->append(QString("EffectAmplitude = %0").arg(spellInfo->EffectAmplitude[index]));
+                
+        return;
+    }
+
+    QString _BaseAuraInfo;
+    _BaseAuraInfo = QString("Aura Id %0 (%1), value = %2, misc = %3 ")
+        .arg(spellInfo->EffectApplyAuraName[index])
+        .arg(sAura)
+        .arg(spellInfo->EffectBasePoints[index])
+        .arg(misc);
+
+    QString _SpecialAuraInfo;
+    switch (spellInfo->EffectApplyAuraName[index])
+    {
+        case 29:
+            _SpecialAuraInfo = QString("(%0").arg(UnitMods[misc]);
+            break;
+        case 189:
+            _SpecialAuraInfo = QString("(%0").arg(CompareAttributes(spellInfo, TYPE_CR, index));
+            break;
+        case 107:
+        case 108:
+            _SpecialAuraInfo = QString("(%0").arg(SpellModOp[misc]);
+            break;
+        // todo: more case
+        default:
+            _SpecialAuraInfo = QString("(%0").arg(misc);
+            break;
+    }
+
+    QString _Periodic = QString(", periodic = %0)").arg(spellInfo->EffectAmplitude[index]);
+    QString _Result = _BaseAuraInfo + _SpecialAuraInfo + _Periodic;
+    SpellInfoBrowser->append(_Result);
 }
 
 QString SpellWork::StringSpellConst(SpellEntry const *spellInfo, StringConst strConst)
@@ -512,7 +566,7 @@ QString SpellWork::StringSpellConst(SpellEntry const *spellInfo, StringConst str
     return QString();
 }
 
-QString SpellWork::CompareAttributes(SpellEntry const* spellInfo, AttrType attr)
+QString SpellWork::CompareAttributes(SpellEntry const* spellInfo, AttrType attr, int index)
 {
     QString str("");
     switch (attr)
@@ -717,6 +771,22 @@ QString SpellWork::CompareAttributes(SpellEntry const* spellInfo, AttrType attr)
                 if (spellInfo->EquippedItemInventoryTypeMask & InventoryTypeMask[i])
                 {   
                     QString tstr(QString("%0, ").arg(InventoryTypeString[i]));
+                    str += tstr;
+                }
+            }
+            if (!str.isEmpty())
+                str.chop(2);
+            return str;
+        }
+        break;
+        case TYPE_CR:
+        {
+            uint8 Max = sizeof(CombatRating) / sizeof(CombatRating[0]);
+            for (uint8 i = 0; i < Max; i++)
+            {
+                if (spellInfo->EffectMiscValue[index] & CombatRating[i])
+                {   
+                    QString tstr(QString("%0, ").arg(CombatRatingString[i]));
                     str += tstr;
                 }
             }

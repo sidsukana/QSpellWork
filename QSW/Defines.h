@@ -15,7 +15,8 @@ enum AttrType
     TYPE_ITEM_WEAPON,
     TYPE_ITEM_ARMOR,
     TYPE_ITEM_MISC,
-    TYPE_ITEM_INVENTORY
+    TYPE_ITEM_INVENTORY,
+    TYPE_CR
 };
 
 enum StringConst
