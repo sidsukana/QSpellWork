@@ -455,6 +455,61 @@ void SpellWork::AppendSpellEffectInfo(SpellEntry const *spellInfo)
                 else
                     SpellInfoBrowser->append(QString("Radius (Id %0) Not found").arg(rIndex));
             }
+
+            uint32 trigger = spellInfo->EffectTriggerSpell[i];
+            if (trigger != 0)
+            {
+                SpellEntry const *triggerSpell = sSpellStore.LookupEntry(trigger);
+                if (triggerSpell)
+                {
+                    SpellInfoBrowser->append(QString("<b><font color='blue'>   Trigger spell (%0) %1. Chance = %2</font></b>")
+                        .arg(trigger)
+                        .arg(QString("%0 (%1)").arg((char*)triggerSpell->SpellName[0]).arg((char*)triggerSpell->Rank[0]))
+                        .arg(triggerSpell->procChance));
+
+                    QString sDescription((char*)triggerSpell->Description[0]);
+                    QString sTooltip((char*)triggerSpell->ToolTip[0]);
+
+                    if (!sDescription.isEmpty())
+                        SpellInfoBrowser->append(QString("   Description: %0").arg(sDescription));
+
+                    if (!sTooltip.isEmpty())
+                        SpellInfoBrowser->append(QString("   ToolTip: %0").arg(sTooltip));
+
+                    if (triggerSpell->procFlags != 0)
+                    {
+                        SpellInfoBrowser->append(QString("Charges - %0").arg(triggerSpell->procCharges));
+                        SpellInfoBrowser->append(QString());
+                        
+                        int i = 0;
+                        uint64 proc = triggerSpell->procFlags;
+                        while (proc != 0)
+                        {
+                            if ((proc & 1) != 0)
+                                SpellInfoBrowser->append(QString("  %0").arg(ProcFlagDesc[i]));
+                            i++;
+                            proc >>= 1;
+                        }
+
+                        SpellInfoBrowser->append(QString());
+                    }
+                }
+                else
+                {
+                    SpellInfoBrowser->append(QString("Trigger spell (%0) Not found").arg(trigger));
+                }
+            }
+
+            if (spellInfo->EffectChainTarget[i] != 0)
+                SpellInfoBrowser->append(QString("EffectChainTarget = %0").arg(spellInfo->EffectChainTarget[i]));
+
+            if (spellInfo->EffectItemType[i] != 0)
+                SpellInfoBrowser->append(QString("EffectItemType = %0").arg(spellInfo->EffectItemType[i]));
+
+            if (spellInfo->EffectMechanic[i] != 0)
+                SpellInfoBrowser->append(QString("Effect Mechanic = %0 (%1)").arg(spellInfo->EffectMechanic[i]).arg(MechanicString[spellInfo->EffectMechanic[i]]));
+
+            SpellInfoBrowser->append(QString());
         }
     }
 }
