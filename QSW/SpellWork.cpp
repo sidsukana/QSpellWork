@@ -6,12 +6,18 @@ SpellWork::SpellWork(QWidget *parent)
 {
     setupUi(this);
 
-    model = NULL;
     m_spellInfo = NULL;
+
+    SpellList->horizontalHeader()->setStretchLastSection(true);
+    SpellList->horizontalHeader()->setHighlightSections(false);
+    SpellList->setHorizontalHeaderItem(0, new QTableWidgetItem("ID"));
+    SpellList->setHorizontalHeaderItem(1, new QTableWidgetItem("Name"));
+    SpellList->setColumnWidth(0, 40);
+    SpellList->resizeRowsToContents(); 
 
     LoadDBCStores();
 
-    connect(SpellList, SIGNAL(clicked(QModelIndex)), this, SLOT(SlotSearchFromList(QModelIndex)));
+    connect(SpellList, SIGNAL(itemSelectionChanged()), this, SLOT(SlotSearchFromList()));
 
     connect(findButton, SIGNAL(clicked()), this, SLOT(SlotSearch()));
     connect(findButton, SIGNAL(clicked()), SpellList, SLOT(resizeRowsToContents()));
@@ -44,9 +50,8 @@ void SpellWork::SlotSearch()
     bool isString = false;
 
     SpellInfoBrowser->clear();
-
-    if (model)
-        model->clear();
+    SpellList->clearContents();
+    SpellList->setRowCount(0);
 
     if (!findLine_e1->text().isEmpty())
     {
@@ -61,7 +66,6 @@ void SpellWork::SlotSearch()
 
         if (isString)
         {
-            model = new QStandardItemModel(1, 2);
             int count = -1;
             for (int i = 0; i < sSpellStore.GetNumRows(); i++)
             {
@@ -69,56 +73,44 @@ void SpellWork::SlotSearch()
 				if (m_spellInfo && QString(m_spellInfo->SpellName[0]).contains(findLine_e1->text(), Qt::CaseInsensitive))
                 {
                     count++;
+                    SpellList->insertRow(count);
                     QString sRank((char*)m_spellInfo->Rank[0]);
 
-                    QStandardItem *item_id = new QStandardItem(QString("%0").arg(m_spellInfo->Id));
-                    QStandardItem *item_name;
+                    QTableWidgetItem *item_id = new QTableWidgetItem(QString("%0").arg(m_spellInfo->Id));
+                    QTableWidgetItem *item_name;
                     if (sRank.isEmpty())
-                        item_name = new QStandardItem(QString("%0").arg((char*)m_spellInfo->SpellName[0]));
+                        item_name = new QTableWidgetItem(QString("%0").arg((char*)m_spellInfo->SpellName[0]));
                     else
-                        item_name = new QStandardItem(QString("%0 (%1)").arg((char*)m_spellInfo->SpellName[0]).arg((char*)m_spellInfo->Rank[0]));
+                        item_name = new QTableWidgetItem(QString("%0 (%1)").arg((char*)m_spellInfo->SpellName[0]).arg((char*)m_spellInfo->Rank[0]));
 
-                    model->setItem(count, 0, item_id);
-                    model->setItem(count, 1, item_name);
+                    SpellList->setItem(count, 0, item_id);
+                    SpellList->setItem(count, 1, item_name);
                 }
             }
-            model->setHorizontalHeaderItem(0, new QStandardItem("ID"));
-            model->setHorizontalHeaderItem(1, new QStandardItem("Name"));
-            SpellList->setModel(model);
-            SpellList->setColumnWidth(0, 40);
-            SpellList->setColumnWidth(1, 195);
         }
         else
         {
-            model = new QStandardItemModel(1, 2);
-
             m_spellInfo = sSpellStore.LookupEntry(findLine_e1->text().toInt());
 
             if (m_spellInfo)
             {
                 QString sRank((char*)m_spellInfo->Rank[0]);
 
-                QStandardItem *item_id = new QStandardItem(QString("%0").arg(m_spellInfo->Id));
-                QStandardItem *item_name;
+                QTableWidgetItem *item_id = new QTableWidgetItem(QString("%0").arg(m_spellInfo->Id));
+                QTableWidgetItem *item_name;
                 if (sRank.isEmpty())
-                    item_name = new QStandardItem(QString("%0").arg((char*)m_spellInfo->SpellName[0]));
+                    item_name = new QTableWidgetItem(QString("%0").arg((char*)m_spellInfo->SpellName[0]));
                 else
-                    item_name = new QStandardItem(QString("%0 (%1)").arg((char*)m_spellInfo->SpellName[0]).arg((char*)m_spellInfo->Rank[0]));
+                    item_name = new QTableWidgetItem(QString("%0 (%1)").arg((char*)m_spellInfo->SpellName[0]).arg((char*)m_spellInfo->Rank[0]));
 
-                model->setItem(0, 0, item_id);
-                model->setItem(0, 1, item_name);
-                model->setHorizontalHeaderItem(0, new QStandardItem("ID"));
-                model->setHorizontalHeaderItem(1, new QStandardItem("Name"));
-                SpellList->setModel(model);
-                SpellList->setColumnWidth(0, 40);
-                SpellList->setColumnWidth(1, 195);
+                SpellList->setItem(0, 0, item_id);
+                SpellList->setItem(0, 1, item_name);
                 ShowInfo();
             }
         }
     }
     else if (!findLine_e2->text().isEmpty())
     {
-        model = new QStandardItemModel(1, 2);
         int count = -1;
         for (int i = 0; i < sSpellStore.GetNumRows(); i++)
         {
@@ -126,32 +118,28 @@ void SpellWork::SlotSearch()
             if (m_spellInfo && m_spellInfo->SpellIconID == findLine_e2->text().toInt())
             {
                 count++;
+                SpellList->insertRow(count);
                 QString sRank((char*)m_spellInfo->Rank[0]);
 
-                QStandardItem *item_id = new QStandardItem(QString("%0").arg(m_spellInfo->Id));
-                QStandardItem *item_name;
+                QTableWidgetItem *item_id = new QTableWidgetItem(QString("%0").arg(m_spellInfo->Id));
+                QTableWidgetItem *item_name;
                 if (sRank.isEmpty())
-                    item_name = new QStandardItem(QString("%0").arg((char*)m_spellInfo->SpellName[0]));
+                    item_name = new QTableWidgetItem(QString("%0").arg((char*)m_spellInfo->SpellName[0]));
                 else
-                    item_name = new QStandardItem(QString("%0 (%1)").arg((char*)m_spellInfo->SpellName[0]).arg((char*)m_spellInfo->Rank[0]));
+                    item_name = new QTableWidgetItem(QString("%0 (%1)").arg((char*)m_spellInfo->SpellName[0]).arg((char*)m_spellInfo->Rank[0]));
 
-                model->setItem(count, 0, item_id);
-                model->setItem(count, 1, item_name);
+                SpellList->setItem(count, 0, item_id);
+                SpellList->setItem(count, 1, item_name);
             }
         }
-        model->setHorizontalHeaderItem(0, new QStandardItem("ID"));
-        model->setHorizontalHeaderItem(1, new QStandardItem("Name"));
-        SpellList->setModel(model);
-        SpellList->setColumnWidth(0, 40);
-        SpellList->setColumnWidth(1, 195);
     }
 }
 
-void SpellWork::SlotSearchFromList(const QModelIndex &index)
+void SpellWork::SlotSearchFromList()
 {
-    QStandardItem *spellItem = model->item(index.row());
-    
-    QString value(spellItem->text());
+    QTableWidgetItem *item = SpellList->item(SpellList->currentRow(), 0);
+
+    QString value(item->text());
 
     uint32 id = value.toInt();
 
@@ -160,7 +148,6 @@ void SpellWork::SlotSearchFromList(const QModelIndex &index)
     m_spellInfo = sSpellStore.LookupEntry(id);
     if (m_spellInfo)
         ShowInfo();
-        
 }
 
 void SpellWork::ShowInfo()
@@ -545,7 +532,7 @@ void SpellWork::AppendAuraInfo(int index)
     _BaseAuraInfo = QString("Aura Id %0 (%1), value = %2, misc = %3 ")
         .arg(m_spellInfo->EffectApplyAuraName[index])
         .arg(sAura)
-        .arg(m_spellInfo->EffectBasePoints[index])
+        .arg(m_spellInfo->EffectBasePoints[index] + 1)
         .arg(misc);
 
     QString _SpecialAuraInfo;

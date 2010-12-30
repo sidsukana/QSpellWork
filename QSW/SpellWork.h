@@ -32,11 +32,10 @@ class SpellWork : public QMainWindow, public Ui::SpellWorkUI
     private slots:
         void SlotAbout();
         void SlotSearch();
-        void SlotSearchFromList(const QModelIndex &index);
+        void SlotSearchFromList();
 
     private:
         Ui::SpellWorkUI ui;
-        QStandardItemModel *model;
         SpellEntry const* m_spellInfo;
 };
 

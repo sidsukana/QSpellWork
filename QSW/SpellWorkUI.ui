@@ -73,7 +73,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QTableView" name="SpellList">
+       <widget class="QTableWidget" name="SpellList">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
           <horstretch>0</horstretch>
@@ -125,15 +125,26 @@
         <property name="cornerButtonEnabled">
          <bool>false</bool>
         </property>
-        <attribute name="horizontalHeaderHighlightSections">
+        <property name="rowCount">
+         <number>0</number>
+        </property>
+        <property name="columnCount">
+         <number>2</number>
+        </property>
+        <attribute name="horizontalHeaderCascadingSectionResizes">
          <bool>true</bool>
+        </attribute>
+        <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+         <bool>false</bool>
         </attribute>
         <attribute name="verticalHeaderVisible">
          <bool>false</bool>
         </attribute>
-        <attribute name="verticalHeaderMinimumSectionSize">
+        <attribute name="verticalHeaderDefaultSectionSize">
          <number>10</number>
         </attribute>
+        <column/>
+        <column/>
        </widget>
       </item>
      </layout>
