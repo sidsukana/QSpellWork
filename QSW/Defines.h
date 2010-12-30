@@ -19,12 +19,6 @@ enum AttrType
     TYPE_CR
 };
 
-enum StringConst
-{
-    POWER_TYPE_NAME     = 0,
-    SPELLFAMILY_NAME    = 1
-};
-
 enum PowerType
 {
     POWER_MANA          = 0,

@@ -1211,4 +1211,26 @@ QString SpellModOp[] =
     QString("SPELLMOD_RESIST_DISPEL_CHANCE")
 };
 
+QString SpellFamilyString[] =
+{
+    QString("SPELLFAMILY_GENERIC"),
+    QString("SPELLFAMILY_UNK1"),
+    QString("SPELLFAMILY_UNUSED1"),
+    QString("SPELLFAMILY_MAGE"),
+    QString("SPELLFAMILY_WARRIOR"),
+    QString("SPELLFAMILY_WARLOCK"),
+    QString("SPELLFAMILY_PRIEST"),
+    QString("SPELLFAMILY_DRUID"),
+    QString("SPELLFAMILY_ROGUE"),
+    QString("SPELLFAMILY_HUNTER"),
+    QString("SPELLFAMILY_PALADIN"),
+    QString("SPELLFAMILY_SHAMAN"),
+    QString("SPELLFAMILY_UNK2"),
+    QString("SPELLFAMILY_POTION"),
+    QString("SPELLFAMILY_UNUSED2"),
+    QString("SPELLFAMILY_UNUSED3"),
+    QString("SPELLFAMILY_UNUSED4"),
+    QString("SPELLFAMILY_PET")
+};
+
 #endif

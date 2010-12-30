@@ -18,14 +18,16 @@ class SpellWork : public QMainWindow, public Ui::SpellWorkUI
         SpellWork(QWidget *parent = 0);
         ~SpellWork();
 
-        void ShowInfo(SpellEntry const* spellInfo);
-        void AppendSkillLine(SpellEntry const *spellInfo);
-        void AppendCastTimeLine(SpellEntry const *spellInfo);
-        void AppendDurationLine(SpellEntry const *spellInfo);
-        void AppendSpellEffectInfo(SpellEntry const *spellInfo);
-        void AppendAuraInfo(SpellEntry const *spellInfo, int index);
-        QString StringSpellConst(SpellEntry const* spellInfo, StringConst strConst);
-        QString CompareAttributes(SpellEntry const* spellInfo, AttrType attr, int index = 0);
+        void ShowInfo();
+        void AppendSkillLine();
+        void AppendCastTimeLine();
+        void AppendDurationLine();
+        void AppendRangeInfo();
+        void AppendSpellEffectInfo();
+        void AppendAuraInfo(int index);
+        void AppendProcInfo(SpellEntry const *spellInfo);
+        QString PowerString();
+        QString CompareAttributes(AttrType attr, int index = 0);
 
     private slots:
         void SlotAbout();
