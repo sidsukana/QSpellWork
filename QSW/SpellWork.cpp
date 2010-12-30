@@ -179,7 +179,9 @@ void SpellWork::ShowInfo()
     if (sRank.isEmpty())
         SpellInfoBrowser->append(QString("<b>Name:</b> %0").arg(sName));
     else
-        SpellInfoBrowser->append(QString("<b>Name:</b> %0 (%1)").arg(sName).arg(sRank));
+        SpellInfoBrowser->append(QString("<b>Name:</b> %0 (%1)")
+            .arg(sName)
+            .arg(sRank));
 
     if (!sDescription.isEmpty())
         SpellInfoBrowser->append(QString("<b>Description:</b> %0").arg(sDescription));
@@ -189,61 +191,95 @@ void SpellWork::ShowInfo()
 
     SpellInfoBrowser->append(line);
 
-     if (m_spellInfo->modalNextSpell)
-        SpellInfoBrowser->append(QString("ModalNextSpell: %0").arg(m_spellInfo->modalNextSpell));
+     if (m_spellInfo->ModalNextSpell)
+        SpellInfoBrowser->append(QString("ModalNextSpell: %0").arg(m_spellInfo->ModalNextSpell));
 
     SpellInfoBrowser->append(QString("Category = %0, SpellIconID = %1, ActiveIconID = %2, SpellVisual = %3")
         .arg(m_spellInfo->Category)
         .arg(m_spellInfo->SpellIconID)
-        .arg(m_spellInfo->activeIconID)
+        .arg(m_spellInfo->ActiveIconID)
         .arg(m_spellInfo->SpellVisual));
 
-    SpellInfoBrowser->append(QString("SpellFamilyName = %0, SpellFamilyFlags = 0x%1\n").arg(SpellFamilyString[m_spellInfo->SpellFamilyName]).arg(sSpellFamilyFlags.toUpper()));
+    SpellInfoBrowser->append(QString("SpellFamilyName = %0, SpellFamilyFlags = 0x%1\n")
+        .arg(SpellFamilyString[m_spellInfo->SpellFamilyName])
+        .arg(sSpellFamilyFlags.toUpper()));
 
-    SpellInfoBrowser->append(QString("SpellSchool = %0 (%1)").arg(m_spellInfo->School).arg(SchoolString[m_spellInfo->School]));
-    SpellInfoBrowser->append(QString("DamageClass = %0 (%1)").arg(m_spellInfo->DmgClass).arg(DmgClassString[m_spellInfo->DmgClass]));
-    SpellInfoBrowser->append(QString("PreventionType = %0 (%1)").arg(m_spellInfo->PreventionType).arg(PreventionTypeString[m_spellInfo->PreventionType]));
+    SpellInfoBrowser->append(QString("SpellSchool = %0 (%1)")
+        .arg(m_spellInfo->School)
+        .arg(SchoolString[m_spellInfo->School]));
+
+    SpellInfoBrowser->append(QString("DamageClass = %0 (%1)")
+        .arg(m_spellInfo->DmgClass)
+        .arg(DmgClassString[m_spellInfo->DmgClass]));
+
+    SpellInfoBrowser->append(QString("PreventionType = %0 (%1)")
+        .arg(m_spellInfo->PreventionType)
+        .arg(PreventionTypeString[m_spellInfo->PreventionType]));
     
     if (m_spellInfo->Attributes || m_spellInfo->AttributesEx || m_spellInfo->AttributesEx2 ||
         m_spellInfo->AttributesEx3 || m_spellInfo->AttributesEx4)
         SpellInfoBrowser->append(line);
 
     if (m_spellInfo->Attributes)
-        SpellInfoBrowser->append(QString("Attributes: 0x%0 (%1)").arg(sAttributes.toUpper()).arg(CompareAttributes(TYPE_ATTR)));
+        SpellInfoBrowser->append(QString("Attributes: 0x%0 (%1)")
+            .arg(sAttributes.toUpper())
+            .arg(CompareAttributes(TYPE_ATTR)));
+
     if (m_spellInfo->AttributesEx)
-        SpellInfoBrowser->append(QString("AttributesEx: 0x%0 (%1)").arg(sAttributesEx.toUpper()).arg(CompareAttributes(TYPE_ATTR_EX)));
+        SpellInfoBrowser->append(QString("AttributesEx: 0x%0 (%1)")
+            .arg(sAttributesEx.toUpper())
+            .arg(CompareAttributes(TYPE_ATTR_EX)));
+
     if (m_spellInfo->AttributesEx2)
-        SpellInfoBrowser->append(QString("AttributesEx2: 0x%0 (%1)").arg(sAttributesEx2.toUpper()).arg(CompareAttributes(TYPE_ATTR_EX2)));
+        SpellInfoBrowser->append(QString("AttributesEx2: 0x%0 (%1)")
+            .arg(sAttributesEx2.toUpper())
+            .arg(CompareAttributes(TYPE_ATTR_EX2)));
+
     if (m_spellInfo->AttributesEx3)
-        SpellInfoBrowser->append(QString("AttributesEx3: 0x%0 (%1)").arg(sAttributesEx3.toUpper()).arg(CompareAttributes(TYPE_ATTR_EX3)));
+        SpellInfoBrowser->append(QString("AttributesEx3: 0x%0 (%1)")
+            .arg(sAttributesEx3.toUpper())
+            .arg(CompareAttributes(TYPE_ATTR_EX3)));
+
     if (m_spellInfo->AttributesEx4)
-        SpellInfoBrowser->append(QString("AttributesEx4: 0x%0 (%1)").arg(sAttributesEx4.toUpper()).arg(CompareAttributes(TYPE_ATTR_EX4)));
+        SpellInfoBrowser->append(QString("AttributesEx4: 0x%0 (%1)")
+            .arg(sAttributesEx4.toUpper())
+            .arg(CompareAttributes(TYPE_ATTR_EX4)));
 
     SpellInfoBrowser->append(line);
 
     if (m_spellInfo->Targets)
-        SpellInfoBrowser->append(QString("Targets Mask = 0x%0 (%1)").arg(sTargetMask.toUpper()).arg(CompareAttributes(TYPE_TARGETS)));
+        SpellInfoBrowser->append(QString("Targets Mask = 0x%0 (%1)")
+            .arg(sTargetMask.toUpper())
+            .arg(CompareAttributes(TYPE_TARGETS)));
 
     if (m_spellInfo->TargetCreatureType)
-        SpellInfoBrowser->append(QString("Creature Type Mask = 0x%0 (%1)").arg(sCreatureTypeMask.toUpper()).arg(CompareAttributes(TYPE_CREATURE)));
+        SpellInfoBrowser->append(QString("Creature Type Mask = 0x%0 (%1)")
+            .arg(sCreatureTypeMask.toUpper())
+            .arg(CompareAttributes(TYPE_CREATURE)));
 
     if (m_spellInfo->Stances)
-        SpellInfoBrowser->append(QString("Stances: 0x%0 (%1)").arg(sFormMask.toUpper()).arg(CompareAttributes(TYPE_FORMS)));
+        SpellInfoBrowser->append(QString("Stances: 0x%0 (%1)")
+            .arg(sFormMask.toUpper())
+            .arg(CompareAttributes(TYPE_FORMS)));
 
     if (m_spellInfo->StancesNot)
-        SpellInfoBrowser->append(QString("Stances not: 0x%0 (%1)").arg(sFormMask.toUpper()).arg(CompareAttributes(TYPE_FORMS_NOT)));
+        SpellInfoBrowser->append(QString("Stances not: 0x%0 (%1)")
+            .arg(sFormMask.toUpper())
+            .arg(CompareAttributes(TYPE_FORMS_NOT)));
 
     AppendSkillLine();
 
     SpellInfoBrowser->append(QString("Spell Level = %0, BaseLevel %1, MaxLevel %2, MaxTargetLevel %3")
-        .arg(m_spellInfo->spellLevel)
-        .arg(m_spellInfo->baseLevel)
-        .arg(m_spellInfo->maxLevel)
+        .arg(m_spellInfo->SpellLevel)
+        .arg(m_spellInfo->BaseLevel)
+        .arg(m_spellInfo->MaxLevel)
         .arg(m_spellInfo->MaxTargetLevel));
 
     if (m_spellInfo->EquippedItemClass != -1)
     {
-        SpellInfoBrowser->append(QString("EquippedItemClass = %0 (%1)").arg(m_spellInfo->EquippedItemClass).arg(ItemClassString[m_spellInfo->EquippedItemClass]));
+        SpellInfoBrowser->append(QString("EquippedItemClass = %0 (%1)")
+            .arg(m_spellInfo->EquippedItemClass)
+            .arg(ItemClassString[m_spellInfo->EquippedItemClass]));
 
         if (m_spellInfo->EquippedItemSubClassMask)
         {
@@ -280,13 +316,19 @@ void SpellWork::ShowInfo()
     SpellInfoBrowser->append(QString());
 
     SpellInfoBrowser->append(QString("Category = %0").arg(m_spellInfo->Category));
-    SpellInfoBrowser->append(QString("DispelType = %0 (%1)").arg(m_spellInfo->Dispel).arg(DispelTypeString[m_spellInfo->Dispel]));
-    SpellInfoBrowser->append(QString("Mechanic = %0 (%1)").arg(m_spellInfo->Mechanic).arg(MechanicString[m_spellInfo->Mechanic]));
+
+    SpellInfoBrowser->append(QString("DispelType = %0 (%1)")
+        .arg(m_spellInfo->Dispel)
+        .arg(DispelTypeString[m_spellInfo->Dispel]));
+
+    SpellInfoBrowser->append(QString("Mechanic = %0 (%1)")
+        .arg(m_spellInfo->Mechanic)
+        .arg(MechanicString[m_spellInfo->Mechanic]));
 
     AppendRangeInfo();
 
-    if (m_spellInfo->speed)
-        SpellInfoBrowser->append(QString("Speed: %0").arg(m_spellInfo->speed, 0, 'f', 2));
+    if (m_spellInfo->Speed)
+        SpellInfoBrowser->append(QString("Speed: %0").arg(m_spellInfo->Speed, 0, 'f', 2));
 
     if (m_spellInfo->StackAmount)
         SpellInfoBrowser->append(QString("Stackable up to %0").arg(m_spellInfo->StackAmount));
@@ -295,29 +337,31 @@ void SpellWork::ShowInfo()
 
     if (m_spellInfo->RecoveryTime || m_spellInfo->CategoryRecoveryTime || m_spellInfo->StartRecoveryCategory)
     {
-        SpellInfoBrowser->append(QString("RecoveryTime: %0 ms, CategoryRecoveryTime: %1 ms").arg(m_spellInfo->RecoveryTime).arg(m_spellInfo->CategoryRecoveryTime));
-        SpellInfoBrowser->append(QString("StartRecoveryCategory = %0, StartRecoveryTime = %1 ms").arg(m_spellInfo->StartRecoveryCategory).arg(float(m_spellInfo->StartRecoveryTime), 0, 'f', 2));
+        SpellInfoBrowser->append(QString("RecoveryTime: %0 ms, CategoryRecoveryTime: %1 ms")
+            .arg(m_spellInfo->RecoveryTime)
+            .arg(m_spellInfo->CategoryRecoveryTime));
+
+        SpellInfoBrowser->append(QString("StartRecoveryCategory = %0, StartRecoveryTime = %1 ms")
+            .arg(m_spellInfo->StartRecoveryCategory)
+            .arg(float(m_spellInfo->StartRecoveryTime), 0, 'f', 2));
     }
 
     AppendDurationLine();
 
-    if (m_spellInfo->manaCost || m_spellInfo->ManaCostPercentage)
+    if (m_spellInfo->ManaCost || m_spellInfo->ManaCostPercentage)
     {
         SpellInfoBrowser->append(QString("Power Type = %0, Cost %1")
             .arg(PowerString())
-            .arg(m_spellInfo->manaCost));
+            .arg(m_spellInfo->ManaCost));
 
-        if (m_spellInfo->manaCostPerlevel)
-            SpellInfoBrowser->append(QString("  + lvl * %0")
-            .arg(m_spellInfo->manaCostPerlevel));
+        if (m_spellInfo->ManaCostPerlevel)
+            SpellInfoBrowser->append(QString("  + lvl * %0").arg(m_spellInfo->ManaCostPerlevel));
 
-        if (m_spellInfo->manaPerSecond)
-            SpellInfoBrowser->append(QString("  + %0 Per Second")
-            .arg(m_spellInfo->manaPerSecond));
+        if (m_spellInfo->ManaPerSecond)
+            SpellInfoBrowser->append(QString("  + %0 Per Second").arg(m_spellInfo->ManaPerSecond));
 
-        if (m_spellInfo->manaPerSecondPerLevel)
-            SpellInfoBrowser->append(QString("  + lvl * %0")
-            .arg(m_spellInfo->manaPerSecondPerLevel));
+        if (m_spellInfo->ManaPerSecondPerLevel)
+            SpellInfoBrowser->append(QString("  + lvl * %0").arg(m_spellInfo->ManaPerSecondPerLevel));
     }
 
     SpellInfoBrowser->append(QString());
@@ -328,30 +372,34 @@ void SpellWork::ShowInfo()
         .arg(sCIF.toUpper()));
 
     if (m_spellInfo->CasterAuraState)
-        SpellInfoBrowser->append(QString("CasterAuraState = %0 (%1)").arg(m_spellInfo->CasterAuraState).arg(AuraStateString[m_spellInfo->CasterAuraState]));
+        SpellInfoBrowser->append(QString("CasterAuraState = %0 (%1)")
+            .arg(m_spellInfo->CasterAuraState)
+            .arg(AuraStateString[m_spellInfo->CasterAuraState]));
 
     if (m_spellInfo->TargetAuraState)
-        SpellInfoBrowser->append(QString("TargetAuraState = %0 (%1)").arg(m_spellInfo->TargetAuraState).arg(AuraStateString[m_spellInfo->TargetAuraState]));
+        SpellInfoBrowser->append(QString("TargetAuraState = %0 (%1)")
+            .arg(m_spellInfo->TargetAuraState)
+            .arg(AuraStateString[m_spellInfo->TargetAuraState]));
 
     if (m_spellInfo->RequiresSpellFocus)
         SpellInfoBrowser->append(QString("Requires Spell Focus %0").arg(m_spellInfo->RequiresSpellFocus));
 
-    if (m_spellInfo->procFlags)
+    if (m_spellInfo->ProcFlags)
     {
-        QString sProcFlags(QString("%0").arg(m_spellInfo->procFlags, 8, 16, QChar('0')));
+        QString sProcFlags(QString("%0").arg(m_spellInfo->ProcFlags, 8, 16, QChar('0')));
         SpellInfoBrowser->append(QString("<b>Proc flag 0x%0, chance = %1, charges - %2</b>")
             .arg(sProcFlags.toUpper())
-            .arg(m_spellInfo->procChance)
-            .arg(m_spellInfo->procCharges));
+            .arg(m_spellInfo->ProcChance)
+            .arg(m_spellInfo->ProcCharges));
         SpellInfoBrowser->append(line);
-        
+
         AppendProcInfo(m_spellInfo);
     }
     else
     {
         SpellInfoBrowser->append(QString("Chance = %0, charges - %1")
-            .arg(m_spellInfo->procChance)
-            .arg(m_spellInfo->procCharges));
+            .arg(m_spellInfo->ProcChance)
+            .arg(m_spellInfo->ProcCharges));
     }
 
     SpellInfoBrowser->append(line);
@@ -367,13 +415,13 @@ void SpellWork::AppendRangeInfo()
     for (int i = 0; i < sSpellRangeStore.GetNumRows(); i++)
     {
         SpellRangeEntry const *range = sSpellRangeStore.LookupEntry(i);
-        if (range && range->ID == m_spellInfo->rangeIndex)
+        if (range && range->Id == m_spellInfo->RangeIndex)
         {
             SpellInfoBrowser->append(QString("SpellRange: (Id %0) \"%1\": MinRange = %2, MaxRange = %3")
-                .arg(range->ID)
+                .arg(range->Id)
                 .arg((char*)range->Name[0])
-                .arg(range->minRange)
-                .arg(range->maxRange));
+                .arg(range->MinRange)
+                .arg(range->MaxRange));
             break;
         }
     }
@@ -385,7 +433,7 @@ void SpellWork::AppendProcInfo(SpellEntry const *spellInfo)
         return;
 
     int i = 0;
-    uint64 proc = spellInfo->procFlags;
+    uint64 proc = spellInfo->ProcFlags;
     while (proc != 0)
     {
         if ((proc & 1) != 0)
@@ -432,14 +480,19 @@ void SpellWork::AppendSpellEffectInfo()
 
             QString _DmgMultiplier;
             if (m_spellInfo->DmgMultiplier[i] != 1.0f)
-                _DmgMultiplier = QString(" x %0").arg(m_spellInfo->DmgMultiplier[i], 0, 'f', 2);
-                
-            QString _Result = _BasePoints + _RealPoints + _DieSides + _PointsPerCombo + _DmgMultiplier;
-            SpellInfoBrowser->append(QString("<b>Effect %0: Id %1 (%2)</b>").arg(i).arg(m_spellInfo->Effect[i]).arg(EffectString[m_spellInfo->Effect[i]]));
-            SpellInfoBrowser->append(_Result);
+                _DmgMultiplier = QString(" * %0").arg(m_spellInfo->DmgMultiplier[i], 0, 'f', 2);
 
+            QString _Multiple;
             if (m_spellInfo->EffectMultipleValue[i] != 0)
-                SpellInfoBrowser->append(QString(", Multiple = %0").arg(m_spellInfo->EffectMultipleValue[i], 0, 'f', 2));
+                _Multiple = QString(", Multiple = %0").arg(m_spellInfo->EffectMultipleValue[i], 0, 'f', 2);
+                
+            QString _Result = _BasePoints + _RealPoints + _DieSides + _PointsPerCombo + _DmgMultiplier + _Multiple;
+            SpellInfoBrowser->append(QString("<b>Effect %0: Id %1 (%2)</b>")
+                .arg(i)
+                .arg(m_spellInfo->Effect[i])
+                .arg(EffectString[m_spellInfo->Effect[i]]));
+
+            SpellInfoBrowser->append(_Result);
 
             SpellInfoBrowser->append(QString("Targets (%0, %1) (%2, %3)")
                 .arg(m_spellInfo->EffectImplicitTargetA[i])
@@ -454,7 +507,9 @@ void SpellWork::AppendSpellEffectInfo()
             {
                 SpellRadiusEntry const *spellRadius = sSpellRadiusStore.LookupEntry(rIndex);
                 if (spellRadius)
-                    SpellInfoBrowser->append(QString("Radius (Id %0) %1").arg(rIndex).arg(spellRadius->Radius, 0, 'f', 2));
+                    SpellInfoBrowser->append(QString("Radius (Id %0) %1")
+                        .arg(rIndex)
+                        .arg(spellRadius->Radius, 0, 'f', 2));
                 else
                     SpellInfoBrowser->append(QString("Radius (Id %0) Not found").arg(rIndex));
             }
@@ -468,7 +523,7 @@ void SpellWork::AppendSpellEffectInfo()
                     SpellInfoBrowser->append(QString("<b><font color='blue'>   Trigger spell (%0) %1. Chance = %2</font></b>")
                         .arg(trigger)
                         .arg(QString("%0 (%1)").arg((char*)triggerSpell->SpellName[0]).arg((char*)triggerSpell->Rank[0]))
-                        .arg(triggerSpell->procChance));
+                        .arg(triggerSpell->ProcChance));
 
                     QString sDescription((char*)triggerSpell->Description[0]);
                     QString sTooltip((char*)triggerSpell->ToolTip[0]);
@@ -479,9 +534,9 @@ void SpellWork::AppendSpellEffectInfo()
                     if (!sTooltip.isEmpty())
                         SpellInfoBrowser->append(QString("   ToolTip: %0").arg(sTooltip));
 
-                    if (triggerSpell->procFlags != 0)
+                    if (triggerSpell->ProcFlags != 0)
                     {
-                        SpellInfoBrowser->append(QString("Charges - %0").arg(triggerSpell->procCharges));
+                        SpellInfoBrowser->append(QString("Charges - %0").arg(triggerSpell->ProcCharges));
                         SpellInfoBrowser->append(QString());
                         
                         AppendProcInfo(triggerSpell);
@@ -502,7 +557,9 @@ void SpellWork::AppendSpellEffectInfo()
                 SpellInfoBrowser->append(QString("EffectItemType = %0").arg(m_spellInfo->EffectItemType[i]));
 
             if (m_spellInfo->EffectMechanic[i] != 0)
-                SpellInfoBrowser->append(QString("Effect Mechanic = %0 (%1)").arg(m_spellInfo->EffectMechanic[i]).arg(MechanicString[m_spellInfo->EffectMechanic[i]]));
+                SpellInfoBrowser->append(QString("Effect Mechanic = %0 (%1)")
+                    .arg(m_spellInfo->EffectMechanic[i])
+                    .arg(MechanicString[m_spellInfo->EffectMechanic[i]]));
 
             SpellInfoBrowser->append(QString());
         }
@@ -564,7 +621,7 @@ QString SpellWork::PowerString()
     if (!m_spellInfo)
         return QString();
 
-    switch (m_spellInfo->powerType)
+    switch (m_spellInfo->PowerType)
     {
         case POWER_MANA:
             return QString("POWER_MANA");
@@ -830,18 +887,18 @@ void SpellWork::AppendSkillLine()
     for (int i = 0; i < sSkillLineAbilityStore.GetNumRows(); i++)
     {
         SkillLineAbilityEntry const *skillInfo = sSkillLineAbilityStore.LookupEntry(i);
-        if (skillInfo && skillInfo->spellId == m_spellInfo->Id)
+        if (skillInfo && skillInfo->SpellId == m_spellInfo->Id)
         {
-            SkillLineEntry const *skill = sSkillLineStore.LookupEntry(skillInfo->skillId);
+            SkillLineEntry const *skill = sSkillLineStore.LookupEntry(skillInfo->SkillId);
             SpellInfoBrowser->append(QString("Skill (Id %0) \"%1\", ReqSkillValue = %2, Forward Spell = %3, MinMaxValue (%4, %5), CharacterPoints (%6, %7)")
-                .arg(skill->id)
-                .arg((char*)skill->name[0])
-                .arg(skillInfo->req_skill_value)
-                .arg(skillInfo->forward_spellid)
-                .arg(skillInfo->min_value)
-                .arg(skillInfo->max_value)
-                .arg(skillInfo->charPoints[0])
-                .arg(skillInfo->charPoints[1]));
+                .arg(skill->Id)
+                .arg((char*)skill->Name[0])
+                .arg(skillInfo->ReqSkillValue)
+                .arg(skillInfo->ForwardSpellId)
+                .arg(skillInfo->MinValue)
+                .arg(skillInfo->MaxValue)
+                .arg(skillInfo->CharPoints[0])
+                .arg(skillInfo->CharPoints[1]));
             break;
         }
     }
@@ -855,10 +912,10 @@ void SpellWork::AppendCastTimeLine()
     for (int i = 0; i < sSpellCastTimesStore.GetNumRows(); i++)
     {
         SpellCastTimesEntry const *castInfo = sSpellCastTimesStore.LookupEntry(i);
-        if (castInfo && m_spellInfo->CastingTimeIndex && m_spellInfo->CastingTimeIndex == castInfo->ID)
+        if (castInfo && m_spellInfo->CastingTimeIndex && m_spellInfo->CastingTimeIndex == castInfo->Id)
         {
             SpellInfoBrowser->append(QString("CastingTime (Id %0) = %1")
-                .arg(castInfo->ID)
+                .arg(castInfo->Id)
                 .arg(float(castInfo->CastTime) / 1000, 0, 'f', 2));
             break;
         }
@@ -873,10 +930,10 @@ void SpellWork::AppendDurationLine()
     for (int i = 0; i < sSpellDurationStore.GetNumRows(); i++)
     {
         SpellDurationEntry const *durationInfo = sSpellDurationStore.LookupEntry(i);
-        if (durationInfo && m_spellInfo->DurationIndex && m_spellInfo->DurationIndex == durationInfo->ID)
+        if (durationInfo && m_spellInfo->DurationIndex && m_spellInfo->DurationIndex == durationInfo->Id)
         {
             SpellInfoBrowser->append(QString("Duration: ID (%0)  %1, %2, %3")
-                .arg(durationInfo->ID)
+                .arg(durationInfo->Id)
                 .arg(durationInfo->Duration[0])
                 .arg(durationInfo->Duration[1])
                 .arg(durationInfo->Duration[2]));

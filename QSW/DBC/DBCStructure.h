@@ -16,32 +16,32 @@
 
 struct SkillLineEntry
 {
-    uint32    id;                                   // 0
-    int32     categoryId;                           // 1 (index from SkillLineCategory.dbc)
-    uint32    skillCostID;                          // 2 not used
-    char*     name[8];                              // 3-10
-    uint32    nameFlags;                            // 11 string flags, not used
-    char*     description[8];                       // 12-19, not used
-    uint32    descFlags;                            // 20 string flags, not used
-    uint32    spellIcon;                            // 21
+    uint32    Id;                                   // 0
+    int32     CategoryId;                           // 1 (index from SkillLineCategory.dbc)
+    uint32    SkillCostId;                          // 2 not used
+    char*     Name[8];                              // 3-10
+    uint32    NameFlags;                            // 11 string flags, not used
+    char*     Description[8];                       // 12-19, not used
+    uint32    DescFlags;                            // 20 string flags, not used
+    uint32    SpellIcon;                            // 21
 };
 
 struct SkillLineAbilityEntry
 {
-    uint32    id;                                           // 0 INDEX
-    uint32    skillId;                                      // 1
-    uint32    spellId;                                      // 2
-    uint32    racemask;                                     // 3
-    uint32    classmask;                                    // 4
+    uint32    Id;                                           // 0 INDEX
+    uint32    SkillId;                                      // 1
+    uint32    SpellId;                                      // 2
+    uint32    RaceMask;                                     // 3
+    uint32    ClassMask;                                    // 4
     uint32    Unk1;                                         // 5 unknown
     uint32    Unk2;                                         // 6 unknown
-    uint32    req_skill_value;                              // 7 for trade skill.not for training.
-    uint32    forward_spellid;                              // 8
-    uint32    learnOnGetSkill;                              // 9 can be 1 or 2 for spells learned on get skill
-    uint32    max_value;                                    // 10
-    uint32    min_value;                                    // 11
-    uint32    charPoints[2];                                // 12-13
-    uint32    reqtrainpoints;                               // 14
+    uint32    ReqSkillValue;                              // 7 for trade skill.not for training.
+    uint32    ForwardSpellId;                              // 8
+    uint32    LearnOnGetSkill;                              // 9 can be 1 or 2 for spells learned on get skill
+    uint32    MaxValue;                                    // 10
+    uint32    MinValue;                                    // 11
+    uint32    CharPoints[2];                                // 12-13
+    uint32    Reqtrainpoints;                               // 14
 };
 
 #define MAX_SPELL_REAGENTS 8
@@ -52,7 +52,7 @@ struct SpellEntry
     uint32    Id;                                           // 0 normally counted from 0 field (but some tools start counting from 1, check this before tool use for data view!)
     uint32    School;                                       // 1 not schoolMask from 2.x - just school type so everything linked with SpellEntry::SchoolMask must be rewrited
     uint32    Category;                                     // 2
-    uint32    castUI;                                       // 3 not used
+    uint32    CastUI;                                       // 3 not used
     uint32    Dispel;                                       // 4
     uint32    Mechanic;                                     // 5
     uint32    Attributes;                                   // 6
@@ -73,21 +73,21 @@ struct SpellEntry
     uint32    InterruptFlags;                               // 21
     uint32    AuraInterruptFlags;                           // 22
     uint32    ChannelInterruptFlags;                        // 23
-    uint32    procFlags;                                    // 24
-    uint32    procChance;                                   // 25
-    uint32    procCharges;                                  // 26
-    uint32    maxLevel;                                     // 27
-    uint32    baseLevel;                                    // 28
-    uint32    spellLevel;                                   // 29
+    uint32    ProcFlags;                                    // 24
+    uint32    ProcChance;                                   // 25
+    uint32    ProcCharges;                                  // 26
+    uint32    MaxLevel;                                     // 27
+    uint32    BaseLevel;                                    // 28
+    uint32    SpellLevel;                                   // 29
     uint32    DurationIndex;                                // 30
-    uint32    powerType;                                    // 31
-    uint32    manaCost;                                     // 32
-    uint32    manaCostPerlevel;                             // 33
-    uint32    manaPerSecond;                                // 34
-    uint32    manaPerSecondPerLevel;                        // 35
-    uint32    rangeIndex;                                   // 36
-    float     speed;                                        // 37
-    uint32    modalNextSpell;                               // 38 not used
+    uint32    PowerType;                                    // 31
+    uint32    ManaCost;                                     // 32
+    uint32    ManaCostPerlevel;                             // 33
+    uint32    ManaPerSecond;                                // 34
+    uint32    ManaPerSecondPerLevel;                        // 35
+    uint32    RangeIndex;                                   // 36
+    float     Speed;                                        // 37
+    uint32    ModalNextSpell;                               // 38 not used
     uint32    StackAmount;                                  // 39
     uint32    Totem[MAX_SPELL_TOTEMS];                      // 40-41
     int32     Reagent[MAX_SPELL_REAGENTS];                  // 42-49
@@ -116,8 +116,8 @@ struct SpellEntry
     uint32    SpellVisual;                                  // 115
     uint32    SpellVisual2;                                 // 116 not used
     uint32    SpellIconID;                                  // 117
-    uint32    activeIconID;                                 // 118
-    uint32    spellPriority;                                // 119
+    uint32    ActiveIconID;                                 // 118
+    uint32    SpellPriority;                                // 119
     char*     SpellName[8];                                 // 120-127
     uint32    SpellNameFlag;                                // 128
     char*     Rank[8];                                      // 129-136
@@ -141,27 +141,13 @@ struct SpellEntry
     uint32    MinReputation;                                // 171 not used, and 0 in 2.4.2
     uint32    RequiredAuraVision;                           // 172 not used
 
-    // helpers
-    int32 CalculateSimpleValue(SpellEffectIndex eff) const { return EffectBasePoints[eff] + int32(EffectBaseDice[eff]); }
-
-    bool IsFitToFamilyMask(uint64 familyFlags) const
-    {
-        return SpellFamilyFlags & familyFlags;
-    }
-
-    bool IsFitToFamily(SpellFamily family, uint64 familyFlags) const
-    {
-        return SpellFamily(SpellFamilyName) == family && IsFitToFamilyMask(familyFlags);
-    }
-
     private:
-        // prevent creating custom entries (copy data from original in fact)
-        SpellEntry(SpellEntry const&);                      // DON'T must have implementation
+        SpellEntry(SpellEntry const&);
 };
 
 struct SpellCastTimesEntry
 {
-    uint32    ID;                                           // 0
+    uint32    Id;                                           // 0
     int32     CastTime;                                     // 1
     float     CastTimePerLevel;                             // 2 unsure / per skill?
     int32     MinCastTime;                                  // 3 unsure
@@ -169,7 +155,7 @@ struct SpellCastTimesEntry
 
 struct SpellRadiusEntry
 {
-    uint32    ID;
+    uint32    Id;
     float     Radius;   //hostile
     int32     Zero;
     float     Radius2;  //friedly
@@ -177,9 +163,9 @@ struct SpellRadiusEntry
 
 struct SpellRangeEntry
 {
-    uint32    ID;                                           // 0
-    float     minRange;                                     // 1
-    float     maxRange;                                     // 2
+    uint32    Id;                                           // 0
+    float     MinRange;                                     // 1
+    float     MaxRange;                                     // 2
     uint32    Flags;                                        // 3
     char*     Name[8];                                      // 4-11 unused
     uint32    NameFlags;                                    // 12 unused
@@ -189,7 +175,7 @@ struct SpellRangeEntry
 
 struct SpellDurationEntry
 {
-    uint32    ID;
+    uint32    Id;
     int32     Duration[3];
 };
 
@@ -199,8 +185,5 @@ struct SpellDurationEntry
 #else
 #pragma pack(pop)
 #endif
-
-typedef std::set<uint32> SpellCategorySet;
-typedef std::map<uint32,SpellCategorySet > SpellCategoryStore;
 
 #endif

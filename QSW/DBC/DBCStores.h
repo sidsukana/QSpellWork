@@ -43,15 +43,10 @@ extern LocaleNameStr const fullLocaleNameList[];
 
 extern DBCStorage <SkillLineEntry>               sSkillLineStore;
 extern DBCStorage <SkillLineAbilityEntry>        sSkillLineAbilityStore;
-
 extern DBCStorage <SpellCastTimesEntry>          sSpellCastTimesStore;
 extern DBCStorage <SpellDurationEntry>           sSpellDurationStore;
-
-extern SpellCategoryStore                        sSpellCategoryStore;
-
 extern DBCStorage <SpellRadiusEntry>             sSpellRadiusStore;
 extern DBCStorage <SpellRangeEntry>              sSpellRangeStore;
-
 extern DBCStorage <SpellEntry>                   sSpellStore;
 
 

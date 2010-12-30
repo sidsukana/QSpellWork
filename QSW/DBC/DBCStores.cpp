@@ -3,15 +3,16 @@
 #include "Policies/SingletonImp.h"
 #include "Platform/Define.h"
 
-char const* localeNames[MAX_LOCALE] = {
-  "enUS",                                                   // also enGB
-  "koKR",
-  "frFR",
-  "deDE",
-  "zhCN",
-  "zhTW",
-  "esES",
-  "esMX",
+char const* localeNames[MAX_LOCALE] =
+{
+    "enUS",                                                   // also enGB
+    "koKR",
+    "frFR",
+    "deDE",
+    "zhCN",
+    "zhTW",
+    "esES",
+    "esMX",
 };
 
 // used for search by name or iterate all names
@@ -40,13 +41,9 @@ LocaleConstant GetLocaleByName(const std::string& name)
 
 DBCStorage <SkillLineEntry> sSkillLineStore(SkillLinefmt);
 DBCStorage <SkillLineAbilityEntry> sSkillLineAbilityStore(SkillLineAbilityfmt);
-
 DBCStorage <SpellEntry> sSpellStore(SpellEntryfmt);
-SpellCategoryStore sSpellCategoryStore;
-
 DBCStorage <SpellCastTimesEntry> sSpellCastTimesStore(SpellCastTimefmt);
 DBCStorage <SpellDurationEntry> sSpellDurationStore(SpellDurationfmt);
-
 DBCStorage <SpellRadiusEntry> sSpellRadiusStore(SpellRadiusfmt);
 DBCStorage <SpellRangeEntry> sSpellRangeStore(SpellRangefmt);
 
@@ -100,7 +97,6 @@ bool LoadDBCStores()
 {
     std::string dbcPath = "DBC/";
 
-
     StoreProblemList bad_dbc_files;
 
     // bitmask for index of fullLocaleNameList
@@ -109,23 +105,6 @@ bool LoadDBCStores()
     LoadDBC(availableDbcLocales,bad_dbc_files,sSkillLineStore,           dbcPath,"SkillLine.dbc");
     LoadDBC(availableDbcLocales,bad_dbc_files,sSkillLineAbilityStore,    dbcPath,"SkillLineAbility.dbc");
     LoadDBC(availableDbcLocales,bad_dbc_files,sSpellStore,               dbcPath,"Spell.dbc");
-    for(uint32 i = 1; i < sSpellStore.GetNumRows(); ++i)
-    {
-        SpellEntry const * spell = sSpellStore.LookupEntry(i);
-        if(spell && spell->Category)
-            sSpellCategoryStore[spell->Category].insert(i);
-    }
-
-    for (uint32 j = 0; j < sSkillLineAbilityStore.GetNumRows(); ++j)
-    {
-        SkillLineAbilityEntry const *skillLine = sSkillLineAbilityStore.LookupEntry(j);
-
-        if(!skillLine)
-            continue;
-
-        SpellEntry const* spellInfo = sSpellStore.LookupEntry(skillLine->spellId);
-    }
-
     LoadDBC(availableDbcLocales,bad_dbc_files,sSpellCastTimesStore,      dbcPath,"SpellCastTimes.dbc");
     LoadDBC(availableDbcLocales,bad_dbc_files,sSpellDurationStore,       dbcPath,"SpellDuration.dbc");
     LoadDBC(availableDbcLocales,bad_dbc_files,sSpellRadiusStore,         dbcPath,"SpellRadius.dbc");

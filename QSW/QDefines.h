@@ -1228,7 +1228,7 @@ QString SpellFamilyString[] =
     QString("SPELLFAMILY_UNK2"),
     QString("SPELLFAMILY_POTION"),
     QString("SPELLFAMILY_UNUSED2"),
-    QString("SPELLFAMILY_UNUSED3"),
+    QString("SPELLFAMILY_DEATHKNIGHT"),
     QString("SPELLFAMILY_UNUSED4"),
     QString("SPELLFAMILY_PET")
 };
