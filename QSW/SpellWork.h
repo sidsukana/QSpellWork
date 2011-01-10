@@ -25,9 +25,15 @@ class SpellWork : public QMainWindow, public Ui::SpellWorkUI
         void AppendRangeInfo();
         void AppendSpellEffectInfo();
         void AppendAuraInfo(int index);
+        void AppendRadiusInfo(int index);
+        void AppendTriggerInfo(int index);
         void AppendProcInfo(SpellEntry const *spellInfo);
         QString PowerString();
         QString CompareAttributes(AttrType attr, int index = 0);
+        QString GetDescription(QString str);
+        int GetDuration(SpellEntry const *spellInfo);
+        int GetRealDuration(SpellEntry const *spellInfo, uint8 effIndex);
+        float GetRadius(SpellEntry const *spellInfo, uint8 effIndex);
 
     private slots:
         void SlotAbout();

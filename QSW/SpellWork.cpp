@@ -167,6 +167,130 @@ void SpellWork::SlotSearchFromList(const QModelIndex &index)
         ShowInfo();
 }
 
+float SpellWork::GetRadius(SpellEntry const *spellInfo, uint8 effIndex)
+{
+    if (!effIndex)
+        return 0.0f;
+
+    SpellRadiusEntry const *spellRadius = sSpellRadiusStore.LookupEntry(spellInfo->EffectRadiusIndex[effIndex]);
+    if (spellRadius)
+        return spellRadius->Radius;
+
+    return 0.0f;
+}
+
+int SpellWork::GetRealDuration(SpellEntry const *spellInfo, uint8 effIndex)
+{
+    if (!spellInfo)
+        return 1;
+
+    return int(GetDuration(spellInfo) / int(spellInfo->EffectAmplitude[effIndex] / 1000));
+}
+
+QString SpellWork::GetDescription(QString str)
+{
+    QRegExp rx("\\$+(/([1-9]?[0-9]);)?([d+\\;)(\\d*)?([1-9]*)([a-zA-Z])([1-3]*)([a-zA-z ]*\\:([a-zA-z ]*)\\;)?");
+    while (str.contains(rx))
+    {
+        if (rx.indexIn(str) != -1)
+        {
+            switch (rx.cap(4)[0].toAscii())
+            {
+                case 'a':
+                {
+                    if (!rx.cap(3).isEmpty())
+                    {
+                        SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(3).toInt());
+                        if (tSpell)
+                        {
+                            str.replace(rx.cap(0), QString("%0")
+                                .arg(GetRadius(tSpell, rx.cap(5).toInt()-1)));
+                        }
+                    }
+                    else
+                    {
+                        str.replace(rx.cap(0), QString("%0")
+                            .arg(GetRadius(m_spellInfo, rx.cap(5).toInt()-1)));
+                    }
+                }
+                case 'd':
+                {
+                    if (!rx.cap(3).isEmpty())
+                    {
+                        SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(3).toInt());
+                        if (tSpell)
+                        {
+                            str.replace(rx.cap(0), QString("%0 seconds")
+                                .arg(GetDuration(tSpell)));
+                        }
+                    }
+                    else
+                    {
+                        str.replace(rx.cap(0), QString("%0 seconds")
+                            .arg(GetDuration(m_spellInfo)));
+                    }
+                }
+                break;
+                case 'o':
+                {
+                    str.replace(rx.cap(0), QString("%0")
+                        .arg(GetRealDuration(m_spellInfo, rx.cap(5).toInt()-1) * (m_spellInfo->EffectBasePoints[rx.cap(5).toInt()-1] + 1)));
+                }
+                break;
+                case 's':
+                {
+                    if (!rx.cap(2).isEmpty())
+                    {
+                        if (!rx.cap(3).isEmpty())
+                        {
+                            SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(3).toInt());
+                            if (tSpell)
+                            {
+                                str.replace(rx.cap(0), QString("%0")
+                                    .arg(abs(int((tSpell->EffectBasePoints[rx.cap(5).toInt()-1] + 1)/rx.cap(2).toInt()))));
+                            }
+                        }
+                        else
+                        {
+                            str.replace(rx.cap(0), QString("%0")
+                                .arg(abs(int((m_spellInfo->EffectBasePoints[rx.cap(5).toInt()-1] + 1)/rx.cap(2).toInt()))));
+                        }
+                    }
+                    else if (!rx.cap(3).isEmpty())
+                    {
+                        SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(3).toInt());
+                        if (tSpell)
+                        {
+                            str.replace(rx.cap(0), QString("%0")
+                                .arg(abs(tSpell->EffectBasePoints[rx.cap(5).toInt()-1] + 1)));
+                        }
+                    }
+                    else
+                    {
+                        str.replace(rx.cap(0), QString("%0")
+                            .arg(abs(m_spellInfo->EffectBasePoints[rx.cap(5).toInt()-1] + 1)));
+                    }
+                }
+                break;
+                case 't':
+                {
+                    str.replace(rx.cap(0), QString("%0")
+                        .arg(int(m_spellInfo->EffectAmplitude[rx.cap(5).toInt()-1] / 1000)));
+                }
+                break;
+                case 'l':
+                {
+                    str.replace(rx.cap(0), rx.cap(7));
+                }
+                break;
+                default:
+                break;
+            }
+        }
+    }
+    return str;
+}
+
 void SpellWork::ShowInfo()
 {
     if (!m_spellInfo)
@@ -201,10 +325,10 @@ void SpellWork::ShowInfo()
             .arg(sRank));
 
     if (!sDescription.isEmpty())
-        SpellInfoBrowser->append(QString("<b>Description:</b> %0").arg(sDescription));
+        SpellInfoBrowser->append(QString("<b>Description:</b> %0").arg(GetDescription(sDescription)));
 
     if (!sToolTip.isEmpty())
-        SpellInfoBrowser->append(QString("<b>ToolTip:</b> %0").arg(sToolTip));
+        SpellInfoBrowser->append(QString("<b>ToolTip:</b> %0").arg(GetDescription(sToolTip)));
 
     SpellInfoBrowser->append(line);
 
@@ -429,18 +553,14 @@ void SpellWork::AppendRangeInfo()
     if (!m_spellInfo)
         return;
 
-    for (int i = 0; i < sSpellRangeStore.GetNumRows(); i++)
+    SpellRangeEntry const *range = sSpellRangeStore.LookupEntry(m_spellInfo->RangeIndex);
+    if (range)
     {
-        SpellRangeEntry const *range = sSpellRangeStore.LookupEntry(i);
-        if (range && range->Id == m_spellInfo->RangeIndex)
-        {
-            SpellInfoBrowser->append(QString("SpellRange: (Id %0) \"%1\": MinRange = %2, MaxRange = %3")
-                .arg(range->Id)
-                .arg((char*)range->Name[0])
-                .arg(range->MinRange)
-                .arg(range->MaxRange));
-            break;
-        }
+        SpellInfoBrowser->append(QString("SpellRange: (Id %0) \"%1\": MinRange = %2, MaxRange = %3")
+            .arg(range->Id)
+            .arg((char*)range->Name[0])
+            .arg(range->MinRange)
+            .arg(range->MaxRange));
     }
 }
 
@@ -519,53 +639,9 @@ void SpellWork::AppendSpellEffectInfo()
             
             AppendAuraInfo(i);
 
-            uint32 rIndex = m_spellInfo->EffectRadiusIndex[i];
-            if (rIndex != 0)
-            {
-                SpellRadiusEntry const *spellRadius = sSpellRadiusStore.LookupEntry(rIndex);
-                if (spellRadius)
-                    SpellInfoBrowser->append(QString("Radius (Id %0) %1")
-                        .arg(rIndex)
-                        .arg(spellRadius->Radius, 0, 'f', 2));
-                else
-                    SpellInfoBrowser->append(QString("Radius (Id %0) Not found").arg(rIndex));
-            }
+            AppendRadiusInfo(i);
 
-            uint32 trigger = m_spellInfo->EffectTriggerSpell[i];
-            if (trigger != 0)
-            {
-                SpellEntry const *triggerSpell = sSpellStore.LookupEntry(trigger);
-                if (triggerSpell)
-                {
-                    SpellInfoBrowser->append(QString("<b><font color='blue'>   Trigger spell (%0) %1. Chance = %2</font></b>")
-                        .arg(trigger)
-                        .arg(QString("%0 (%1)").arg((char*)triggerSpell->SpellName[0]).arg((char*)triggerSpell->Rank[0]))
-                        .arg(triggerSpell->ProcChance));
-
-                    QString sDescription((char*)triggerSpell->Description[0]);
-                    QString sTooltip((char*)triggerSpell->ToolTip[0]);
-
-                    if (!sDescription.isEmpty())
-                        SpellInfoBrowser->append(QString("   Description: %0").arg(sDescription));
-
-                    if (!sTooltip.isEmpty())
-                        SpellInfoBrowser->append(QString("   ToolTip: %0").arg(sTooltip));
-
-                    if (triggerSpell->ProcFlags != 0)
-                    {
-                        SpellInfoBrowser->append(QString("Charges - %0").arg(triggerSpell->ProcCharges));
-                        SpellInfoBrowser->append(QString());
-                        
-                        AppendProcInfo(triggerSpell);
-
-                        SpellInfoBrowser->append(QString());
-                    }
-                }
-                else
-                {
-                    SpellInfoBrowser->append(QString("Trigger spell (%0) Not found").arg(trigger));
-                }
-            }
+            AppendTriggerInfo(i);
 
             if (m_spellInfo->EffectChainTarget[i] != 0)
                 SpellInfoBrowser->append(QString("EffectChainTarget = %0").arg(m_spellInfo->EffectChainTarget[i]));
@@ -580,6 +656,66 @@ void SpellWork::AppendSpellEffectInfo()
 
             SpellInfoBrowser->append(QString());
         }
+    }
+}
+
+void SpellWork::AppendTriggerInfo(int index)
+{
+    if (!m_spellInfo)
+        return;
+
+    uint32 trigger = m_spellInfo->EffectTriggerSpell[index];
+    if (trigger != 0)
+    {
+        SpellEntry const *triggerSpell = sSpellStore.LookupEntry(trigger);
+        if (triggerSpell)
+        {
+            SpellInfoBrowser->append(QString("<b><font color='blue'>   Trigger spell (%0) %1. Chance = %2</font></b>")
+                .arg(trigger)
+                .arg(QString("%0 (%1)").arg((char*)triggerSpell->SpellName[0]).arg((char*)triggerSpell->Rank[0]))
+                .arg(triggerSpell->ProcChance));
+
+                QString sDescription((char*)triggerSpell->Description[0]);
+                QString sTooltip((char*)triggerSpell->ToolTip[0]);
+
+                if (!sDescription.isEmpty())
+                    SpellInfoBrowser->append(QString("   Description: %0").arg(sDescription));
+
+                if (!sTooltip.isEmpty())
+                    SpellInfoBrowser->append(QString("   ToolTip: %0").arg(sTooltip));
+
+                if (triggerSpell->ProcFlags != 0)
+                {
+                    SpellInfoBrowser->append(QString("Charges - %0").arg(triggerSpell->ProcCharges));
+                    SpellInfoBrowser->append(QString());
+                        
+                    AppendProcInfo(triggerSpell);
+
+                    SpellInfoBrowser->append(QString());
+                }
+        }
+        else
+        {
+            SpellInfoBrowser->append(QString("Trigger spell (%0) Not found").arg(trigger));
+        }
+    }
+}
+
+void SpellWork::AppendRadiusInfo(int index)
+{
+    if (!m_spellInfo)
+        return;
+
+    uint32 rIndex = m_spellInfo->EffectRadiusIndex[index];
+    if (rIndex != 0)
+    {
+        SpellRadiusEntry const *spellRadius = sSpellRadiusStore.LookupEntry(rIndex);
+        if (spellRadius)
+            SpellInfoBrowser->append(QString("Radius (Id %0) %1")
+                .arg(rIndex)
+                .arg(spellRadius->Radius, 0, 'f', 2));
+        else
+            SpellInfoBrowser->append(QString("Radius (Id %0) Not found").arg(rIndex));
     }
 }
 
@@ -926,35 +1062,38 @@ void SpellWork::AppendCastTimeLine()
     if (!m_spellInfo)
         return;
 
-    for (int i = 0; i < sSpellCastTimesStore.GetNumRows(); i++)
+    SpellCastTimesEntry const *castInfo = sSpellCastTimesStore.LookupEntry(m_spellInfo->CastingTimeIndex);
+    if (castInfo)
     {
-        SpellCastTimesEntry const *castInfo = sSpellCastTimesStore.LookupEntry(i);
-        if (castInfo && m_spellInfo->CastingTimeIndex && m_spellInfo->CastingTimeIndex == castInfo->Id)
-        {
-            SpellInfoBrowser->append(QString("CastingTime (Id %0) = %1")
-                .arg(castInfo->Id)
-                .arg(float(castInfo->CastTime) / 1000, 0, 'f', 2));
-            break;
-        }
+        SpellInfoBrowser->append(QString("CastingTime (Id %0) = %1")
+            .arg(castInfo->Id)
+            .arg(float(castInfo->CastTime) / 1000, 0, 'f', 2));
     }
 }
 
+int SpellWork::GetDuration(SpellEntry const *spellInfo)
+{
+    if (!spellInfo)
+        return 1;
+
+    SpellDurationEntry const *durationInfo = sSpellDurationStore.LookupEntry(spellInfo->DurationIndex);
+    if (durationInfo)
+        return int(durationInfo->Duration[0] / 1000);
+
+    return 1;
+}
 void SpellWork::AppendDurationLine()
 {
     if (!m_spellInfo)
         return;
 
-    for (int i = 0; i < sSpellDurationStore.GetNumRows(); i++)
+    SpellDurationEntry const *durationInfo = sSpellDurationStore.LookupEntry(m_spellInfo->DurationIndex);
+    if (durationInfo)
     {
-        SpellDurationEntry const *durationInfo = sSpellDurationStore.LookupEntry(i);
-        if (durationInfo && m_spellInfo->DurationIndex && m_spellInfo->DurationIndex == durationInfo->Id)
-        {
-            SpellInfoBrowser->append(QString("Duration: ID (%0)  %1, %2, %3")
-                .arg(durationInfo->Id)
-                .arg(durationInfo->Duration[0])
-                .arg(durationInfo->Duration[1])
-                .arg(durationInfo->Duration[2]));
-            break;
-        }
+        SpellInfoBrowser->append(QString("Duration: ID (%0)  %1, %2, %3")
+            .arg(durationInfo->Id)
+            .arg(durationInfo->Duration[0])
+            .arg(durationInfo->Duration[1])
+            .arg(durationInfo->Duration[2]));
     }
 }
