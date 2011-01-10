@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="SpellWork.qrc">
-    <normaloff>:/SpellWork/mangos1.svg</normaloff>:/SpellWork/mangos1.svg</iconset>
+    <normaloff>:/SpellWork/mangos.ico</normaloff>:/SpellWork/mangos.ico</iconset>
   </property>
   <property name="documentMode">
    <bool>false</bool>
