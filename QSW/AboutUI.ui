@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>About</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="SpellWork.qrc">
+    <normaloff>:/SpellWork/mangos1.svg</normaloff>:/SpellWork/mangos1.svg</iconset>
+  </property>
   <property name="modal">
    <bool>true</bool>
   </property>

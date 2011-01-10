@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="SpellWork">
+    <file>mangos1.svg</file>
     <file>AboutImg.png</file>
   </qresource>
 </RCC>

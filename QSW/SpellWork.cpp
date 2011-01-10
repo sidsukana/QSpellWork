@@ -169,7 +169,7 @@ void SpellWork::SlotSearchFromList(const QModelIndex &index)
 
 float SpellWork::GetRadius(SpellEntry const *spellInfo, uint8 effIndex)
 {
-    if (!effIndex)
+    if (!spellInfo)
         return 0.0f;
 
     SpellRadiusEntry const *spellRadius = sSpellRadiusStore.LookupEntry(spellInfo->EffectRadiusIndex[effIndex]);
@@ -198,7 +198,24 @@ QString SpellWork::GetDescription(QString str)
             {
                 case 'a':
                 {
-                    if (!rx.cap(3).isEmpty())
+                    if (!rx.cap(2).isEmpty())
+                    {
+                        if (!rx.cap(3).isEmpty())
+                        {
+                            SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(3).toInt());
+                            if (tSpell)
+                            {
+                                str.replace(rx.cap(0), QString("%0")
+                                    .arg(int(GetRadius(tSpell, rx.cap(5).toInt()-1)/rx.cap(2).toInt())));
+                            }
+                        }
+                        else
+                        {
+                            str.replace(rx.cap(0), QString("%0")
+                                .arg(int(GetRadius(m_spellInfo, rx.cap(5).toInt()-1)/rx.cap(2).toInt())));
+                        }
+                    }
+                    else if (!rx.cap(3).isEmpty())
                     {
                         SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(3).toInt());
                         if (tSpell)
@@ -215,7 +232,24 @@ QString SpellWork::GetDescription(QString str)
                 }
                 case 'd':
                 {
-                    if (!rx.cap(3).isEmpty())
+                    if (!rx.cap(2).isEmpty())
+                    {
+                        if (!rx.cap(3).isEmpty())
+                        {
+                            SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(3).toInt());
+                            if (tSpell)
+                            {
+                                str.replace(rx.cap(0), QString("%0")
+                                    .arg(int(GetDuration(tSpell)/rx.cap(2).toInt())));
+                            }
+                        }
+                        else
+                        {
+                            str.replace(rx.cap(0), QString("%0")
+                                .arg(int(GetDuration(m_spellInfo)/rx.cap(2).toInt())));
+                        }
+                    }
+                    else if (!rx.cap(3).isEmpty())
                     {
                         SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(3).toInt());
                         if (tSpell)
@@ -274,8 +308,37 @@ QString SpellWork::GetDescription(QString str)
                 break;
                 case 't':
                 {
-                    str.replace(rx.cap(0), QString("%0")
-                        .arg(int(m_spellInfo->EffectAmplitude[rx.cap(5).toInt()-1] / 1000)));
+                    if (!rx.cap(2).isEmpty())
+                    {
+                        if (!rx.cap(3).isEmpty())
+                        {
+                            SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(3).toInt());
+                            if (tSpell)
+                            {
+                                str.replace(rx.cap(0), QString("%0")
+                                    .arg(int(int(tSpell->EffectAmplitude[rx.cap(5).toInt()-1] / 1000)/rx.cap(2).toInt())));
+                            }
+                        }
+                        else
+                        {
+                            str.replace(rx.cap(0), QString("%0")
+                                .arg(int(int(m_spellInfo->EffectAmplitude[rx.cap(5).toInt()-1] / 1000)/rx.cap(2).toInt())));
+                        }
+                    }
+                    else if (!rx.cap(3).isEmpty())
+                    {
+                        SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(3).toInt());
+                        if (tSpell)
+                        {
+                            str.replace(rx.cap(0), QString("%0")
+                                .arg(int(tSpell->EffectAmplitude[rx.cap(5).toInt()-1] / 1000)));
+                        }
+                    }
+                    else
+                    {
+                        str.replace(rx.cap(0), QString("%0")
+                            .arg(int(m_spellInfo->EffectAmplitude[rx.cap(5).toInt()-1] / 1000)));
+                    }
                 }
                 break;
                 case 'l':
@@ -284,7 +347,7 @@ QString SpellWork::GetDescription(QString str)
                 }
                 break;
                 default:
-                break;
+                    return str;
             }
         }
     }
