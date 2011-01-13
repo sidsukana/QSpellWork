@@ -41,5 +41,17 @@ enum SpellEffectIndex
 
 #define MAX_EFFECT_INDEX 3
 
+enum Threads
+{
+    THREAD_NONE,
+    THREAD_SEARCH
+};
+
+enum Events
+{
+    EVENT_NONE,
+    EVENT_SETMODEL
+};
+
 
 #endif

@@ -33,23 +33,70 @@ About::~About()
 {
 }
 
+ObjectSearch::ObjectSearch(SpellWork *obj)
+    : iFace(obj)
+{
+    Search();
+}
+
+ObjectSearch::~ObjectSearch()
+{
+}
+
 void SpellWork::SlotAbout()
 {
     About *about = new About;
     about->show();
 }
 
-void SpellWork::SlotSearch()
+bool SpellWork::event(QEvent* t_event)
+{
+    switch (t_event->type())
+    {
+        case _Event::TypeId:
+        {
+            _Event* ev = (_Event*)t_event;
+            
+            switch (ev->GetId())
+            {
+                case EVENT_SETMODEL:
+                {
+                    SpellList->setModel(ev->GetmObj());
+                    return true;
+                }
+                break;
+            }
+            break;
+        }
+    }
+
+    return QWidget::event(t_event);
+}
+
+_Event::_Event(int id, QStandardItemModel* m, SpellEntry const* s)
+        : QEvent(QEvent::Type(_Event::TypeId)), op_id(id), mObj(m), sObj(s)
+{
+}
+
+_Event::~_Event()
+{
+}
+void ObjectSearch::Search()
 {
     bool isString = false;
 
-    SpellInfoBrowser->clear();
+    QStandardItemModel *model;
+    SpellEntry const *spellInfo;
+    
+    model = new QStandardItemModel(1, 2);
+    model->setHorizontalHeaderItem(0, new QStandardItem("ID"));
+    model->setHorizontalHeaderItem(1, new QStandardItem("Name"));
 
-    if (!findLine_e1->text().isEmpty())
+    if (!iFace->findLine_e1->text().isEmpty())
     {
-        for (int i = 0; i < findLine_e1->text().size(); ++i)
+        for (int i = 0; i < iFace->findLine_e1->text().size(); ++i)
         {
-            if (findLine_e1->text().at(i) > QChar('9'))
+            if (iFace->findLine_e1->text().at(i) > QChar('9'))
             {
                 isString = true;
                 break;
@@ -58,111 +105,113 @@ void SpellWork::SlotSearch()
 
         if (isString)
         {
-            m_model = new QStandardItemModel;
-            m_model->setHorizontalHeaderItem(0, new QStandardItem("ID"));
-            m_model->setHorizontalHeaderItem(1, new QStandardItem("Name"));
             int count = -1;
             for (int i = 0; i < sSpellStore.GetNumRows(); i++)
             {
-                m_spellInfo = sSpellStore.LookupEntry(i);
-				if (m_spellInfo && QString(m_spellInfo->SpellName[0]).contains(findLine_e1->text(), Qt::CaseInsensitive))
+                spellInfo = sSpellStore.LookupEntry(i);
+				if (spellInfo && QString(spellInfo->SpellName[0]).contains(iFace->findLine_e1->text(), Qt::CaseInsensitive))
                 {
                     count++;
-                    QString sRank((char*)m_spellInfo->Rank[0]);
+                    QString sRank((char*)spellInfo->Rank[0]);
 
-                    QStandardItem *item_id = new QStandardItem(QString("%0").arg(m_spellInfo->Id));
+                    QStandardItem *item_id = new QStandardItem(QString("%0").arg(spellInfo->Id));
                     QStandardItem *item_name;
 
                     if (sRank.isEmpty())
-                        item_name = new QStandardItem(QString("%0").arg((char*)m_spellInfo->SpellName[0]));
+                        item_name = new QStandardItem(QString("%0").arg((char*)spellInfo->SpellName[0]));
                     else
-                        item_name = new QStandardItem(QString("%0 (%1)").arg((char*)m_spellInfo->SpellName[0]).arg((char*)m_spellInfo->Rank[0]));
+                        item_name = new QStandardItem(QString("%0 (%1)").arg((char*)spellInfo->SpellName[0]).arg((char*)spellInfo->Rank[0]));
 
-                    m_model->setItem(count, 0, item_id);
-                    m_model->setItem(count, 1, item_name);
+                    model->setItem(count, 0, item_id);
+                    model->setItem(count, 1, item_name);
                 }
             }
-            SpellList->setModel(m_model);
-            SpellList->horizontalHeader()->setStretchLastSection(true);
-            SpellList->horizontalHeader()->setHighlightSections(false);
-            SpellList->setColumnWidth(0, 40);
-            SpellList->resizeRowsToContents(); 
+            QApplication::postEvent(iFace, new _Event(EVENT_SETMODEL, model));
         }
         else
         {
-            m_model = new QStandardItemModel;
-            m_model->setHorizontalHeaderItem(0, new QStandardItem("ID"));
-            m_model->setHorizontalHeaderItem(1, new QStandardItem("Name"));
-            m_spellInfo = sSpellStore.LookupEntry(findLine_e1->text().toInt());
+            spellInfo = sSpellStore.LookupEntry(iFace->findLine_e1->text().toInt());
 
-            if (m_spellInfo)
+            if (spellInfo)
             {
-                QString sRank((char*)m_spellInfo->Rank[0]);
+                QString sRank((char*)spellInfo->Rank[0]);
 
-                QStandardItem  *item_id = new QStandardItem (QString("%0").arg(m_spellInfo->Id));
+                QStandardItem  *item_id = new QStandardItem (QString("%0").arg(spellInfo->Id));
                 QStandardItem  *item_name;
 
                 if (sRank.isEmpty())
-                    item_name = new QStandardItem (QString("%0").arg((char*)m_spellInfo->SpellName[0]));
+                    item_name = new QStandardItem (QString("%0").arg((char*)spellInfo->SpellName[0]));
                 else
-                    item_name = new QStandardItem (QString("%0 (%1)").arg((char*)m_spellInfo->SpellName[0]).arg((char*)m_spellInfo->Rank[0]));
+                    item_name = new QStandardItem (QString("%0 (%1)").arg((char*)spellInfo->SpellName[0]).arg((char*)spellInfo->Rank[0]));
 
-                m_model->setItem(0, 0, item_id);
-                m_model->setItem(0, 1, item_name);
-                SpellList->setModel(m_model);
-                SpellList->horizontalHeader()->setStretchLastSection(true);
-                SpellList->horizontalHeader()->setHighlightSections(false);
-                SpellList->setColumnWidth(0, 40);
-                SpellList->resizeRowsToContents(); 
-                ShowInfo();
+                model->setItem(0, 0, item_id);
+                model->setItem(0, 1, item_name);
+                QApplication::postEvent(iFace, new _Event(EVENT_SETMODEL, model));
+                //ShowInfo();
             }
         }
     }
-    else if (!findLine_e2->text().isEmpty())
+    else if (!iFace->findLine_e2->text().isEmpty())
     {
-        m_model = new QStandardItemModel(1, 2);
-        m_model->setHorizontalHeaderItem(0, new QStandardItem("ID"));
-        m_model->setHorizontalHeaderItem(1, new QStandardItem("Name"));
         int count = -1;
         for (int i = 0; i < sSpellStore.GetNumRows(); i++)
         {
-            m_spellInfo = sSpellStore.LookupEntry(i);
-            if (m_spellInfo && m_spellInfo->SpellIconID == findLine_e2->text().toInt())
+            spellInfo = sSpellStore.LookupEntry(i);
+            if (spellInfo && spellInfo->SpellIconID == iFace->findLine_e2->text().toInt())
             {
                 count++;
-                QString sRank((char*)m_spellInfo->Rank[0]);
+                QString sRank((char*)spellInfo->Rank[0]);
 
-                QStandardItem *item_id = new QStandardItem(QString("%0").arg(m_spellInfo->Id));
+                QStandardItem *item_id = new QStandardItem(QString("%0").arg(spellInfo->Id));
                 QStandardItem *item_name;
 
                 if (sRank.isEmpty())
-                    item_name = new QStandardItem(QString("%0").arg((char*)m_spellInfo->SpellName[0]));
+                    item_name = new QStandardItem(QString("%0").arg((char*)spellInfo->SpellName[0]));
                 else
-                    item_name = new QStandardItem(QString("%0 (%1)").arg((char*)m_spellInfo->SpellName[0]).arg((char*)m_spellInfo->Rank[0]));
+                    item_name = new QStandardItem(QString("%0 (%1)").arg((char*)spellInfo->SpellName[0]).arg((char*)spellInfo->Rank[0]));
 
-                m_model->setItem(count, 0, item_id);
-                m_model->setItem(count, 1, item_name);
-                SpellList->setModel(m_model);
-                SpellList->horizontalHeader()->setStretchLastSection(true);
-                SpellList->horizontalHeader()->setHighlightSections(false);
-                SpellList->setColumnWidth(0, 40);
-                SpellList->resizeRowsToContents(); 
+                model->setItem(count, 0, item_id);
+                model->setItem(count, 1, item_name);
+                QApplication::postEvent(iFace, new _Event(EVENT_SETMODEL, model));
             }
         }
     }
 }
 
+void SpellWork::BeginThread(int id)
+{
+    for (ThreadList::iterator itr = threads.begin(); itr != threads.end(); ++itr)
+    {
+        if ((*itr) && (*itr)->isFinished())
+            delete (*itr);
+        else return;
+    }
+
+    threads.clear();
+
+    threads.push_back(new ObjThread(id, this));
+    
+    for (ThreadList::iterator itr = threads.begin(); itr != threads.end(); ++itr)
+    {
+        if ((*itr) && !(*itr)->isFinished())
+            (*itr)->start();
+    }
+}
+
+void SpellWork::SlotSearch()
+{
+    SpellInfoBrowser->clear();
+    SpellList->reset();
+    BeginThread(THREAD_SEARCH);
+}
+
 void SpellWork::SlotSearchFromList(const QModelIndex &index)
 {
-    QStandardItem *spellItem = m_model->item(index.row());
-
-    QString value(spellItem->text());
-
-    uint32 id = value.toInt();
+    QVariant var = SpellList->model()->data(SpellList->model()->index(index.row(), 0));
 
     SpellInfoBrowser->clear();
 
-    m_spellInfo = sSpellStore.LookupEntry(id);
+    m_spellInfo = sSpellStore.LookupEntry(var.toInt());
     if (m_spellInfo)
         ShowInfo();
 }

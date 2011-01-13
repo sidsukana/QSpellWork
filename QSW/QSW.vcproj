@@ -169,6 +169,10 @@
 				RelativePath=".\SpellWork.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\ThreadObject.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -208,6 +212,10 @@
 						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\ThreadObject.h"
+				>
 			</File>
 			<Filter
 				Name="DBC"
