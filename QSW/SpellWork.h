@@ -47,6 +47,8 @@ class SpellWork : public QMainWindow, public Ui::SpellWorkUI
         void SlotSearch();
         void SlotSearchFromList(const QModelIndex &index);
 
+        void SlotRegExp();
+
     private:
         void LoadComboBoxes();
 
@@ -55,6 +57,8 @@ class SpellWork : public QMainWindow, public Ui::SpellWorkUI
 
         typedef QList<ObjThread*> ThreadList;
         ThreadList threads;
+
+        bool useRegExp;
 };
 
 class ObjectSearch

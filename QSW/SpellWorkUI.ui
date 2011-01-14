@@ -207,7 +207,7 @@
        <x>190</x>
        <y>20</y>
        <width>75</width>
-       <height>81</height>
+       <height>51</height>
       </rect>
      </property>
      <property name="font">
@@ -245,6 +245,31 @@
        <width>111</width>
        <height>21</height>
       </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="regexpButton">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>72</y>
+       <width>75</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::StrongFocus</enum>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));</string>
+     </property>
+     <property name="text">
+      <string>RegExp</string>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
      </property>
     </widget>
    </widget>

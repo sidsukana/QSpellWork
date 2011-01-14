@@ -7,6 +7,7 @@ SpellWork::SpellWork(QWidget *parent)
     setupUi(this);
 
     m_spellInfo = NULL;
+    useRegExp = false;
 
     LoadDBCStores();
     LoadComboBoxes();
@@ -16,6 +17,25 @@ SpellWork::SpellWork(QWidget *parent)
     connect(findButton, SIGNAL(clicked()), this, SLOT(SlotSearch()));
     connect(actionAbout, SIGNAL(triggered()), this, SLOT(SlotAbout()));
     connect(actionExit, SIGNAL(triggered()), this, SLOT(close()));
+
+    connect(regexpButton, SIGNAL(clicked()), this, SLOT(SlotRegExp()));
+}
+
+void SpellWork::SlotRegExp()
+{
+    if (!useRegExp)
+    {
+        useRegExp = true;
+        regexpButton->setStyleSheet("background-color: qlineargradient(spread:pad, x1:1, y1:0.00568182, x2:0, y2:0, stop:0 rgba(0, 255, 28, 255), stop:1 rgba(255, 255, 255, 255));");
+        ShowInfo();
+    }
+    else
+    {
+        useRegExp = false;
+        regexpButton->setStyleSheet("background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));");
+        ShowInfo();
+    }
+
 }
 
 SpellWork::~SpellWork()
@@ -47,17 +67,17 @@ void SpellWork::LoadComboBoxes()
     comboBox->clear();
     comboBox->insertItem(-1, "SpellFamilyName");
     for (uint16 i = 0; i < MAX_SPELLFAMILY; i++)
-        comboBox->insertItem(i, SpellFamilyString[i]);
+        comboBox->insertItem(i, QString("(%0) %1").arg(i, 3, 10, QChar('0')).arg(SpellFamilyString[i]));
 
     comboBox_2->clear();
     comboBox_2->insertItem(-1, "Aura");
     for (uint16 i = 0; i < MAX_AURA; i++)
-        comboBox_2->insertItem(i, AuraString[i]);
+        comboBox_2->insertItem(i, QString("(%0) %1").arg(i, 3, 10, QChar('0')).arg(AuraString[i]));
 
     comboBox_3->clear();
     comboBox_3->insertItem(-1, "Effect");
     for (uint16 i = 0; i < MAX_EFFECT; i++)
-        comboBox_3->insertItem(i, EffectString[i]);
+        comboBox_3->insertItem(i, QString("(%0) %1").arg(i, 3, 10, QChar('0')).arg(EffectString[i]));
 }
 
 void SpellWork::SlotAbout()
@@ -280,6 +300,9 @@ int SpellWork::GetRealDuration(SpellEntry const *spellInfo, uint8 effIndex)
 
 QString SpellWork::GetDescription(QString str, SpellEntry const *spellInfo)
 {
+    if (!useRegExp)
+        return str;
+
     QRegExp rx("\\$+(/([1-9]?[0-9]);)?([d+\\;)(\\d*)?([1-9]*)([a-zA-Z])([1-3]*)([a-zA-z ]*\\:([a-zA-z ]*)\\;)?");
     while (str.contains(rx))
     {
@@ -481,6 +504,24 @@ QString SpellWork::GetDescription(QString str, SpellEntry const *spellInfo)
                     {
                         str.replace(rx.cap(0), QString("%0")
                             .arg(spellInfo->ProcCharges));
+                    }
+                }
+                break;
+                case 'x':
+                {
+                    if (!rx.cap(3).isEmpty())
+                    {
+                        SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(3).toInt());
+                        if (tSpell)
+                        {
+                            str.replace(rx.cap(0), QString("%0")
+                                .arg(tSpell->EffectChainTarget[rx.cap(5).toInt()-1]));
+                        }
+                    }
+                    else
+                    {
+                        str.replace(rx.cap(0), QString("%0")
+                            .arg(spellInfo->EffectChainTarget[rx.cap(5).toInt()-1]));
                     }
                 }
                 break;
