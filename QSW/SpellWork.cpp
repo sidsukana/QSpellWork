@@ -9,6 +9,7 @@ SpellWork::SpellWork(QWidget *parent)
     m_spellInfo = NULL;
 
     LoadDBCStores();
+    LoadComboBoxes();
 
     connect(SpellList, SIGNAL(clicked(QModelIndex)), this, SLOT(SlotSearchFromList(QModelIndex)));
 
@@ -39,6 +40,24 @@ ObjectSearch::ObjectSearch(SpellWork *obj)
 
 ObjectSearch::~ObjectSearch()
 {
+}
+
+void SpellWork::LoadComboBoxes()
+{
+    comboBox->clear();
+    comboBox->insertItem(-1, "SpellFamilyName");
+    for (uint16 i = 0; i < MAX_SPELLFAMILY; i++)
+        comboBox->insertItem(i, SpellFamilyString[i]);
+
+    comboBox_2->clear();
+    comboBox_2->insertItem(-1, "Aura");
+    for (uint16 i = 0; i < MAX_AURA; i++)
+        comboBox_2->insertItem(i, AuraString[i]);
+
+    comboBox_3->clear();
+    comboBox_3->insertItem(-1, "Effect");
+    for (uint16 i = 0; i < MAX_EFFECT; i++)
+        comboBox_3->insertItem(i, EffectString[i]);
 }
 
 void SpellWork::SlotAbout()
@@ -174,9 +193,34 @@ void ObjectSearch::Search()
 
                 model->setItem(count, 0, item_id);
                 model->setItem(count, 1, item_name);
-                QApplication::postEvent(iFace, new _Event(EVENT_SETMODEL, model));
             }
         }
+        QApplication::postEvent(iFace, new _Event(EVENT_SETMODEL, model));
+    }
+    else if (!iFace->findLine_e3->text().isEmpty())
+    {
+        int count = -1;
+        for (int i = 0; i < sSpellStore.GetNumRows(); i++)
+        {
+            spellInfo = sSpellStore.LookupEntry(i);
+            if (spellInfo && QString(spellInfo->Description[0]).contains(iFace->findLine_e3->text(), Qt::CaseInsensitive))
+            {
+                count++;
+                QString sRank((char*)spellInfo->Rank[0]);
+
+                QStandardItem *item_id = new QStandardItem(QString("%0").arg(spellInfo->Id));
+                QStandardItem *item_name;
+
+                if (sRank.isEmpty())
+                    item_name = new QStandardItem(QString("%0").arg((char*)spellInfo->SpellName[0]));
+                else
+                    item_name = new QStandardItem(QString("%0 (%1)").arg((char*)spellInfo->SpellName[0]).arg((char*)spellInfo->Rank[0]));
+
+                model->setItem(count, 0, item_id);
+                model->setItem(count, 1, item_name);
+            }
+        }
+        QApplication::postEvent(iFace, new _Event(EVENT_SETMODEL, model));
     }
 }
 
@@ -314,8 +358,37 @@ QString SpellWork::GetDescription(QString str, SpellEntry const *spellInfo)
                 break;
                 case 'o':
                 {
-                    str.replace(rx.cap(0), QString("%0")
-                        .arg(GetRealDuration(spellInfo, rx.cap(5).toInt()-1) * (spellInfo->EffectBasePoints[rx.cap(5).toInt()-1] + 1)));
+                    if (!rx.cap(2).isEmpty())
+                    {
+                        if (!rx.cap(3).isEmpty())
+                        {
+                            SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(3).toInt());
+                            if (tSpell)
+                            {
+                                str.replace(rx.cap(0), QString("%0")
+                                .arg(int((GetRealDuration(tSpell, rx.cap(5).toInt()-1) * (tSpell->EffectBasePoints[rx.cap(5).toInt()-1] + 1))/rx.cap(2).toInt())));
+                            }
+                        }
+                        else
+                        {
+                            str.replace(rx.cap(0), QString("%0")
+                                .arg(int((GetRealDuration(spellInfo, rx.cap(5).toInt()-1) * (spellInfo->EffectBasePoints[rx.cap(5).toInt()-1] + 1))/rx.cap(2).toInt())));
+                        }
+                    }
+                    else if (!rx.cap(3).isEmpty())
+                    {
+                        SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(3).toInt());
+                        if (tSpell)
+                        {
+                            str.replace(rx.cap(0), QString("%0")
+                                .arg(GetRealDuration(tSpell, rx.cap(5).toInt()-1) * (tSpell->EffectBasePoints[rx.cap(5).toInt()-1] + 1)));
+                        }
+                    }
+                    else
+                    {
+                        str.replace(rx.cap(0), QString("%0")
+                            .arg(GetRealDuration(spellInfo, rx.cap(5).toInt()-1) * (spellInfo->EffectBasePoints[rx.cap(5).toInt()-1] + 1)));
+                    }
                 }
                 break;
                 case 's':
@@ -857,7 +930,7 @@ void SpellWork::AppendAuraInfo(int index)
     if (!m_spellInfo)
         return;
 
-    QString sAura(AuraName[m_spellInfo->EffectApplyAuraName[index]]);
+    QString sAura(AuraString[m_spellInfo->EffectApplyAuraName[index]]);
     int misc = m_spellInfo->EffectMiscValue[index];
 
     if (m_spellInfo->EffectApplyAuraName[index] == 0)

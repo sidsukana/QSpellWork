@@ -893,7 +893,7 @@ QString EffectTargetString[] =
     QString("TARGET_DUELVSPLAYER_COORDINATES")
 };
 
-QString AuraName[] =
+QString AuraString[] =
 {
     QString("SPELL_AURA_NONE"),
     QString("SPELL_AURA_BIND_SIGHT"),
@@ -1232,5 +1232,9 @@ QString SpellFamilyString[] =
     QString("SPELLFAMILY_UNUSED4"),
     QString("SPELLFAMILY_PET")
 };
+
+#define MAX_SPELLFAMILY 18
+#define MAX_AURA 192
+#define MAX_EFFECT 130
 
 #endif

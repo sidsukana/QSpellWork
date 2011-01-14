@@ -48,6 +48,8 @@ class SpellWork : public QMainWindow, public Ui::SpellWorkUI
         void SlotSearchFromList(const QModelIndex &index);
 
     private:
+        void LoadComboBoxes();
+
         Ui::SpellWorkUI ui;
         SpellEntry const* m_spellInfo;
 
