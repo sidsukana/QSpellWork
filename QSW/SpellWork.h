@@ -34,7 +34,7 @@ class SpellWork : public QMainWindow, public Ui::SpellWorkUI
         void AppendProcInfo(SpellEntry const *spellInfo);
         QString PowerString();
         QString CompareAttributes(AttrType attr, int index = 0);
-        QString GetDescription(QString str);
+        QString GetDescription(QString str, SpellEntry const *spellInfo);
         int GetDuration(SpellEntry const *spellInfo);
         int GetRealDuration(SpellEntry const *spellInfo, uint8 effIndex);
         float GetRadius(SpellEntry const *spellInfo, uint8 effIndex);

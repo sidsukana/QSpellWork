@@ -202,16 +202,12 @@ void SpellWork::BeginThread(int id)
 
 void SpellWork::SlotSearch()
 {
-    SpellInfoBrowser->clear();
-    SpellList->reset();
     BeginThread(THREAD_SEARCH);
 }
 
 void SpellWork::SlotSearchFromList(const QModelIndex &index)
 {
     QVariant var = SpellList->model()->data(SpellList->model()->index(index.row(), 0));
-
-    SpellInfoBrowser->clear();
 
     m_spellInfo = sSpellStore.LookupEntry(var.toInt());
     if (m_spellInfo)
@@ -238,7 +234,7 @@ int SpellWork::GetRealDuration(SpellEntry const *spellInfo, uint8 effIndex)
     return int(GetDuration(spellInfo) / int(spellInfo->EffectAmplitude[effIndex] / 1000));
 }
 
-QString SpellWork::GetDescription(QString str)
+QString SpellWork::GetDescription(QString str, SpellEntry const *spellInfo)
 {
     QRegExp rx("\\$+(/([1-9]?[0-9]);)?([d+\\;)(\\d*)?([1-9]*)([a-zA-Z])([1-3]*)([a-zA-z ]*\\:([a-zA-z ]*)\\;)?");
     while (str.contains(rx))
@@ -263,7 +259,7 @@ QString SpellWork::GetDescription(QString str)
                         else
                         {
                             str.replace(rx.cap(0), QString("%0")
-                                .arg(int(GetRadius(m_spellInfo, rx.cap(5).toInt()-1)/rx.cap(2).toInt())));
+                                .arg(int(GetRadius(spellInfo, rx.cap(5).toInt()-1)/rx.cap(2).toInt())));
                         }
                     }
                     else if (!rx.cap(3).isEmpty())
@@ -278,7 +274,7 @@ QString SpellWork::GetDescription(QString str)
                     else
                     {
                         str.replace(rx.cap(0), QString("%0")
-                            .arg(GetRadius(m_spellInfo, rx.cap(5).toInt()-1)));
+                            .arg(GetRadius(spellInfo, rx.cap(5).toInt()-1)));
                     }
                 }
                 case 'd':
@@ -297,7 +293,7 @@ QString SpellWork::GetDescription(QString str)
                         else
                         {
                             str.replace(rx.cap(0), QString("%0")
-                                .arg(int(GetDuration(m_spellInfo)/rx.cap(2).toInt())));
+                                .arg(int(GetDuration(spellInfo)/rx.cap(2).toInt())));
                         }
                     }
                     else if (!rx.cap(3).isEmpty())
@@ -312,14 +308,14 @@ QString SpellWork::GetDescription(QString str)
                     else
                     {
                         str.replace(rx.cap(0), QString("%0 seconds")
-                            .arg(GetDuration(m_spellInfo)));
+                            .arg(GetDuration(spellInfo)));
                     }
                 }
                 break;
                 case 'o':
                 {
                     str.replace(rx.cap(0), QString("%0")
-                        .arg(GetRealDuration(m_spellInfo, rx.cap(5).toInt()-1) * (m_spellInfo->EffectBasePoints[rx.cap(5).toInt()-1] + 1)));
+                        .arg(GetRealDuration(spellInfo, rx.cap(5).toInt()-1) * (spellInfo->EffectBasePoints[rx.cap(5).toInt()-1] + 1)));
                 }
                 break;
                 case 's':
@@ -338,7 +334,7 @@ QString SpellWork::GetDescription(QString str)
                         else
                         {
                             str.replace(rx.cap(0), QString("%0")
-                                .arg(abs(int((m_spellInfo->EffectBasePoints[rx.cap(5).toInt()-1] + 1)/rx.cap(2).toInt()))));
+                                .arg(abs(int((spellInfo->EffectBasePoints[rx.cap(5).toInt()-1] + 1)/rx.cap(2).toInt()))));
                         }
                     }
                     else if (!rx.cap(3).isEmpty())
@@ -353,7 +349,7 @@ QString SpellWork::GetDescription(QString str)
                     else
                     {
                         str.replace(rx.cap(0), QString("%0")
-                            .arg(abs(m_spellInfo->EffectBasePoints[rx.cap(5).toInt()-1] + 1)));
+                            .arg(abs(spellInfo->EffectBasePoints[rx.cap(5).toInt()-1] + 1)));
                     }
                 }
                 break;
@@ -373,7 +369,7 @@ QString SpellWork::GetDescription(QString str)
                         else
                         {
                             str.replace(rx.cap(0), QString("%0")
-                                .arg(int(int(m_spellInfo->EffectAmplitude[rx.cap(5).toInt()-1] / 1000)/rx.cap(2).toInt())));
+                                .arg(int(int(spellInfo->EffectAmplitude[rx.cap(5).toInt()-1] / 1000)/rx.cap(2).toInt())));
                         }
                     }
                     else if (!rx.cap(3).isEmpty())
@@ -388,7 +384,7 @@ QString SpellWork::GetDescription(QString str)
                     else
                     {
                         str.replace(rx.cap(0), QString("%0")
-                            .arg(int(m_spellInfo->EffectAmplitude[rx.cap(5).toInt()-1] / 1000)));
+                            .arg(int(spellInfo->EffectAmplitude[rx.cap(5).toInt()-1] / 1000)));
                     }
                 }
                 break;
@@ -409,6 +405,11 @@ void SpellWork::ShowInfo()
 {
     if (!m_spellInfo)
         return;
+
+    SpellInfoBrowser->clear();
+    QTextCursor cur = SpellInfoBrowser->textCursor();
+    cur.clearSelection();
+    SpellInfoBrowser->setTextCursor(cur);
 
     QString line("==================================================");
 
@@ -439,10 +440,10 @@ void SpellWork::ShowInfo()
             .arg(sRank));
 
     if (!sDescription.isEmpty())
-        SpellInfoBrowser->append(QString("<b>Description:</b> %0").arg(GetDescription(sDescription)));
+        SpellInfoBrowser->append(QString("<b>Description:</b> %0").arg(GetDescription(sDescription, m_spellInfo)));
 
     if (!sToolTip.isEmpty())
-        SpellInfoBrowser->append(QString("<b>ToolTip:</b> %0").arg(GetDescription(sToolTip)));
+        SpellInfoBrowser->append(QString("<b>ToolTip:</b> %0").arg(GetDescription(sToolTip, m_spellInfo)));
 
     SpellInfoBrowser->append(line);
 
@@ -793,10 +794,10 @@ void SpellWork::AppendTriggerInfo(int index)
                 QString sTooltip((char*)triggerSpell->ToolTip[0]);
 
                 if (!sDescription.isEmpty())
-                    SpellInfoBrowser->append(QString("   Description: %0").arg(sDescription));
+                    SpellInfoBrowser->append(QString("   Description: %0").arg(GetDescription(sDescription, triggerSpell)));
 
                 if (!sTooltip.isEmpty())
-                    SpellInfoBrowser->append(QString("   ToolTip: %0").arg(sTooltip));
+                    SpellInfoBrowser->append(QString("   ToolTip: %0").arg(GetDescription(sTooltip, triggerSpell)));
 
                 if (triggerSpell->ProcFlags != 0)
                 {
