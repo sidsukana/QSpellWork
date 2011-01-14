@@ -393,6 +393,24 @@ QString SpellWork::GetDescription(QString str, SpellEntry const *spellInfo)
                     str.replace(rx.cap(0), rx.cap(7));
                 }
                 break;
+                case 'n':
+                {
+                    if (!rx.cap(3).isEmpty())
+                    {
+                        SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(3).toInt());
+                        if (tSpell)
+                        {
+                            str.replace(rx.cap(0), QString("%0")
+                                .arg(tSpell->ProcCharges));
+                        }
+                    }
+                    else
+                    {
+                        str.replace(rx.cap(0), QString("%0")
+                            .arg(spellInfo->ProcCharges));
+                    }
+                }
+                break;
                 default:
                     return str;
             }
