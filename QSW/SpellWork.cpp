@@ -6,7 +6,6 @@ SpellWork::SpellWork(QWidget *parent)
 {
     setupUi(this);
 
-    m_model = NULL;
     m_spellInfo = NULL;
 
     LoadDBCStores();
@@ -14,7 +13,6 @@ SpellWork::SpellWork(QWidget *parent)
     connect(SpellList, SIGNAL(clicked(QModelIndex)), this, SLOT(SlotSearchFromList(QModelIndex)));
 
     connect(findButton, SIGNAL(clicked()), this, SLOT(SlotSearch()));
-    connect(findButton, SIGNAL(clicked()), SpellList, SLOT(resizeRowsToContents()));
     connect(actionAbout, SIGNAL(triggered()), this, SLOT(SlotAbout()));
     connect(actionExit, SIGNAL(triggered()), this, SLOT(close()));
 }
@@ -62,6 +60,11 @@ bool SpellWork::event(QEvent* t_event)
                 case EVENT_SETMODEL:
                 {
                     SpellList->setModel(ev->GetmObj());
+                    if (ev->GetsObj())
+                    {
+                        m_spellInfo = ev->GetsObj();
+                        ShowInfo();
+                    }
                     return true;
                 }
                 break;
@@ -146,8 +149,7 @@ void ObjectSearch::Search()
 
                 model->setItem(0, 0, item_id);
                 model->setItem(0, 1, item_name);
-                QApplication::postEvent(iFace, new _Event(EVENT_SETMODEL, model));
-                //ShowInfo();
+                QApplication::postEvent(iFace, new _Event(EVENT_SETMODEL, model, spellInfo));
             }
         }
     }

@@ -50,7 +50,6 @@ class SpellWork : public QMainWindow, public Ui::SpellWorkUI
     private:
         Ui::SpellWorkUI ui;
         SpellEntry const* m_spellInfo;
-        QStandardItemModel *m_model;
 
         typedef QList<ObjThread*> ThreadList;
         ThreadList threads;
