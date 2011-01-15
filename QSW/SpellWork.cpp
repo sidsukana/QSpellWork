@@ -21,23 +21,6 @@ SpellWork::SpellWork(QWidget *parent)
     connect(regexpButton, SIGNAL(clicked()), this, SLOT(SlotRegExp()));
 }
 
-void SpellWork::SlotRegExp()
-{
-    if (!useRegExp)
-    {
-        useRegExp = true;
-        regexpButton->setStyleSheet("background-color: qlineargradient(spread:pad, x1:1, y1:0.00568182, x2:0, y2:0, stop:0 rgba(0, 255, 28, 255), stop:1 rgba(255, 255, 255, 255));");
-        ShowInfo();
-    }
-    else
-    {
-        useRegExp = false;
-        regexpButton->setStyleSheet("background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));");
-        ShowInfo();
-    }
-
-}
-
 SpellWork::~SpellWork()
 {
 }
@@ -62,6 +45,15 @@ ObjectSearch::~ObjectSearch()
 {
 }
 
+_Event::_Event(uint8 id, QStandardItemModel* m, SpellEntry const* s)
+        : QEvent(QEvent::Type(_Event::TypeId)), op_id(id), mObj(m), sObj(s)
+{
+}
+
+_Event::~_Event()
+{
+}
+
 void SpellWork::LoadComboBoxes()
 {
     comboBox->clear();
@@ -78,6 +70,21 @@ void SpellWork::LoadComboBoxes()
     comboBox_3->insertItem(-1, "Effect");
     for (uint16 i = 0; i < MAX_EFFECT; i++)
         comboBox_3->insertItem(i, QString("(%0) %1").arg(i, 3, 10, QChar('0')).arg(EffectString[i]));
+}
+
+void SpellWork::SlotRegExp()
+{
+    if (!useRegExp)
+    {
+        useRegExp = true;
+        regexpButton->setStyleSheet("background-color: qlineargradient(spread:pad, x1:1, y1:0.00568182, x2:0, y2:0, stop:0 rgba(0, 255, 28, 255), stop:1 rgba(255, 255, 255, 255));");
+    }
+    else
+    {
+        useRegExp = false;
+        regexpButton->setStyleSheet("background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));");
+    }
+    ShowInfo();
 }
 
 void SpellWork::SlotAbout()
@@ -115,17 +122,10 @@ bool SpellWork::event(QEvent* t_event)
     return QWidget::event(t_event);
 }
 
-_Event::_Event(int id, QStandardItemModel* m, SpellEntry const* s)
-        : QEvent(QEvent::Type(_Event::TypeId)), op_id(id), mObj(m), sObj(s)
-{
-}
-
-_Event::~_Event()
-{
-}
 void ObjectSearch::Search()
 {
     bool isString = false;
+    int32 count = -1;
 
     QStandardItemModel *model;
     SpellEntry const *spellInfo;
@@ -136,7 +136,7 @@ void ObjectSearch::Search()
 
     if (!iFace->findLine_e1->text().isEmpty())
     {
-        for (int i = 0; i < iFace->findLine_e1->text().size(); ++i)
+        for (uint8 i = 0; i < iFace->findLine_e1->text().size(); ++i)
         {
             if (iFace->findLine_e1->text().at(i) > QChar('9'))
             {
@@ -147,22 +147,21 @@ void ObjectSearch::Search()
 
         if (isString)
         {
-            int count = -1;
-            for (int i = 0; i < sSpellStore.GetNumRows(); i++)
+            for (uint32 i = 0; i < sSpellStore.GetNumRows(); i++)
             {
                 spellInfo = sSpellStore.LookupEntry(i);
 				if (spellInfo && QString(spellInfo->SpellName[0]).contains(iFace->findLine_e1->text(), Qt::CaseInsensitive))
                 {
                     count++;
-                    QString sRank((char*)spellInfo->Rank[0]);
+                    QString sRank(spellInfo->Rank[0]);
 
                     QStandardItem *item_id = new QStandardItem(QString("%0").arg(spellInfo->Id));
                     QStandardItem *item_name;
 
                     if (sRank.isEmpty())
-                        item_name = new QStandardItem(QString("%0").arg((char*)spellInfo->SpellName[0]));
+                        item_name = new QStandardItem(QString("%0").arg(spellInfo->SpellName[0]));
                     else
-                        item_name = new QStandardItem(QString("%0 (%1)").arg((char*)spellInfo->SpellName[0]).arg((char*)spellInfo->Rank[0]));
+                        item_name = new QStandardItem(QString("%0 (%1)").arg(spellInfo->SpellName[0]).arg(spellInfo->Rank[0]));
 
                     model->setItem(count, 0, item_id);
                     model->setItem(count, 1, item_name);
@@ -176,15 +175,15 @@ void ObjectSearch::Search()
 
             if (spellInfo)
             {
-                QString sRank((char*)spellInfo->Rank[0]);
+                QString sRank(spellInfo->Rank[0]);
 
                 QStandardItem  *item_id = new QStandardItem (QString("%0").arg(spellInfo->Id));
                 QStandardItem  *item_name;
 
                 if (sRank.isEmpty())
-                    item_name = new QStandardItem (QString("%0").arg((char*)spellInfo->SpellName[0]));
+                    item_name = new QStandardItem (QString("%0").arg(spellInfo->SpellName[0]));
                 else
-                    item_name = new QStandardItem (QString("%0 (%1)").arg((char*)spellInfo->SpellName[0]).arg((char*)spellInfo->Rank[0]));
+                    item_name = new QStandardItem (QString("%0 (%1)").arg(spellInfo->SpellName[0]).arg(spellInfo->Rank[0]));
 
                 model->setItem(0, 0, item_id);
                 model->setItem(0, 1, item_name);
@@ -194,22 +193,21 @@ void ObjectSearch::Search()
     }
     else if (!iFace->findLine_e2->text().isEmpty())
     {
-        int count = -1;
-        for (int i = 0; i < sSpellStore.GetNumRows(); i++)
+        for (uint32 i = 0; i < sSpellStore.GetNumRows(); i++)
         {
             spellInfo = sSpellStore.LookupEntry(i);
             if (spellInfo && spellInfo->SpellIconID == iFace->findLine_e2->text().toInt())
             {
                 count++;
-                QString sRank((char*)spellInfo->Rank[0]);
+                QString sRank(spellInfo->Rank[0]);
 
                 QStandardItem *item_id = new QStandardItem(QString("%0").arg(spellInfo->Id));
                 QStandardItem *item_name;
 
                 if (sRank.isEmpty())
-                    item_name = new QStandardItem(QString("%0").arg((char*)spellInfo->SpellName[0]));
+                    item_name = new QStandardItem(QString("%0").arg(spellInfo->SpellName[0]));
                 else
-                    item_name = new QStandardItem(QString("%0 (%1)").arg((char*)spellInfo->SpellName[0]).arg((char*)spellInfo->Rank[0]));
+                    item_name = new QStandardItem(QString("%0 (%1)").arg(spellInfo->SpellName[0]).arg(spellInfo->Rank[0]));
 
                 model->setItem(count, 0, item_id);
                 model->setItem(count, 1, item_name);
@@ -219,22 +217,21 @@ void ObjectSearch::Search()
     }
     else if (!iFace->findLine_e3->text().isEmpty())
     {
-        int count = -1;
-        for (int i = 0; i < sSpellStore.GetNumRows(); i++)
+        for (uint32 i = 0; i < sSpellStore.GetNumRows(); i++)
         {
             spellInfo = sSpellStore.LookupEntry(i);
             if (spellInfo && QString(spellInfo->Description[0]).contains(iFace->findLine_e3->text(), Qt::CaseInsensitive))
             {
                 count++;
-                QString sRank((char*)spellInfo->Rank[0]);
+                QString sRank(spellInfo->Rank[0]);
 
                 QStandardItem *item_id = new QStandardItem(QString("%0").arg(spellInfo->Id));
                 QStandardItem *item_name;
 
                 if (sRank.isEmpty())
-                    item_name = new QStandardItem(QString("%0").arg((char*)spellInfo->SpellName[0]));
+                    item_name = new QStandardItem(QString("%0").arg(spellInfo->SpellName[0]));
                 else
-                    item_name = new QStandardItem(QString("%0 (%1)").arg((char*)spellInfo->SpellName[0]).arg((char*)spellInfo->Rank[0]));
+                    item_name = new QStandardItem(QString("%0 (%1)").arg(spellInfo->SpellName[0]).arg(spellInfo->Rank[0]));
 
                 model->setItem(count, 0, item_id);
                 model->setItem(count, 1, item_name);
@@ -244,7 +241,7 @@ void ObjectSearch::Search()
     }
 }
 
-void SpellWork::BeginThread(int id)
+void SpellWork::BeginThread(uint8 id)
 {
     for (ThreadList::iterator itr = threads.begin(); itr != threads.end(); ++itr)
     {
@@ -290,12 +287,12 @@ float SpellWork::GetRadius(SpellEntry const *spellInfo, uint8 effIndex)
     return 0.0f;
 }
 
-int SpellWork::GetRealDuration(SpellEntry const *spellInfo, uint8 effIndex)
+uint32 SpellWork::GetRealDuration(SpellEntry const *spellInfo, uint8 effIndex)
 {
     if (!spellInfo)
         return 1;
 
-    return int(GetDuration(spellInfo) / int(spellInfo->EffectAmplitude[effIndex] / 1000));
+    return uint32(GetDuration(spellInfo) / uint32(spellInfo->EffectAmplitude[effIndex] / 1000));
 }
 
 QString SpellWork::GetDescription(QString str, SpellEntry const *spellInfo)
@@ -303,69 +300,102 @@ QString SpellWork::GetDescription(QString str, SpellEntry const *spellInfo)
     if (!useRegExp)
         return str;
 
-    QRegExp rx("\\$+(/([1-9]?[0-9]);)?([d+\\;)(\\d*)?([1-9]*)([a-zA-Z])([1-3]*)([a-zA-z ]*\\:([a-zA-z ]*)\\;)?");
+    QRegExp rx("\\$+(([/,*])?([0-9]*);)?([d+\\;)(\\d*)?([1-9]*)([A-z])([1-3]*)([A-z]*\\:([A-z]*)\\;)?");
     while (str.contains(rx))
     {
         if (rx.indexIn(str) != -1)
         {
-            switch (rx.cap(4)[0].toAscii())
+            QChar symbol = rx.cap(5)[0].toLower();
+            switch (symbol.toAscii())
             {
                 case 'a':
                 {
-                    if (!rx.cap(2).isEmpty())
+                    if (!rx.cap(3).isEmpty())
                     {
-                        if (!rx.cap(3).isEmpty())
+                        if (!rx.cap(4).isEmpty())
                         {
-                            SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(3).toInt());
+                            SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(4).toInt());
                             if (tSpell)
                             {
-                                str.replace(rx.cap(0), QString("%0")
-                                    .arg(int(GetRadius(tSpell, rx.cap(5).toInt()-1)/rx.cap(2).toInt())));
+                                if (rx.cap(2) == QString("/"))
+                                {
+                                    str.replace(rx.cap(0), QString("%0")
+                                        .arg(uint32(GetRadius(tSpell, rx.cap(6).toInt()-1) / rx.cap(2).toInt())));
+                                }
+                                else if (rx.cap(2) == QString("*"))
+                                {
+                                    str.replace(rx.cap(0), QString("%0")
+                                        .arg(uint32(GetRadius(tSpell, rx.cap(6).toInt()-1) * rx.cap(2).toInt())));
+                                }
                             }
                         }
                         else
                         {
-                            str.replace(rx.cap(0), QString("%0")
-                                .arg(int(GetRadius(spellInfo, rx.cap(5).toInt()-1)/rx.cap(2).toInt())));
+                            if (rx.cap(2) == QString("/"))
+                            {
+                                str.replace(rx.cap(0), QString("%0")
+                                    .arg(uint32(GetRadius(spellInfo, rx.cap(5).toInt()-1) / rx.cap(2).toInt())));
+                            }
+                            else if (rx.cap(2) == QString("*"))
+                            {
+                                str.replace(rx.cap(0), QString("%0")
+                                    .arg(uint32(GetRadius(spellInfo, rx.cap(5).toInt()-1) * rx.cap(2).toInt())));
+                            }
                         }
                     }
-                    else if (!rx.cap(3).isEmpty())
+                    else if (!rx.cap(4).isEmpty())
                     {
-                        SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(3).toInt());
+                        SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(4).toInt());
                         if (tSpell)
                         {
                             str.replace(rx.cap(0), QString("%0")
-                                .arg(GetRadius(tSpell, rx.cap(5).toInt()-1)));
+                                .arg(GetRadius(tSpell, rx.cap(6).toInt()-1)));
                         }
                     }
                     else
                     {
                         str.replace(rx.cap(0), QString("%0")
-                            .arg(GetRadius(spellInfo, rx.cap(5).toInt()-1)));
+                            .arg(GetRadius(spellInfo, rx.cap(6).toInt()-1)));
                     }
                 }
                 case 'd':
                 {
-                    if (!rx.cap(2).isEmpty())
+                    if (!rx.cap(3).isEmpty())
                     {
-                        if (!rx.cap(3).isEmpty())
+                        if (!rx.cap(4).isEmpty())
                         {
-                            SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(3).toInt());
+                            SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(4).toInt());
                             if (tSpell)
                             {
-                                str.replace(rx.cap(0), QString("%0")
-                                    .arg(int(GetDuration(tSpell)/rx.cap(2).toInt())));
+                                if (rx.cap(2) == QString("/"))
+                                {
+                                    str.replace(rx.cap(0), QString("%0")
+                                        .arg(uint32(GetDuration(tSpell) / rx.cap(3).toInt())));
+                                }
+                                else if (rx.cap(2) == QString("*"))
+                                {
+                                    str.replace(rx.cap(0), QString("%0")
+                                        .arg(uint32(GetDuration(tSpell) * rx.cap(3).toInt())));
+                                }
                             }
                         }
                         else
                         {
-                            str.replace(rx.cap(0), QString("%0")
-                                .arg(int(GetDuration(spellInfo)/rx.cap(2).toInt())));
+                            if (rx.cap(2) == QString("/"))
+                            {
+                                str.replace(rx.cap(0), QString("%0")
+                                    .arg(uint32(GetDuration(spellInfo) / rx.cap(3).toInt())));
+                            }
+                            else if (rx.cap(2) == QString("*"))
+                            {
+                                str.replace(rx.cap(0), QString("%0")
+                                    .arg(uint32(GetDuration(spellInfo) * rx.cap(3).toInt())));
+                            }
                         }
                     }
-                    else if (!rx.cap(3).isEmpty())
+                    else if (!rx.cap(4).isEmpty())
                     {
-                        SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(3).toInt());
+                        SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(4).toInt());
                         if (tSpell)
                         {
                             str.replace(rx.cap(0), QString("%0 seconds")
@@ -381,119 +411,167 @@ QString SpellWork::GetDescription(QString str, SpellEntry const *spellInfo)
                 break;
                 case 'o':
                 {
-                    if (!rx.cap(2).isEmpty())
+                    if (!rx.cap(3).isEmpty())
                     {
-                        if (!rx.cap(3).isEmpty())
+                        if (!rx.cap(4).isEmpty())
                         {
-                            SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(3).toInt());
+                            SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(4).toInt());
                             if (tSpell)
                             {
-                                str.replace(rx.cap(0), QString("%0")
-                                .arg(int((GetRealDuration(tSpell, rx.cap(5).toInt()-1) * (tSpell->EffectBasePoints[rx.cap(5).toInt()-1] + 1))/rx.cap(2).toInt())));
+                                if (rx.cap(2) == QString("/"))
+                                {
+                                    str.replace(rx.cap(0), QString("%0")
+                                        .arg(uint32((GetRealDuration(tSpell, rx.cap(6).toInt()-1) * (tSpell->EffectBasePoints[rx.cap(6).toInt()-1] + 1)) / rx.cap(3).toInt())));
+                                }
+                                else if(rx.cap(2) == QString("*"))
+                                {
+                                    str.replace(rx.cap(0), QString("%0")
+                                        .arg(uint32((GetRealDuration(tSpell, rx.cap(6).toInt()-1) * (tSpell->EffectBasePoints[rx.cap(6).toInt()-1] + 1)) * rx.cap(3).toInt())));
+                                }
                             }
                         }
                         else
                         {
-                            str.replace(rx.cap(0), QString("%0")
-                                .arg(int((GetRealDuration(spellInfo, rx.cap(5).toInt()-1) * (spellInfo->EffectBasePoints[rx.cap(5).toInt()-1] + 1))/rx.cap(2).toInt())));
+                            if (rx.cap(2) == QString("/"))
+                            {
+                                str.replace(rx.cap(0), QString("%0")
+                                    .arg(uint32((GetRealDuration(spellInfo, rx.cap(6).toInt()-1) * (spellInfo->EffectBasePoints[rx.cap(6).toInt()-1] + 1)) / rx.cap(3).toInt())));
+                            }
+                            else if (rx.cap(2) == QString("*"))
+                            {
+                                str.replace(rx.cap(0), QString("%0")
+                                    .arg(uint32((GetRealDuration(spellInfo, rx.cap(6).toInt()-1) * (spellInfo->EffectBasePoints[rx.cap(6).toInt()-1] + 1)) * rx.cap(3).toInt())));
+                            }
                         }
                     }
-                    else if (!rx.cap(3).isEmpty())
+                    else if (!rx.cap(4).isEmpty())
                     {
-                        SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(3).toInt());
+                        SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(4).toInt());
                         if (tSpell)
                         {
                             str.replace(rx.cap(0), QString("%0")
-                                .arg(GetRealDuration(tSpell, rx.cap(5).toInt()-1) * (tSpell->EffectBasePoints[rx.cap(5).toInt()-1] + 1)));
+                                .arg(GetRealDuration(tSpell, rx.cap(6).toInt()-1) * (tSpell->EffectBasePoints[rx.cap(6).toInt()-1] + 1)));
                         }
                     }
                     else
                     {
                         str.replace(rx.cap(0), QString("%0")
-                            .arg(GetRealDuration(spellInfo, rx.cap(5).toInt()-1) * (spellInfo->EffectBasePoints[rx.cap(5).toInt()-1] + 1)));
+                            .arg(GetRealDuration(spellInfo, rx.cap(6).toInt()-1) * (spellInfo->EffectBasePoints[rx.cap(6).toInt()-1] + 1)));
                     }
                 }
                 break;
                 case 's':
                 {
-                    if (!rx.cap(2).isEmpty())
+                    if (!rx.cap(3).isEmpty())
                     {
-                        if (!rx.cap(3).isEmpty())
+                        if (!rx.cap(4).isEmpty())
                         {
-                            SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(3).toInt());
+                            SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(4).toInt());
                             if (tSpell)
                             {
-                                str.replace(rx.cap(0), QString("%0")
-                                    .arg(abs(int((tSpell->EffectBasePoints[rx.cap(5).toInt()-1] + 1)/rx.cap(2).toInt()))));
+                                if (rx.cap(2) == QString("/"))
+                                {
+                                    str.replace(rx.cap(0), QString("%0")
+                                        .arg(abs(int32((tSpell->EffectBasePoints[rx.cap(6).toInt()-1] + 1) / rx.cap(3).toInt()))));
+                                }
+                                else if (rx.cap(2) == QString("*"))
+                                {
+                                    str.replace(rx.cap(0), QString("%0")
+                                        .arg(abs(int32((tSpell->EffectBasePoints[rx.cap(6).toInt()-1] + 1) * rx.cap(3).toInt()))));
+                                }
                             }
                         }
                         else
                         {
-                            str.replace(rx.cap(0), QString("%0")
-                                .arg(abs(int((spellInfo->EffectBasePoints[rx.cap(5).toInt()-1] + 1)/rx.cap(2).toInt()))));
+                            if (rx.cap(2) == QString("/"))
+                            {
+                                str.replace(rx.cap(0), QString("%0")
+                                    .arg(abs(int32((spellInfo->EffectBasePoints[rx.cap(6).toInt()-1] + 1) / rx.cap(3).toInt()))));
+                            }
+                            else if (rx.cap(2) == QString("*"))
+                            {
+                                str.replace(rx.cap(0), QString("%0")
+                                    .arg(abs(int32((spellInfo->EffectBasePoints[rx.cap(6).toInt()-1] + 1) * rx.cap(3).toInt()))));
+                            }
                         }
                     }
-                    else if (!rx.cap(3).isEmpty())
+                    else if (!rx.cap(4).isEmpty())
                     {
-                        SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(3).toInt());
+                        SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(4).toInt());
                         if (tSpell)
                         {
                             str.replace(rx.cap(0), QString("%0")
-                                .arg(abs(tSpell->EffectBasePoints[rx.cap(5).toInt()-1] + 1)));
+                                .arg(abs(tSpell->EffectBasePoints[rx.cap(6).toInt()-1] + 1)));
                         }
                     }
                     else
                     {
                         str.replace(rx.cap(0), QString("%0")
-                            .arg(abs(spellInfo->EffectBasePoints[rx.cap(5).toInt()-1] + 1)));
+                            .arg(abs(spellInfo->EffectBasePoints[rx.cap(6).toInt()-1] + 1)));
                     }
                 }
                 break;
                 case 't':
                 {
-                    if (!rx.cap(2).isEmpty())
+                    if (!rx.cap(3).isEmpty())
                     {
-                        if (!rx.cap(3).isEmpty())
+                        if (!rx.cap(4).isEmpty())
                         {
-                            SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(3).toInt());
+                            SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(4).toInt());
                             if (tSpell)
                             {
-                                str.replace(rx.cap(0), QString("%0")
-                                    .arg(int(int(tSpell->EffectAmplitude[rx.cap(5).toInt()-1] / 1000)/rx.cap(2).toInt())));
+                                if (rx.cap(2) == QString("/"))
+                                {
+                                    str.replace(rx.cap(0), QString("%0")
+                                        .arg(uint32(uint32(tSpell->EffectAmplitude[rx.cap(6).toInt()-1] / 1000) / rx.cap(3).toInt())));
+                                }
+                                else if (rx.cap(2) == QString("*"))
+                                {
+                                    str.replace(rx.cap(0), QString("%0")
+                                        .arg(uint32(uint32(tSpell->EffectAmplitude[rx.cap(6).toInt()-1] / 1000) * rx.cap(3).toInt())));
+                                }
                             }
                         }
                         else
                         {
-                            str.replace(rx.cap(0), QString("%0")
-                                .arg(int(int(spellInfo->EffectAmplitude[rx.cap(5).toInt()-1] / 1000)/rx.cap(2).toInt())));
+                            if (rx.cap(2) == QString("/"))
+                            {
+                                str.replace(rx.cap(0), QString("%0")
+                                    .arg(uint32(uint32(spellInfo->EffectAmplitude[rx.cap(6).toInt()-1] / 1000) / rx.cap(3).toInt())));
+                            }
+                            else if (rx.cap(2) == QString("*"))
+                            {
+                                str.replace(rx.cap(0), QString("%0")
+                                    .arg(uint32(uint32(spellInfo->EffectAmplitude[rx.cap(6).toInt()-1] / 1000) * rx.cap(3).toInt())));
+                            }
                         }
                     }
-                    else if (!rx.cap(3).isEmpty())
+                    else if (!rx.cap(4).isEmpty())
                     {
-                        SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(3).toInt());
+                        SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(4).toInt());
                         if (tSpell)
                         {
                             str.replace(rx.cap(0), QString("%0")
-                                .arg(int(tSpell->EffectAmplitude[rx.cap(5).toInt()-1] / 1000)));
+                                .arg(uint32(tSpell->EffectAmplitude[rx.cap(6).toInt()-1] / 1000)));
                         }
                     }
                     else
                     {
                         str.replace(rx.cap(0), QString("%0")
-                            .arg(int(spellInfo->EffectAmplitude[rx.cap(5).toInt()-1] / 1000)));
+                            .arg(uint32(spellInfo->EffectAmplitude[rx.cap(6).toInt()-1] / 1000)));
                     }
                 }
                 break;
                 case 'l':
                 {
-                    str.replace(rx.cap(0), rx.cap(7));
+                    str.replace(rx.cap(0), rx.cap(8));
                 }
                 break;
                 case 'n':
                 {
-                    if (!rx.cap(3).isEmpty())
+                    if (!rx.cap(4).isEmpty())
                     {
-                        SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(3).toInt());
+                        SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(4).toInt());
                         if (tSpell)
                         {
                             str.replace(rx.cap(0), QString("%0")
@@ -509,19 +587,19 @@ QString SpellWork::GetDescription(QString str, SpellEntry const *spellInfo)
                 break;
                 case 'x':
                 {
-                    if (!rx.cap(3).isEmpty())
+                    if (!rx.cap(4).isEmpty())
                     {
-                        SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(3).toInt());
+                        SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(4).toInt());
                         if (tSpell)
                         {
                             str.replace(rx.cap(0), QString("%0")
-                                .arg(tSpell->EffectChainTarget[rx.cap(5).toInt()-1]));
+                                .arg(tSpell->EffectChainTarget[rx.cap(6).toInt()-1]));
                         }
                     }
                     else
                     {
                         str.replace(rx.cap(0), QString("%0")
-                            .arg(spellInfo->EffectChainTarget[rx.cap(5).toInt()-1]));
+                            .arg(spellInfo->EffectChainTarget[rx.cap(6).toInt()-1]));
                     }
                 }
                 break;
@@ -545,10 +623,10 @@ void SpellWork::ShowInfo()
 
     QString line("==================================================");
 
-    QString sName((char*)m_spellInfo->SpellName[0]);
-    QString sDescription((char*)m_spellInfo->Description[0]);
-    QString sRank((char*)m_spellInfo->Rank[0]);
-    QString sToolTip((char*)m_spellInfo->ToolTip[0]);
+    QString sName(m_spellInfo->SpellName[0]);
+    QString sDescription(m_spellInfo->Description[0]);
+    QString sRank(m_spellInfo->Rank[0]);
+    QString sToolTip(m_spellInfo->ToolTip[0]);
     QString sSpellFamilyFlags(QString("%0").arg(m_spellInfo->SpellFamilyFlags, 16, 16, QChar('0')));
     QString sAttributes(QString("%0").arg(m_spellInfo->Attributes, 8, 16, QChar('0')));
     QString sAttributesEx(QString("%0").arg(m_spellInfo->AttributesEx, 8, 16, QChar('0')));
@@ -805,7 +883,7 @@ void SpellWork::AppendRangeInfo()
     {
         SpellInfoBrowser->append(QString("SpellRange: (Id %0) \"%1\": MinRange = %2, MaxRange = %3")
             .arg(range->Id)
-            .arg((char*)range->Name[0])
+            .arg(range->Name[0])
             .arg(range->MinRange)
             .arg(range->MaxRange));
     }
@@ -816,7 +894,7 @@ void SpellWork::AppendProcInfo(SpellEntry const *spellInfo)
     if (!spellInfo)
         return;
 
-    int i = 0;
+    uint8 i = 0;
     uint64 proc = spellInfo->ProcFlags;
     while (proc != 0)
     {
@@ -906,7 +984,7 @@ void SpellWork::AppendSpellEffectInfo()
     }
 }
 
-void SpellWork::AppendTriggerInfo(int index)
+void SpellWork::AppendTriggerInfo(uint8 index)
 {
     if (!m_spellInfo)
         return;
@@ -919,11 +997,11 @@ void SpellWork::AppendTriggerInfo(int index)
         {
             SpellInfoBrowser->append(QString("<b><font color='blue'>   Trigger spell (%0) %1. Chance = %2</font></b>")
                 .arg(trigger)
-                .arg(QString("%0 (%1)").arg((char*)triggerSpell->SpellName[0]).arg((char*)triggerSpell->Rank[0]))
+                .arg(QString("%0 (%1)").arg(triggerSpell->SpellName[0]).arg(triggerSpell->Rank[0]))
                 .arg(triggerSpell->ProcChance));
 
-                QString sDescription((char*)triggerSpell->Description[0]);
-                QString sTooltip((char*)triggerSpell->ToolTip[0]);
+                QString sDescription(triggerSpell->Description[0]);
+                QString sTooltip(triggerSpell->ToolTip[0]);
 
                 if (!sDescription.isEmpty())
                     SpellInfoBrowser->append(QString("   Description: %0").arg(GetDescription(sDescription, triggerSpell)));
@@ -948,12 +1026,12 @@ void SpellWork::AppendTriggerInfo(int index)
     }
 }
 
-void SpellWork::AppendRadiusInfo(int index)
+void SpellWork::AppendRadiusInfo(uint8 index)
 {
     if (!m_spellInfo)
         return;
 
-    uint32 rIndex = m_spellInfo->EffectRadiusIndex[index];
+    uint16 rIndex = m_spellInfo->EffectRadiusIndex[index];
     if (rIndex != 0)
     {
         SpellRadiusEntry const *spellRadius = sSpellRadiusStore.LookupEntry(rIndex);
@@ -966,13 +1044,13 @@ void SpellWork::AppendRadiusInfo(int index)
     }
 }
 
-void SpellWork::AppendAuraInfo(int index)
+void SpellWork::AppendAuraInfo(uint8 index)
 {
     if (!m_spellInfo)
         return;
 
     QString sAura(AuraString[m_spellInfo->EffectApplyAuraName[index]]);
-    int misc = m_spellInfo->EffectMiscValue[index];
+    uint32 misc = m_spellInfo->EffectMiscValue[index];
 
     if (m_spellInfo->EffectApplyAuraName[index] == 0)
     {
@@ -1043,7 +1121,7 @@ QString SpellWork::PowerString()
     return QString();
 }
 
-QString SpellWork::CompareAttributes(AttrType attr, int index)
+QString SpellWork::CompareAttributes(AttrType attr, uint8 index)
 {
     if (!m_spellInfo)
         return QString();
@@ -1284,7 +1362,7 @@ void SpellWork::AppendSkillLine()
     if (!m_spellInfo)
         return;
 
-    for (int i = 0; i < sSkillLineAbilityStore.GetNumRows(); i++)
+    for (uint32 i = 0; i < sSkillLineAbilityStore.GetNumRows(); i++)
     {
         SkillLineAbilityEntry const *skillInfo = sSkillLineAbilityStore.LookupEntry(i);
         if (skillInfo && skillInfo->SpellId == m_spellInfo->Id)
@@ -1292,7 +1370,7 @@ void SpellWork::AppendSkillLine()
             SkillLineEntry const *skill = sSkillLineStore.LookupEntry(skillInfo->SkillId);
             SpellInfoBrowser->append(QString("Skill (Id %0) \"%1\", ReqSkillValue = %2, Forward Spell = %3, MinMaxValue (%4, %5), CharacterPoints (%6, %7)")
                 .arg(skill->Id)
-                .arg((char*)skill->Name[0])
+                .arg(skill->Name[0])
                 .arg(skillInfo->ReqSkillValue)
                 .arg(skillInfo->ForwardSpellId)
                 .arg(skillInfo->MinValue)
@@ -1318,14 +1396,14 @@ void SpellWork::AppendCastTimeLine()
     }
 }
 
-int SpellWork::GetDuration(SpellEntry const *spellInfo)
+uint32 SpellWork::GetDuration(SpellEntry const *spellInfo)
 {
     if (!spellInfo)
         return 1;
 
     SpellDurationEntry const *durationInfo = sSpellDurationStore.LookupEntry(spellInfo->DurationIndex);
     if (durationInfo)
-        return int(durationInfo->Duration[0] / 1000);
+        return uint32(durationInfo->Duration[0] / 1000);
 
     return 1;
 }

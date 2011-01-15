@@ -1,6 +1,6 @@
 #include "ThreadObject.h"
 
-ObjThread::ObjThread(int id, SpellWork *obj)
+ObjThread::ObjThread(uint8 id, SpellWork *obj)
     : t_id(id), _iFace(obj)
 {
     moveToThread(this);

@@ -28,17 +28,17 @@ class SpellWork : public QMainWindow, public Ui::SpellWorkUI
         void AppendDurationLine();
         void AppendRangeInfo();
         void AppendSpellEffectInfo();
-        void AppendAuraInfo(int index);
-        void AppendRadiusInfo(int index);
-        void AppendTriggerInfo(int index);
+        void AppendAuraInfo(uint8 index);
+        void AppendRadiusInfo(uint8 index);
+        void AppendTriggerInfo(uint8 index);
         void AppendProcInfo(SpellEntry const *spellInfo);
         QString PowerString();
-        QString CompareAttributes(AttrType attr, int index = 0);
+        QString CompareAttributes(AttrType attr, uint8 index = 0);
         QString GetDescription(QString str, SpellEntry const *spellInfo);
-        int GetDuration(SpellEntry const *spellInfo);
-        int GetRealDuration(SpellEntry const *spellInfo, uint8 effIndex);
+        uint32 GetDuration(SpellEntry const *spellInfo);
+        uint32 GetRealDuration(SpellEntry const *spellInfo, uint8 effIndex);
         float GetRadius(SpellEntry const *spellInfo, uint8 effIndex);
-        void BeginThread(int id);
+        void BeginThread(uint8 id);
 
         bool event(QEvent* e);
 
@@ -93,14 +93,14 @@ public:
     {
         TypeId = QEvent::User + 1
     };
-    _Event(int id = 0, QStandardItemModel* m = NULL, SpellEntry const* s = NULL);
+    _Event(uint8 id = 0, QStandardItemModel* m = NULL, SpellEntry const* s = NULL);
     ~_Event();
 
-    int GetId() const { return op_id; }
+    uint8 GetId() const { return op_id; }
     QStandardItemModel* GetmObj() const { return mObj; }
     SpellEntry const* GetsObj() const { return sObj; }
 private:
-    int op_id;
+    uint8 op_id;
     QStandardItemModel* mObj;
     SpellEntry const* sObj;
 };
