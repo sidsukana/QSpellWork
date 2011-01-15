@@ -19,6 +19,9 @@ SpellWork::SpellWork(QWidget *parent)
     connect(actionExit, SIGNAL(triggered()), this, SLOT(close()));
 
     connect(regexpButton, SIGNAL(clicked()), this, SLOT(SlotRegExp()));
+
+    QShortcut *sh = new QShortcut(QKeySequence::InsertParagraphSeparator, this);
+    sh->connect(sh, SIGNAL(activated()), this, SLOT(SlotSearch()));
 }
 
 SpellWork::~SpellWork()
