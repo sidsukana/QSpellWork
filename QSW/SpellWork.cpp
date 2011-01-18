@@ -311,6 +311,250 @@ QString SpellWork::GetDescription(QString str, SpellEntry const *spellInfo)
             QChar symbol = rx.cap(5)[0].toLower();
             switch (symbol.toAscii())
             {
+                case 'u':
+                {
+                    if (!rx.cap(4).isEmpty())
+                    {
+                        SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(4).toInt());
+                        if (tSpell)
+                        {
+                            str.replace(rx.cap(0), QString("%0")
+                                .arg(tSpell->StackAmount));
+                        }
+                    }
+                    else
+                    {
+                        str.replace(rx.cap(0), QString("%0")
+                            .arg(spellInfo->StackAmount));
+                    }
+                }
+                break;
+                case 'h':
+                {
+                    if (!rx.cap(4).isEmpty())
+                    {
+                        SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(4).toInt());
+                        if (tSpell)
+                        {
+                            str.replace(rx.cap(0), QString("%0")
+                                .arg(tSpell->ProcChance));
+                        }
+                    }
+                    else
+                    {
+                        str.replace(rx.cap(0), QString("%0")
+                            .arg(spellInfo->ProcChance));
+                    }
+                }
+                break;
+                case 'z':
+                {
+                    str.replace(rx.cap(0), QString("[Home]"));
+                }
+                break;
+                case 'v':
+                {
+                    if (!rx.cap(4).isEmpty())
+                    {
+                        SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(4).toInt());
+                        if (tSpell)
+                        {
+                            str.replace(rx.cap(0), QString("%0")
+                                .arg(tSpell->MaxTargetLevel));
+                        }
+                    }
+                    else
+                    {
+                        str.replace(rx.cap(0), QString("%0")
+                            .arg(spellInfo->MaxTargetLevel));
+                    }
+                }
+                break;
+                case 'q':
+                {
+                    if (!rx.cap(3).isEmpty())
+                    {
+                        if (!rx.cap(4).isEmpty())
+                        {
+                            SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(4).toInt());
+                            if (tSpell)
+                            {
+                                if (rx.cap(2) == QString("/"))
+                                {
+                                    str.replace(rx.cap(0), QString("%0")
+                                        .arg(abs(int32(tSpell->EffectMiscValue[rx.cap(6).toInt()-1] / rx.cap(3).toInt()))));
+                                }
+                                else if (rx.cap(2) == QString("*"))
+                                {
+                                    str.replace(rx.cap(0), QString("%0")
+                                        .arg(abs(int32(tSpell->EffectMiscValue[rx.cap(6).toInt()-1] * rx.cap(3).toInt()))));
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (rx.cap(2) == QString("/"))
+                            {
+                                str.replace(rx.cap(0), QString("%0")
+                                    .arg(abs(int32(spellInfo->EffectMiscValue[rx.cap(6).toInt()-1] / rx.cap(3).toInt()))));
+                            }
+                            else if (rx.cap(2) == QString("*"))
+                            {
+                                str.replace(rx.cap(0), QString("%0")
+                                    .arg(abs(int32(spellInfo->EffectMiscValue[rx.cap(6).toInt()-1] * rx.cap(3).toInt()))));
+                            }
+                        }
+                    }
+                    else if (!rx.cap(4).isEmpty())
+                    {
+                        SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(4).toInt());
+                        if (tSpell)
+                        {
+                            str.replace(rx.cap(0), QString("%0")
+                                .arg(abs(tSpell->EffectMiscValue[rx.cap(6).toInt()-1])));
+                        }
+                    }
+                    else
+                    {
+                        str.replace(rx.cap(0), QString("%0")
+                            .arg(abs(spellInfo->EffectMiscValue[rx.cap(6).toInt()-1])));
+                    }
+                }
+                break;
+                case 'i':
+                {
+                    if (!rx.cap(4).isEmpty())
+                    {
+                        SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(4).toInt());
+                        if (tSpell)
+                        {
+                            if (tSpell->MaxAffectedTargets != 0)
+                            {
+                                str.replace(rx.cap(0), QString("%0")
+                                    .arg(tSpell->MaxAffectedTargets));
+                            }
+                            else
+                            {
+                                str.replace(rx.cap(0), QString("nearby"));
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (spellInfo->MaxAffectedTargets != 0)
+                        {
+                            str.replace(rx.cap(0), QString("%0")
+                            .arg(spellInfo->MaxAffectedTargets));
+                        }
+                        else
+                        {
+                            str.replace(rx.cap(0), QString("nearby"));
+                        }
+                    }
+                }
+                break;
+                case 'b':
+                {
+                    if (!rx.cap(3).isEmpty())
+                    {
+                        if (!rx.cap(4).isEmpty())
+                        {
+                            SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(4).toInt());
+                            if (tSpell)
+                            {
+                                if (rx.cap(2) == QString("/"))
+                                {
+                                    str.replace(rx.cap(0), QString("%0")
+                                        .arg(abs(int32((tSpell->EffectPointsPerComboPoint[rx.cap(6).toInt()-1]) / rx.cap(3).toInt()))));
+                                }
+                                else if (rx.cap(2) == QString("*"))
+                                {
+                                    str.replace(rx.cap(0), QString("%0")
+                                        .arg(abs(int32((tSpell->EffectPointsPerComboPoint[rx.cap(6).toInt()-1]) * rx.cap(3).toInt()))));
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (rx.cap(2) == QString("/"))
+                            {
+                                str.replace(rx.cap(0), QString("%0")
+                                    .arg(abs(int32((spellInfo->EffectPointsPerComboPoint[rx.cap(6).toInt()-1]) / rx.cap(3).toInt()))));
+                            }
+                            else if (rx.cap(2) == QString("*"))
+                            {
+                                str.replace(rx.cap(0), QString("%0")
+                                    .arg(abs(int32((spellInfo->EffectPointsPerComboPoint[rx.cap(6).toInt()-1]) * rx.cap(3).toInt()))));
+                            }
+                        }
+                    }
+                    else if (!rx.cap(4).isEmpty())
+                    {
+                        SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(4).toInt());
+                        if (tSpell)
+                        {
+                            str.replace(rx.cap(0), QString("%0")
+                                .arg(abs(int32(tSpell->EffectPointsPerComboPoint[rx.cap(6).toInt()-1]))));
+                        }
+                    }
+                    else
+                    {
+                        str.replace(rx.cap(0), QString("%0")
+                            .arg(abs(int32(spellInfo->EffectPointsPerComboPoint[rx.cap(6).toInt()-1]))));
+                    }
+                }
+                break;
+                case 'm':
+                {
+                    if (!rx.cap(3).isEmpty())
+                    {
+                        if (!rx.cap(4).isEmpty())
+                        {
+                            SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(4).toInt());
+                            if (tSpell)
+                            {
+                                if (rx.cap(2) == QString("/"))
+                                {
+                                    str.replace(rx.cap(0), QString("%0")
+                                        .arg(abs(int32((tSpell->EffectBasePoints[rx.cap(6).toInt()-1] + 1) / rx.cap(3).toInt()))));
+                                }
+                                else if (rx.cap(2) == QString("*"))
+                                {
+                                    str.replace(rx.cap(0), QString("%0")
+                                        .arg(abs(int32((tSpell->EffectBasePoints[rx.cap(6).toInt()-1] + 1) * rx.cap(3).toInt()))));
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (rx.cap(2) == QString("/"))
+                            {
+                                str.replace(rx.cap(0), QString("%0")
+                                    .arg(abs(int32((spellInfo->EffectBasePoints[rx.cap(6).toInt()-1] + 1) / rx.cap(3).toInt()))));
+                            }
+                            else if (rx.cap(2) == QString("*"))
+                            {
+                                str.replace(rx.cap(0), QString("%0")
+                                    .arg(abs(int32((spellInfo->EffectBasePoints[rx.cap(6).toInt()-1] + 1) * rx.cap(3).toInt()))));
+                            }
+                        }
+                    }
+                    else if (!rx.cap(4).isEmpty())
+                    {
+                        SpellEntry const *tSpell = sSpellStore.LookupEntry(rx.cap(4).toInt());
+                        if (tSpell)
+                        {
+                            str.replace(rx.cap(0), QString("%0")
+                                .arg(abs(tSpell->EffectBasePoints[rx.cap(6).toInt()-1] + 1)));
+                        }
+                    }
+                    else
+                    {
+                        str.replace(rx.cap(0), QString("%0")
+                            .arg(abs(spellInfo->EffectBasePoints[rx.cap(6).toInt()-1] + 1)));
+                    }
+                }
+                break;
                 case 'a':
                 {
                     if (!rx.cap(3).isEmpty())
