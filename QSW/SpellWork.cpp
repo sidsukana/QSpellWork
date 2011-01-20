@@ -318,6 +318,30 @@ void ObjectSearch::Search()
             }
             QApplication::postEvent(iFace, new _Event(EVENT_SETMODEL, model));
         }
+        else
+        {
+            for (uint32 i = 0; i < sSpellStore.GetNumRows(); i++)
+            {
+                spellInfo = sSpellStore.LookupEntry(i);
+                if (spellInfo)
+                {
+                    count++;
+                    QString sRank(spellInfo->Rank[0]);
+
+                    QStandardItem *item_id = new QStandardItem(QString("%0").arg(spellInfo->Id));
+                    QStandardItem *item_name;
+
+                    if (sRank.isEmpty())
+                        item_name = new QStandardItem(QString("%0").arg(spellInfo->SpellName[0]));
+                    else
+                        item_name = new QStandardItem(QString("%0 (%1)").arg(spellInfo->SpellName[0]).arg(spellInfo->Rank[0]));
+
+                    model->setItem(count, 0, item_id);
+                    model->setItem(count, 1, item_name);
+                }
+            }
+            QApplication::postEvent(iFace, new _Event(EVENT_SETMODEL, model));
+        }
     }
 }
 
