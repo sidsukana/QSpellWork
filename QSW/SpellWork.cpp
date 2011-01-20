@@ -28,7 +28,7 @@ SpellWork::SpellWork(QWidget *parent)
     connect(this, SIGNAL(SignalSearch(bool)), this, SLOT(SlotSearch(bool)));
 
     QShortcut *sh = new QShortcut(QKeySequence::InsertParagraphSeparator, this);
-    sh->connect(sh, SIGNAL(activated()), this, SLOT(SlotSearch()));
+    sh->connect(sh, SIGNAL(activated()), this, SLOT(SlotButtonSearch()));
 }
 
 SpellWork::~SpellWork()
