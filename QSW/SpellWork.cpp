@@ -8,17 +8,24 @@ SpellWork::SpellWork(QWidget *parent)
 
     m_spellInfo = NULL;
     useRegExp = false;
+    useFilter = false;
 
     LoadDBCStores();
     LoadComboBoxes();
 
     connect(SpellList, SIGNAL(clicked(QModelIndex)), this, SLOT(SlotSearchFromList(QModelIndex)));
 
-    connect(findButton, SIGNAL(clicked()), this, SLOT(SlotSearch()));
+    connect(findButton, SIGNAL(clicked()), this, SLOT(SlotButtonSearch()));
     connect(actionAbout, SIGNAL(triggered()), this, SLOT(SlotAbout()));
     connect(actionExit, SIGNAL(triggered()), this, SLOT(close()));
 
     connect(regexpButton, SIGNAL(clicked()), this, SLOT(SlotRegExp()));
+
+    connect(comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(SlotFilterSearch()));
+    connect(comboBox_2, SIGNAL(currentIndexChanged(int)), this, SLOT(SlotFilterSearch()));
+    connect(comboBox_3, SIGNAL(currentIndexChanged(int)), this, SLOT(SlotFilterSearch()));
+
+    connect(this, SIGNAL(SignalSearch(bool)), this, SLOT(SlotSearch(bool)));
 
     QShortcut *sh = new QShortcut(QKeySequence::InsertParagraphSeparator, this);
     sh->connect(sh, SIGNAL(activated()), this, SLOT(SlotSearch()));
@@ -137,23 +144,138 @@ void ObjectSearch::Search()
     model->setHorizontalHeaderItem(0, new QStandardItem("ID"));
     model->setHorizontalHeaderItem(1, new QStandardItem("Name"));
 
-    if (!iFace->findLine_e1->text().isEmpty())
+    if (iFace->IsFilter())
     {
-        for (uint8 i = 0; i < iFace->findLine_e1->text().size(); ++i)
+        for (uint32 i = 0; i < sSpellStore.GetNumRows(); i++)
         {
-            if (iFace->findLine_e1->text().at(i) > QChar('9'))
+            bool family = false;
+            bool aura = false;
+            bool effect = false;
+
+            spellInfo = sSpellStore.LookupEntry(i);
+            if (spellInfo)
             {
-                isString = true;
-                break;
+                if (iFace->comboBox->currentIndex() < MAX_SPELLFAMILY)
+                {
+                    if (spellInfo->SpellFamilyName == iFace->comboBox->currentIndex())
+                        family = true;
+                }
+                else
+                    family = true;
+
+                if (iFace->comboBox_2->currentIndex() < MAX_AURA)
+                {
+                    for (uint8 i = EFFECT_INDEX_0; i < MAX_EFFECT_INDEX; i++)
+                    {
+                        if (spellInfo->EffectApplyAuraName[i] == iFace->comboBox_2->currentIndex())
+                        {
+                            aura = true;
+                            break;
+                        }
+                    }
+                }
+                else
+                    aura = true;
+
+                if (iFace->comboBox_3->currentIndex() < MAX_EFFECT)
+                {
+                    for (uint8 i = EFFECT_INDEX_0; i < MAX_EFFECT_INDEX; i++)
+                    {
+                        if (spellInfo->Effect[i] == iFace->comboBox_3->currentIndex())
+                        {
+                            effect = true;
+                            break;
+                        }
+                    }
+                }
+                else
+                    effect = true;
+
+                if (family && aura & effect)
+                {
+                    count++;
+                    QString sRank(spellInfo->Rank[0]);
+
+                    QStandardItem *item_id = new QStandardItem(QString("%0").arg(spellInfo->Id));
+                    QStandardItem *item_name;
+
+                    if (sRank.isEmpty())
+                        item_name = new QStandardItem(QString("%0").arg(spellInfo->SpellName[0]));
+                    else
+                        item_name = new QStandardItem(QString("%0 (%1)").arg(spellInfo->SpellName[0]).arg(spellInfo->Rank[0]));
+
+                    model->setItem(count, 0, item_id);
+                    model->setItem(count, 1, item_name);
+                }
             }
         }
+        QApplication::postEvent(iFace, new _Event(EVENT_SETMODEL, model));
+    }
+    else
+    {
+        if (!iFace->findLine_e1->text().isEmpty())
+        {
+            for (uint8 i = 0; i < iFace->findLine_e1->text().size(); ++i)
+            {
+                if (iFace->findLine_e1->text().at(i) > QChar('9'))
+                {
+                    isString = true;
+                    break;
+                }
+            }
 
-        if (isString)
+            if (isString)
+            {
+                for (uint32 i = 0; i < sSpellStore.GetNumRows(); i++)
+                {
+                    spellInfo = sSpellStore.LookupEntry(i);
+				    if (spellInfo && QString(spellInfo->SpellName[0]).contains(iFace->findLine_e1->text(), Qt::CaseInsensitive))
+                    {
+                        count++;
+                        QString sRank(spellInfo->Rank[0]);
+
+                        QStandardItem *item_id = new QStandardItem(QString("%0").arg(spellInfo->Id));
+                        QStandardItem *item_name;
+
+                        if (sRank.isEmpty())
+                            item_name = new QStandardItem(QString("%0").arg(spellInfo->SpellName[0]));
+                        else
+                            item_name = new QStandardItem(QString("%0 (%1)").arg(spellInfo->SpellName[0]).arg(spellInfo->Rank[0]));
+
+                        model->setItem(count, 0, item_id);
+                        model->setItem(count, 1, item_name);
+                    }
+                }
+                QApplication::postEvent(iFace, new _Event(EVENT_SETMODEL, model));
+            }
+            else
+            {
+                spellInfo = sSpellStore.LookupEntry(iFace->findLine_e1->text().toInt());
+
+                if (spellInfo)
+                {
+                    QString sRank(spellInfo->Rank[0]);
+
+                    QStandardItem  *item_id = new QStandardItem (QString("%0").arg(spellInfo->Id));
+                    QStandardItem  *item_name;
+
+                    if (sRank.isEmpty())
+                        item_name = new QStandardItem (QString("%0").arg(spellInfo->SpellName[0]));
+                    else
+                        item_name = new QStandardItem (QString("%0 (%1)").arg(spellInfo->SpellName[0]).arg(spellInfo->Rank[0]));
+
+                    model->setItem(0, 0, item_id);
+                    model->setItem(0, 1, item_name);
+                    QApplication::postEvent(iFace, new _Event(EVENT_SETMODEL, model, spellInfo));
+                }
+            }
+        }
+        else if (!iFace->findLine_e2->text().isEmpty())
         {
             for (uint32 i = 0; i < sSpellStore.GetNumRows(); i++)
             {
                 spellInfo = sSpellStore.LookupEntry(i);
-				if (spellInfo && QString(spellInfo->SpellName[0]).contains(iFace->findLine_e1->text(), Qt::CaseInsensitive))
+                if (spellInfo && spellInfo->SpellIconID == iFace->findLine_e2->text().toInt())
                 {
                     count++;
                     QString sRank(spellInfo->Rank[0]);
@@ -172,75 +294,30 @@ void ObjectSearch::Search()
             }
             QApplication::postEvent(iFace, new _Event(EVENT_SETMODEL, model));
         }
-        else
+        else if (!iFace->findLine_e3->text().isEmpty())
         {
-            spellInfo = sSpellStore.LookupEntry(iFace->findLine_e1->text().toInt());
-
-            if (spellInfo)
+            for (uint32 i = 0; i < sSpellStore.GetNumRows(); i++)
             {
-                QString sRank(spellInfo->Rank[0]);
+                spellInfo = sSpellStore.LookupEntry(i);
+                if (spellInfo && QString(spellInfo->Description[0]).contains(iFace->findLine_e3->text(), Qt::CaseInsensitive))
+                {
+                    count++;
+                    QString sRank(spellInfo->Rank[0]);
 
-                QStandardItem  *item_id = new QStandardItem (QString("%0").arg(spellInfo->Id));
-                QStandardItem  *item_name;
+                    QStandardItem *item_id = new QStandardItem(QString("%0").arg(spellInfo->Id));
+                    QStandardItem *item_name;
 
-                if (sRank.isEmpty())
-                    item_name = new QStandardItem (QString("%0").arg(spellInfo->SpellName[0]));
-                else
-                    item_name = new QStandardItem (QString("%0 (%1)").arg(spellInfo->SpellName[0]).arg(spellInfo->Rank[0]));
+                    if (sRank.isEmpty())
+                        item_name = new QStandardItem(QString("%0").arg(spellInfo->SpellName[0]));
+                    else
+                        item_name = new QStandardItem(QString("%0 (%1)").arg(spellInfo->SpellName[0]).arg(spellInfo->Rank[0]));
 
-                model->setItem(0, 0, item_id);
-                model->setItem(0, 1, item_name);
-                QApplication::postEvent(iFace, new _Event(EVENT_SETMODEL, model, spellInfo));
+                    model->setItem(count, 0, item_id);
+                    model->setItem(count, 1, item_name);
+                }
             }
+            QApplication::postEvent(iFace, new _Event(EVENT_SETMODEL, model));
         }
-    }
-    else if (!iFace->findLine_e2->text().isEmpty())
-    {
-        for (uint32 i = 0; i < sSpellStore.GetNumRows(); i++)
-        {
-            spellInfo = sSpellStore.LookupEntry(i);
-            if (spellInfo && spellInfo->SpellIconID == iFace->findLine_e2->text().toInt())
-            {
-                count++;
-                QString sRank(spellInfo->Rank[0]);
-
-                QStandardItem *item_id = new QStandardItem(QString("%0").arg(spellInfo->Id));
-                QStandardItem *item_name;
-
-                if (sRank.isEmpty())
-                    item_name = new QStandardItem(QString("%0").arg(spellInfo->SpellName[0]));
-                else
-                    item_name = new QStandardItem(QString("%0 (%1)").arg(spellInfo->SpellName[0]).arg(spellInfo->Rank[0]));
-
-                model->setItem(count, 0, item_id);
-                model->setItem(count, 1, item_name);
-            }
-        }
-        QApplication::postEvent(iFace, new _Event(EVENT_SETMODEL, model));
-    }
-    else if (!iFace->findLine_e3->text().isEmpty())
-    {
-        for (uint32 i = 0; i < sSpellStore.GetNumRows(); i++)
-        {
-            spellInfo = sSpellStore.LookupEntry(i);
-            if (spellInfo && QString(spellInfo->Description[0]).contains(iFace->findLine_e3->text(), Qt::CaseInsensitive))
-            {
-                count++;
-                QString sRank(spellInfo->Rank[0]);
-
-                QStandardItem *item_id = new QStandardItem(QString("%0").arg(spellInfo->Id));
-                QStandardItem *item_name;
-
-                if (sRank.isEmpty())
-                    item_name = new QStandardItem(QString("%0").arg(spellInfo->SpellName[0]));
-                else
-                    item_name = new QStandardItem(QString("%0 (%1)").arg(spellInfo->SpellName[0]).arg(spellInfo->Rank[0]));
-
-                model->setItem(count, 0, item_id);
-                model->setItem(count, 1, item_name);
-            }
-        }
-        QApplication::postEvent(iFace, new _Event(EVENT_SETMODEL, model));
     }
 }
 
@@ -264,8 +341,19 @@ void SpellWork::BeginThread(uint8 id)
     }
 }
 
-void SpellWork::SlotSearch()
+void SpellWork::SlotButtonSearch()
 {
+    emit SignalSearch(false);
+}
+
+void SpellWork::SlotFilterSearch()
+{
+    emit SignalSearch(true);
+}
+
+void SpellWork::SlotSearch(bool filter)
+{
+    useFilter = filter;
     BeginThread(THREAD_SEARCH);
 }
 

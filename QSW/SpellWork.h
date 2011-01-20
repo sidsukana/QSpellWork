@@ -24,6 +24,7 @@ class SpellWork : public QMainWindow, public Ui::SpellWorkUI
         ~SpellWork();
 
         void ShowInfo();
+
         void AppendSkillLine();
         void AppendCastTimeLine();
         void AppendDurationLine();
@@ -33,16 +34,23 @@ class SpellWork : public QMainWindow, public Ui::SpellWorkUI
         void AppendRadiusInfo(uint8 index);
         void AppendTriggerInfo(uint8 index);
         void AppendProcInfo(SpellEntry const *spellInfo);
+
         QString PowerString();
         QString CompareAttributes(AttrType attr, uint8 index = 0);
         QString GetDescription(QString str, SpellEntry const *spellInfo);
-        void BeginThread(uint8 id);
 
+        void BeginThread(uint8 id);
         bool event(QEvent* e);
+        bool IsFilter() const { return useFilter; }
+
+    signals:
+        void SignalSearch(bool filter);
 
     private slots:
         void SlotAbout();
-        void SlotSearch();
+        void SlotFilterSearch();
+        void SlotButtonSearch();
+        void SlotSearch(bool filter);
         void SlotSearchFromList(const QModelIndex &index);
 
         void SlotRegExp();
@@ -57,6 +65,7 @@ class SpellWork : public QMainWindow, public Ui::SpellWorkUI
         ThreadList threads;
 
         bool useRegExp;
+        bool useFilter;
 };
 
 class ObjectSearch
