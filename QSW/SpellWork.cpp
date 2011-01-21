@@ -137,10 +137,9 @@ void ObjectSearch::Search()
     bool isString = false;
     int32 count = -1;
 
-    QStandardItemModel *model;
     SpellEntry const *spellInfo;
-    
-    model = new QStandardItemModel(1, 2);
+
+    QStandardItemModel *model = new QStandardItemModel(1, 2);
     model->setHorizontalHeaderItem(0, new QStandardItem("ID"));
     model->setHorizontalHeaderItem(1, new QStandardItem("Name"));
 
@@ -378,6 +377,7 @@ void SpellWork::SlotFilterSearch()
 void SpellWork::SlotSearch(bool filter)
 {
     useFilter = filter;
+    delete SpellList->model();
     BeginThread(THREAD_SEARCH);
 }
 
