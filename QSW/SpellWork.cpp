@@ -13,22 +13,33 @@ SpellWork::SpellWork(QWidget *parent)
     LoadDBCStores();
     LoadComboBoxes();
 
+    // List search connection
     connect(SpellList, SIGNAL(clicked(QModelIndex)), this, SLOT(SlotSearchFromList(QModelIndex)));
 
+    // Main search connections
+    connect(findLine_e1, SIGNAL(returnPressed()), this, SLOT(SlotButtonSearch()));
+    connect(findLine_e2, SIGNAL(returnPressed()), this, SLOT(SlotButtonSearch()));
+    connect(findLine_e3, SIGNAL(returnPressed()), this, SLOT(SlotButtonSearch()));
     connect(findButton, SIGNAL(clicked()), this, SLOT(SlotButtonSearch()));
+
+    // Menu connections
     connect(actionAbout, SIGNAL(triggered()), this, SLOT(SlotAbout()));
     connect(actionExit, SIGNAL(triggered()), this, SLOT(close()));
 
+    // RegExp connection
     connect(regexpButton, SIGNAL(clicked()), this, SLOT(SlotRegExp()));
 
+    // Filter search connections
     connect(comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(SlotFilterSearch()));
     connect(comboBox_2, SIGNAL(currentIndexChanged(int)), this, SLOT(SlotFilterSearch()));
     connect(comboBox_3, SIGNAL(currentIndexChanged(int)), this, SLOT(SlotFilterSearch()));
+    connect(comboBox_4, SIGNAL(currentIndexChanged(int)), this, SLOT(SlotFilterSearch()));
+    connect(comboBox_5, SIGNAL(currentIndexChanged(int)), this, SLOT(SlotFilterSearch()));
+    connect(adLine1, SIGNAL(returnPressed()), this, SLOT(SlotFilterSearch()));
+    connect(adLine2, SIGNAL(returnPressed()), this, SLOT(SlotFilterSearch()));
 
+    // Search connection
     connect(this, SIGNAL(SignalSearch(bool)), this, SLOT(SlotSearch(bool)));
-
-    QShortcut *sh = new QShortcut(QKeySequence::InsertParagraphSeparator, this);
-    sh->connect(sh, SIGNAL(activated()), this, SLOT(SlotButtonSearch()));
 }
 
 SpellWork::~SpellWork()
@@ -80,6 +91,26 @@ void SpellWork::LoadComboBoxes()
     comboBox_3->insertItem(-1, "Effect");
     for (uint16 i = 0; i < MAX_EFFECT; i++)
         comboBox_3->insertItem(i, QString("(%0) %1").arg(i, 3, 10, QChar('0')).arg(EffectString[i]));
+
+    uint8 MaxTarget = sizeof(EffectTargetString) / sizeof(EffectTargetString[0]);
+    comboBox_4->clear();
+    comboBox_4->insertItem(-1, "Target A");
+    for (uint16 i = 0; i < MaxTarget; i++)
+        comboBox_4->insertItem(i, QString("(%0) %1").arg(i, 3, 10, QChar('0')).arg(EffectTargetString[i]));
+
+    comboBox_5->clear();
+    comboBox_5->insertItem(-1, "Target B");
+    for (uint16 i = 0; i < MaxTarget; i++)
+        comboBox_5->insertItem(i, QString("(%0) %1").arg(i, 3, 10, QChar('0')).arg(EffectTargetString[i]));
+
+    adBox1->clear();
+    adBox2->clear();
+    uint8 Max = sizeof(SpellStruct) / sizeof(SpellStruct[0]);
+    for (uint16 i = 0; i < Max; i++)
+    {
+        adBox1->insertItem(i, QString("%0").arg(SpellStruct[i]));
+        adBox2->insertItem(i, QString("%0").arg(SpellStruct[i]));
+    }
 }
 
 void SpellWork::SlotRegExp()
@@ -132,12 +163,451 @@ bool SpellWork::event(QEvent* t_event)
     return QWidget::event(t_event);
 }
 
+bool ObjectSearch::hasValue(uint8 index, QString str)
+{
+    if (!m_spellInfo)
+        return false;
+
+    switch (index)
+    {
+        case 1:
+            if (m_spellInfo->Id == str.toUInt())
+                return true;
+            break;
+        case 2:
+            if (m_spellInfo->School == str.toUInt())
+                return true;
+            break;
+        case 3:
+            if (m_spellInfo->Category == str.toUInt())
+                return true;
+            break;
+        case 4:
+            if (m_spellInfo->CastUI == str.toUInt())
+                return true;
+            break;
+        case 5:
+            if (m_spellInfo->Dispel == str.toUInt())
+                return true;
+            break;
+        case 6:
+            if (m_spellInfo->Mechanic == str.toUInt())
+                return true;
+            break;
+        case 7:
+            if (m_spellInfo->Attributes == str.toUInt())
+                return true;
+            break;
+        case 8:
+            if (m_spellInfo->AttributesEx == str.toUInt())
+                return true;
+            break;
+        case 9:
+            if (m_spellInfo->AttributesEx2 == str.toUInt())
+                return true;
+            break;
+        case 10:
+            if (m_spellInfo->AttributesEx3 == str.toUInt())
+                return true;
+            break;
+        case 11:
+            if (m_spellInfo->AttributesEx4 == str.toUInt())
+                return true;
+            break;
+        case 12:
+            if (m_spellInfo->Stances == str.toUInt())
+                return true;
+            break;
+        case 13:
+            if (m_spellInfo->StancesNot == str.toUInt())
+                return true;
+            break;
+        case 14:
+            if (m_spellInfo->Targets == str.toUInt())
+                return true;
+            break;
+        case 15:
+            if (m_spellInfo->TargetCreatureType == str.toUInt())
+                return true;
+            break;
+        case 16:
+            if (m_spellInfo->RequiresSpellFocus == str.toUInt())
+                return true;
+            break;
+        case 17:
+            if (m_spellInfo->CasterAuraState == str.toUInt())
+                return true;
+            break;
+        case 18:
+            if (m_spellInfo->TargetAuraState == str.toUInt())
+                return true;
+            break;
+        case 19:
+            if (m_spellInfo->CastingTimeIndex == str.toUInt())
+                return true;
+            break;
+        case 20:
+            if (m_spellInfo->RecoveryTime == str.toUInt())
+                return true;
+            break;
+        case 21:
+            if (m_spellInfo->CategoryRecoveryTime == str.toUInt())
+                return true;
+            break;
+        case 22:
+            if (m_spellInfo->InterruptFlags == str.toUInt())
+                return true;
+            break;
+        case 23:
+            if (m_spellInfo->AuraInterruptFlags == str.toUInt())
+                return true;
+            break;
+        case 24:
+            if (m_spellInfo->ChannelInterruptFlags == str.toUInt())
+                return true;
+            break;
+        case 25:
+            if (m_spellInfo->ProcFlags == str.toUInt())
+                return true;
+            break;
+        case 26:
+            if (m_spellInfo->ProcChance == str.toUInt())
+                return true;
+            break;
+        case 27:
+            if (m_spellInfo->ProcCharges == str.toUInt())
+                return true;
+            break;
+        case 28:
+            if (m_spellInfo->MaxLevel == str.toUInt())
+                return true;
+            break;
+        case 29:
+            if (m_spellInfo->BaseLevel == str.toUInt())
+                return true;
+            break;
+        case 30:
+            if (m_spellInfo->SpellLevel == str.toUInt())
+                return true;
+            break;
+        case 31:
+            if (m_spellInfo->DurationIndex == str.toUInt())
+                return true;
+            break;
+        case 32:
+            if (m_spellInfo->PowerType == str.toUInt())
+                return true;
+            break;
+        case 33:
+            if (m_spellInfo->ManaCost == str.toUInt())
+                return true;
+            break;
+        case 34:
+            if (m_spellInfo->ManaCostPerlevel == str.toUInt())
+                return true;
+            break;
+        case 35:
+            if (m_spellInfo->ManaPerSecond == str.toUInt())
+                return true;
+            break;
+        case 36:
+            if (m_spellInfo->ManaPerSecondPerLevel == str.toUInt())
+                return true;
+            break;
+        case 37:
+            if (m_spellInfo->RangeIndex == str.toUInt())
+                return true;
+            break;
+        case 38:
+            if (m_spellInfo->Speed == str.toFloat())
+                return true;
+            break;
+        case 39:
+            if (m_spellInfo->ModalNextSpell == str.toUInt())
+                return true;
+            break;
+        case 40:
+            if (m_spellInfo->StackAmount == str.toUInt())
+                return true;
+            break;
+        case 41:
+            for (uint8 i = 0; i < MAX_SPELL_TOTEMS; i++)
+            {
+                if (m_spellInfo->Totem[i] == str.toUInt())
+                    return true;
+            }
+            break;
+        case 42:
+            for (uint8 i = 0; i < MAX_SPELL_REAGENTS; i++)
+            {
+                if (m_spellInfo->Reagent[i] == str.toInt())
+                    return true;
+            }
+            break;
+        case 43:
+            for (uint8 i = 0; i < MAX_SPELL_REAGENTS; i++)
+            {
+                if (m_spellInfo->ReagentCount[i] == str.toUInt())
+                    return true;
+            }
+            break;
+        case 44:
+            if (m_spellInfo->EquippedItemClass == str.toInt())
+                return true;
+            break;
+        case 45:
+            if (m_spellInfo->EquippedItemSubClassMask == str.toInt())
+                return true;
+            break;
+        case 46:
+            if (m_spellInfo->EquippedItemInventoryTypeMask == str.toInt())
+                return true;
+            break;
+        case 47:
+            for (uint8 i = 0; i < MAX_EFFECT_INDEX; i++)
+            {
+                if (m_spellInfo->Effect[i] == str.toUInt())
+                    return true;
+            }
+            break;
+        case 48:
+            for (uint8 i = 0; i < MAX_EFFECT_INDEX; i++)
+            {
+                if (m_spellInfo->EffectDieSides[i] == str.toInt())
+                    return true;
+            }
+            break;
+        case 49:
+            for (uint8 i = 0; i < MAX_EFFECT_INDEX; i++)
+            {
+                if (m_spellInfo->EffectBaseDice[i] == str.toUInt())
+                    return true;
+            }
+            break;
+        case 50:
+            for (uint8 i = 0; i < MAX_EFFECT_INDEX; i++)
+            {
+                if (m_spellInfo->EffectDicePerLevel[i] == str.toFloat())
+                    return true;
+            }
+            break;
+        case 51:
+            for (uint8 i = 0; i < MAX_EFFECT_INDEX; i++)
+            {
+                if (m_spellInfo->EffectRealPointsPerLevel[i] == str.toFloat())
+                    return true;
+            }
+            break;
+        case 52:
+            for (uint8 i = 0; i < MAX_EFFECT_INDEX; i++)
+            {
+                if (m_spellInfo->EffectBasePoints[i] == str.toInt())
+                    return true;
+            }
+            break;
+        case 53:
+            for (uint8 i = 0; i < MAX_EFFECT_INDEX; i++)
+            {
+                if (m_spellInfo->EffectMechanic[i] == str.toUInt())
+                    return true;
+            }
+            break;
+        case 54:
+            for (uint8 i = 0; i < MAX_EFFECT_INDEX; i++)
+            {
+                if (m_spellInfo->EffectImplicitTargetA[i] == str.toUInt())
+                    return true;
+            }
+            break;
+        case 55:
+            for (uint8 i = 0; i < MAX_EFFECT_INDEX; i++)
+            {
+                if (m_spellInfo->EffectImplicitTargetB[i] == str.toUInt())
+                    return true;
+            }
+            break;
+        case 56:
+            for (uint8 i = 0; i < MAX_EFFECT_INDEX; i++)
+            {
+                if (m_spellInfo->EffectRadiusIndex[i] == str.toUInt())
+                    return true;
+            }
+            break;
+        case 57:
+            for (uint8 i = 0; i < MAX_EFFECT_INDEX; i++)
+            {
+                if (m_spellInfo->EffectApplyAuraName[i] == str.toUInt())
+                    return true;
+            }
+            break;
+        case 58:
+            for (uint8 i = 0; i < MAX_EFFECT_INDEX; i++)
+            {
+                if (m_spellInfo->EffectAmplitude[i] == str.toUInt())
+                    return true;
+            }
+            break;
+        case 59:
+            for (uint8 i = 0; i < MAX_EFFECT_INDEX; i++)
+            {
+                if (m_spellInfo->EffectMultipleValue[i] == str.toFloat())
+                    return true;
+            }
+            break;
+        case 60:
+            for (uint8 i = 0; i < MAX_EFFECT_INDEX; i++)
+            {
+                if (m_spellInfo->EffectChainTarget[i] == str.toUInt())
+                    return true;
+            }
+            break;
+        case 61:
+            for (uint8 i = 0; i < MAX_EFFECT_INDEX; i++)
+            {
+                if (m_spellInfo->EffectItemType[i] == str.toUInt())
+                    return true;
+            }
+            break;
+        case 62:
+            for (uint8 i = 0; i < MAX_EFFECT_INDEX; i++)
+            {
+                if (m_spellInfo->EffectMiscValue[i] == str.toInt())
+                    return true;
+            }
+            break;
+        case 63:
+            for (uint8 i = 0; i < MAX_EFFECT_INDEX; i++)
+            {
+                if (m_spellInfo->EffectTriggerSpell[i] == str.toUInt())
+                    return true;
+            }
+            break;
+        case 64:
+            for (uint8 i = 0; i < MAX_EFFECT_INDEX; i++)
+            {
+                if (m_spellInfo->EffectPointsPerComboPoint[i] == str.toFloat())
+                    return true;
+            }
+            break;
+        case 65:
+            if (m_spellInfo->SpellVisual == str.toUInt())
+                return true;
+            break;
+        case 66:
+            if (m_spellInfo->SpellVisual2 == str.toUInt())
+                return true;
+            break;
+        case 67:
+            if (m_spellInfo->SpellIconID == str.toUInt())
+                return true;
+            break;
+        case 68:
+            if (m_spellInfo->ActiveIconID == str.toUInt())
+                return true;
+            break;
+        case 69:
+            if (m_spellInfo->SpellPriority == str.toUInt())
+                return true;
+            break;
+        case 70:
+            if (QString(m_spellInfo->SpellName[0]) == str)
+                return true;
+            break;
+        case 71:
+            if (m_spellInfo->SpellNameFlag == str.toUInt())
+                return true;
+            break;
+        case 72:
+            if (QString(m_spellInfo->Rank[0]) == str)
+                return true;
+            break;
+        case 73:
+            if (m_spellInfo->RankFlags == str.toUInt())
+                return true;
+            break;
+        case 74:
+            if (QString(m_spellInfo->Description[0]) == str)
+                return true;
+            break;
+        case 75:
+            if (m_spellInfo->DescriptionFlags == str.toUInt())
+                return true;
+            break;
+        case 76:
+            if (QString(m_spellInfo->ToolTip[0]) == str)
+                return true;
+            break;
+        case 77:
+            if (m_spellInfo->ToolTipFlags == str.toUInt())
+                return true;
+            break;
+        case 78:
+            if (m_spellInfo->ManaCostPercentage == str.toUInt())
+                return true;
+            break;
+        case 79:
+            if (m_spellInfo->StartRecoveryCategory == str.toUInt())
+                return true;
+            break;
+        case 80:
+            if (m_spellInfo->StartRecoveryTime == str.toUInt())
+                return true;
+            break;
+        case 81:
+            if (m_spellInfo->MaxTargetLevel == str.toUInt())
+                return true;
+            break;
+        case 82:
+            if (m_spellInfo->SpellFamilyName == str.toUInt())
+                return true;
+            break;
+        case 83:
+            if (m_spellInfo->SpellFamilyFlags == str.toULong())
+                return true;
+            break;
+        case 84:
+            if (m_spellInfo->MaxAffectedTargets == str.toUInt())
+                return true;
+            break;
+        case 85:
+            if (m_spellInfo->DmgClass == str.toUInt())
+                return true;
+            break;
+        case 86:
+            if (m_spellInfo->PreventionType == str.toUInt())
+                return true;
+            break;
+        case 87:
+            if (m_spellInfo->StanceBarOrder == str.toFloat())
+                return true;
+            break;
+        case 88:
+            for (uint8 i = 0; i < MAX_EFFECT_INDEX; i++)
+            {
+                if (m_spellInfo->DmgMultiplier[i] == str.toFloat())
+                    return true;
+            }
+            break;
+        case 89:
+            if (m_spellInfo->MinFactionId == str.toUInt())
+                return true;
+            break;
+        case 90:
+            if (m_spellInfo->MinReputation == str.toUInt())
+                return true;
+            break;
+        case 91:
+            if (m_spellInfo->RequiredAuraVision == str.toUInt())
+                return true;
+            break;
+    }
+    return false;
+}
+
 void ObjectSearch::Search()
 {
     bool isString = false;
     int32 count = -1;
-
-    SpellEntry const *spellInfo;
 
     QStandardItemModel *model = new QStandardItemModel(1, 2);
     model->setHorizontalHeaderItem(0, new QStandardItem("ID"));
@@ -145,18 +615,24 @@ void ObjectSearch::Search()
 
     if (iFace->IsFilter())
     {
+        uint8 Max = sizeof(SpellStruct) / sizeof(SpellStruct[0]);
+        uint8 MaxTarget = sizeof(EffectTargetString) / sizeof(EffectTargetString[0]);
         for (uint32 i = 0; i < sSpellStore.GetNumRows(); i++)
         {
             bool family = false;
             bool aura = false;
             bool effect = false;
+            bool adFilter1 = false;
+            bool adFilter2 = false;
+            bool targetA = false;
+            bool targetB = false;
 
-            spellInfo = sSpellStore.LookupEntry(i);
-            if (spellInfo)
+            m_spellInfo = sSpellStore.LookupEntry(i);
+            if (m_spellInfo)
             {
                 if (iFace->comboBox->currentIndex() < MAX_SPELLFAMILY)
                 {
-                    if (spellInfo->SpellFamilyName == iFace->comboBox->currentIndex())
+                    if (m_spellInfo->SpellFamilyName == iFace->comboBox->currentIndex())
                         family = true;
                 }
                 else
@@ -166,7 +642,7 @@ void ObjectSearch::Search()
                 {
                     for (uint8 i = EFFECT_INDEX_0; i < MAX_EFFECT_INDEX; i++)
                     {
-                        if (spellInfo->EffectApplyAuraName[i] == iFace->comboBox_2->currentIndex())
+                        if (m_spellInfo->EffectApplyAuraName[i] == iFace->comboBox_2->currentIndex())
                         {
                             aura = true;
                             break;
@@ -180,7 +656,7 @@ void ObjectSearch::Search()
                 {
                     for (uint8 i = EFFECT_INDEX_0; i < MAX_EFFECT_INDEX; i++)
                     {
-                        if (spellInfo->Effect[i] == iFace->comboBox_3->currentIndex())
+                        if (m_spellInfo->Effect[i] == iFace->comboBox_3->currentIndex())
                         {
                             effect = true;
                             break;
@@ -190,18 +666,62 @@ void ObjectSearch::Search()
                 else
                     effect = true;
 
-                if (family && aura & effect)
+                if (iFace->comboBox_4->currentIndex() < MaxTarget)
+                {
+                    for (uint8 i = EFFECT_INDEX_0; i < MAX_EFFECT_INDEX; i++)
+                    {
+                        if (m_spellInfo->EffectImplicitTargetA[i] == iFace->comboBox_4->currentIndex())
+                        {
+                            targetA = true;
+                            break;
+                        }
+                    }
+                }
+                else
+                    targetA = true;
+
+                if (iFace->comboBox_5->currentIndex() < MaxTarget)
+                {
+                    for (uint8 i = EFFECT_INDEX_0; i < MAX_EFFECT_INDEX; i++)
+                    {
+                        if (m_spellInfo->EffectImplicitTargetB[i] == iFace->comboBox_5->currentIndex())
+                        {
+                            targetB = true;
+                            break;
+                        }
+                    }
+                }
+                else
+                    targetB = true;
+
+                if (iFace->adBox1->currentIndex() > 0 && iFace->adBox1->currentIndex() < Max)
+                {
+                    if (hasValue(iFace->adBox1->currentIndex(), iFace->adLine1->text()))
+                        adFilter1 = true;
+                }
+                else
+                    adFilter1 = true;
+
+                if (iFace->adBox2->currentIndex() > 0 && iFace->adBox2->currentIndex() < Max)
+                {
+                    if (hasValue(iFace->adBox2->currentIndex(), iFace->adLine2->text()))
+                        adFilter2 = true;
+                }
+                else
+                    adFilter2 = true;
+
+                if (family && aura && effect && adFilter1 && adFilter2 && targetA && targetB)
                 {
                     count++;
-                    QString sRank(spellInfo->Rank[0]);
+                    QString sRank(m_spellInfo->Rank[0]);
 
-                    QStandardItem *item_id = new QStandardItem(QString("%0").arg(spellInfo->Id));
+                    QStandardItem *item_id = new QStandardItem(QString("%0").arg(m_spellInfo->Id));
                     QStandardItem *item_name;
 
                     if (sRank.isEmpty())
-                        item_name = new QStandardItem(QString("%0").arg(spellInfo->SpellName[0]));
+                        item_name = new QStandardItem(QString("%0").arg(m_spellInfo->SpellName[0]));
                     else
-                        item_name = new QStandardItem(QString("%0 (%1)").arg(spellInfo->SpellName[0]).arg(spellInfo->Rank[0]));
+                        item_name = new QStandardItem(QString("%0 (%1)").arg(m_spellInfo->SpellName[0]).arg(m_spellInfo->Rank[0]));
 
                     model->setItem(count, 0, item_id);
                     model->setItem(count, 1, item_name);
@@ -227,19 +747,19 @@ void ObjectSearch::Search()
             {
                 for (uint32 i = 0; i < sSpellStore.GetNumRows(); i++)
                 {
-                    spellInfo = sSpellStore.LookupEntry(i);
-				    if (spellInfo && QString(spellInfo->SpellName[0]).contains(iFace->findLine_e1->text(), Qt::CaseInsensitive))
+                    m_spellInfo = sSpellStore.LookupEntry(i);
+				    if (m_spellInfo && QString(m_spellInfo->SpellName[0]).contains(iFace->findLine_e1->text(), Qt::CaseInsensitive))
                     {
                         count++;
-                        QString sRank(spellInfo->Rank[0]);
+                        QString sRank(m_spellInfo->Rank[0]);
 
-                        QStandardItem *item_id = new QStandardItem(QString("%0").arg(spellInfo->Id));
+                        QStandardItem *item_id = new QStandardItem(QString("%0").arg(m_spellInfo->Id));
                         QStandardItem *item_name;
 
                         if (sRank.isEmpty())
-                            item_name = new QStandardItem(QString("%0").arg(spellInfo->SpellName[0]));
+                            item_name = new QStandardItem(QString("%0").arg(m_spellInfo->SpellName[0]));
                         else
-                            item_name = new QStandardItem(QString("%0 (%1)").arg(spellInfo->SpellName[0]).arg(spellInfo->Rank[0]));
+                            item_name = new QStandardItem(QString("%0 (%1)").arg(m_spellInfo->SpellName[0]).arg(m_spellInfo->Rank[0]));
 
                         model->setItem(count, 0, item_id);
                         model->setItem(count, 1, item_name);
@@ -249,23 +769,23 @@ void ObjectSearch::Search()
             }
             else
             {
-                spellInfo = sSpellStore.LookupEntry(iFace->findLine_e1->text().toInt());
+                m_spellInfo = sSpellStore.LookupEntry(iFace->findLine_e1->text().toInt());
 
-                if (spellInfo)
+                if (m_spellInfo)
                 {
-                    QString sRank(spellInfo->Rank[0]);
+                    QString sRank(m_spellInfo->Rank[0]);
 
-                    QStandardItem  *item_id = new QStandardItem (QString("%0").arg(spellInfo->Id));
+                    QStandardItem  *item_id = new QStandardItem (QString("%0").arg(m_spellInfo->Id));
                     QStandardItem  *item_name;
 
                     if (sRank.isEmpty())
-                        item_name = new QStandardItem (QString("%0").arg(spellInfo->SpellName[0]));
+                        item_name = new QStandardItem (QString("%0").arg(m_spellInfo->SpellName[0]));
                     else
-                        item_name = new QStandardItem (QString("%0 (%1)").arg(spellInfo->SpellName[0]).arg(spellInfo->Rank[0]));
+                        item_name = new QStandardItem (QString("%0 (%1)").arg(m_spellInfo->SpellName[0]).arg(m_spellInfo->Rank[0]));
 
                     model->setItem(0, 0, item_id);
                     model->setItem(0, 1, item_name);
-                    QApplication::postEvent(iFace, new _Event(EVENT_SETMODEL, model, spellInfo));
+                    QApplication::postEvent(iFace, new _Event(EVENT_SETMODEL, model, m_spellInfo));
                 }
             }
         }
@@ -273,19 +793,19 @@ void ObjectSearch::Search()
         {
             for (uint32 i = 0; i < sSpellStore.GetNumRows(); i++)
             {
-                spellInfo = sSpellStore.LookupEntry(i);
-                if (spellInfo && spellInfo->SpellIconID == iFace->findLine_e2->text().toInt())
+                m_spellInfo = sSpellStore.LookupEntry(i);
+                if (m_spellInfo && m_spellInfo->SpellIconID == iFace->findLine_e2->text().toInt())
                 {
                     count++;
-                    QString sRank(spellInfo->Rank[0]);
+                    QString sRank(m_spellInfo->Rank[0]);
 
-                    QStandardItem *item_id = new QStandardItem(QString("%0").arg(spellInfo->Id));
+                    QStandardItem *item_id = new QStandardItem(QString("%0").arg(m_spellInfo->Id));
                     QStandardItem *item_name;
 
                     if (sRank.isEmpty())
-                        item_name = new QStandardItem(QString("%0").arg(spellInfo->SpellName[0]));
+                        item_name = new QStandardItem(QString("%0").arg(m_spellInfo->SpellName[0]));
                     else
-                        item_name = new QStandardItem(QString("%0 (%1)").arg(spellInfo->SpellName[0]).arg(spellInfo->Rank[0]));
+                        item_name = new QStandardItem(QString("%0 (%1)").arg(m_spellInfo->SpellName[0]).arg(m_spellInfo->Rank[0]));
 
                     model->setItem(count, 0, item_id);
                     model->setItem(count, 1, item_name);
@@ -297,19 +817,19 @@ void ObjectSearch::Search()
         {
             for (uint32 i = 0; i < sSpellStore.GetNumRows(); i++)
             {
-                spellInfo = sSpellStore.LookupEntry(i);
-                if (spellInfo && QString(spellInfo->Description[0]).contains(iFace->findLine_e3->text(), Qt::CaseInsensitive))
+                m_spellInfo = sSpellStore.LookupEntry(i);
+                if (m_spellInfo && QString(m_spellInfo->Description[0]).contains(iFace->findLine_e3->text(), Qt::CaseInsensitive))
                 {
                     count++;
-                    QString sRank(spellInfo->Rank[0]);
+                    QString sRank(m_spellInfo->Rank[0]);
 
-                    QStandardItem *item_id = new QStandardItem(QString("%0").arg(spellInfo->Id));
+                    QStandardItem *item_id = new QStandardItem(QString("%0").arg(m_spellInfo->Id));
                     QStandardItem *item_name;
 
                     if (sRank.isEmpty())
-                        item_name = new QStandardItem(QString("%0").arg(spellInfo->SpellName[0]));
+                        item_name = new QStandardItem(QString("%0").arg(m_spellInfo->SpellName[0]));
                     else
-                        item_name = new QStandardItem(QString("%0 (%1)").arg(spellInfo->SpellName[0]).arg(spellInfo->Rank[0]));
+                        item_name = new QStandardItem(QString("%0 (%1)").arg(m_spellInfo->SpellName[0]).arg(m_spellInfo->Rank[0]));
 
                     model->setItem(count, 0, item_id);
                     model->setItem(count, 1, item_name);
@@ -321,19 +841,19 @@ void ObjectSearch::Search()
         {
             for (uint32 i = 0; i < sSpellStore.GetNumRows(); i++)
             {
-                spellInfo = sSpellStore.LookupEntry(i);
-                if (spellInfo)
+                m_spellInfo = sSpellStore.LookupEntry(i);
+                if (m_spellInfo)
                 {
                     count++;
-                    QString sRank(spellInfo->Rank[0]);
+                    QString sRank(m_spellInfo->Rank[0]);
 
-                    QStandardItem *item_id = new QStandardItem(QString("%0").arg(spellInfo->Id));
+                    QStandardItem *item_id = new QStandardItem(QString("%0").arg(m_spellInfo->Id));
                     QStandardItem *item_name;
 
                     if (sRank.isEmpty())
-                        item_name = new QStandardItem(QString("%0").arg(spellInfo->SpellName[0]));
+                        item_name = new QStandardItem(QString("%0").arg(m_spellInfo->SpellName[0]));
                     else
-                        item_name = new QStandardItem(QString("%0 (%1)").arg(spellInfo->SpellName[0]).arg(spellInfo->Rank[0]));
+                        item_name = new QStandardItem(QString("%0 (%1)").arg(m_spellInfo->SpellName[0]).arg(m_spellInfo->Rank[0]));
 
                     model->setItem(count, 0, item_id);
                     model->setItem(count, 1, item_name);

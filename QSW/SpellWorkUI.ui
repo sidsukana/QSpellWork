@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>880</width>
-    <height>590</height>
+    <height>643</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -26,8 +26,8 @@
      <rect>
       <x>9</x>
       <y>9</y>
-      <width>581</width>
-      <height>521</height>
+      <width>571</width>
+      <height>581</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -37,10 +37,10 @@
    <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">
      <rect>
-      <x>599</x>
+      <x>589</x>
       <y>119</y>
-      <width>271</width>
-      <height>81</height>
+      <width>281</width>
+      <height>131</height>
      </rect>
     </property>
     <property name="title">
@@ -51,7 +51,7 @@
       <rect>
        <x>4</x>
        <y>15</y>
-       <width>261</width>
+       <width>271</width>
        <height>20</height>
       </rect>
      </property>
@@ -64,7 +64,7 @@
       <number>-1</number>
      </property>
      <property name="maxVisibleItems">
-      <number>20</number>
+      <number>30</number>
      </property>
      <property name="insertPolicy">
       <enum>QComboBox::InsertAfterCurrent</enum>
@@ -75,7 +75,7 @@
       <rect>
        <x>4</x>
        <y>36</y>
-       <width>261</width>
+       <width>271</width>
        <height>20</height>
       </rect>
      </property>
@@ -88,7 +88,7 @@
       <number>-1</number>
      </property>
      <property name="maxVisibleItems">
-      <number>20</number>
+      <number>30</number>
      </property>
      <property name="insertPolicy">
       <enum>QComboBox::InsertAfterCurrent</enum>
@@ -99,7 +99,7 @@
       <rect>
        <x>4</x>
        <y>57</y>
-       <width>261</width>
+       <width>271</width>
        <height>20</height>
       </rect>
      </property>
@@ -112,19 +112,55 @@
       <number>-1</number>
      </property>
      <property name="maxVisibleItems">
-      <number>20</number>
+      <number>30</number>
      </property>
      <property name="insertPolicy">
       <enum>QComboBox::InsertAfterCurrent</enum>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="comboBox_4">
+     <property name="geometry">
+      <rect>
+       <x>4</x>
+       <y>78</y>
+       <width>271</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>7</pointsize>
+      </font>
+     </property>
+     <property name="maxVisibleItems">
+      <number>30</number>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="comboBox_5">
+     <property name="geometry">
+      <rect>
+       <x>4</x>
+       <y>101</y>
+       <width>271</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>7</pointsize>
+      </font>
+     </property>
+     <property name="maxVisibleItems">
+      <number>30</number>
      </property>
     </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
      <rect>
-      <x>599</x>
+      <x>589</x>
       <y>10</y>
-      <width>271</width>
+      <width>281</width>
       <height>111</height>
      </rect>
     </property>
@@ -206,7 +242,7 @@
       <rect>
        <x>190</x>
        <y>20</y>
-       <width>75</width>
+       <width>81</width>
        <height>51</height>
       </rect>
      </property>
@@ -252,7 +288,7 @@
       <rect>
        <x>190</x>
        <y>72</y>
-       <width>75</width>
+       <width>81</width>
        <height>31</height>
       </rect>
      </property>
@@ -276,10 +312,10 @@
    <widget class="QTableView" name="SpellList">
     <property name="geometry">
      <rect>
-      <x>599</x>
-      <y>207</y>
-      <width>271</width>
-      <height>321</height>
+      <x>589</x>
+      <y>327</y>
+      <width>281</width>
+      <height>261</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -357,6 +393,65 @@
     <attribute name="verticalHeaderMinimumSectionSize">
      <number>17</number>
     </attribute>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_3">
+    <property name="geometry">
+     <rect>
+      <x>590</x>
+      <y>250</y>
+      <width>271</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Advanced Filter</string>
+    </property>
+    <widget class="QComboBox" name="adBox1">
+     <property name="geometry">
+      <rect>
+       <x>5</x>
+       <y>20</y>
+       <width>151</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="maxVisibleItems">
+      <number>30</number>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="adLine1">
+     <property name="geometry">
+      <rect>
+       <x>160</x>
+       <y>20</y>
+       <width>101</width>
+       <height>21</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="adLine2">
+     <property name="geometry">
+      <rect>
+       <x>160</x>
+       <y>43</y>
+       <width>101</width>
+       <height>21</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="adBox2">
+     <property name="geometry">
+      <rect>
+       <x>5</x>
+       <y>43</y>
+       <width>151</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="maxVisibleItems">
+      <number>30</number>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">

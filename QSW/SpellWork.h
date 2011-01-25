@@ -76,9 +76,11 @@ public:
     ~ObjectSearch();
 
     void Search();
+    bool hasValue(uint8 index, QString str);
 
 private:
     SpellWork *iFace;
+    SpellEntry const *m_spellInfo;
 };
 
 class About : public QDialog, public Ui::AboutUI
