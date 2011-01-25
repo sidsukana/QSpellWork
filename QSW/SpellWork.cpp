@@ -562,7 +562,7 @@ bool ObjectSearch::hasValue(uint8 index, QString str)
                 return true;
             break;
         case 83:
-            if (m_spellInfo->SpellFamilyFlags == str.toULong())
+            if (m_spellInfo->SpellFamilyFlags == str.toULongLong())
                 return true;
             break;
         case 84:
