@@ -9,13 +9,13 @@ class ObjThread: public QThread
     friend class SpellWork;
 public:
     
-    ObjThread(uint8 id = 0, SpellWork *obj = NULL);
+    ObjThread(quint8 id = 0, SpellWork *obj = NULL);
     ~ObjThread();
 
     virtual void run();
-    uint8 GetId() { return t_id; }
+    quint8 GetId() { return t_id; }
 private:
-    uint8 t_id;
+    quint8 t_id;
 
     SpellWork *_iFace;
 };

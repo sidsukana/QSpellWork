@@ -11,8 +11,6 @@
 #include "DBCStore.h"
 #include "DBCStructure.h"
 
-#define SIZEFMTD ACE_SIZE_T_FORMAT_SPECIFIER
-
 enum LocaleConstant
 {
     LOCALE_enUS = 0,                                        // also enGB

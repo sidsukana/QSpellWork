@@ -1,21 +1,22 @@
 #ifndef DBC_FILE_LOADER_H
 #define DBC_FILE_LOADER_H
 
+#include <QtCore/QtGlobal>
 #include "Platform/Define.h"
 #include "Utilities/ByteConverter.h"
 #include <cassert>
 
 enum
 {
-    FT_NA='x',                                              //not used or unknown, 4 byte size
-    FT_NA_BYTE='X',                                         //not used or unknown, byte
-    FT_STRING='s',                                          //char*
-    FT_FLOAT='f',                                           //float
-    FT_INT='i',                                             //uint32
-    FT_BYTE='b',                                            //uint8
-    FT_SORT='d',                                            //sorted by this field, field is not included
-    FT_IND='n',                                             //the same,but parsed to data
-    FT_LOGIC='l'                                            //Logical (boolean)
+    FT_NA       = 'x',                                         //not used or unknown, 4 byte size
+    FT_NA_BYTE  = 'X',                                         //not used or unknown, byte
+    FT_STRING   = 's',                                         //char*
+    FT_FLOAT    = 'f',                                         //float
+    FT_INT      = 'i',                                         //uint32
+    FT_BYTE     = 'b',                                         //uint8
+    FT_SORT     = 'd',                                         //sorted by this field, field is not included
+    FT_IND      = 'n',                                         //the same,but parsed to data
+    FT_LOGIC    = 'l'                                          //Logical (boolean)
 };
 
 class DBCFileLoader
@@ -36,17 +37,17 @@ class DBCFileLoader
                     EndianConvert(val);
                     return val;
                 }
-                uint32 getUInt(size_t field) const
+                quint32 getUInt(size_t field) const
                 {
                     assert(field < file.fieldCount);
-                    uint32 val = *reinterpret_cast<uint32*>(offset+file.GetOffset(field));
+                    quint32 val = *reinterpret_cast<quint32*>(offset+file.GetOffset(field));
                     EndianConvert(val);
                     return val;
                 }
-                uint8 getUInt8(size_t field) const
+                quint8 getUInt8(size_t field) const
                 {
                     assert(field < file.fieldCount);
-                    return *reinterpret_cast<uint8*>(offset+file.GetOffset(field));
+                    return *reinterpret_cast<quint8*>(offset+file.GetOffset(field));
                 }
 
                 const char *getString(size_t field) const
@@ -70,20 +71,20 @@ class DBCFileLoader
         Record getRecord(size_t id);
         /// Get begin iterator over records
 
-        uint32 GetNumRows() const { return recordCount;}
-        uint32 GetCols() const { return fieldCount; }
-        uint32 GetOffset(size_t id) const { return (fieldsOffset != NULL && id < fieldCount) ? fieldsOffset[id] : 0; }
-        bool IsLoaded() {return (data!=NULL);}
-        char* AutoProduceData(const char* fmt, uint32& count, char**& indexTable);
+        quint32 GetNumRows() const { return recordCount;}
+        quint32 GetCols() const { return fieldCount; }
+        quint32 GetOffset(size_t id) const { return (fieldsOffset != NULL && id < fieldCount) ? fieldsOffset[id] : 0; }
+        bool IsLoaded() {return (data != NULL);}
+        char* AutoProduceData(const char* fmt, quint32& count, char**& indexTable);
         char* AutoProduceStrings(const char* fmt, char* dataTable);
-        static uint32 GetFormatRecordSize(const char * format, int32 * index_pos = NULL);
+        static quint32 GetFormatRecordSize(const char * format, qint32 * index_pos = NULL);
     private:
 
-        uint32 recordSize;
-        uint32 recordCount;
-        uint32 fieldCount;
-        uint32 stringSize;
-        uint32 *fieldsOffset;
+        quint32 recordSize;
+        quint32 recordCount;
+        quint32 fieldCount;
+        quint32 stringSize;
+        quint32 *fieldsOffset;
         unsigned char *data;
         unsigned char *stringTable;
 };

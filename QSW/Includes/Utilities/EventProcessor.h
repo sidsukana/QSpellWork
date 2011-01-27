@@ -7,6 +7,7 @@
 #define __EVENTPROCESSOR_H
 
 #include "Platform/Define.h"
+#include <QtCore/QtGlobal>
 
 #include <map>
 
@@ -28,21 +29,21 @@ class BasicEvent
         // this method executes when the event is triggered
         // return false if event does not want to be deleted
         // e_time is execution time, p_time is update interval
-        virtual bool Execute(uint64 /*e_time*/, uint32 /*p_time*/) { return true; }
+        virtual bool Execute(quint64 /*e_time*/, quint32 /*p_time*/) { return true; }
 
         virtual bool IsDeletable() const { return true; }   // this event can be safely deleted
 
-        virtual void Abort(uint64 /*e_time*/) {}            // this method executes when the event is aborted
+        virtual void Abort(quint64 /*e_time*/) {}            // this method executes when the event is aborted
 
         bool to_Abort;                                      // set by externals when the event is aborted, aborted events don't execute
         // and get Abort call when deleted
 
         // these can be used for time offset control
-        uint64 m_addTime;                                   // time when the event was added to queue, filled by event handler
-        uint64 m_execTime;                                  // planned time of next execution, filled by event handler
+        quint64 m_addTime;                                   // time when the event was added to queue, filled by event handler
+        quint64 m_execTime;                                  // planned time of next execution, filled by event handler
 };
 
-typedef std::multimap<uint64, BasicEvent*> EventList;
+typedef std::multimap<quint64, BasicEvent*> EventList;
 
 class EventProcessor
 {
@@ -51,14 +52,14 @@ class EventProcessor
         EventProcessor();
         ~EventProcessor();
 
-        void Update(uint32 p_time);
+        void Update(quint32 p_time);
         void KillAllEvents(bool force);
-        void AddEvent(BasicEvent* Event, uint64 e_time, bool set_addtime = true);
-        uint64 CalculateTime(uint64 t_offset);
+        void AddEvent(BasicEvent* Event, quint64 e_time, bool set_addtime = true);
+        quint64 CalculateTime(quint64 t_offset);
 
     protected:
 
-        uint64 m_time;
+        quint64 m_time;
         EventList m_events;
         bool m_aborting;
 };

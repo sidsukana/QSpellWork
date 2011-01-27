@@ -281,7 +281,7 @@ QString TargetFlagsString[] =
     QString("TARGET_FLAG_UNK2")
 };
 
-uint64 CreatureTypeFlags[] =
+quint32 CreatureTypeFlags[] =
 {
     0x00000000,
     0x00000001,
@@ -297,7 +297,7 @@ uint64 CreatureTypeFlags[] =
     0x00000400
 };
 
-uint64 TargetFlags[] =
+quint32 TargetFlags[] =
 {
     0x00000000,
     0x00000001,
@@ -319,7 +319,7 @@ uint64 TargetFlags[] =
     0x00010000
 };
 
-uint64 AttributesVal[] =
+quint32 AttributesVal[] =
 {
     0x00000001,
     0x00000002,
@@ -552,7 +552,7 @@ QString AttributesEx4String[] =
 };
 
 // Check...
-uint64 FormMask[] =
+quint32 FormMask[] =
 {
     0x00000001,
     0x00000002,
@@ -635,7 +635,7 @@ QString ItemClassString[] =
     QString("MISC")
 };
 
-uint64 ItemSubWeaponMask[] =
+quint32 ItemSubWeaponMask[] =
 {
     0x00000001,
     0x00000002,
@@ -684,7 +684,7 @@ QString ItemSubWeaponString[] =
     QString("FISHING_POLE")
 };
 
-uint64 ItemSubArmorMask[] =
+quint32 ItemSubArmorMask[] =
 {
     0x00000001,
     0x00000002,
@@ -714,7 +714,7 @@ QString ItemSubArmorString[] =
     QString("SIGIL")
 };
 
-uint64 ItemSubMiscMask[] =
+quint32 ItemSubMiscMask[] =
 {
     0x00000001,
     0x00000002,
@@ -733,7 +733,7 @@ QString ItemSubMiscString[] =
     QString("MOUNT")
 };
 
-uint64 InventoryTypeMask[] =
+quint32 InventoryTypeMask[] =
 {
     0x00000001,
     0x00000002,
@@ -1216,7 +1216,7 @@ QString UnitMods[] =
     QString("UNIT_MOD_END")
 };
 
-uint64 CombatRating[] =
+quint32 CombatRating[] =
 {
     0x00000000,
     0x00000001,

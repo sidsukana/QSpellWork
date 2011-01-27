@@ -2,11 +2,6 @@
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QSW", "QSW\QSW.vcproj", "{41F7E639-D141-409E-A523-631253C45BBF}"
-	ProjectSection(ProjectDependencies) = postProject
-		{BD537C9A-FECA-1BAD-6757-8A6300006755} = {BD537C9A-FECA-1BAD-6757-8A6300006755}
-	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ACE_Wrappers", "QSW\ACE_vc9.vcproj", "{BD537C9A-FECA-1BAD-6757-8A6300006755}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,18 +22,6 @@ Global
 		{41F7E639-D141-409E-A523-631253C45BBF}.Release|Win32.ActiveCfg = Release|Win32
 		{41F7E639-D141-409E-A523-631253C45BBF}.Release|Win32.Build.0 = Release|Win32
 		{41F7E639-D141-409E-A523-631253C45BBF}.Release|x64.ActiveCfg = Release|Win32
-		{BD537C9A-FECA-1BAD-6757-8A6300006755}.Debug_NoPCH|Win32.ActiveCfg = Debug_NoPCH|Win32
-		{BD537C9A-FECA-1BAD-6757-8A6300006755}.Debug_NoPCH|Win32.Build.0 = Debug_NoPCH|Win32
-		{BD537C9A-FECA-1BAD-6757-8A6300006755}.Debug_NoPCH|x64.ActiveCfg = Debug_NoPCH|x64
-		{BD537C9A-FECA-1BAD-6757-8A6300006755}.Debug_NoPCH|x64.Build.0 = Debug_NoPCH|x64
-		{BD537C9A-FECA-1BAD-6757-8A6300006755}.Debug|Win32.ActiveCfg = Debug|Win32
-		{BD537C9A-FECA-1BAD-6757-8A6300006755}.Debug|Win32.Build.0 = Debug|Win32
-		{BD537C9A-FECA-1BAD-6757-8A6300006755}.Debug|x64.ActiveCfg = Debug|x64
-		{BD537C9A-FECA-1BAD-6757-8A6300006755}.Debug|x64.Build.0 = Debug|x64
-		{BD537C9A-FECA-1BAD-6757-8A6300006755}.Release|Win32.ActiveCfg = Release|Win32
-		{BD537C9A-FECA-1BAD-6757-8A6300006755}.Release|Win32.Build.0 = Release|Win32
-		{BD537C9A-FECA-1BAD-6757-8A6300006755}.Release|x64.ActiveCfg = Release|x64
-		{BD537C9A-FECA-1BAD-6757-8A6300006755}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

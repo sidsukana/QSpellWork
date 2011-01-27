@@ -43,9 +43,9 @@ template<typename T> inline void EndianConvertReverse(T& val) { ByteConverter::a
 template<typename T> void EndianConvert(T*);         // will generate link error
 template<typename T> void EndianConvertReverse(T*);  // will generate link error
 
-inline void EndianConvert(uint8&) { }
-inline void EndianConvert(int8&)  { }
-inline void EndianConvertReverse(uint8&) { }
-inline void EndianConvertReverse( int8&) { }
+inline void EndianConvert(quint8&) { }
+inline void EndianConvert(qint8&)  { }
+inline void EndianConvertReverse(quint8&) { }
+inline void EndianConvertReverse(qint8&) { }
 
 #endif
