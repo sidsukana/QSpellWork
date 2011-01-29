@@ -1840,74 +1840,112 @@ void SpellWork::AppendSpellEffectInfo()
     if (!m_spellInfo)
         return;
 
-    for (quint8 i = EFFECT_INDEX_0; i < MAX_EFFECT_INDEX; i++)
+    for (quint8 eff = EFFECT_INDEX_0; eff < MAX_EFFECT_INDEX; eff++)
     {
-        if (!m_spellInfo->Effect[i])
+        if (!m_spellInfo->Effect[eff])
         {
-            SpellInfoBrowser->append(QString("<b>Effect %0:  NO EFFECT</b>").arg(i));
+            SpellInfoBrowser->append(QString("<b>Effect %0:  NO EFFECT</b>").arg(eff));
             SpellInfoBrowser->append(QString());
         }
         else
         {
-            QString _BasePoints(QString("BasePoints = %0").arg(m_spellInfo->EffectBasePoints[i] + 1));
+            QString _BasePoints(QString("BasePoints = %0").arg(m_spellInfo->EffectBasePoints[eff] + 1));
             
             QString _RealPoints;
-            if (m_spellInfo->EffectRealPointsPerLevel[i] != 0)
-                _RealPoints = QString(" + Level * %0").arg(m_spellInfo->EffectRealPointsPerLevel[i], 0, 'f', 2);
+            if (m_spellInfo->EffectRealPointsPerLevel[eff] != 0)
+                _RealPoints = QString(" + Level * %0").arg(m_spellInfo->EffectRealPointsPerLevel[eff], 0, 'f', 2);
 
             QString _DieSides;
-            if (1 < m_spellInfo->EffectDieSides[i])
+            if (1 < m_spellInfo->EffectDieSides[eff])
             {
-                if (m_spellInfo->EffectRealPointsPerLevel[i] != 0)
+                if (m_spellInfo->EffectRealPointsPerLevel[eff] != 0)
                     _DieSides = QString(" to %0 + lvl * %1")
-                        .arg(m_spellInfo->EffectBasePoints[i] + 1 + m_spellInfo->EffectDieSides[i])
-                        .arg(m_spellInfo->EffectRealPointsPerLevel[i], 0, 'f', 2);
+                        .arg(m_spellInfo->EffectBasePoints[eff] + 1 + m_spellInfo->EffectDieSides[eff])
+                        .arg(m_spellInfo->EffectRealPointsPerLevel[eff], 0, 'f', 2);
                 else
-                    _DieSides = QString(" to %0").arg(m_spellInfo->EffectBasePoints[i] + 1 + m_spellInfo->EffectDieSides[i]);
+                    _DieSides = QString(" to %0").arg(m_spellInfo->EffectBasePoints[eff] + 1 + m_spellInfo->EffectDieSides[eff]);
             }
 
             QString _PointsPerCombo;
-            if (m_spellInfo->EffectPointsPerComboPoint[i] != 0)
-                _PointsPerCombo = QString(" + combo * %0").arg(m_spellInfo->EffectPointsPerComboPoint[i], 0, 'f', 2);
+            if (m_spellInfo->EffectPointsPerComboPoint[eff] != 0)
+                _PointsPerCombo = QString(" + combo * %0").arg(m_spellInfo->EffectPointsPerComboPoint[eff], 0, 'f', 2);
 
             QString _DmgMultiplier;
-            if (m_spellInfo->DmgMultiplier[i] != 1.0f)
-                _DmgMultiplier = QString(" * %0").arg(m_spellInfo->DmgMultiplier[i], 0, 'f', 2);
+            if (m_spellInfo->DmgMultiplier[eff] != 1.0f)
+                _DmgMultiplier = QString(" * %0").arg(m_spellInfo->DmgMultiplier[eff], 0, 'f', 2);
 
             QString _Multiple;
-            if (m_spellInfo->EffectMultipleValue[i] != 0)
-                _Multiple = QString(", Multiple = %0").arg(m_spellInfo->EffectMultipleValue[i], 0, 'f', 2);
+            if (m_spellInfo->EffectMultipleValue[eff] != 0)
+                _Multiple = QString(", Multiple = %0").arg(m_spellInfo->EffectMultipleValue[eff], 0, 'f', 2);
                 
             QString _Result = _BasePoints + _RealPoints + _DieSides + _PointsPerCombo + _DmgMultiplier + _Multiple;
             SpellInfoBrowser->append(QString("<b>Effect %0: Id %1 (%2)</b>")
-                .arg(i)
-                .arg(m_spellInfo->Effect[i])
-                .arg(EffectString[m_spellInfo->Effect[i]]));
+                .arg(eff)
+                .arg(m_spellInfo->Effect[eff])
+                .arg(EffectString[m_spellInfo->Effect[eff]]));
 
             SpellInfoBrowser->append(_Result);
 
             SpellInfoBrowser->append(QString("Targets (%0, %1) (%2, %3)")
-                .arg(m_spellInfo->EffectImplicitTargetA[i])
-                .arg(m_spellInfo->EffectImplicitTargetB[i])
-                .arg(EffectTargetString[m_spellInfo->EffectImplicitTargetA[i]])
-                .arg(EffectTargetString[m_spellInfo->EffectImplicitTargetB[i]]));
+                .arg(m_spellInfo->EffectImplicitTargetA[eff])
+                .arg(m_spellInfo->EffectImplicitTargetB[eff])
+                .arg(EffectTargetString[m_spellInfo->EffectImplicitTargetA[eff]])
+                .arg(EffectTargetString[m_spellInfo->EffectImplicitTargetB[eff]]));
             
-            AppendAuraInfo(i);
+            AppendAuraInfo(eff);
 
-            AppendRadiusInfo(i);
+            AppendRadiusInfo(eff);
 
-            AppendTriggerInfo(i);
+            AppendTriggerInfo(eff);
 
-            if (m_spellInfo->EffectChainTarget[i] != 0)
-                SpellInfoBrowser->append(QString("EffectChainTarget = %0").arg(m_spellInfo->EffectChainTarget[i]));
+            if (m_spellInfo->EffectChainTarget[eff] != 0)
+                SpellInfoBrowser->append(QString("EffectChainTarget = %0").arg(m_spellInfo->EffectChainTarget[eff]));
 
-            if (m_spellInfo->EffectItemType[i] != 0)
-                SpellInfoBrowser->append(QString("EffectItemType = %0").arg(m_spellInfo->EffectItemType[i]));
-
-            if (m_spellInfo->EffectMechanic[i] != 0)
+            if (m_spellInfo->EffectMechanic[eff] != 0)
                 SpellInfoBrowser->append(QString("Effect Mechanic = %0 (%1)")
-                    .arg(m_spellInfo->EffectMechanic[i])
-                    .arg(MechanicString[m_spellInfo->EffectMechanic[i]]));
+                    .arg(m_spellInfo->EffectMechanic[eff])
+                    .arg(MechanicString[m_spellInfo->EffectMechanic[eff]]));
+
+            if (m_spellInfo->EffectItemType[eff] != 0)
+            {
+                QString sEffectItemType(QString("%0").arg(m_spellInfo->EffectItemType[eff], 8, 16, QChar('0')));
+                SpellInfoBrowser->append(QString("EffectItemType = 0x%0").arg(sEffectItemType));
+
+                for (quint32 i = 0; i < sSpellStore.GetNumRows(); i++)
+                {
+                    SpellEntry const *spellInfo = sSpellStore.LookupEntry(i);
+                    if (spellInfo)
+                    {
+                        bool hasSkill = false;
+                        if ((spellInfo->SpellFamilyName == m_spellInfo->SpellFamilyName) &&
+                            (spellInfo->SpellFamilyFlags & m_spellInfo->EffectItemType[eff]))
+                        {
+                            QString sRank(spellInfo->Rank[0]);
+                            for (quint32 sk = 0; sk < sSkillLineAbilityStore.GetNumRows(); sk++)
+                            {
+                                SkillLineAbilityEntry const *skillInfo = sSkillLineAbilityStore.LookupEntry(sk);
+                                if (skillInfo && skillInfo->SpellId == spellInfo->Id && skillInfo->SkillId > 0)
+                                {
+                                    hasSkill = true;
+                                    if (!sRank.isEmpty())
+                                        SpellInfoBrowser->append(QString("<font color=blue>+ %0 - %1 (%2)</font>").arg(spellInfo->Id).arg(spellInfo->SpellName[0]).arg(sRank));
+                                    else
+                                        SpellInfoBrowser->append(QString("<font color=blue>+ %0 - %1</font>").arg(spellInfo->Id).arg(spellInfo->SpellName[0]));
+                                    break;
+                                }
+                            }
+
+                            if (!hasSkill)
+                            {
+                                if (!sRank.isEmpty())
+                                    SpellInfoBrowser->append(QString("<font color=red>- %0 - %1 (%2)</font>").arg(spellInfo->Id).arg(spellInfo->SpellName[0]).arg(sRank));
+                                else
+                                    SpellInfoBrowser->append(QString("<font color=red>- %0 - %1</font>").arg(spellInfo->Id).arg(spellInfo->SpellName[0]));
+                            }
+                        }
+                    }         
+                }
+            }
 
             SpellInfoBrowser->append(QString());
         }
