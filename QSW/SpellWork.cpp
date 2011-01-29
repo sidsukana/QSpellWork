@@ -175,8 +175,8 @@ bool ObjectSearch::hasValue(quint8 index, QString str)
                 return true;
             break;
         case 2:
-            if (m_spellInfo->School == str.toUInt())
-                return true;
+            //if (m_spellInfo->School == str.toUInt())
+            //    return true;
             break;
         case 3:
             if (m_spellInfo->Category == str.toUInt())
@@ -494,8 +494,8 @@ bool ObjectSearch::hasValue(quint8 index, QString str)
                 return true;
             break;
         case 66:
-            if (m_spellInfo->SpellVisual2 == str.toUInt())
-                return true;
+            //if (m_spellInfo->SpellVisual2 == str.toUInt())
+            //    return true;
             break;
         case 67:
             if (m_spellInfo->SpellIconID == str.toUInt())
@@ -1603,9 +1603,9 @@ void SpellWork::ShowInfo()
         .arg(SpellFamilyString[m_spellInfo->SpellFamilyName])
         .arg(sSpellFamilyFlags.toUpper()));
 
-    SpellInfoBrowser->append(QString("SpellSchool = %0 (%1)")
-        .arg(m_spellInfo->School)
-        .arg(SchoolString[m_spellInfo->School]));
+    //SpellInfoBrowser->append(QString("SpellSchool = %0 (%1)")
+    //    .arg(m_spellInfo->School)
+    //    .arg(SchoolString[m_spellInfo->School]));
 
     SpellInfoBrowser->append(QString("DamageClass = %0 (%1)")
         .arg(m_spellInfo->DmgClass)

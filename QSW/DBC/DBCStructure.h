@@ -52,7 +52,7 @@ struct SpellEntry
 {
     quint32    Id;                                              // 0 normally counted from 0 field (but some tools start counting from 1, check this before tool use for data view!)
     quint32    Category;                                        // 1
-    quint32    CastUI                                           // 2 not used
+    quint32    CastUI;                                          // 2 not used
     quint32    Dispel;                                          // 3
     quint32    Mechanic;                                        // 4
     quint32    Attributes;                                      // 5
@@ -120,7 +120,7 @@ struct SpellEntry
     quint32    EffectTriggerSpell[MAX_EFFECT_INDEX];            // 116-118
     float      EffectPointsPerComboPoint[MAX_EFFECT_INDEX];     // 119-121
     quint32    SpellVisual;                                     // 122
-    quint32    Unk1                                             // 123 not used
+    quint32    Unk1;                                            // 123 not used
     quint32    SpellIconID;                                     // 124
     quint32    ActiveIconID;                                    // 125
     quint32    SpellPriority;                                   // 126

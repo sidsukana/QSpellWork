@@ -7,7 +7,6 @@ const char SpellCastTimefmt[]="nifi";
 const char SpellDurationfmt[]="niii";
 const char SpellEntryfmt[]="niiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiifiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiffffffiiiiiiiiiiiiiiiiiiiiifffiiiiiiiiiiiiiiifffiiiiissssssssssssssssissssssssssssssssissssssssssssssssissssssssssssssssiiiiiiiiiiiifffiiiiiii";
 const char SpellRadiusfmt[]="nfif";
-const char SpellRangefmt[]="nffissssssssissssssssi";
 const char SpellRangefmt[]="nffissssssssssssssssissssssssssssssssi";
 
 #endif
