@@ -1477,7 +1477,7 @@ QString SpellWork::GetDescription(QString str, SpellEntry const *spellInfo)
     if (!useRegExp)
         return str;
 
-    QRegExp rx("\\$+(([/,*])?([0-9]*);)?([d+\\;)(\\d*)?([1-9]*)([A-z])([1-3]*)([A-z]*\\:([A-z]*)\\;)?");
+    QRegExp rx("\\$+(([/,*])?([0-9]*);)?([d+\\;)(\\d*)?([1-9]*)([A-z])([1-3]*)(([A-z, ]*)\\:([A-z, ]*)\\;)?");
     while (str.contains(rx))
     {
         if (rx.indexIn(str) != -1)
@@ -1525,6 +1525,9 @@ QString SpellWork::GetDescription(QString str, SpellEntry const *spellInfo)
                     RegExpT(spellInfo, rx, str);
                 break;
                 case 'l':
+                    str.replace(rx.cap(0), rx.cap(9));
+                break;
+                case 'g':
                     str.replace(rx.cap(0), rx.cap(8));
                 break;
                 case 'n':
@@ -1911,39 +1914,42 @@ void SpellWork::AppendSpellEffectInfo()
                 QString sEffectItemType(QString("%0").arg(m_spellInfo->EffectItemType[eff], 8, 16, QChar('0')));
                 SpellInfoBrowser->append(QString("EffectItemType = 0x%0").arg(sEffectItemType));
 
-                for (quint32 i = 0; i < sSpellStore.GetNumRows(); i++)
+                if (m_spellInfo->Effect[eff] == 6)
                 {
-                    SpellEntry const *spellInfo = sSpellStore.LookupEntry(i);
-                    if (spellInfo)
+                    for (quint32 i = 0; i < sSpellStore.GetNumRows(); i++)
                     {
-                        bool hasSkill = false;
-                        if ((spellInfo->SpellFamilyName == m_spellInfo->SpellFamilyName) &&
-                            (spellInfo->SpellFamilyFlags & m_spellInfo->EffectItemType[eff]))
+                        SpellEntry const *spellInfo = sSpellStore.LookupEntry(i);
+                        if (spellInfo)
                         {
-                            QString sRank(spellInfo->Rank[0]);
-                            for (quint32 sk = 0; sk < sSkillLineAbilityStore.GetNumRows(); sk++)
+                            bool hasSkill = false;
+                            if ((spellInfo->SpellFamilyName == m_spellInfo->SpellFamilyName) &&
+                                (spellInfo->SpellFamilyFlags & m_spellInfo->EffectItemType[eff]))
                             {
-                                SkillLineAbilityEntry const *skillInfo = sSkillLineAbilityStore.LookupEntry(sk);
-                                if (skillInfo && skillInfo->SpellId == spellInfo->Id && skillInfo->SkillId > 0)
+                                QString sRank(spellInfo->Rank[0]);
+                                for (quint32 sk = 0; sk < sSkillLineAbilityStore.GetNumRows(); sk++)
                                 {
-                                    hasSkill = true;
+                                    SkillLineAbilityEntry const *skillInfo = sSkillLineAbilityStore.LookupEntry(sk);
+                                    if (skillInfo && skillInfo->SpellId == spellInfo->Id && skillInfo->SkillId > 0)
+                                    {
+                                        hasSkill = true;
+                                        if (!sRank.isEmpty())
+                                            SpellInfoBrowser->append(QString("%0<font color=blue>+ %1 - %2 (%3)</font>").arg(QChar(QChar::Nbsp), 4, QChar(QChar::Nbsp)).arg(spellInfo->Id).arg(spellInfo->SpellName[0]).arg(sRank));
+                                        else
+                                            SpellInfoBrowser->append(QString("%0<font color=blue>+ %1 - %2</font>").arg(QChar(QChar::Nbsp), 4, QChar(QChar::Nbsp)).arg(spellInfo->Id).arg(spellInfo->SpellName[0]));
+                                        break;
+                                    }
+                                }
+
+                                if (!hasSkill)
+                                {
                                     if (!sRank.isEmpty())
-                                        SpellInfoBrowser->append(QString("%0<font color=blue>+ %1 - %2 (%3)</font>").arg(QChar(QChar::Nbsp), 4, QChar(QChar::Nbsp)).arg(spellInfo->Id).arg(spellInfo->SpellName[0]).arg(sRank));
+                                        SpellInfoBrowser->append(QString("%0<font color=red>- %1 - %2 (%3)</font>").arg(QChar(QChar::Nbsp), 4, QChar(QChar::Nbsp)).arg(spellInfo->Id).arg(spellInfo->SpellName[0]).arg(sRank));
                                     else
-                                        SpellInfoBrowser->append(QString("%0<font color=blue>+ %1 - %2</font>").arg(QChar(QChar::Nbsp), 4, QChar(QChar::Nbsp)).arg(spellInfo->Id).arg(spellInfo->SpellName[0]));
-                                    break;
+                                        SpellInfoBrowser->append(QString("%0<font color=red>- %1 - %2</font>").arg(QChar(QChar::Nbsp), 4, QChar(QChar::Nbsp)).arg(spellInfo->Id).arg(spellInfo->SpellName[0]));
                                 }
                             }
-
-                            if (!hasSkill)
-                            {
-                                if (!sRank.isEmpty())
-                                    SpellInfoBrowser->append(QString("%0<font color=red>- %1 - %2 (%3)</font>").arg(QChar(QChar::Nbsp), 4, QChar(QChar::Nbsp)).arg(spellInfo->Id).arg(spellInfo->SpellName[0]).arg(sRank));
-                                else
-                                    SpellInfoBrowser->append(QString("%0<font color=red>- %1 - %2</font>").arg(QChar(QChar::Nbsp), 4, QChar(QChar::Nbsp)).arg(spellInfo->Id).arg(spellInfo->SpellName[0]));
-                            }
-                        }
-                    }         
+                        }         
+                    }
                 }
             }
 
