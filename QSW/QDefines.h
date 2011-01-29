@@ -114,15 +114,34 @@ QString DmgClassString[] =
     QString("SPELL_DAMAGE_CLASS_RANGED")
 };
 
-QString SchoolString[] =
+quint32 SchoolMask[] =
 {
-    QString("SPELL_SCHOOL_NORMAL"),
-    QString("SPELL_SCHOOL_HOLY"),
-    QString("SPELL_SCHOOL_FIRE"),
-    QString("SPELL_SCHOOL_NATURE"),
-    QString("SPELL_SCHOOL_FROST"),
-    QString("SPELL_SCHOOL_SHADOW"),
-    QString("SPELL_SCHOOL_ARCANE")
+    0x00,
+    0x01,
+    0x02,
+    0x04,
+    0x08,
+    0x10,
+    0x20,
+    0x40,
+    0x7C,
+    0x7E,
+    0x7F
+};
+
+QString SchoolMaskString[] =
+{
+    QString("MASK_NONE"),
+    QString("MASK_PHYSICAL"),
+    QString("MASK_HOLY"),
+    QString("MASK_FIRE"),
+    QString("MASK_NATURE"),
+    QString("MASK_FROST"),
+    QString("MASK_SHADOW"),
+    QString("MASK_ARCANE"),
+    QString("MASK_SPELL"),
+    QString("MASK_MAGIC"),
+    QString("MASK_ALL")
 };
 
 QString EffectString[] =
@@ -278,7 +297,10 @@ QString TargetFlagsString[] =
     QString("TARGET_FLAG_STRING"),
     QString("TARGET_FLAG_UNK1"),
     QString("TARGET_FLAG_CORPSE"),
-    QString("TARGET_FLAG_UNK2")
+    QString("TARGET_FLAG_UNK2"),
+    QString("TARGET_FLAG_GLYPH"),
+    QString("TARGET_FLAG_UNK3"),
+    QString("TARGET_FLAG_UNK4")
 };
 
 quint32 CreatureTypeFlags[] =
@@ -294,7 +316,9 @@ quint32 CreatureTypeFlags[] =
     0x00000080,
     0x00000100,
     0x00000200,
-    0x00000400
+    0x00000400,
+    0x00000800,
+    0x00001000
 };
 
 quint32 TargetFlags[] =
@@ -316,7 +340,10 @@ quint32 TargetFlags[] =
     0x00002000,
     0x00004000,
     0x00008000,
-    0x00010000
+    0x00010000,
+    0x00020000,
+    0x00040000,
+    0x00080000
 };
 
 quint32 AttributesVal[] =
@@ -368,7 +395,9 @@ QString CreatureTypeString[] =
     QString("CRITTER"),
     QString("MECHANICAL"),
     QString("NOT_SPECIFIED"),
-    QString("TOTEM")
+    QString("TOTEM"),
+    QString("NON_COMBAT_PET"),
+    QString("GAS_CLOUD")
 };
 
 QString AttributesString[] =
@@ -551,9 +580,82 @@ QString AttributesEx4String[] =
     QString("SPELL_ATTR_EX4_UNK31")
 };
 
+QString AttributesEx5String[] =
+{
+    QString("SPELL_ATTR_EX5_UNK0"),
+    QString("SPELL_ATTR_EX5_NO_REAGENT_WHILE_PREP"),
+    QString("SPELL_ATTR_EX5_UNK2"),
+    QString("SPELL_ATTR_EX5_USABLE_WHILE_STUNNED"),
+    QString("SPELL_ATTR_EX5_UNK4"),
+    QString("SPELL_ATTR_EX5_SINGLE_TARGET_SPELL"),
+    QString("SPELL_ATTR_EX5_UNK6"),
+    QString("SPELL_ATTR_EX5_UNK7"),
+    QString("SPELL_ATTR_EX5_UNK8"),
+    QString("SPELL_ATTR_EX5_START_PERIODIC_AT_APPLY"),
+    QString("SPELL_ATTR_EX5_UNK10"),
+    QString("SPELL_ATTR_EX5_UNK11"),
+    QString("SPELL_ATTR_EX5_UNK12"),
+    QString("SPELL_ATTR_EX5_UNK13"),
+    QString("SPELL_ATTR_EX5_UNK14"),
+    QString("SPELL_ATTR_EX5_UNK15"),
+    QString("SPELL_ATTR_EX5_UNK16"),
+    QString("SPELL_ATTR_EX5_USABLE_WHILE_FEARED"),
+    QString("SPELL_ATTR_EX5_USABLE_WHILE_CONFUSED"),
+    QString("SPELL_ATTR_EX5_UNK19"),
+    QString("SPELL_ATTR_EX5_UNK20"),
+    QString("SPELL_ATTR_EX5_UNK21"),
+    QString("SPELL_ATTR_EX5_UNK22"),
+    QString("SPELL_ATTR_EX5_UNK23"),
+    QString("SPELL_ATTR_EX5_UNK24"),
+    QString("SPELL_ATTR_EX5_UNK25"),
+    QString("SPELL_ATTR_EX5_UNK26"),
+    QString("SPELL_ATTR_EX5_UNK27"),
+    QString("SPELL_ATTR_EX5_UNK28"),
+    QString("SPELL_ATTR_EX5_UNK29"),
+    QString("SPELL_ATTR_EX5_UNK30"),
+    QString("SPELL_ATTR_EX5_UNK31")
+};
+
+QString AttributesEx6String[] =
+{
+    QString("SPELL_ATTR_EX6_UNK0"),
+    QString("SPELL_ATTR_EX6_ONLY_IN_ARENA"),
+    QString("SPELL_ATTR_EX5_UNK2"),
+    QString("SPELL_ATTR_EX6_UNK3"),
+    QString("SPELL_ATTR_EX6_UNK4"),
+    QString("SPELL_ATTR_EX6_UNK5"),
+    QString("SPELL_ATTR_EX6_UNK6"),
+    QString("SPELL_ATTR_EX6_UNK7"),
+    QString("SPELL_ATTR_EX6_UNK8"),
+    QString("SPELL_ATTR_EX6_UNK9"),
+    QString("SPELL_ATTR_EX6_UNK10"),
+    QString("SPELL_ATTR_EX6_NOT_IN_RAID_INSTANCE"),
+    QString("SPELL_ATTR_EX6_UNK12"),
+    QString("SPELL_ATTR_EX6_UNK13"),
+    QString("SPELL_ATTR_EX6_UNK14"),
+    QString("SPELL_ATTR_EX6_UNK15"),
+    QString("SPELL_ATTR_EX6_UNK16"),
+    QString("SPELL_ATTR_EX6_UNK17"),
+    QString("SPELL_ATTR_EX6_UNK18"),
+    QString("SPELL_ATTR_EX6_UNK19"),
+    QString("SPELL_ATTR_EX6_UNK20"),
+    QString("SPELL_ATTR_EX6_UNK21"),
+    QString("SPELL_ATTR_EX6_UNK22"),
+    QString("SPELL_ATTR_EX6_UNK23"),
+    QString("SPELL_ATTR_EX6_UNK24"),
+    QString("SPELL_ATTR_EX6_UNK25"),
+    QString("SPELL_ATTR_EX6_UNK26"),
+    QString("SPELL_ATTR_EX6_UNK27"),
+    QString("SPELL_ATTR_EX6_UNK28"),
+    QString("SPELL_ATTR_EX6_UNK29"),
+    QString("SPELL_ATTR_EX6_UNK30"),
+    QString("SPELL_ATTR_EX6_UNK31")
+};
+
 // Check...
 quint32 FormMask[] =
 {
+    0x00000000,
     0x00000001,
     0x00000002,
     0x00000004,
@@ -567,16 +669,13 @@ quint32 FormMask[] =
     0x00000400,
     0x00000800,
     0x00001000,
-    /*
     0x00002000,
     0x00004000,
     0x00008000,
     0x00010000,
     0x00020000,
-    */
     0x00040000,
     0x00080000,
-    /*
     0x00100000,
     0x00200000,
     0x00400000,
@@ -585,7 +684,6 @@ quint32 FormMask[] =
     0x02000000,
     0x04000000,
     0x08000000,
-    */
     0x10000000,
     0x20000000,
     0x40000000,
@@ -603,13 +701,27 @@ QString FormString[] =
     QString("FORM_AMBIENT"),
     QString("FORM_GHOUL"),
     QString("FORM_DIREBEAR"),
+    QString("FORM_STEVES_GHOUL"),
+    QString("FORM_THARONJA_SKELETON"),
+    QString("FORM_TEST_OF_STRENGTH"),
+    QString("FORM_BLB_PLAYER"),
+    QString("FORM_SHADOW_DANCE"),
     QString("FORM_CREATUREBEAR"),
     QString("FORM_CREATURECAT"),
     QString("FORM_GHOSTWOLF"),
     QString("FORM_BATTLESTANCE"),
     QString("FORM_DEFENSIVESTANCE"),
     QString("FORM_BERSERKERSTANCE"),
+    QString("FORM_TEST"),
+    QString("FORM_ZOMBIE"),
+    QString("FORM_METAMORPHOSIS"),
+    QString("FORM_UNK1"),
+    QString("FORM_UNK2"),
+    QString("FORM_UNDEAD"),
+    QString("FORM_FRENZY"),
+    QString("FORM_FLIGHT_EPIC"),
     QString("FORM_SHADOW"),
+    QString("FORM_FLIGHT"),
     QString("FORM_STEALTH"),
     QString("FORM_MOONKIN"),
     QString("FORM_SPIRITOFREDEMPTION")

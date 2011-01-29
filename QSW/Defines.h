@@ -8,6 +8,8 @@ enum AttrType
     TYPE_ATTR_EX2,
     TYPE_ATTR_EX3,
     TYPE_ATTR_EX4,
+    TYPE_ATTR_EX5,
+    TYPE_ATTR_EX6,
     TYPE_TARGETS,
     TYPE_CREATURE,
     TYPE_FORMS,
@@ -16,7 +18,8 @@ enum AttrType
     TYPE_ITEM_ARMOR,
     TYPE_ITEM_MISC,
     TYPE_ITEM_INVENTORY,
-    TYPE_CR
+    TYPE_CR,
+    TYPE_SCHOOL_MASK
 };
 
 enum PowerType

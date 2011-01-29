@@ -490,12 +490,8 @@ bool ObjectSearch::hasValue(quint8 index, QString str)
             }
             break;
         case 65:
-            if (m_spellInfo->SpellVisual == str.toUInt())
+            if (m_spellInfo->SpellVisual[0] == str.toUInt() || m_spellInfo->SpellVisual[1] == str.toUInt())
                 return true;
-            break;
-        case 66:
-            //if (m_spellInfo->SpellVisual2 == str.toUInt())
-            //    return true;
             break;
         case 67:
             if (m_spellInfo->SpellIconID == str.toUInt())
@@ -1566,6 +1562,8 @@ void SpellWork::ShowInfo()
     QString sAttributesEx2(QString("%0").arg(m_spellInfo->AttributesEx2, 8, 16, QChar('0')));
     QString sAttributesEx3(QString("%0").arg(m_spellInfo->AttributesEx3, 8, 16, QChar('0')));
     QString sAttributesEx4(QString("%0").arg(m_spellInfo->AttributesEx4, 8, 16, QChar('0')));
+    QString sAttributesEx5(QString("%0").arg(m_spellInfo->AttributesEx5, 8, 16, QChar('0')));
+    QString sAttributesEx6(QString("%0").arg(m_spellInfo->AttributesEx6, 8, 16, QChar('0')));
     QString sTargetMask(QString("%0").arg(m_spellInfo->Targets, 8, 16, QChar('0')));
     QString sCreatureTypeMask(QString("%0").arg(m_spellInfo->TargetCreatureType, 8, 16, QChar('0')));
     QString sFormMask(QString("%0").arg(m_spellInfo->Stances, 8, 16, QChar('0')));
@@ -1593,19 +1591,20 @@ void SpellWork::ShowInfo()
      if (m_spellInfo->ModalNextSpell)
         SpellInfoBrowser->append(QString("ModalNextSpell: %0").arg(m_spellInfo->ModalNextSpell));
 
-    SpellInfoBrowser->append(QString("Category = %0, SpellIconID = %1, ActiveIconID = %2, SpellVisual = %3")
+    SpellInfoBrowser->append(QString("Category = %0, SpellIconID = %1, ActiveIconID = %2, SpellVisual = (%3 ,%4)")
         .arg(m_spellInfo->Category)
         .arg(m_spellInfo->SpellIconID)
         .arg(m_spellInfo->ActiveIconID)
-        .arg(m_spellInfo->SpellVisual));
+        .arg(m_spellInfo->SpellVisual[0])
+        .arg(m_spellInfo->SpellVisual[1]));
 
     SpellInfoBrowser->append(QString("SpellFamilyName = %0, SpellFamilyFlags = 0x%1\n")
         .arg(SpellFamilyString[m_spellInfo->SpellFamilyName])
         .arg(sSpellFamilyFlags.toUpper()));
 
-    //SpellInfoBrowser->append(QString("SpellSchool = %0 (%1)")
-    //    .arg(m_spellInfo->School)
-    //    .arg(SchoolString[m_spellInfo->School]));
+    SpellInfoBrowser->append(QString("SpellSchoolMask = %0 (%1)")
+        .arg(m_spellInfo->SchoolMask)
+        .arg(CompareAttributes(TYPE_SCHOOL_MASK)));
 
     SpellInfoBrowser->append(QString("DamageClass = %0 (%1)")
         .arg(m_spellInfo->DmgClass)
@@ -1643,6 +1642,16 @@ void SpellWork::ShowInfo()
         SpellInfoBrowser->append(QString("AttributesEx4: 0x%0 (%1)")
             .arg(sAttributesEx4.toUpper())
             .arg(CompareAttributes(TYPE_ATTR_EX4)));
+
+    if (m_spellInfo->AttributesEx5)
+        SpellInfoBrowser->append(QString("AttributesEx5: 0x%0 (%1)")
+            .arg(sAttributesEx5.toUpper())
+            .arg(CompareAttributes(TYPE_ATTR_EX5)));
+
+    if (m_spellInfo->AttributesEx6)
+        SpellInfoBrowser->append(QString("AttributesEx6: 0x%0 (%1)")
+            .arg(sAttributesEx6.toUpper())
+            .arg(CompareAttributes(TYPE_ATTR_EX6)));
 
     SpellInfoBrowser->append(line);
 
@@ -2183,6 +2192,38 @@ QString SpellWork::CompareAttributes(AttrType attr, quint8 index)
             return str;
         }
         break;
+        case TYPE_ATTR_EX5:
+        {
+            quint8 Max = sizeof(AttributesVal) / sizeof(AttributesVal[0]);
+            for (quint8 i = 0; i < Max; i++)
+            {
+                if (m_spellInfo->AttributesEx5 & AttributesVal[i])
+                {   
+                    QString tstr(QString("%0, ").arg(AttributesEx5String[i]));
+                    str += tstr;
+                }
+            }
+            if (!str.isEmpty())
+                str.chop(2);
+            return str;
+        }
+        break;
+        case TYPE_ATTR_EX6:
+        {
+            quint8 Max = sizeof(AttributesVal) / sizeof(AttributesVal[0]);
+            for (quint8 i = 0; i < Max; i++)
+            {
+                if (m_spellInfo->AttributesEx6 & AttributesVal[i])
+                {   
+                    QString tstr(QString("%0, ").arg(AttributesEx6String[i]));
+                    str += tstr;
+                }
+            }
+            if (!str.isEmpty())
+                str.chop(2);
+            return str;
+        }
+        break;
         case TYPE_TARGETS:
         {
             quint8 Max = sizeof(TargetFlags) / sizeof(TargetFlags[0]);
@@ -2324,6 +2365,20 @@ QString SpellWork::CompareAttributes(AttrType attr, quint8 index)
             }
             if (!str.isEmpty())
                 str.chop(2);
+            return str;
+        }
+        break;
+        case TYPE_SCHOOL_MASK:
+        {
+            quint8 Max = sizeof(SchoolMask) / sizeof(SchoolMask[0]);
+            for (quint8 i = 0; i < Max; i++)
+            {
+                if (m_spellInfo->SchoolMask == SchoolMask[i])
+                {   
+                    QString tstr(QString("%0").arg(SchoolMaskString[i]));
+                    str += tstr;
+                }
+            }
             return str;
         }
         break;

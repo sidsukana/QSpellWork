@@ -119,8 +119,7 @@ struct SpellEntry
     qint32     EffectMiscValueB[MAX_EFFECT_INDEX];              // 113-115
     quint32    EffectTriggerSpell[MAX_EFFECT_INDEX];            // 116-118
     float      EffectPointsPerComboPoint[MAX_EFFECT_INDEX];     // 119-121
-    quint32    SpellVisual;                                     // 122
-    quint32    Unk1;                                            // 123 not used
+    quint32    SpellVisual[2];                                  // 122-123
     quint32    SpellIconID;                                     // 124
     quint32    ActiveIconID;                                    // 125
     quint32    SpellPriority;                                   // 126
