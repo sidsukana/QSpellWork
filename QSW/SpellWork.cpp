@@ -1928,9 +1928,9 @@ void SpellWork::AppendSpellEffectInfo()
                                 {
                                     hasSkill = true;
                                     if (!sRank.isEmpty())
-                                        SpellInfoBrowser->append(QString("<font color=blue>+ %0 - %1 (%2)</font>").arg(spellInfo->Id).arg(spellInfo->SpellName[0]).arg(sRank));
+                                        SpellInfoBrowser->append(QString("%0<font color=blue>+ %1 - %2 (%3)</font>").arg(QChar(QChar::Nbsp), 4, QChar(QChar::Nbsp)).arg(spellInfo->Id).arg(spellInfo->SpellName[0]).arg(sRank));
                                     else
-                                        SpellInfoBrowser->append(QString("<font color=blue>+ %0 - %1</font>").arg(spellInfo->Id).arg(spellInfo->SpellName[0]));
+                                        SpellInfoBrowser->append(QString("%0<font color=blue>+ %1 - %2</font>").arg(QChar(QChar::Nbsp), 4, QChar(QChar::Nbsp)).arg(spellInfo->Id).arg(spellInfo->SpellName[0]));
                                     break;
                                 }
                             }
@@ -1938,9 +1938,9 @@ void SpellWork::AppendSpellEffectInfo()
                             if (!hasSkill)
                             {
                                 if (!sRank.isEmpty())
-                                    SpellInfoBrowser->append(QString("<font color=red>- %0 - %1 (%2)</font>").arg(spellInfo->Id).arg(spellInfo->SpellName[0]).arg(sRank));
+                                    SpellInfoBrowser->append(QString("%0<font color=red>- %1 - %2 (%3)</font>").arg(QChar(QChar::Nbsp), 4, QChar(QChar::Nbsp)).arg(spellInfo->Id).arg(spellInfo->SpellName[0]).arg(sRank));
                                 else
-                                    SpellInfoBrowser->append(QString("<font color=red>- %0 - %1</font>").arg(spellInfo->Id).arg(spellInfo->SpellName[0]));
+                                    SpellInfoBrowser->append(QString("%0<font color=red>- %1 - %2</font>").arg(QChar(QChar::Nbsp), 4, QChar(QChar::Nbsp)).arg(spellInfo->Id).arg(spellInfo->SpellName[0]));
                             }
                         }
                     }         
