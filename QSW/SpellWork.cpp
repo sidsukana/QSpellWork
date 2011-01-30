@@ -1912,7 +1912,7 @@ void SpellWork::AppendSpellEffectInfo()
             if (m_spellInfo->EffectItemType[eff] != 0)
             {
                 QString sEffectItemType(QString("%0").arg(m_spellInfo->EffectItemType[eff], 8, 16, QChar('0')));
-                SpellInfoBrowser->append(QString("EffectItemType = 0x%0").arg(sEffectItemType));
+                SpellInfoBrowser->append(QString("EffectItemType = 0x%0").arg(sEffectItemType.toUpper()));
 
                 if (m_spellInfo->Effect[eff] == 6)
                 {
