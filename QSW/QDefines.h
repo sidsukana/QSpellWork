@@ -768,7 +768,8 @@ QString ItemClassString[] =
     QString("QUEST"),
     QString("KEY"),
     QString("PERMANENT"),
-    QString("MISC")
+    QString("MISC"),
+    QString("GLYPH")
 };
 
 quint32 ItemSubWeaponMask[] =
@@ -943,7 +944,7 @@ QString MechanicString[] =
     QString("MECHANIC_DISARM"),
     QString("MECHANIC_DISTRACT"),
     QString("MECHANIC_FEAR"),
-    QString("MECHANIC_FUMBLE"),
+    QString("MECHANIC_GRIP"),
     QString("MECHANIC_ROOT"),
     QString("MECHANIC_PACIFY"),
     QString("MECHANIC_SILENCE"),
@@ -959,7 +960,7 @@ QString MechanicString[] =
     QString("MECHANIC_SHIELD"),
     QString("MECHANIC_SHACKLE"),
     QString("MECHANIC_MOUNT"),
-    QString("MECHANIC_PERSUADE"),
+    QString("MECHANIC_INFECTED"),
     QString("MECHANIC_TURN"),
     QString("MECHANIC_HORROR"),
     QString("MECHANIC_INVULNERABILITY"),
@@ -967,7 +968,8 @@ QString MechanicString[] =
     QString("MECHANIC_DAZE"),
     QString("MECHANIC_DISCOVERY"),
     QString("MECHANIC_IMMUNE_SHIELD"),
-    QString("MECHANIC_SAPPED")
+    QString("MECHANIC_SAPPED"),
+    QString("MECHANIC_ENRAGED")
 };
 
 QString DispelTypeString[] =
@@ -982,19 +984,36 @@ QString DispelTypeString[] =
     QString("DISPEL_ALL"),
     QString("DISPEL_SPE_NPC_ONLY"),
     QString("DISPEL_ENRAGE"),
-    QString("DISPEL_ZG_TICKET")
+    QString("DISPEL_ZG_TICKET"),
+    QString("DISPEL_OLD_UNUSED")
 };
 
 QString AuraStateString[] =
 {
-    QString("NONE"),
+    QString("AURA_STATE_NONE"),
     QString("AURA_STATE_DEFENSE"),
     QString("AURA_STATE_HEALTHLESS_20_PERCENT"),
     QString("AURA_STATE_BERSERKING"),
     QString("AURA_STATE_FROZEN"),
     QString("AURA_STATE_JUDGEMENT"),
     QString("AURA_STATE_UNKNOWN6"),
-    QString("AURA_STATE_HUNTER_PARRY")
+    QString("AURA_STATE_HUNTER_PARRY"),
+    QString("AURA_STATE_UNKNOWN8"),
+    QString("AURA_STATE_UNKNOWN9"),
+    QString("AURA_STATE_WARRIOR_VICTORY_RUSH"),
+    QString("AURA_STATE_UNKNOWN11"),
+    QString("AURA_STATE_FAERIE_FIRE"),
+    QString("AURA_STATE_HEALTHLESS_35_PERCENT"),
+    QString("AURA_STATE_CONFLAGRATE"),
+    QString("AURA_STATE_SWIFTMEND"),
+    QString("AURA_STATE_DEADLY_POISON"),
+    QString("AURA_STATE_ENRAGE"),
+    QString("AURA_STATE_UNKNOWN18"),
+    QString("AURA_STATE_UNKNOWN19"),
+    QString("AURA_STATE_UNKNOWN20"),
+    QString("AURA_STATE_UNKNOWN21"),
+    QString("AURA_STATE_UNKNOWN22"),
+    QString("AURA_STATE_HEALTH_ABOVE_75_PERCENT")
 };
 
 QString ProcFlagDesc[] =
@@ -1122,7 +1141,48 @@ QString EffectTargetString[] =
     QString("TARGET_NARROW_FRONTAL_CONE"),
     QString("TARGET_AREAEFFECT_PARTY_AND_CLASS"),
     QString("TARGET_62"),
-    QString("TARGET_DUELVSPLAYER_COORDINATES")
+    QString("TARGET_DUELVSPLAYER_COORDINATES"),
+    QString("TARGET_INFRONT_OF_VICTIM"),
+    QString("TARGET_BEHIND_VICTIM"),
+    QString("TARGET_RIGHT_FROM_VICTIM"),
+    QString("TARGET_LEFT_FROM_VICTIM"),
+    QString("TARGET_68"),
+    QString("TARGET_69"),
+    QString("TARGET_70"),
+    QString("TARGET_71"),
+    QString("TARGET_RANDOM_NEARBY_LOC"),
+    QString("TARGET_RANDOM_CIRCUMFERENCE_POINT"),
+    QString("TARGET_74"),
+    QString("TARGET_75"),
+    QString("TARGET_DYNAMIC_OBJECT_COORDINATES"),
+    QString("TARGET_SINGLE_ENEMY"),
+    QString("TARGET_POINT_AT_NORTH"),
+    QString("TARGET_POINT_AT_SOUTH"),
+    QString("TARGET_POINT_AT_EAST"),
+    QString("TARGET_POINT_AT_WEST"),
+    QString("TARGET_POINT_AT_NE"),
+    QString("TARGET_POINT_AT_NW"),
+    QString("TARGET_POINT_AT_SE"),
+    QString("TARGET_POINT_AT_SW"),
+    QString("TARGET_RANDOM_NEARBY_DEST"),
+    QString("TARGET_SELF2"),
+    QString("TARGET_88"),
+    QString("TARGET_DIRECTLY_FORWARD"),
+    QString("TARGET_NONCOMBAT_PET"),
+    QString("TARGET_91"),
+    QString("TARGET_92"),
+    QString("TARGET_93"),
+    QString("TARGET_94"),
+    QString("TARGET_95"),
+    QString("TARGET_96"),
+    QString("TARGET_97"),
+    QString("TARGET_98"),
+    QString("TARGET_99"),
+    QString("TARGET_100"),
+    QString("TARGET_101"),
+    QString("TARGET_102"),
+    QString("TARGET_103"),
+    QString("TARGET_IN_FRONT_OF_CASTER_30")
 };
 
 QString AuraString[] =

@@ -2038,7 +2038,10 @@ void SpellWork::AppendAuraInfo(quint8 index)
     if (m_spellInfo->EffectApplyAuraName[index] == 0)
     {
         if (m_spellInfo->EffectMiscValue[index] != 0)
-            SpellInfoBrowser->append(QString("EffectMiscValue = %0").arg(m_spellInfo->EffectMiscValue[index]));
+            SpellInfoBrowser->append(QString("EffectMiscValueA = %0").arg(m_spellInfo->EffectMiscValue[index]));
+
+        if (m_spellInfo->EffectMiscValueB[index] != 0)
+            SpellInfoBrowser->append(QString("EffectMiscValueB = %0").arg(m_spellInfo->EffectMiscValueB[index]));
 
         if (m_spellInfo->EffectAmplitude[index] != 0)
             SpellInfoBrowser->append(QString("EffectAmplitude = %0").arg(m_spellInfo->EffectAmplitude[index]));
@@ -2072,8 +2075,9 @@ void SpellWork::AppendAuraInfo(quint8 index)
             break;
     }
 
-    QString _Periodic = QString(", periodic = %0)").arg(m_spellInfo->EffectAmplitude[index]);
-    QString _Result = _BaseAuraInfo + _SpecialAuraInfo + _Periodic;
+    QString _MiscB = QString("), miscB = %0").arg(m_spellInfo->EffectMiscValueB[index]);
+    QString _Periodic = QString(", periodic = %0").arg(m_spellInfo->EffectAmplitude[index]);
+    QString _Result = _BaseAuraInfo + _SpecialAuraInfo + _MiscB + _Periodic;
     SpellInfoBrowser->append(_Result);
 }
 
