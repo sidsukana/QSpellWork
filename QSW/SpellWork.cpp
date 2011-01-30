@@ -2063,7 +2063,7 @@ void SpellWork::AppendAuraInfo(quint8 index)
             break;
     }
 
-    QString _Periodic = QString(", periodic = %0)").arg(m_spellInfo->EffectAmplitude[index]);
+    QString _Periodic = QString("), periodic = %0").arg(m_spellInfo->EffectAmplitude[index]);
     QString _Result = _BaseAuraInfo + _SpecialAuraInfo + _Periodic;
     SpellInfoBrowser->append(_Result);
 }
