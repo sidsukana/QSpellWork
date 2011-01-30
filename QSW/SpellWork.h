@@ -8,6 +8,7 @@
 #include <QtCore/QThread>
 #include <QtCore/QEvent>
 #include <QtGui/QShortcut>
+
 #include "ui_SpellWorkUI.h"
 #include "ui_AboutUI.h"
 
