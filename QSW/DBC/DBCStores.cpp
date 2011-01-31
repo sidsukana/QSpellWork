@@ -46,6 +46,8 @@ DBCStorage <SpellCastTimesEntry> sSpellCastTimesStore(SpellCastTimefmt);
 DBCStorage <SpellDurationEntry> sSpellDurationStore(SpellDurationfmt);
 DBCStorage <SpellRadiusEntry> sSpellRadiusStore(SpellRadiusfmt);
 DBCStorage <SpellRangeEntry> sSpellRangeStore(SpellRangefmt);
+DBCStorage <ScreenEffectEntry> sScreenEffectStore(ScreenEffectfmt);
+DBCStorage <OverrideSpellDataEntry> sOverrideSpellDataStore(OverrideSpellDatafmt);
 
 
 typedef std::list<std::string> StoreProblemList;
@@ -109,6 +111,8 @@ bool LoadDBCStores()
     LoadDBC(availableDbcLocales, bad_dbc_files, sSpellDurationStore,       dbcPath, "SpellDuration.dbc");
     LoadDBC(availableDbcLocales, bad_dbc_files, sSpellRadiusStore,         dbcPath, "SpellRadius.dbc");
     LoadDBC(availableDbcLocales, bad_dbc_files, sSpellRangeStore,          dbcPath, "SpellRange.dbc");
+    LoadDBC(availableDbcLocales, bad_dbc_files, sScreenEffectStore,        dbcPath, "ScreenEffect.dbc");
+    LoadDBC(availableDbcLocales, bad_dbc_files, sOverrideSpellDataStore,   dbcPath, "OverrideSpellData.dbc");
 
     return true;
 }

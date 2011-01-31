@@ -46,6 +46,8 @@ extern DBCStorage <SpellDurationEntry>           sSpellDurationStore;
 extern DBCStorage <SpellRadiusEntry>             sSpellRadiusStore;
 extern DBCStorage <SpellRangeEntry>              sSpellRangeStore;
 extern DBCStorage <SpellEntry>                   sSpellStore;
+extern DBCStorage <ScreenEffectEntry>            sScreenEffectStore;
+extern DBCStorage <OverrideSpellDataEntry>       sOverrideSpellDataStore;
 
 
 bool LoadDBCStores();

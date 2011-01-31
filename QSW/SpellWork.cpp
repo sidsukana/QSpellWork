@@ -182,10 +182,6 @@ bool ObjectSearch::hasValue(quint8 index, QString str)
             if (m_spellInfo->Category == str.toUInt())
                 return true;
             break;
-        case 4:
-            if (m_spellInfo->CastUI == str.toUInt())
-                return true;
-            break;
         case 5:
             if (m_spellInfo->Dispel == str.toUInt())
                 return true;
@@ -374,20 +370,6 @@ bool ObjectSearch::hasValue(quint8 index, QString str)
             for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++)
             {
                 if (m_spellInfo->EffectDieSides[i] == str.toInt())
-                    return true;
-            }
-            break;
-        case 49:
-            for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++)
-            {
-                if (m_spellInfo->EffectBaseDice[i] == str.toUInt())
-                    return true;
-            }
-            break;
-        case 50:
-            for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++)
-            {
-                if (m_spellInfo->EffectDicePerLevel[i] == str.toFloat())
                     return true;
             }
             break;
