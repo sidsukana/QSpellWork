@@ -7,7 +7,6 @@ QString SpellStruct[] =
 {
     QString("None"),
     QString("Id"),
-    QString("School"),
     QString("Category"),
     QString("CastUI"),
     QString("Dispel"),
@@ -17,13 +16,18 @@ QString SpellStruct[] =
     QString("AttributesEx2"),
     QString("AttributesEx3"),
     QString("AttributesEx4"),
+    QString("AttributesEx5"),
+    QString("AttributesEx6"),
     QString("Stances"),
     QString("StancesNot"),
     QString("Targets"),
     QString("TargetCreatureType"),
     QString("RequiresSpellFocus"),
+    QString("FacingCasterFlags"),
     QString("CasterAuraState"),
     QString("TargetAuraState"),
+    QString("CasterAuraStateNot"),
+    QString("TargetAuraStateNot"),
     QString("CastingTimeIndex"),
     QString("RecoveryTime"),
     QString("CategoryRecoveryTime"),
@@ -68,10 +72,10 @@ QString SpellStruct[] =
     QString("EffectChainTarget"),
     QString("EffectItemType"),
     QString("EffectMiscValue"),
+    QString("EffectMiscValueB"),
     QString("EffectTriggerSpell"),
     QString("EffectPointsPerComboPoint"),
     QString("SpellVisual"),
-    QString("SpellVisual2"),
     QString("SpellIconID"),
     QString("ActiveIconID"),
     QString("SpellPriority"),
@@ -96,7 +100,10 @@ QString SpellStruct[] =
     QString("DmgMultiplier"),
     QString("MinFactionId"),
     QString("MinReputation"),
-    QString("RequiredAuraVision")
+    QString("RequiredAuraVision"),
+    QString("TotemCategory"),
+    QString("AreaId"),
+    QString("SchoolMask")
 };
 
 QString PreventionTypeString[] =

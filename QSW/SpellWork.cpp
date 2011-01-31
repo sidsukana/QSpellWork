@@ -175,425 +175,463 @@ bool ObjectSearch::hasValue(quint8 index, QString str)
                 return true;
             break;
         case 2:
-            //if (m_spellInfo->School == str.toUInt())
-            //    return true;
-            break;
-        case 3:
             if (m_spellInfo->Category == str.toUInt())
                 return true;
             break;
-        case 4:
+        case 3:
             if (m_spellInfo->CastUI == str.toUInt())
                 return true;
             break;
-        case 5:
+        case 4:
             if (m_spellInfo->Dispel == str.toUInt())
                 return true;
             break;
-        case 6:
+        case 5:
             if (m_spellInfo->Mechanic == str.toUInt())
                 return true;
             break;
-        case 7:
+        case 6:
             if (m_spellInfo->Attributes == str.toUInt())
                 return true;
             break;
-        case 8:
+        case 7:
             if (m_spellInfo->AttributesEx == str.toUInt())
                 return true;
             break;
-        case 9:
+        case 8:
             if (m_spellInfo->AttributesEx2 == str.toUInt())
                 return true;
             break;
-        case 10:
+        case 9:
             if (m_spellInfo->AttributesEx3 == str.toUInt())
                 return true;
             break;
-        case 11:
+        case 10:
             if (m_spellInfo->AttributesEx4 == str.toUInt())
                 return true;
             break;
+        case 11:
+            if (m_spellInfo->AttributesEx5 == str.toUInt())
+                return true;
+            break;
         case 12:
-            if (m_spellInfo->Stances == str.toUInt())
+            if (m_spellInfo->AttributesEx6 == str.toUInt())
                 return true;
             break;
         case 13:
-            if (m_spellInfo->StancesNot == str.toUInt())
+            if (m_spellInfo->Stances == str.toUInt())
                 return true;
             break;
         case 14:
-            if (m_spellInfo->Targets == str.toUInt())
+            if (m_spellInfo->StancesNot == str.toUInt())
                 return true;
             break;
         case 15:
-            if (m_spellInfo->TargetCreatureType == str.toUInt())
+            if (m_spellInfo->Targets == str.toUInt())
                 return true;
             break;
         case 16:
-            if (m_spellInfo->RequiresSpellFocus == str.toUInt())
+            if (m_spellInfo->TargetCreatureType == str.toUInt())
                 return true;
             break;
         case 17:
-            if (m_spellInfo->CasterAuraState == str.toUInt())
+            if (m_spellInfo->RequiresSpellFocus == str.toUInt())
                 return true;
             break;
         case 18:
-            if (m_spellInfo->TargetAuraState == str.toUInt())
+            if (m_spellInfo->FacingCasterFlags == str.toUInt())
                 return true;
             break;
         case 19:
-            if (m_spellInfo->CastingTimeIndex == str.toUInt())
+            if (m_spellInfo->CasterAuraState == str.toUInt())
                 return true;
             break;
         case 20:
-            if (m_spellInfo->RecoveryTime == str.toUInt())
+            if (m_spellInfo->TargetAuraState == str.toUInt())
                 return true;
             break;
         case 21:
-            if (m_spellInfo->CategoryRecoveryTime == str.toUInt())
+            if (m_spellInfo->CasterAuraStateNot == str.toUInt())
                 return true;
             break;
         case 22:
-            if (m_spellInfo->InterruptFlags == str.toUInt())
+            if (m_spellInfo->TargetAuraStateNot == str.toUInt())
                 return true;
             break;
         case 23:
-            if (m_spellInfo->AuraInterruptFlags == str.toUInt())
+            if (m_spellInfo->CastingTimeIndex == str.toUInt())
                 return true;
             break;
         case 24:
-            if (m_spellInfo->ChannelInterruptFlags == str.toUInt())
+            if (m_spellInfo->RecoveryTime == str.toUInt())
                 return true;
             break;
         case 25:
-            if (m_spellInfo->ProcFlags == str.toUInt())
+            if (m_spellInfo->CategoryRecoveryTime == str.toUInt())
                 return true;
             break;
         case 26:
-            if (m_spellInfo->ProcChance == str.toUInt())
+            if (m_spellInfo->InterruptFlags == str.toUInt())
                 return true;
             break;
         case 27:
-            if (m_spellInfo->ProcCharges == str.toUInt())
+            if (m_spellInfo->AuraInterruptFlags == str.toUInt())
                 return true;
             break;
         case 28:
-            if (m_spellInfo->MaxLevel == str.toUInt())
+            if (m_spellInfo->ChannelInterruptFlags == str.toUInt())
                 return true;
             break;
         case 29:
-            if (m_spellInfo->BaseLevel == str.toUInt())
+            if (m_spellInfo->ProcFlags == str.toUInt())
                 return true;
             break;
         case 30:
-            if (m_spellInfo->SpellLevel == str.toUInt())
+            if (m_spellInfo->ProcChance == str.toUInt())
                 return true;
             break;
         case 31:
-            if (m_spellInfo->DurationIndex == str.toUInt())
+            if (m_spellInfo->ProcCharges == str.toUInt())
                 return true;
             break;
         case 32:
-            if (m_spellInfo->PowerType == str.toUInt())
+            if (m_spellInfo->MaxLevel == str.toUInt())
                 return true;
             break;
         case 33:
-            if (m_spellInfo->ManaCost == str.toUInt())
+            if (m_spellInfo->BaseLevel == str.toUInt())
                 return true;
             break;
         case 34:
-            if (m_spellInfo->ManaCostPerlevel == str.toUInt())
+            if (m_spellInfo->SpellLevel == str.toUInt())
                 return true;
             break;
         case 35:
-            if (m_spellInfo->ManaPerSecond == str.toUInt())
+            if (m_spellInfo->DurationIndex == str.toUInt())
                 return true;
             break;
         case 36:
-            if (m_spellInfo->ManaPerSecondPerLevel == str.toUInt())
+            if (m_spellInfo->PowerType == str.toUInt())
                 return true;
             break;
         case 37:
-            if (m_spellInfo->RangeIndex == str.toUInt())
+            if (m_spellInfo->ManaCost == str.toUInt())
                 return true;
             break;
         case 38:
-            if (m_spellInfo->Speed == str.toFloat())
+            if (m_spellInfo->ManaCostPerlevel == str.toUInt())
                 return true;
             break;
         case 39:
-            if (m_spellInfo->ModalNextSpell == str.toUInt())
+            if (m_spellInfo->ManaPerSecond == str.toUInt())
                 return true;
             break;
         case 40:
-            if (m_spellInfo->StackAmount == str.toUInt())
+            if (m_spellInfo->ManaPerSecondPerLevel == str.toUInt())
                 return true;
             break;
         case 41:
+            if (m_spellInfo->RangeIndex == str.toUInt())
+                return true;
+            break;
+        case 42:
+            if (m_spellInfo->Speed == str.toFloat())
+                return true;
+            break;
+        case 43:
+            if (m_spellInfo->ModalNextSpell == str.toUInt())
+                return true;
+            break;
+        case 44:
+            if (m_spellInfo->StackAmount == str.toUInt())
+                return true;
+            break;
+        case 45:
             for (quint8 i = 0; i < MAX_SPELL_TOTEMS; i++)
             {
                 if (m_spellInfo->Totem[i] == str.toUInt())
                     return true;
             }
             break;
-        case 42:
+        case 46:
             for (quint8 i = 0; i < MAX_SPELL_REAGENTS; i++)
             {
                 if (m_spellInfo->Reagent[i] == str.toInt())
                     return true;
             }
             break;
-        case 43:
+        case 47:
             for (quint8 i = 0; i < MAX_SPELL_REAGENTS; i++)
             {
                 if (m_spellInfo->ReagentCount[i] == str.toUInt())
                     return true;
             }
             break;
-        case 44:
+        case 48:
             if (m_spellInfo->EquippedItemClass == str.toInt())
                 return true;
             break;
-        case 45:
+        case 49:
             if (m_spellInfo->EquippedItemSubClassMask == str.toInt())
                 return true;
             break;
-        case 46:
+        case 50:
             if (m_spellInfo->EquippedItemInventoryTypeMask == str.toInt())
                 return true;
             break;
-        case 47:
+        case 51:
             for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++)
             {
                 if (m_spellInfo->Effect[i] == str.toUInt())
                     return true;
             }
             break;
-        case 48:
+        case 52:
             for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++)
             {
                 if (m_spellInfo->EffectDieSides[i] == str.toInt())
                     return true;
             }
             break;
-        case 49:
+        case 53:
             for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++)
             {
                 if (m_spellInfo->EffectBaseDice[i] == str.toUInt())
                     return true;
             }
             break;
-        case 50:
+        case 54:
             for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++)
             {
                 if (m_spellInfo->EffectDicePerLevel[i] == str.toFloat())
                     return true;
             }
             break;
-        case 51:
+        case 55:
             for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++)
             {
                 if (m_spellInfo->EffectRealPointsPerLevel[i] == str.toFloat())
                     return true;
             }
             break;
-        case 52:
+        case 56:
             for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++)
             {
                 if (m_spellInfo->EffectBasePoints[i] == str.toInt())
                     return true;
             }
             break;
-        case 53:
+        case 57:
             for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++)
             {
                 if (m_spellInfo->EffectMechanic[i] == str.toUInt())
                     return true;
             }
             break;
-        case 54:
+        case 58:
             for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++)
             {
                 if (m_spellInfo->EffectImplicitTargetA[i] == str.toUInt())
                     return true;
             }
             break;
-        case 55:
+        case 59:
             for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++)
             {
                 if (m_spellInfo->EffectImplicitTargetB[i] == str.toUInt())
                     return true;
             }
             break;
-        case 56:
+        case 60:
             for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++)
             {
                 if (m_spellInfo->EffectRadiusIndex[i] == str.toUInt())
                     return true;
             }
             break;
-        case 57:
+        case 61:
             for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++)
             {
                 if (m_spellInfo->EffectApplyAuraName[i] == str.toUInt())
                     return true;
             }
             break;
-        case 58:
+        case 62:
             for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++)
             {
                 if (m_spellInfo->EffectAmplitude[i] == str.toUInt())
                     return true;
             }
             break;
-        case 59:
+        case 63:
             for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++)
             {
                 if (m_spellInfo->EffectMultipleValue[i] == str.toFloat())
                     return true;
             }
             break;
-        case 60:
+        case 64:
             for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++)
             {
                 if (m_spellInfo->EffectChainTarget[i] == str.toUInt())
                     return true;
             }
             break;
-        case 61:
+        case 65:
             for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++)
             {
                 if (m_spellInfo->EffectItemType[i] == str.toUInt())
                     return true;
             }
             break;
-        case 62:
+        case 66:
             for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++)
             {
                 if (m_spellInfo->EffectMiscValue[i] == str.toInt())
                     return true;
             }
             break;
-        case 63:
+        case 67:
+            for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++)
+            {
+                if (m_spellInfo->EffectMiscValueB[i] == str.toInt())
+                    return true;
+            }
+            break;
+        case 68:
             for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++)
             {
                 if (m_spellInfo->EffectTriggerSpell[i] == str.toUInt())
                     return true;
             }
             break;
-        case 64:
+        case 69:
             for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++)
             {
                 if (m_spellInfo->EffectPointsPerComboPoint[i] == str.toFloat())
                     return true;
             }
             break;
-        case 65:
+        case 70:
             if (m_spellInfo->SpellVisual[0] == str.toUInt() || m_spellInfo->SpellVisual[1] == str.toUInt())
                 return true;
             break;
-        case 67:
+        case 71:
             if (m_spellInfo->SpellIconID == str.toUInt())
                 return true;
             break;
-        case 68:
+        case 72:
             if (m_spellInfo->ActiveIconID == str.toUInt())
                 return true;
             break;
-        case 69:
+        case 73:
             if (m_spellInfo->SpellPriority == str.toUInt())
                 return true;
             break;
-        case 70:
+        case 74:
             if (QString(m_spellInfo->SpellName[0]) == str)
                 return true;
             break;
-        case 71:
+        case 75:
             if (m_spellInfo->SpellNameFlag == str.toUInt())
                 return true;
             break;
-        case 72:
+        case 76:
             if (QString(m_spellInfo->Rank[0]) == str)
                 return true;
             break;
-        case 73:
+        case 77:
             if (m_spellInfo->RankFlags == str.toUInt())
                 return true;
             break;
-        case 74:
+        case 78:
             if (QString(m_spellInfo->Description[0]) == str)
                 return true;
             break;
-        case 75:
+        case 79:
             if (m_spellInfo->DescriptionFlags == str.toUInt())
                 return true;
             break;
-        case 76:
+        case 80:
             if (QString(m_spellInfo->ToolTip[0]) == str)
                 return true;
             break;
-        case 77:
+        case 81:
             if (m_spellInfo->ToolTipFlags == str.toUInt())
                 return true;
             break;
-        case 78:
+        case 82:
             if (m_spellInfo->ManaCostPercentage == str.toUInt())
                 return true;
             break;
-        case 79:
+        case 83:
             if (m_spellInfo->StartRecoveryCategory == str.toUInt())
                 return true;
             break;
-        case 80:
+        case 84:
             if (m_spellInfo->StartRecoveryTime == str.toUInt())
                 return true;
             break;
-        case 81:
+        case 85:
             if (m_spellInfo->MaxTargetLevel == str.toUInt())
                 return true;
             break;
-        case 82:
+        case 86:
             if (m_spellInfo->SpellFamilyName == str.toUInt())
                 return true;
             break;
-        case 83:
+        case 87:
             if (m_spellInfo->SpellFamilyFlags == str.toULongLong())
                 return true;
             break;
-        case 84:
+        case 88:
             if (m_spellInfo->MaxAffectedTargets == str.toUInt())
                 return true;
             break;
-        case 85:
+        case 89:
             if (m_spellInfo->DmgClass == str.toUInt())
                 return true;
             break;
-        case 86:
+        case 90:
             if (m_spellInfo->PreventionType == str.toUInt())
                 return true;
             break;
-        case 87:
+        case 91:
             if (m_spellInfo->StanceBarOrder == str.toFloat())
                 return true;
             break;
-        case 88:
+        case 92:
             for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++)
             {
                 if (m_spellInfo->DmgMultiplier[i] == str.toFloat())
                     return true;
             }
             break;
-        case 89:
+        case 93:
             if (m_spellInfo->MinFactionId == str.toUInt())
                 return true;
             break;
-        case 90:
+        case 94:
             if (m_spellInfo->MinReputation == str.toUInt())
                 return true;
             break;
-        case 91:
+        case 95:
             if (m_spellInfo->RequiredAuraVision == str.toUInt())
+                return true;
+            break;
+        case 96:
+            for (quint8 i = 0; i < MAX_SPELL_TOTEM_CATEGORIES; i++)
+            {
+                if (m_spellInfo->TotemCategory[i] == str.toUInt())
+                    return true;
+            }
+            break;
+        case 97:
+            if (m_spellInfo->AreaId == str.toUInt())
+                return true;
+            break;
+        case 98:
+            if (m_spellInfo->SchoolMask == str.toUInt())
                 return true;
             break;
     }
@@ -1921,7 +1959,7 @@ void SpellWork::AppendSpellEffectInfo()
             if (m_spellInfo->EffectItemType[eff] != 0)
             {
                 QString sEffectItemType(QString("%0").arg(m_spellInfo->EffectItemType[eff], 8, 16, QChar('0')));
-                SpellInfoBrowser->append(QString("EffectItemType = 0x%0").arg(sEffectItemType));
+                SpellInfoBrowser->append(QString("EffectItemType = 0x%0").arg(sEffectItemType.toUpper()));
 
                 if (m_spellInfo->Effect[eff] == 6)
                 {
