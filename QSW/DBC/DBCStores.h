@@ -48,6 +48,6 @@ extern DBCStorage <SpellRangeEntry>              sSpellRangeStore;
 extern DBCStorage <SpellEntry>                   sSpellStore;
 
 
-bool LoadDBCStores();
+void LoadDBCStores();
 
 #endif

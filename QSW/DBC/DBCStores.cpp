@@ -93,7 +93,7 @@ inline void LoadDBC(quint32& availableDbcLocales, StoreProblemList& errlist, DBC
     }
 }
 
-bool LoadDBCStores()
+void LoadDBCStores()
 {
     std::string dbcPath = "DBC/";
 
@@ -109,6 +109,4 @@ bool LoadDBCStores()
     LoadDBC(availableDbcLocales, bad_dbc_files, sSpellDurationStore,       dbcPath, "SpellDuration.dbc");
     LoadDBC(availableDbcLocales, bad_dbc_files, sSpellRadiusStore,         dbcPath, "SpellRadius.dbc");
     LoadDBC(availableDbcLocales, bad_dbc_files, sSpellRangeStore,          dbcPath, "SpellRange.dbc");
-
-    return true;
 }

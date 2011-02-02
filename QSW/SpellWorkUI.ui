@@ -10,8 +10,20 @@
     <height>643</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>880</width>
+    <height>643</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>880</width>
+    <height>643</height>
+   </size>
+  </property>
   <property name="windowTitle">
-   <string>SpellWork</string>
+   <string>QSW - Qt SpellWork for 2.4.3</string>
   </property>
   <property name="windowIcon">
    <iconset resource="SpellWork.qrc">
