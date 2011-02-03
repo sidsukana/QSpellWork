@@ -1,7 +1,7 @@
 #ifndef THREADOBJ_H
 #define THREADOBJ_H
 
-#include <iostream>
+#include <QtCore/QThread>
 #include "SpellWork.h"
 
 class ObjThread: public QThread

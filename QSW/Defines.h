@@ -30,8 +30,6 @@ enum PowerType
     POWER_HEALTH        = 0xFFFFFFFE
 };
 
-#define TOTAL_SPELL_EFFECTS 130
-
 enum SpellEffectIndex
 {
     EFFECT_INDEX_0     = 0,

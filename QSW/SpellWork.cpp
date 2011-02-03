@@ -10,6 +10,8 @@ SpellWork::SpellWork(QWidget *parent)
     useRegExp = false;
     useFilter = false;
 
+    mo = Enums::staticMetaObject;
+    
     LoadDBCStores();
     LoadComboBoxes();
 
@@ -79,29 +81,32 @@ void SpellWork::LoadComboBoxes()
 {
     comboBox->clear();
     comboBox->insertItem(-1, "SpellFamilyName");
-    for (quint16 i = 0; i < MAX_SPELLFAMILY; i++)
-        comboBox->insertItem(i, QString("(%0) %1").arg(i, 3, 10, QChar('0')).arg(SpellFamilyString[i]));
+    SetMetaEnum("SpellFamilyNames");
+    for (quint16 i = 0; i < me.keyCount(); i++)
+        comboBox->insertItem(i, QString("(%0) %1").arg(i, 3, 10, QChar('0')).arg(me.valueToKey(me.value(i))));
 
     comboBox_2->clear();
     comboBox_2->insertItem(-1, "Aura");
-    for (quint16 i = 0; i < MAX_AURA; i++)
-        comboBox_2->insertItem(i, QString("(%0) %1").arg(i, 3, 10, QChar('0')).arg(AuraString[i]));
+    SetMetaEnum("AuraType");
+    for (quint16 i = 0; i < me.keyCount(); i++)
+        comboBox_2->insertItem(i, QString("(%0) %1").arg(i, 3, 10, QChar('0')).arg(me.valueToKey(me.value(i))));
 
     comboBox_3->clear();
     comboBox_3->insertItem(-1, "Effect");
-    for (quint16 i = 0; i < MAX_EFFECT; i++)
-        comboBox_3->insertItem(i, QString("(%0) %1").arg(i, 3, 10, QChar('0')).arg(EffectString[i]));
+    SetMetaEnum("Effects");
+    for (quint16 i = 0; i < me.keyCount(); i++)
+        comboBox_3->insertItem(i, QString("(%0) %1").arg(i, 3, 10, QChar('0')).arg(me.valueToKey(me.value(i))));
 
-    quint8 MaxTarget = sizeof(EffectTargetString) / sizeof(EffectTargetString[0]);
     comboBox_4->clear();
+    SetMetaEnum("Targets");
     comboBox_4->insertItem(-1, "Target A");
-    for (quint16 i = 0; i < MaxTarget; i++)
-        comboBox_4->insertItem(i, QString("(%0) %1").arg(i, 3, 10, QChar('0')).arg(EffectTargetString[i]));
+    for (quint16 i = 0; i < me.keyCount(); i++)
+        comboBox_4->insertItem(i, QString("(%0) %1").arg(i, 3, 10, QChar('0')).arg(me.key(i)));
 
     comboBox_5->clear();
     comboBox_5->insertItem(-1, "Target B");
-    for (quint16 i = 0; i < MaxTarget; i++)
-        comboBox_5->insertItem(i, QString("(%0) %1").arg(i, 3, 10, QChar('0')).arg(EffectTargetString[i]));
+    for (quint16 i = 0; i < me.keyCount(); i++)
+        comboBox_5->insertItem(i, QString("(%0) %1").arg(i, 3, 10, QChar('0')).arg(me.key(i)));
 
     adBox1->clear();
     adBox2->clear();
@@ -295,7 +300,7 @@ bool ObjectSearch::hasValue(quint8 index, QString str)
                 return true;
             break;
         case 32:
-            if (m_spellInfo->PowerType == str.toUInt())
+            if (m_spellInfo->PowerType == str.toInt())
                 return true;
             break;
         case 33:
@@ -616,7 +621,6 @@ void ObjectSearch::Search()
     if (iFace->IsFilter())
     {
         quint8 Max = sizeof(SpellStruct) / sizeof(SpellStruct[0]);
-        quint8 MaxTarget = sizeof(EffectTargetString) / sizeof(EffectTargetString[0]);
         for (quint32 i = 0; i < sSpellStore.GetNumRows(); i++)
         {
             bool family = false;
@@ -630,19 +634,21 @@ void ObjectSearch::Search()
             m_spellInfo = sSpellStore.LookupEntry(i);
             if (m_spellInfo)
             {
-                if (iFace->comboBox->currentIndex() < MAX_SPELLFAMILY)
+                iFace->SetMetaEnum("SpellFamilyNames");
+                if (iFace->comboBox->currentIndex() < iFace->GetMetaEnum().keyCount())
                 {
-                    if (m_spellInfo->SpellFamilyName == iFace->comboBox->currentIndex())
+                    if (m_spellInfo->SpellFamilyName == iFace->GetMetaEnum().value(iFace->comboBox->currentIndex()))
                         family = true;
                 }
                 else
                     family = true;
 
-                if (iFace->comboBox_2->currentIndex() < MAX_AURA)
+                iFace->SetMetaEnum("AuraType");
+                if (iFace->comboBox_2->currentIndex() < iFace->GetMetaEnum().keyCount())
                 {
                     for (quint8 i = EFFECT_INDEX_0; i < MAX_EFFECT_INDEX; i++)
                     {
-                        if (m_spellInfo->EffectApplyAuraName[i] == iFace->comboBox_2->currentIndex())
+                        if (m_spellInfo->EffectApplyAuraName[i] == iFace->GetMetaEnum().value(iFace->comboBox_2->currentIndex()))
                         {
                             aura = true;
                             break;
@@ -652,11 +658,12 @@ void ObjectSearch::Search()
                 else
                     aura = true;
 
-                if (iFace->comboBox_3->currentIndex() < MAX_EFFECT)
+                iFace->SetMetaEnum("Effects");
+                if (iFace->comboBox_3->currentIndex() < iFace->GetMetaEnum().keyCount())
                 {
                     for (quint8 i = EFFECT_INDEX_0; i < MAX_EFFECT_INDEX; i++)
                     {
-                        if (m_spellInfo->Effect[i] == iFace->comboBox_3->currentIndex())
+                        if (m_spellInfo->Effect[i] == iFace->GetMetaEnum().value(iFace->comboBox_3->currentIndex()))
                         {
                             effect = true;
                             break;
@@ -666,11 +673,12 @@ void ObjectSearch::Search()
                 else
                     effect = true;
 
-                if (iFace->comboBox_4->currentIndex() < MaxTarget)
+                iFace->SetMetaEnum("Targets");
+                if (iFace->comboBox_4->currentIndex() < iFace->GetMetaEnum().keyCount())
                 {
                     for (quint8 i = EFFECT_INDEX_0; i < MAX_EFFECT_INDEX; i++)
                     {
-                        if (m_spellInfo->EffectImplicitTargetA[i] == iFace->comboBox_4->currentIndex())
+                        if (m_spellInfo->EffectImplicitTargetA[i] == iFace->GetMetaEnum().value(iFace->comboBox_4->currentIndex()))
                         {
                             targetA = true;
                             break;
@@ -680,11 +688,11 @@ void ObjectSearch::Search()
                 else
                     targetA = true;
 
-                if (iFace->comboBox_5->currentIndex() < MaxTarget)
+                if (iFace->comboBox_5->currentIndex() < iFace->GetMetaEnum().keyCount())
                 {
                     for (quint8 i = EFFECT_INDEX_0; i < MAX_EFFECT_INDEX; i++)
                     {
-                        if (m_spellInfo->EffectImplicitTargetB[i] == iFace->comboBox_5->currentIndex())
+                        if (m_spellInfo->EffectImplicitTargetB[i] == iFace->GetMetaEnum().value(iFace->comboBox_5->currentIndex()))
                         {
                             targetB = true;
                             break;
@@ -1599,21 +1607,25 @@ void SpellWork::ShowInfo()
         .arg(m_spellInfo->ActiveIconID)
         .arg(m_spellInfo->SpellVisual));
 
+    SetMetaEnum("SpellFamilyNames");
     SpellInfoBrowser->append(QString("SpellFamilyName = %0, SpellFamilyFlags = 0x%1\n")
-        .arg(SpellFamilyString[m_spellInfo->SpellFamilyName])
+        .arg(me.valueToKey(m_spellInfo->SpellFamilyName))
         .arg(sSpellFamilyFlags.toUpper()));
 
+    SetMetaEnum("School");
     SpellInfoBrowser->append(QString("SpellSchool = %0 (%1)")
         .arg(m_spellInfo->School)
-        .arg(SchoolString[m_spellInfo->School]));
+        .arg(me.valueToKey(m_spellInfo->School)));
 
+    SetMetaEnum("DamageClass");
     SpellInfoBrowser->append(QString("DamageClass = %0 (%1)")
         .arg(m_spellInfo->DmgClass)
-        .arg(DmgClassString[m_spellInfo->DmgClass]));
+        .arg(me.valueToKey(m_spellInfo->DmgClass)));
 
+    SetMetaEnum("PreventionType");
     SpellInfoBrowser->append(QString("PreventionType = %0 (%1)")
         .arg(m_spellInfo->PreventionType)
-        .arg(PreventionTypeString[m_spellInfo->PreventionType]));
+        .arg(me.valueToKey(m_spellInfo->PreventionType)));
     
     if (m_spellInfo->Attributes || m_spellInfo->AttributesEx || m_spellInfo->AttributesEx2 ||
         m_spellInfo->AttributesEx3 || m_spellInfo->AttributesEx4)
@@ -1676,9 +1688,10 @@ void SpellWork::ShowInfo()
 
     if (m_spellInfo->EquippedItemClass != -1)
     {
+        SetMetaEnum("ItemClass");
         SpellInfoBrowser->append(QString("EquippedItemClass = %0 (%1)")
             .arg(m_spellInfo->EquippedItemClass)
-            .arg(ItemClassString[m_spellInfo->EquippedItemClass]));
+            .arg(me.valueToKey(m_spellInfo->EquippedItemClass)));
 
         if (m_spellInfo->EquippedItemSubClassMask)
         {
@@ -1716,13 +1729,15 @@ void SpellWork::ShowInfo()
 
     SpellInfoBrowser->append(QString("Category = %0").arg(m_spellInfo->Category));
 
+    SetMetaEnum("DispelType");
     SpellInfoBrowser->append(QString("DispelType = %0 (%1)")
         .arg(m_spellInfo->Dispel)
-        .arg(DispelTypeString[m_spellInfo->Dispel]));
+        .arg(me.valueToKey(m_spellInfo->Dispel)));
 
+    SetMetaEnum("Mechanic");
     SpellInfoBrowser->append(QString("Mechanic = %0 (%1)")
         .arg(m_spellInfo->Mechanic)
-        .arg(MechanicString[m_spellInfo->Mechanic]));
+        .arg(me.valueToKey(m_spellInfo->Mechanic)));
 
     AppendRangeInfo();
 
@@ -1749,8 +1764,9 @@ void SpellWork::ShowInfo()
 
     if (m_spellInfo->ManaCost || m_spellInfo->ManaCostPercentage)
     {
+        SetMetaEnum("Powers");
         SpellInfoBrowser->append(QString("Power Type = %0, Cost %1")
-            .arg(PowerString())
+            .arg(me.valueToKey(m_spellInfo->PowerType))
             .arg(m_spellInfo->ManaCost));
 
         if (m_spellInfo->ManaCostPerlevel)
@@ -1770,15 +1786,16 @@ void SpellWork::ShowInfo()
         .arg(sAIF.toUpper())
         .arg(sCIF.toUpper()));
 
+    SetMetaEnum("AuraState");
     if (m_spellInfo->CasterAuraState)
         SpellInfoBrowser->append(QString("CasterAuraState = %0 (%1)")
             .arg(m_spellInfo->CasterAuraState)
-            .arg(AuraStateString[m_spellInfo->CasterAuraState]));
+            .arg(me.valueToKey(m_spellInfo->CasterAuraState)));
 
     if (m_spellInfo->TargetAuraState)
         SpellInfoBrowser->append(QString("TargetAuraState = %0 (%1)")
             .arg(m_spellInfo->TargetAuraState)
-            .arg(AuraStateString[m_spellInfo->TargetAuraState]));
+            .arg(me.valueToKey(m_spellInfo->TargetAuraState)));
 
     if (m_spellInfo->RequiresSpellFocus)
         SpellInfoBrowser->append(QString("Requires Spell Focus %0").arg(m_spellInfo->RequiresSpellFocus));
@@ -1882,18 +1899,21 @@ void SpellWork::AppendSpellEffectInfo()
                 _Multiple = QString(", Multiple = %0").arg(m_spellInfo->EffectMultipleValue[eff], 0, 'f', 2);
                 
             QString _Result = _BasePoints + _RealPoints + _DieSides + _PointsPerCombo + _DmgMultiplier + _Multiple;
+
+            SetMetaEnum("Effects");
             SpellInfoBrowser->append(QString("<b>Effect %0: Id %1 (%2)</b>")
                 .arg(eff)
                 .arg(m_spellInfo->Effect[eff])
-                .arg(EffectString[m_spellInfo->Effect[eff]]));
+                .arg(me.valueToKey(m_spellInfo->Effect[eff])));
 
             SpellInfoBrowser->append(_Result);
 
+            SetMetaEnum("Targets");
             SpellInfoBrowser->append(QString("Targets (%0, %1) (%2, %3)")
                 .arg(m_spellInfo->EffectImplicitTargetA[eff])
                 .arg(m_spellInfo->EffectImplicitTargetB[eff])
-                .arg(EffectTargetString[m_spellInfo->EffectImplicitTargetA[eff]])
-                .arg(EffectTargetString[m_spellInfo->EffectImplicitTargetB[eff]]));
+                .arg(me.valueToKey(m_spellInfo->EffectImplicitTargetA[eff]))
+                .arg(me.valueToKey(m_spellInfo->EffectImplicitTargetB[eff])));
             
             AppendAuraInfo(eff);
 
@@ -1905,9 +1925,12 @@ void SpellWork::AppendSpellEffectInfo()
                 SpellInfoBrowser->append(QString("EffectChainTarget = %0").arg(m_spellInfo->EffectChainTarget[eff]));
 
             if (m_spellInfo->EffectMechanic[eff] != 0)
+            {
+                SetMetaEnum("Mechanic");
                 SpellInfoBrowser->append(QString("Effect Mechanic = %0 (%1)")
                     .arg(m_spellInfo->EffectMechanic[eff])
-                    .arg(MechanicString[m_spellInfo->EffectMechanic[eff]]));
+                    .arg(me.valueToKey(m_spellInfo->EffectMechanic[eff])));
+            }
 
             if (m_spellInfo->EffectItemType[eff] != 0)
             {
@@ -2023,7 +2046,8 @@ void SpellWork::AppendAuraInfo(quint8 index)
     if (!m_spellInfo)
         return;
 
-    QString sAura(AuraString[m_spellInfo->EffectApplyAuraName[index]]);
+    SetMetaEnum("AuraType");
+    QString sAura(me.valueToKey(m_spellInfo->EffectApplyAuraName[index]));
     quint32 misc = m_spellInfo->EffectMiscValue[index];
 
     if (m_spellInfo->EffectApplyAuraName[index] == 0)
@@ -2048,14 +2072,16 @@ void SpellWork::AppendAuraInfo(quint8 index)
     switch (m_spellInfo->EffectApplyAuraName[index])
     {
         case 29:
-            _SpecialAuraInfo = QString("(%0").arg(UnitMods[misc]);
+            SetMetaEnum("UnitMods");
+            _SpecialAuraInfo = QString("(%0").arg(me.valueToKey(misc));
             break;
         case 189:
             _SpecialAuraInfo = QString("(%0").arg(CompareAttributes(TYPE_CR, index));
             break;
         case 107:
         case 108:
-            _SpecialAuraInfo = QString("(%0").arg(SpellModOp[misc]);
+            SetMetaEnum("SpellModOp");
+            _SpecialAuraInfo = QString("(%0").arg(me.valueToKey(misc));
             break;
         // todo: more case
         default:
@@ -2068,33 +2094,6 @@ void SpellWork::AppendAuraInfo(quint8 index)
     SpellInfoBrowser->append(_Result);
 }
 
-QString SpellWork::PowerString()
-{
-    if (!m_spellInfo)
-        return QString();
-
-    switch (m_spellInfo->PowerType)
-    {
-        case POWER_MANA:
-            return QString("POWER_MANA");
-        case POWER_RAGE:
-            return QString("POWER_RAGE");
-        case POWER_FOCUS:
-            return QString("POWER_FOCUS");
-        case POWER_ENERGY:
-            return QString("POWER_ENERGY");
-        case POWER_HAPPINESS:
-            return QString("POWER_HAPPINESS");
-        case POWER_RUNES:
-            return QString("POWER_RUNES");
-        case POWER_HEALTH:
-            return QString("POWER_HEALTH");
-        default:
-            return QString("POWER_UNKNOWN");
-    }
-    return QString();
-}
-
 QString SpellWork::CompareAttributes(AttrType attr, quint8 index)
 {
     if (!m_spellInfo)
@@ -2105,12 +2104,12 @@ QString SpellWork::CompareAttributes(AttrType attr, quint8 index)
     {
         case TYPE_ATTR:
         {
-            quint8 Max = sizeof(AttributesVal) / sizeof(AttributesVal[0]);
-            for (quint8 i = 0; i < Max; i++)
+            SetMetaEnum("Attributes");
+            for (quint8 i = 0; i < me.keyCount(); i++)
             {
-                if (m_spellInfo->Attributes & AttributesVal[i])
+                if (m_spellInfo->Attributes & me.value(i))
                 {   
-                    QString tstr(QString("%0, ").arg(AttributesString[i]));
+                    QString tstr(QString("%0, ").arg(me.key(i)));
                     str += tstr;
                 }
             }
@@ -2121,12 +2120,12 @@ QString SpellWork::CompareAttributes(AttrType attr, quint8 index)
         break;
         case TYPE_ATTR_EX:
         {
-            quint8 Max = sizeof(AttributesVal) / sizeof(AttributesVal[0]);
-            for (quint8 i = 0; i < Max; i++)
+            SetMetaEnum("AttributesEx");
+            for (quint8 i = 0; i < me.keyCount(); i++)
             {
-                if (m_spellInfo->AttributesEx & AttributesVal[i])
+                if (m_spellInfo->AttributesEx & me.value(i))
                 {   
-                    QString tstr(QString("%0, ").arg(AttributesExString[i]));
+                    QString tstr(QString("%0, ").arg(me.key(i)));
                     str += tstr;
                 }
             }
@@ -2137,12 +2136,12 @@ QString SpellWork::CompareAttributes(AttrType attr, quint8 index)
         break;
         case TYPE_ATTR_EX2:
         {
-            quint8 Max = sizeof(AttributesVal) / sizeof(AttributesVal[0]);
-            for (quint8 i = 0; i < Max; i++)
+            SetMetaEnum("AttributesEx2");
+            for (quint8 i = 0; i < me.keyCount(); i++)
             {
-                if (m_spellInfo->AttributesEx2 & AttributesVal[i])
+                if (m_spellInfo->AttributesEx2 & me.value(i))
                 {   
-                    QString tstr(QString("%0, ").arg(AttributesEx2String[i]));
+                    QString tstr(QString("%0, ").arg(me.key(i)));
                     str += tstr;
                 }
             }
@@ -2153,12 +2152,12 @@ QString SpellWork::CompareAttributes(AttrType attr, quint8 index)
         break;
         case TYPE_ATTR_EX3:
         {
-            quint8 Max = sizeof(AttributesVal) / sizeof(AttributesVal[0]);
-            for (quint8 i = 0; i < Max; i++)
+            SetMetaEnum("AttributesEx3");
+            for (quint8 i = 0; i < me.keyCount(); i++)
             {
-                if (m_spellInfo->AttributesEx3 & AttributesVal[i])
+                if (m_spellInfo->AttributesEx3 & me.value(i))
                 {   
-                    QString tstr(QString("%0, ").arg(AttributesEx3String[i]));
+                    QString tstr(QString("%0, ").arg(me.key(i)));
                     str += tstr;
                 }
             }
@@ -2169,12 +2168,12 @@ QString SpellWork::CompareAttributes(AttrType attr, quint8 index)
         break;
         case TYPE_ATTR_EX4:
         {
-            quint8 Max = sizeof(AttributesVal) / sizeof(AttributesVal[0]);
-            for (quint8 i = 0; i < Max; i++)
+            SetMetaEnum("AttributesEx4");
+            for (quint8 i = 0; i < me.keyCount(); i++)
             {
-                if (m_spellInfo->AttributesEx4 & AttributesVal[i])
+                if (m_spellInfo->AttributesEx4 & me.value(i))
                 {   
-                    QString tstr(QString("%0, ").arg(AttributesEx4String[i]));
+                    QString tstr(QString("%0, ").arg(me.key(i)));
                     str += tstr;
                 }
             }
@@ -2185,12 +2184,12 @@ QString SpellWork::CompareAttributes(AttrType attr, quint8 index)
         break;
         case TYPE_TARGETS:
         {
-            quint8 Max = sizeof(TargetFlags) / sizeof(TargetFlags[0]);
-            for (quint8 i = 0; i < Max; i++)
+            SetMetaEnum("TargetFlags");
+            for (quint8 i = 0; i < me.keyCount(); i++)
             {
-                if (m_spellInfo->Targets & TargetFlags[i])
+                if (m_spellInfo->Targets & me.value(i))
                 {   
-                    QString tstr(QString("%0, ").arg(TargetFlagsString[i]));
+                    QString tstr(QString("%0, ").arg(me.key(i)));
                     str += tstr;
                 }
             }
@@ -2201,12 +2200,12 @@ QString SpellWork::CompareAttributes(AttrType attr, quint8 index)
         break;
         case TYPE_CREATURE:
         {
-            quint8 Max = sizeof(CreatureTypeFlags) / sizeof(CreatureTypeFlags[0]);
-            for (quint8 i = 0; i < Max; i++)
+            SetMetaEnum("CreatureType");
+            for (quint8 i = 0; i < me.keyCount(); i++)
             {
-                if (m_spellInfo->TargetCreatureType & CreatureTypeFlags[i])
+                if (m_spellInfo->TargetCreatureType & me.value(i))
                 {   
-                    QString tstr(QString("%0, ").arg(CreatureTypeString[i]));
+                    QString tstr(QString("%0, ").arg(me.key(i)));
                     str += tstr;
                 }
             }
@@ -2217,12 +2216,12 @@ QString SpellWork::CompareAttributes(AttrType attr, quint8 index)
         break;
         case TYPE_FORMS:
         {
-            quint8 Max = sizeof(FormMask) / sizeof(FormMask[0]);
-            for (quint8 i = 0; i < Max; i++)
+            SetMetaEnum("ShapeshiftFormMask");
+            for (quint8 i = 0; i < me.keyCount(); i++)
             {
-                if (m_spellInfo->Stances & FormMask[i])
+                if (m_spellInfo->Stances & me.value(i))
                 {   
-                    QString tstr(QString("%0, ").arg(FormString[i]));
+                    QString tstr(QString("%0, ").arg(me.key(i)));
                     str += tstr;
                 }
             }
@@ -2233,12 +2232,12 @@ QString SpellWork::CompareAttributes(AttrType attr, quint8 index)
         break;
         case TYPE_FORMS_NOT:
         {
-            quint8 Max = sizeof(FormMask) / sizeof(FormMask[0]);
-            for (quint8 i = 0; i < Max; i++)
+            SetMetaEnum("ShapeshiftFormMask");
+            for (quint8 i = 0; i < me.keyCount(); i++)
             {
-                if (m_spellInfo->StancesNot & FormMask[i])
+                if (m_spellInfo->StancesNot & me.value(i))
                 {   
-                    QString tstr(QString("%0, ").arg(FormString[i]));
+                    QString tstr(QString("%0, ").arg(me.key(i)));
                     str += tstr;
                 }
             }
@@ -2249,12 +2248,12 @@ QString SpellWork::CompareAttributes(AttrType attr, quint8 index)
         break;
         case TYPE_ITEM_WEAPON:
         {
-            quint8 Max = sizeof(ItemSubWeaponMask) / sizeof(ItemSubWeaponMask[0]);
-            for (quint8 i = 0; i < Max; i++)
+            SetMetaEnum("ItemSubClassWeaponMask");
+            for (quint8 i = 0; i < me.keyCount(); i++)
             {
-                if (m_spellInfo->EquippedItemSubClassMask & ItemSubWeaponMask[i])
+                if (m_spellInfo->EquippedItemSubClassMask & me.value(i))
                 {   
-                    QString tstr(QString("%0, ").arg(ItemSubWeaponString[i]));
+                    QString tstr(QString("%0, ").arg(me.key(i)));
                     str += tstr;
                 }
             }
@@ -2265,12 +2264,12 @@ QString SpellWork::CompareAttributes(AttrType attr, quint8 index)
         break;
         case TYPE_ITEM_ARMOR:
         {
-            quint8 Max = sizeof(ItemSubArmorMask) / sizeof(ItemSubArmorMask[0]);
-            for (quint8 i = 0; i < Max; i++)
+            SetMetaEnum("ItemSubClassArmorMask");
+            for (quint8 i = 0; i < me.keyCount(); i++)
             {
-                if (m_spellInfo->EquippedItemSubClassMask & ItemSubArmorMask[i])
+                if (m_spellInfo->EquippedItemSubClassMask & me.value(i))
                 {   
-                    QString tstr(QString("%0, ").arg(ItemSubArmorString[i]));
+                    QString tstr(QString("%0, ").arg(me.key(i)));
                     str += tstr;
                 }
             }
@@ -2281,12 +2280,12 @@ QString SpellWork::CompareAttributes(AttrType attr, quint8 index)
         break;
         case TYPE_ITEM_MISC:
         {
-            quint8 Max = sizeof(ItemSubMiscMask) / sizeof(ItemSubMiscMask[0]);
-            for (quint8 i = 0; i < Max; i++)
+            SetMetaEnum("ItemSubClassMiscMask");
+            for (quint8 i = 0; i < me.keyCount(); i++)
             {
-                if (m_spellInfo->EquippedItemSubClassMask & ItemSubMiscMask[i])
+                if (m_spellInfo->EquippedItemSubClassMask & me.value(i))
                 {   
-                    QString tstr(QString("%0, ").arg(ItemSubMiscString[i]));
+                    QString tstr(QString("%0, ").arg(me.key(i)));
                     str += tstr;
                 }
             }
@@ -2297,12 +2296,12 @@ QString SpellWork::CompareAttributes(AttrType attr, quint8 index)
         break;
         case TYPE_ITEM_INVENTORY:
         {
-            quint8 Max = sizeof(InventoryTypeMask) / sizeof(InventoryTypeMask[0]);
-            for (quint8 i = 0; i < Max; i++)
+            SetMetaEnum("InventoryTypeMask");
+            for (quint8 i = 0; i < me.keyCount(); i++)
             {
-                if (m_spellInfo->EquippedItemInventoryTypeMask & InventoryTypeMask[i])
+                if (m_spellInfo->EquippedItemInventoryTypeMask & me.value(i))
                 {   
-                    QString tstr(QString("%0, ").arg(InventoryTypeString[i]));
+                    QString tstr(QString("%0, ").arg(me.key(i)));
                     str += tstr;
                 }
             }
@@ -2313,12 +2312,12 @@ QString SpellWork::CompareAttributes(AttrType attr, quint8 index)
         break;
         case TYPE_CR:
         {
-            quint8 Max = sizeof(CombatRating) / sizeof(CombatRating[0]);
-            for (quint8 i = 0; i < Max; i++)
+            SetMetaEnum("CombatRating");
+            for (quint8 i = 0; i < me.keyCount(); i++)
             {
-                if (m_spellInfo->EffectMiscValue[index] & CombatRating[i])
+                if (m_spellInfo->EffectMiscValue[index] & me.value(i))
                 {   
-                    QString tstr(QString("%0, ").arg(CombatRatingString[i]));
+                    QString tstr(QString("%0, ").arg(me.key(i)));
                     str += tstr;
                 }
             }
