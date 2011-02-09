@@ -2,8 +2,8 @@
 #define DBC_FILE_LOADER_H
 
 #include <QtCore/QtGlobal>
-#include "Platform/Define.h"
-#include "Utilities/ByteConverter.h"
+#include "Includes/Platform/Define.h"
+#include "Includes/Utilities/ByteConverter.h"
 #include <cassert>
 
 enum

@@ -6,7 +6,7 @@
 #ifndef __EVENTPROCESSOR_H
 #define __EVENTPROCESSOR_H
 
-#include "Platform/Define.h"
+#include "Includes/Platform/Define.h"
 #include <QtCore/QtGlobal>
 
 #include <map>

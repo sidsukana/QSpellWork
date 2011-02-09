@@ -7,13 +7,7 @@
 #define ANATHEMA_DEFINE_H
 
 #include <sys/types.h>
-
-//#include <ace/Basic_Types.h>
-//#include <ace/Default_Constants.h>
-//#include <ace/OS_NS_dlfcn.h>
-//#include <ace/ACE_export.h>
-
-#include "Platform/CompilerDefs.h"
+#include "Includes/Platform/CompilerDefs.h"
 
 #define ANATHEMA_LITTLEENDIAN 0
 #define ANATHEMA_BIGENDIAN    1

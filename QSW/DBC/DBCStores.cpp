@@ -1,7 +1,9 @@
+#include <stdio.h>
+#include <string.h>
 #include "DBCStores.h"
 #include "DBCfmt.h"
-#include "Policies/SingletonImp.h"
-#include "Platform/Define.h"
+#include "Includes/Policies/SingletonImp.h"
+#include "Includes/Platform/Define.h"
 
 char const* localeNames[MAX_LOCALE] =
 {
