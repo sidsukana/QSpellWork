@@ -7,7 +7,7 @@
 #define ANATHEMA_DEFINE_H
 
 #include <sys/types.h>
-#include "Includes/Platform/CompilerDefs.h"
+#include "Platform/CompilerDefs.h"
 
 #define ANATHEMA_LITTLEENDIAN 0
 #define ANATHEMA_BIGENDIAN    1

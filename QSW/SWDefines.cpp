@@ -68,7 +68,6 @@ char* SpellStruct[] =
     "EffectTriggerSpell",
     "EffectPointsPerComboPoint",
     "SpellVisual",
-    "SpellVisual2",
     "SpellIconID",
     "ActiveIconID",
     "SpellPriority",

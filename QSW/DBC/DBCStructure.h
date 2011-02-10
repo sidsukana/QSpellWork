@@ -2,7 +2,7 @@
 #define DBCSTRUCTURE_H
 
 #include "Defines.h"
-#include "Includes/Platform/Define.h"
+#include "Platform/Define.h"
 
 #include <map>
 #include <set>
@@ -113,8 +113,7 @@ struct SpellEntry
     qint32     EffectMiscValue[MAX_EFFECT_INDEX];            // 106-108
     quint32    EffectTriggerSpell[MAX_EFFECT_INDEX];         // 109-111
     float      EffectPointsPerComboPoint[MAX_EFFECT_INDEX];  // 112-114
-    quint32    SpellVisual;                                  // 115
-    quint32    SpellVisual2;                                 // 116 not used
+    quint32    SpellVisual[2];                               // 115-116
     quint32    SpellIconID;                                  // 117
     quint32    ActiveIconID;                                 // 118
     quint32    SpellPriority;                                // 119

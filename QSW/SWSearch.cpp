@@ -337,113 +337,109 @@ bool SWSearch::HasValue(quint8 index, QString str, SpellEntry const *m_spellInfo
             }
             break;
         case 65:
-            if (m_spellInfo->SpellVisual == str.toUInt())
+            if (m_spellInfo->SpellVisual[0] == str.toUInt() || m_spellInfo->SpellVisual[1] == str.toUInt())
                 return true;
             break;
         case 66:
-            if (m_spellInfo->SpellVisual2 == str.toUInt())
-                return true;
-            break;
-        case 67:
             if (m_spellInfo->SpellIconID == str.toUInt())
                 return true;
             break;
-        case 68:
+        case 67:
             if (m_spellInfo->ActiveIconID == str.toUInt())
                 return true;
             break;
-        case 69:
+        case 68:
             if (m_spellInfo->SpellPriority == str.toUInt())
                 return true;
             break;
-        case 70:
+        case 69:
             if (QString(m_spellInfo->SpellName[0]) == str)
                 return true;
             break;
-        case 71:
+        case 70:
             if (m_spellInfo->SpellNameFlag == str.toUInt())
                 return true;
             break;
-        case 72:
+        case 71:
             if (QString(m_spellInfo->Rank[0]) == str)
                 return true;
             break;
-        case 73:
+        case 72:
             if (m_spellInfo->RankFlags == str.toUInt())
                 return true;
             break;
-        case 74:
+        case 73:
             if (QString(m_spellInfo->Description[0]) == str)
                 return true;
             break;
-        case 75:
+        case 74:
             if (m_spellInfo->DescriptionFlags == str.toUInt())
                 return true;
             break;
-        case 76:
+        case 75:
             if (QString(m_spellInfo->ToolTip[0]) == str)
                 return true;
             break;
-        case 77:
+        case 76:
             if (m_spellInfo->ToolTipFlags == str.toUInt())
                 return true;
             break;
-        case 78:
+        case 77:
             if (m_spellInfo->ManaCostPercentage == str.toUInt())
                 return true;
             break;
-        case 79:
+        case 78:
             if (m_spellInfo->StartRecoveryCategory == str.toUInt())
                 return true;
             break;
-        case 80:
+        case 79:
             if (m_spellInfo->StartRecoveryTime == str.toUInt())
                 return true;
             break;
-        case 81:
+        case 80:
             if (m_spellInfo->MaxTargetLevel == str.toUInt())
                 return true;
             break;
-        case 82:
+        case 81:
             if (m_spellInfo->SpellFamilyName == str.toUInt())
                 return true;
             break;
-        case 83:
+        case 82:
             if (m_spellInfo->SpellFamilyFlags == str.toULongLong())
                 return true;
             break;
-        case 84:
+        case 83:
             if (m_spellInfo->MaxAffectedTargets == str.toUInt())
                 return true;
             break;
-        case 85:
+        case 84:
             if (m_spellInfo->DmgClass == str.toUInt())
                 return true;
             break;
-        case 86:
+        case 85:
             if (m_spellInfo->PreventionType == str.toUInt())
                 return true;
             break;
-        case 87:
+        case 86:
             if (m_spellInfo->StanceBarOrder == str.toFloat())
                 return true;
             break;
-        case 88:
+        case 87:
             for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++)
             {
                 if (m_spellInfo->DmgMultiplier[i] == str.toFloat())
                     return true;
             }
             break;
-        case 89:
+        case 88:
             if (m_spellInfo->MinFactionId == str.toUInt())
                 return true;
             break;
-        case 90:
+        case 89:
             if (m_spellInfo->MinReputation == str.toUInt())
                 return true;
             break;
-        case 91:
+        case 90:
             if (m_spellInfo->RequiredAuraVision == str.toUInt())
                 return true;
             break;

@@ -6,7 +6,7 @@
 #ifndef ANATHEMA_SINGLETONIMPL_H
 #define ANATHEMA_SINGLETONIMPL_H
 
-#include "Includes/Policies/Singleton.h"
+#include "Policies/Singleton.h"
 
 // avoid the using namespace here cuz
 // its a .h file afterall

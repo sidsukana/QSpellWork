@@ -7,7 +7,7 @@
 #define ANATHEMA_OBJECTLIFETIME_H
 
 #include <stdexcept>
-#include "Includes/Platform/Define.h"
+#include "Platform/Define.h"
 
 typedef void (* Destroyer)(void);
 

@@ -4,7 +4,7 @@
 extern char* SpellStruct[];
 extern char* ProcFlagDesc[];
 
-#define MAX_STRUCT 92
+#define MAX_STRUCT 91
 #define MAX_PROC 32 
 
 #endif // SWDEFINES_H

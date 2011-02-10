@@ -699,11 +699,12 @@ void SWObject::ShowInfo(SpellEntry const *spellInfo)
      if (spellInfo->ModalNextSpell)
         browser->append(QString("ModalNextSpell: %0").arg(spellInfo->ModalNextSpell));
 
-    browser->append(QString("Category = %0, SpellIconID = %1, ActiveIconID = %2, SpellVisual = %3")
+    browser->append(QString("Category = %0, SpellIconID = %1, ActiveIconID = %2, SpellVisual = (%3, %4)")
         .arg(spellInfo->Category)
         .arg(spellInfo->SpellIconID)
         .arg(spellInfo->ActiveIconID)
-        .arg(spellInfo->SpellVisual));
+        .arg(spellInfo->SpellVisual[0])
+        .arg(spellInfo->SpellVisual[1]));
 
     SetMetaEnum("SpellFamilyNames");
     browser->append(QString("SpellFamilyName = %0, SpellFamilyFlags = 0x%1\n")

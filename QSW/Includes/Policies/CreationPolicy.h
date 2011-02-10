@@ -7,7 +7,7 @@
 #define ANATHEMA_CREATIONPOLICY_H
 
 #include <stdlib.h>
-#include "Includes/Platform/Define.h"
+#include "Platform/Define.h"
 
 namespace ANATHEMA
 {
