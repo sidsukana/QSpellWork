@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>SpellWorkUI</class>
- <widget class="QMainWindow" name="SpellWorkUI">
+ <class>SWFormUI</class>
+ <widget class="QMainWindow" name="SWFormUI">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -9,6 +9,12 @@
     <width>880</width>
     <height>643</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Ignored">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="minimumSize">
    <size>
@@ -23,7 +29,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>QSW - Qt SpellWork for 2.4.3</string>
+   <string>QSW - Qt SpellWork for 1.12.x</string>
   </property>
   <property name="windowIcon">
    <iconset resource="SpellWork.qrc">
@@ -33,6 +39,18 @@
    <bool>false</bool>
   </property>
   <widget class="QWidget" name="centralWidget">
+   <property name="minimumSize">
+    <size>
+     <width>880</width>
+     <height>590</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>880</width>
+     <height>590</height>
+    </size>
+   </property>
    <widget class="QTextBrowser" name="SpellInfoBrowser">
     <property name="geometry">
      <rect>
@@ -50,8 +68,8 @@
     <property name="geometry">
      <rect>
       <x>589</x>
-      <y>119</y>
-      <width>281</width>
+      <y>120</y>
+      <width>279</width>
       <height>131</height>
      </rect>
     </property>
@@ -411,7 +429,7 @@
      <rect>
       <x>590</x>
       <y>250</y>
-      <width>281</width>
+      <width>276</width>
       <height>71</height>
      </rect>
     </property>
