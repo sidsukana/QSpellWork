@@ -29,7 +29,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>QSW - Qt SpellWork for 1.12.x</string>
+   <string>QSW - Qt SpellWork for 2.4.3</string>
   </property>
   <property name="windowIcon">
    <iconset resource="SpellWork.qrc">
