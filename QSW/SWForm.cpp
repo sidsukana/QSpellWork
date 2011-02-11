@@ -95,6 +95,9 @@ void SWForm::SlotRegExp()
         sw->SetRegExp(false);
         regexpButton->setStyleSheet("background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));");
     }
+
+    if (SpellEntry const *spellInfo = sSpellStore.LookupEntry(SpellList->model()->data(SpellList->model()->index(SpellList->currentIndex().row(), 0)).toInt()))
+        sw->ShowInfo(spellInfo);
 }
 
 void SWForm::SlotAbout()
