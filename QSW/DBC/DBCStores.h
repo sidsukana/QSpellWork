@@ -50,6 +50,6 @@ extern DBCStorage <ScreenEffectEntry>            sScreenEffectStore;
 extern DBCStorage <OverrideSpellDataEntry>       sOverrideSpellDataStore;
 
 
-bool LoadDBCStores();
+void LoadDBCStores();
 
 #endif

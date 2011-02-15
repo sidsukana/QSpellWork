@@ -95,7 +95,7 @@ inline void LoadDBC(quint32& availableDbcLocales, StoreProblemList& errlist, DBC
     }
 }
 
-bool LoadDBCStores()
+void LoadDBCStores()
 {
     std::string dbcPath = "DBC/";
 
@@ -113,6 +113,4 @@ bool LoadDBCStores()
     LoadDBC(availableDbcLocales, bad_dbc_files, sSpellRangeStore,          dbcPath, "SpellRange.dbc");
     LoadDBC(availableDbcLocales, bad_dbc_files, sScreenEffectStore,        dbcPath, "ScreenEffect.dbc");
     LoadDBC(availableDbcLocales, bad_dbc_files, sOverrideSpellDataStore,   dbcPath, "OverrideSpellData.dbc");
-
-    return true;
 }
