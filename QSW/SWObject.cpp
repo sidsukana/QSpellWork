@@ -666,7 +666,9 @@ void SWObject::ShowInfo(SpellEntry const *spellInfo)
     QString sDescription(spellInfo->Description[0]);
     QString sRank(spellInfo->Rank[0]);
     QString sToolTip(spellInfo->ToolTip[0]);
-    QString sSpellFamilyFlags(QString("%0").arg(spellInfo->SpellFamilyFlags, 16, 16, QChar('0')));
+    QString sSpellFamilyFlags0(QString("%0").arg(spellInfo->SpellFamilyFlags[0], 8, 16, QChar('0')));
+    QString sSpellFamilyFlags1(QString("%0").arg(spellInfo->SpellFamilyFlags[1], 8, 16, QChar('0')));
+    QString sSpellFamilyFlags2(QString("%0").arg(spellInfo->SpellFamilyFlags[2], 8, 16, QChar('0')));
     QString sAttributes(QString("%0").arg(spellInfo->Attributes, 8, 16, QChar('0')));
     QString sAttributesEx(QString("%0").arg(spellInfo->AttributesEx, 8, 16, QChar('0')));
     QString sAttributesEx2(QString("%0").arg(spellInfo->AttributesEx2, 8, 16, QChar('0')));
@@ -674,9 +676,11 @@ void SWObject::ShowInfo(SpellEntry const *spellInfo)
     QString sAttributesEx4(QString("%0").arg(spellInfo->AttributesEx4, 8, 16, QChar('0')));
     QString sAttributesEx5(QString("%0").arg(spellInfo->AttributesEx5, 8, 16, QChar('0')));
     QString sAttributesEx6(QString("%0").arg(spellInfo->AttributesEx6, 8, 16, QChar('0')));
+    QString sAttributesExG(QString("%0").arg(spellInfo->AttributesExG, 8, 16, QChar('0')));
     QString sTargetMask(QString("%0").arg(spellInfo->Targets, 8, 16, QChar('0')));
     QString sCreatureTypeMask(QString("%0").arg(spellInfo->TargetCreatureType, 8, 16, QChar('0')));
-    QString sFormMask(QString("%0").arg(spellInfo->Stances, 8, 16, QChar('0')));
+    QString sFormMask(QString("%0").arg(spellInfo->Stances[0], 8, 16, QChar('0')));
+    QString sFormMaskNot(QString("%0").arg(spellInfo->StancesNot[0], 8, 16, QChar('0')));
     QString sIF(QString("%0").arg(spellInfo->InterruptFlags, 8, 16, QChar('0')));
     QString sAIF(QString("%0").arg(spellInfo->AuraInterruptFlags, 8, 16, QChar('0')));
     QString sCIF(QString("%0").arg(spellInfo->ChannelInterruptFlags, 8, 16, QChar('0')));
@@ -709,9 +713,11 @@ void SWObject::ShowInfo(SpellEntry const *spellInfo)
         .arg(spellInfo->SpellVisual[1]));
 
     SetMetaEnum("SpellFamilyNames");
-    browser->append(QString("SpellFamilyName = %0, SpellFamilyFlags = 0x%1\n")
+    browser->append(QString("SpellFamilyName = %0, SpellFamilyFlags = 0x%1 %2 %3")
         .arg(me.valueToKey(spellInfo->SpellFamilyName))
-        .arg(sSpellFamilyFlags.toUpper()));
+        .arg(sSpellFamilyFlags2.toUpper())
+        .arg(sSpellFamilyFlags1.toUpper())
+        .arg(sSpellFamilyFlags0.toUpper()));
 
     browser->append(QString("SpellSchoolMask = %0 (%1)")
         .arg(spellInfo->SchoolMask)
@@ -728,7 +734,8 @@ void SWObject::ShowInfo(SpellEntry const *spellInfo)
         .arg(me.valueToKey(spellInfo->PreventionType)));
 
     if (spellInfo->Attributes || spellInfo->AttributesEx || spellInfo->AttributesEx2 ||
-        spellInfo->AttributesEx3 || spellInfo->AttributesEx4 || spellInfo->AttributesEx5 || spellInfo->AttributesEx6)
+        spellInfo->AttributesEx3 || spellInfo->AttributesEx4 || spellInfo->AttributesEx5 ||
+        spellInfo->AttributesEx6 || spellInfo->AttributesExG)
         browser->append(line);
 
     if (spellInfo->Attributes)
@@ -766,6 +773,11 @@ void SWObject::ShowInfo(SpellEntry const *spellInfo)
             .arg(sAttributesEx6.toUpper())
             .arg(CompareAttributes(spellInfo, TYPE_ATTR_EX6)));
 
+    if (spellInfo->AttributesExG)
+        browser->append(QString("AttributesExG: 0x%0 (%1)")
+            .arg(sAttributesExG.toUpper())
+            .arg(CompareAttributes(spellInfo, TYPE_ATTR_EXG)));
+
     browser->append(line);
 
     if (spellInfo->Targets)
@@ -778,14 +790,14 @@ void SWObject::ShowInfo(SpellEntry const *spellInfo)
             .arg(sCreatureTypeMask.toUpper())
             .arg(CompareAttributes(spellInfo, TYPE_CREATURE)));
 
-    if (spellInfo->Stances)
+    if (spellInfo->Stances[0])
         browser->append(QString("Stances: 0x%0 (%1)")
             .arg(sFormMask.toUpper())
             .arg(CompareAttributes(spellInfo, TYPE_FORMS)));
 
-    if (spellInfo->StancesNot)
+    if (spellInfo->StancesNot[0])
         browser->append(QString("Stances not: 0x%0 (%1)")
-            .arg(sFormMask.toUpper())
+            .arg(sFormMaskNot.toUpper())
             .arg(CompareAttributes(spellInfo, TYPE_FORMS_NOT)));
 
     AppendSkillLine(spellInfo);
@@ -907,6 +919,64 @@ void SWObject::ShowInfo(SpellEntry const *spellInfo)
             .arg(spellInfo->TargetAuraState)
             .arg(me.valueToKey(spellInfo->TargetAuraState)));
 
+    if (spellInfo->CasterAuraStateNot)
+            browser->append(QString("CasterAuraStateNot = %0 (%1)")
+                .arg(spellInfo->CasterAuraStateNot)
+                .arg(me.valueToKey(spellInfo->CasterAuraStateNot)));
+
+    if (spellInfo->TargetAuraStateNot)
+        browser->append(QString("TargetAuraStateNot = %0 (%1)")
+            .arg(spellInfo->TargetAuraStateNot)
+            .arg(me.valueToKey(spellInfo->TargetAuraStateNot)));
+
+    if (spellInfo->CasterAuraSpell)
+    {
+        if(SpellEntry const *spell = sSpellStore.LookupEntry(spellInfo->CasterAuraSpell))
+        {
+            browser->append(QString("Caster Aura Spell (%0) %1")
+                .arg(spellInfo->CasterAuraSpell)
+                .arg(spell->SpellName[0]));
+        }
+        else
+            browser->append(QString("Caster Aura Spell (%0) ?????").arg(spellInfo->CasterAuraSpell));
+    }
+
+    if (spellInfo->TargetAuraSpell)
+    {
+        if(SpellEntry const *spell = sSpellStore.LookupEntry(spellInfo->TargetAuraSpell))
+        {
+            browser->append(QString("Target Aura Spell (%0) %1")
+                .arg(spellInfo->TargetAuraSpell)
+                .arg(spell->SpellName[0]));
+        }
+        else
+            browser->append(QString("Target Aura Spell (%0) ?????").arg(spellInfo->TargetAuraSpell));
+    }
+
+    if (spellInfo->ExcludeCasterAuraSpell)
+    {
+        if(SpellEntry const *spell = sSpellStore.LookupEntry(spellInfo->ExcludeCasterAuraSpell))
+        {
+            browser->append(QString("Ex Caster Aura Spell (%0) %1")
+                .arg(spellInfo->ExcludeCasterAuraSpell)
+                .arg(spell->SpellName[0]));
+        }
+        else
+            browser->append(QString("Ex Caster Aura Spell (%0) ?????").arg(spellInfo->ExcludeCasterAuraSpell));
+    }
+
+    if (spellInfo->ExcludeTargetAuraSpell)
+    {
+        if(SpellEntry const *spell = sSpellStore.LookupEntry(spellInfo->ExcludeTargetAuraSpell))
+        {
+            browser->append(QString("Ex Target Aura Spell (%0) %1")
+                .arg(spellInfo->ExcludeTargetAuraSpell)
+                .arg(spell->SpellName[0]));
+        }
+        else
+            browser->append(QString("Ex Target Aura Spell (%0) ?????").arg(spellInfo->ExcludeTargetAuraSpell));
+    }
+
     if (spellInfo->RequiresSpellFocus)
         browser->append(QString("Requires Spell Focus %0").arg(spellInfo->RequiresSpellFocus));
 
@@ -1024,6 +1094,76 @@ void SWObject::AppendSpellEffectInfo(SpellEntry const* spellInfo)
 
             AppendAuraInfo(spellInfo, eff);
 
+            quint32 ClassMask[3];
+
+            switch (eff)
+            {
+                case 0: 
+                    ClassMask[0] = spellInfo->EffectSpellClassMaskA[0];
+                    ClassMask[1] = spellInfo->EffectSpellClassMaskA[1];
+                    ClassMask[2] = spellInfo->EffectSpellClassMaskA[2]; 
+                    break;
+                case 1:
+                    ClassMask[0] = spellInfo->EffectSpellClassMaskB[0];
+                    ClassMask[1] = spellInfo->EffectSpellClassMaskB[1];
+                    ClassMask[2] = spellInfo->EffectSpellClassMaskB[2]; 
+                    break;
+                case 2:
+                    ClassMask[0] = spellInfo->EffectSpellClassMaskC[0];
+                    ClassMask[1] = spellInfo->EffectSpellClassMaskC[1];
+                    ClassMask[2] = spellInfo->EffectSpellClassMaskC[2]; 
+                    break;
+            }
+
+            if (ClassMask[0] || ClassMask[1] || ClassMask[2])
+            {
+                QString sClassMask2(QString("%0").arg(ClassMask[2], 8, 16, QChar('0')));
+                QString sClassMask1(QString("%0").arg(ClassMask[1], 8, 16, QChar('0')));
+                QString sClassMask0(QString("%0").arg(ClassMask[0], 8, 16, QChar('0')));
+
+                browser->append(QString("SpellClassMask = %0 %1 %2")
+                                .arg(sClassMask2.toUpper())
+                                .arg(sClassMask1.toUpper())
+                                .arg(sClassMask0.toUpper()));
+
+                for (quint32 i = 0; i < sSpellStore.GetNumRows(); i++)
+                {
+                    SpellEntry const *t_spellInfo = sSpellStore.LookupEntry(i);
+                    if (t_spellInfo)
+                    {
+                        bool hasSkill = false;
+                        if ((t_spellInfo->SpellFamilyName == spellInfo->SpellFamilyName) &&
+                            ((t_spellInfo->SpellFamilyFlags[0] & ClassMask[0]) ||
+                             (t_spellInfo->SpellFamilyFlags[1] & ClassMask[1]) ||
+                             (t_spellInfo->SpellFamilyFlags[2] & ClassMask[2])))
+                        {
+                            QString sRank(t_spellInfo->Rank[0]);
+                            for (quint32 sk = 0; sk < sSkillLineAbilityStore.GetNumRows(); sk++)
+                            {
+                                SkillLineAbilityEntry const *skillInfo = sSkillLineAbilityStore.LookupEntry(sk);
+                                if (skillInfo && skillInfo->SpellId == t_spellInfo->Id && skillInfo->SkillId > 0)
+                                {
+                                    hasSkill = true;
+                                    if (!sRank.isEmpty())
+                                        browser->append(QString("%0<font color=blue>+ %1 - %2 (%3)</font>").arg(QChar(QChar::Nbsp), 4, QChar(QChar::Nbsp)).arg(t_spellInfo->Id).arg(t_spellInfo->SpellName[0]).arg(sRank));
+                                    else
+                                        browser->append(QString("%0<font color=blue>+ %1 - %2</font>").arg(QChar(QChar::Nbsp), 4, QChar(QChar::Nbsp)).arg(t_spellInfo->Id).arg(t_spellInfo->SpellName[0]));
+                                    break;
+                                }
+                            }
+
+                            if (!hasSkill)
+                            {
+                                if (!sRank.isEmpty())
+                                    browser->append(QString("%0<font color=red>- %1 - %2 (%3)</font>").arg(QChar(QChar::Nbsp), 4, QChar(QChar::Nbsp)).arg(t_spellInfo->Id).arg(t_spellInfo->SpellName[0]).arg(sRank));
+                                else
+                                    browser->append(QString("%0<font color=red>- %1 - %2</font>").arg(QChar(QChar::Nbsp), 4, QChar(QChar::Nbsp)).arg(t_spellInfo->Id).arg(t_spellInfo->SpellName[0]));
+                            }
+                        }
+                    }
+                }
+            }
+
             AppendRadiusInfo(spellInfo, eff);
 
             AppendTriggerInfo(spellInfo, eff);
@@ -1037,50 +1177,6 @@ void SWObject::AppendSpellEffectInfo(SpellEntry const* spellInfo)
                 browser->append(QString("Effect Mechanic = %0 (%1)")
                     .arg(spellInfo->EffectMechanic[eff])
                     .arg(me.valueToKey(spellInfo->EffectMechanic[eff])));
-            }
-
-            if (spellInfo->EffectItemType[eff] != 0)
-            {
-                QString sEffectItemType(QString("%0").arg(spellInfo->EffectItemType[eff], 8, 16, QChar('0')));
-                browser->append(QString("EffectItemType = 0x%0").arg(sEffectItemType.toUpper()));
-
-                if (spellInfo->Effect[eff] == 6)
-                {
-                    for (quint32 i = 0; i < sSpellStore.GetNumRows(); i++)
-                    {
-                        SpellEntry const *t_spellInfo = sSpellStore.LookupEntry(i);
-                        if (t_spellInfo)
-                        {
-                            bool hasSkill = false;
-                            if ((t_spellInfo->SpellFamilyName == spellInfo->SpellFamilyName) &&
-                                (t_spellInfo->SpellFamilyFlags & spellInfo->EffectItemType[eff]))
-                            {
-                                QString sRank(t_spellInfo->Rank[0]);
-                                for (quint32 sk = 0; sk < sSkillLineAbilityStore.GetNumRows(); sk++)
-                                {
-                                    SkillLineAbilityEntry const *skillInfo = sSkillLineAbilityStore.LookupEntry(sk);
-                                    if (skillInfo && skillInfo->SpellId == t_spellInfo->Id && skillInfo->SkillId > 0)
-                                    {
-                                        hasSkill = true;
-                                        if (!sRank.isEmpty())
-                                            browser->append(QString("%0<font color=blue>+ %1 - %2 (%3)</font>").arg(QChar(QChar::Nbsp), 4, QChar(QChar::Nbsp)).arg(t_spellInfo->Id).arg(t_spellInfo->SpellName[0]).arg(sRank));
-                                        else
-                                            browser->append(QString("%0<font color=blue>+ %1 - %2</font>").arg(QChar(QChar::Nbsp), 4, QChar(QChar::Nbsp)).arg(t_spellInfo->Id).arg(t_spellInfo->SpellName[0]));
-                                        break;
-                                    }
-                                }
-
-                                if (!hasSkill)
-                                {
-                                    if (!sRank.isEmpty())
-                                        browser->append(QString("%0<font color=red>- %1 - %2 (%3)</font>").arg(QChar(QChar::Nbsp), 4, QChar(QChar::Nbsp)).arg(t_spellInfo->Id).arg(t_spellInfo->SpellName[0]).arg(sRank));
-                                    else
-                                        browser->append(QString("%0<font color=red>- %1 - %2</font>").arg(QChar(QChar::Nbsp), 4, QChar(QChar::Nbsp)).arg(t_spellInfo->Id).arg(t_spellInfo->SpellName[0]));
-                                }
-                            }
-                        }
-                    }
-                }
             }
 
             browser->append(QString());
@@ -1319,6 +1415,22 @@ QString SWObject::CompareAttributes(SpellEntry const* spellInfo, AttrType attr, 
             return str;
         }
         break;
+        case TYPE_ATTR_EXG:
+        {
+            SetMetaEnum("AttributesExG");
+            for (quint8 i = 0; i < me.keyCount(); i++)
+            {
+                if (spellInfo->AttributesExG & me.value(i))
+                {
+                    QString tstr(QString("%0, ").arg(me.key(i)));
+                    str += tstr;
+                }
+            }
+            if (!str.isEmpty())
+                str.chop(2);
+            return str;
+        }
+        break;
         case TYPE_TARGETS:
         {
             SetMetaEnum("TargetFlags");
@@ -1356,7 +1468,7 @@ QString SWObject::CompareAttributes(SpellEntry const* spellInfo, AttrType attr, 
             SetMetaEnum("ShapeshiftFormMask");
             for (quint8 i = 0; i < me.keyCount(); i++)
             {
-                if (spellInfo->Stances & me.value(i))
+                if (spellInfo->Stances[0] & me.value(i))
                 {
                     QString tstr(QString("%0, ").arg(me.key(i)));
                     str += tstr;
@@ -1372,7 +1484,7 @@ QString SWObject::CompareAttributes(SpellEntry const* spellInfo, AttrType attr, 
             SetMetaEnum("ShapeshiftFormMask");
             for (quint8 i = 0; i < me.keyCount(); i++)
             {
-                if (spellInfo->StancesNot & me.value(i))
+                if (spellInfo->StancesNot[0] & me.value(i))
                 {
                     QString tstr(QString("%0, ").arg(me.key(i)));
                     str += tstr;

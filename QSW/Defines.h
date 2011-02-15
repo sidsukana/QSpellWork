@@ -10,6 +10,7 @@ enum AttrType
     TYPE_ATTR_EX4,
     TYPE_ATTR_EX5,
     TYPE_ATTR_EX6,
+    TYPE_ATTR_EXG,
     TYPE_TARGETS,
     TYPE_CREATURE,
     TYPE_FORMS,

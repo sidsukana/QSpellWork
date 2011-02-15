@@ -63,11 +63,9 @@ struct SpellEntry
     quint32    AttributesEx4;                                   // 8
     quint32    AttributesEx5;                                   // 9
     quint32    AttributesEx6;                                   // 10
-    quint32    AttributesEx7;                                   // 11
-    quint32    Stances;                                         // 12
-    quint32    Unk1;                                            // 13
-    quint32    StancesNot;                                      // 14
-    quint32    Unk2;                                            // 15
+    quint32    AttributesExG;                                   // 11
+    quint32    Stances[2];                                      // 12-13
+    quint32    StancesNot[2];                                   // 14-15
     quint32    Targets;                                         // 16
     quint32    TargetCreatureType;                              // 17
     quint32    RequiresSpellFocus;                              // 18
@@ -125,9 +123,9 @@ struct SpellEntry
     qint32     EffectMiscValueB[MAX_EFFECT_INDEX];              // 113-115
     quint32    EffectTriggerSpell[MAX_EFFECT_INDEX];            // 116-118
     float      EffectPointsPerComboPoint[MAX_EFFECT_INDEX];     // 119-121
-    quint32    EffectSpellClassMaskA[3];                        // 122-124  m_effectSpellClassMaskA, effect 0
-    quint32    EffectSpellClassMaskB[3];                        // 125-127  m_effectSpellClassMaskB, effect 1
-    quint32    EffectSpellClassMaskC[3];                        // 128-130  m_effectSpellClassMaskC, effect 2
+    quint32    EffectSpellClassMaskA[MAX_EFFECT_INDEX];         // 122-124  m_effectSpellClassMaskA, effect 0
+    quint32    EffectSpellClassMaskB[MAX_EFFECT_INDEX];         // 125-127  m_effectSpellClassMaskB, effect 1
+    quint32    EffectSpellClassMaskC[MAX_EFFECT_INDEX];         // 128-130  m_effectSpellClassMaskC, effect 2
     quint32    SpellVisual[2];                                  // 131-132
     quint32    SpellIconID;                                     // 133
     quint32    ActiveIconID;                                    // 134
@@ -145,8 +143,7 @@ struct SpellEntry
     quint32    StartRecoveryTime;                               // 206
     quint32    MaxTargetLevel;                                  // 207
     quint32    SpellFamilyName;                                 // 208
-    quint64    SpellFamilyFlags;                                // 209+210
-    quint32    SpellFamilyFlags2;                               // 211
+    quint32    SpellFamilyFlags[MAX_EFFECT_INDEX];              // 209+211
     quint32    MaxAffectedTargets;                              // 212
     quint32    DmgClass;                                        // 213 defenseType
     quint32    PreventionType;                                  // 214
@@ -161,7 +158,7 @@ struct SpellEntry
     quint32    RuneCostID;                                      // 226
     quint32    SpellMissileId;                                  // 227
     quint32    PowerDisplayId;                                  // 228
-    float      Unk3[3];                                         // 229-231
+    float      Unk3[MAX_EFFECT_INDEX];                          // 229-231
     quint32    SpellDescriptionVariableId;                      // 232
     quint32    SpellDifficultyId;                               // 233
 
