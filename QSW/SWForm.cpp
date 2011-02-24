@@ -38,8 +38,6 @@ SWForm::SWForm(QWidget *parent)
 
     // Search connection
     connect(this, SIGNAL(SignalSearch(bool)), this, SLOT(SlotSearch(bool)));
-
-    connect(this, SIGNAL(SignalCheck(QAction)), this, SLOT(SlotCheck(QAction)));
 }
 
 SWForm::~SWForm()
@@ -138,13 +136,13 @@ void SWForm::SlotRegExp()
     if (!sw->IsRegExp())
     {
         sw->SetRegExp(true);
-        regexpButton->setStyleSheet(
-            QString("QPushButton {"
+        regexpButton->setStyleSheet(QString(
+            "QPushButton {"
                 "border: 1px solid #000000;"
                 "border-radius: 10px;"
-	            "background-color: qlineargradient(x1:0, y1:0, x2: 0, y2: 1, "
-									            "stop:0 #00FF1C, stop: 0.5 #70FC83,"
-									            "stop: 0.51 #00FF1C, stop: 1 #70FC83);"
+                "background-color: qlineargradient(x1:0, y1:0, x2: 0, y2: 1, "
+                "stop:0 #00FF1C, stop: 0.5 #70FC83,"
+                "stop: 0.51 #00FF1C, stop: 1 #70FC83);"
                 "color: #000000;"
                 "font: bold 12px;"
                 "min-width: 80px;"
@@ -153,13 +151,13 @@ void SWForm::SlotRegExp()
     else
     {
         sw->SetRegExp(false);
-        regexpButton->setStyleSheet(
-            QString("QPushButton {"
+        regexpButton->setStyleSheet(QString(
+            "QPushButton {"
                 "border: 1px solid #000000;"
                 "border-radius: 10px;"
 	            "background-color: qlineargradient(x1:0, y1:0, x2: 0, y2: 1, "
-									            "stop:0 #FF0000, stop: 0.5 #FF7070,"
-									            "stop: 0.51 #FF0000, stop: 1 #FF7070);"
+                "stop:0 #FF0000, stop: 0.5 #FF7070,"
+                "stop: 0.51 #FF0000, stop: 1 #FF7070);"
                 "color: #000000;"
                 "font: bold 12px;"
                 "min-width: 80px;"
