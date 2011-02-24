@@ -38,8 +38,6 @@ SWForm::SWForm(QWidget *parent)
 
     // Search connection
     connect(this, SIGNAL(SignalSearch(bool)), this, SLOT(SlotSearch(bool)));
-
-    connect(this, SIGNAL(SignalCheck(QAction)), this, SLOT(SlotCheck(QAction)));
 }
 
 SWForm::~SWForm()
