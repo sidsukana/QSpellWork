@@ -10,7 +10,7 @@ SWSearch::~SWSearch()
 {
 }
 
-bool SWSearch::HasValue(quint8 index, QString str, SpellEntry const *m_spellInfo)
+bool SWSearch::HasValue(quint8 index, QString str, SpellEntry const *m_spellInfo, quint8 state)
 {
     if (!m_spellInfo)
         return false;
@@ -42,40 +42,157 @@ bool SWSearch::HasValue(quint8 index, QString str, SpellEntry const *m_spellInfo
                 return true;
             break;
         case 7:
-            if (m_spellInfo->Attributes == str.toUInt())
-                return true;
+            if (state == STATE_NONE)
+            {
+                if (m_spellInfo->Attributes == str.toUInt())
+                    return true;
+            }
+            else if (state == STATE_CONTAIN)
+            {
+                if (m_spellInfo->Attributes & str.toUInt())
+                    return true;
+            }
+            else if (state == STATE_NOT_CONTAIN)
+            {
+                if (~m_spellInfo->Attributes & str.toUInt())
+                    return true;
+            }
             break;
         case 8:
-            if (m_spellInfo->AttributesEx == str.toUInt())
-                return true;
+            if (state == STATE_NONE)
+            {
+                if (m_spellInfo->AttributesEx == str.toUInt())
+                    return true;
+            }
+            else if (state == STATE_CONTAIN)
+            {
+                if (m_spellInfo->AttributesEx & str.toUInt())
+                    return true;
+            }
+            else if (state == STATE_NOT_CONTAIN)
+            {
+                if (~m_spellInfo->AttributesEx & str.toUInt())
+                    return true;
+            }
             break;
         case 9:
-            if (m_spellInfo->AttributesEx2 == str.toUInt())
-                return true;
+            if (state == STATE_NONE)
+            {
+                if (m_spellInfo->AttributesEx2 == str.toUInt())
+                    return true;
+            }
+            else if (state == STATE_CONTAIN)
+            {
+                if (m_spellInfo->AttributesEx2 & str.toUInt())
+                    return true;
+            }
+            else if (state == STATE_NOT_CONTAIN)
+            {
+                if (~m_spellInfo->AttributesEx2 & str.toUInt())
+                    return true;
+            }
             break;
         case 10:
-            if (m_spellInfo->AttributesEx3 == str.toUInt())
-                return true;
+            if (state == STATE_NONE)
+            {
+                if (m_spellInfo->AttributesEx3 == str.toUInt())
+                    return true;
+            }
+            else if (state == STATE_CONTAIN)
+            {
+                if (m_spellInfo->AttributesEx3 & str.toUInt())
+                    return true;
+            }
+            else if (state == STATE_NOT_CONTAIN)
+            {
+                if (~m_spellInfo->AttributesEx3 & str.toUInt())
+                    return true;
+            }
             break;
         case 11:
-            if (m_spellInfo->AttributesEx4 == str.toUInt())
-                return true;
+            if (state == STATE_NONE)
+            {
+                if (m_spellInfo->AttributesEx4 == str.toUInt())
+                    return true;
+            }
+            else if (state == STATE_CONTAIN)
+            {
+                if (m_spellInfo->AttributesEx4 & str.toUInt())
+                    return true;
+            }
+            else if (state == STATE_NOT_CONTAIN)
+            {
+                if (~m_spellInfo->AttributesEx4 & str.toUInt())
+                    return true;
+            }
             break;
         case 12:
-            if (m_spellInfo->Stances == str.toUInt())
-                return true;
+            if (state == STATE_NONE)
+            {
+                if (m_spellInfo->Stances == str.toUInt())
+                    return true;
+            }
+            else if (state == STATE_CONTAIN)
+            {
+                if (m_spellInfo->Stances & str.toUInt())
+                    return true;
+            }
+            else if (state == STATE_NOT_CONTAIN)
+            {
+                if (~m_spellInfo->Stances & str.toUInt())
+                    return true;
+            }
             break;
         case 13:
-            if (m_spellInfo->StancesNot == str.toUInt())
-                return true;
+            if (state == STATE_NONE)
+            {
+                if (m_spellInfo->StancesNot == str.toUInt())
+                    return true;
+            }
+            else if (state == STATE_CONTAIN)
+            {
+                if (m_spellInfo->StancesNot & str.toUInt())
+                    return true;
+            }
+            else if (state == STATE_NOT_CONTAIN)
+            {
+                if (~m_spellInfo->StancesNot & str.toUInt())
+                    return true;
+            }
             break;
         case 14:
-            if (m_spellInfo->Targets == str.toUInt())
-                return true;
+            if (state == STATE_NONE)
+            {
+                if (m_spellInfo->Targets == str.toUInt())
+                    return true;
+            }
+            else if (state == STATE_CONTAIN)
+            {
+                if (m_spellInfo->Targets & str.toUInt())
+                    return true;
+            }
+            else if (state == STATE_NOT_CONTAIN)
+            {
+                if (~m_spellInfo->Targets & str.toUInt())
+                    return true;
+            }
             break;
         case 15:
-            if (m_spellInfo->TargetCreatureType == str.toUInt())
-                return true;
+            if (state == STATE_NONE)
+            {
+                if (m_spellInfo->TargetCreatureType == str.toUInt())
+                    return true;
+            }
+            else if (state == STATE_CONTAIN)
+            {
+                if (m_spellInfo->TargetCreatureType & str.toUInt())
+                    return true;
+            }
+            else if (state == STATE_NOT_CONTAIN)
+            {
+                if (~m_spellInfo->TargetCreatureType & str.toUInt())
+                    return true;
+            }
             break;
         case 16:
             if (m_spellInfo->RequiresSpellFocus == str.toUInt())
@@ -102,20 +219,72 @@ bool SWSearch::HasValue(quint8 index, QString str, SpellEntry const *m_spellInfo
                 return true;
             break;
         case 22:
-            if (m_spellInfo->InterruptFlags == str.toUInt())
-                return true;
+            if (state == STATE_NONE)
+            {
+                if (m_spellInfo->InterruptFlags == str.toUInt())
+                    return true;
+            }
+            else if (state == STATE_CONTAIN)
+            {
+                if (m_spellInfo->InterruptFlags & str.toUInt())
+                    return true;
+            }
+            else if (state == STATE_NOT_CONTAIN)
+            {
+                if (~m_spellInfo->InterruptFlags & str.toUInt())
+                    return true;
+            }
             break;
         case 23:
-            if (m_spellInfo->AuraInterruptFlags == str.toUInt())
-                return true;
+            if (state == STATE_NONE)
+            {
+                if (m_spellInfo->AuraInterruptFlags == str.toUInt())
+                    return true;
+            }
+            else if (state == STATE_CONTAIN)
+            {
+                if (m_spellInfo->AuraInterruptFlags & str.toUInt())
+                    return true;
+            }
+            else if (state == STATE_NOT_CONTAIN)
+            {
+                if (~m_spellInfo->AuraInterruptFlags & str.toUInt())
+                    return true;
+            }
             break;
         case 24:
-            if (m_spellInfo->ChannelInterruptFlags == str.toUInt())
-                return true;
+            if (state == STATE_NONE)
+            {
+                if (m_spellInfo->ChannelInterruptFlags == str.toUInt())
+                    return true;
+            }
+            else if (state == STATE_CONTAIN)
+            {
+                if (m_spellInfo->ChannelInterruptFlags & str.toUInt())
+                    return true;
+            }
+            else if (state == STATE_NOT_CONTAIN)
+            {
+                if (~m_spellInfo->ChannelInterruptFlags & str.toUInt())
+                    return true;
+            }
             break;
         case 25:
-            if (m_spellInfo->ProcFlags == str.toUInt())
-                return true;
+            if (state == STATE_NONE)
+            {
+                if (m_spellInfo->ProcFlags == str.toUInt())
+                    return true;
+            }
+            else if (state == STATE_CONTAIN)
+            {
+                if (m_spellInfo->ProcFlags & str.toUInt())
+                    return true;
+            }
+            else if (state == STATE_NOT_CONTAIN)
+            {
+                if (~m_spellInfo->ProcFlags & str.toUInt())
+                    return true;
+            }
             break;
         case 26:
             if (m_spellInfo->ProcChance == str.toUInt())
@@ -203,12 +372,38 @@ bool SWSearch::HasValue(quint8 index, QString str, SpellEntry const *m_spellInfo
                 return true;
             break;
         case 45:
-            if (m_spellInfo->EquippedItemSubClassMask == str.toInt())
-                return true;
+            if (state == STATE_NONE)
+            {
+                if (m_spellInfo->EquippedItemSubClassMask == str.toInt())
+                    return true;
+            }
+            else if (state == STATE_CONTAIN)
+            {
+                if (m_spellInfo->EquippedItemSubClassMask & str.toInt())
+                    return true;
+            }
+            else if (state == STATE_NOT_CONTAIN)
+            {
+                if (~m_spellInfo->EquippedItemSubClassMask & str.toUInt())
+                    return true;
+            }
             break;
         case 46:
-            if (m_spellInfo->EquippedItemInventoryTypeMask == str.toInt())
-                return true;
+            if (state == STATE_NONE)
+            {
+                if (m_spellInfo->EquippedItemInventoryTypeMask == str.toInt())
+                    return true;
+            }
+            else if (state == STATE_CONTAIN)
+            {
+                if (m_spellInfo->EquippedItemInventoryTypeMask & str.toInt())
+                    return true;
+            }
+            else if (state == STATE_NOT_CONTAIN)
+            {
+                if (~m_spellInfo->EquippedItemInventoryTypeMask & str.toUInt())
+                    return true;
+            }
             break;
         case 47:
             for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++)
@@ -405,8 +600,21 @@ bool SWSearch::HasValue(quint8 index, QString str, SpellEntry const *m_spellInfo
                 return true;
             break;
         case 82:
-            if (m_spellInfo->SpellFamilyFlags == str.toULongLong())
-                return true;
+            if (state == STATE_NONE)
+            {
+                if (m_spellInfo->SpellFamilyFlags == str.toULongLong())
+                    return true;
+            }
+            else if (state == STATE_CONTAIN)
+            {
+                if (m_spellInfo->SpellFamilyFlags & str.toULongLong())
+                    return true;
+            }
+            else if (state == STATE_NOT_CONTAIN)
+            {
+                if (~m_spellInfo->SpellFamilyFlags & str.toUInt())
+                    return true;
+            }
             break;
         case 83:
             if (m_spellInfo->MaxAffectedTargets == str.toUInt())
@@ -543,7 +751,7 @@ void SWSearch::Search()
 
                 if (form->adBox1->currentIndex() > 0 && form->adBox1->currentIndex() < MAX_STRUCT)
                 {
-                    if (HasValue(form->adBox1->currentIndex(), form->adLine1->text(), m_spellInfo))
+                    if (HasValue(form->adBox1->currentIndex(), form->adLine1->text(), m_spellInfo, form->GetToolState(TOOL_ONE)))
                         adFilter1 = true;
                 }
                 else
@@ -551,7 +759,7 @@ void SWSearch::Search()
 
                 if (form->adBox2->currentIndex() > 0 && form->adBox2->currentIndex() < MAX_STRUCT)
                 {
-                    if (HasValue(form->adBox2->currentIndex(), form->adLine2->text(), m_spellInfo))
+                    if (HasValue(form->adBox2->currentIndex(), form->adLine2->text(), m_spellInfo, form->GetToolState(TOOL_TWO)))
                         adFilter2 = true;
                 }
                 else

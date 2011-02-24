@@ -9,6 +9,7 @@ SWForm::SWForm(QWidget *parent)
     sw = new SWObject(this);
 
     LoadComboBoxes();
+    LoadToolButtons();
 
     // List search connection
     connect(SpellList, SIGNAL(clicked(QModelIndex)), this, SLOT(SlotSearchFromList(QModelIndex)));
@@ -37,10 +38,59 @@ SWForm::SWForm(QWidget *parent)
 
     // Search connection
     connect(this, SIGNAL(SignalSearch(bool)), this, SLOT(SlotSearch(bool)));
+
+    connect(this, SIGNAL(SignalCheck(QAction)), this, SLOT(SlotCheck(QAction)));
 }
 
 SWForm::~SWForm()
 {
+}
+
+void SWForm::LoadToolButtons()
+{
+    for (quint8 i = 0; i < 3; i++)
+    {
+        actionA[i] = new QAction(this);
+        actionB[i] = new QAction(this);
+    }
+
+    actionA[0]->setText(QString("None"));
+    actionA[1]->setText(QString("Contain"));
+    actionA[2]->setText(QString("Not Contain"));
+
+    actionB[0]->setText(QString("None"));
+    actionB[1]->setText(QString("Contain"));
+    actionB[2]->setText(QString("Not Contain"));
+
+    for (quint8 i = 0; i < 3; i++)
+    {
+        actionA[i]->setCheckable(true);
+        actionB[i]->setCheckable(true);
+        toolButton->addAction(actionA[i]);
+        toolButton_2->addAction(actionB[i]);
+    }
+
+    actionA[0]->setChecked(true);
+    actionB[0]->setChecked(true);
+
+    connect(toolButton, SIGNAL(triggered(QAction*)), this, SLOT(SlotSetCheckedA(QAction*)));
+    connect(toolButton_2, SIGNAL(triggered(QAction*)), this, SLOT(SlotSetCheckedB(QAction*)));
+}
+
+void SWForm::SlotSetCheckedA(QAction *ac)
+{
+    for (quint8 i = 0; i < 3; i++)
+        actionA[i]->setChecked(false);
+
+    ac->setChecked(true);
+}
+
+void SWForm::SlotSetCheckedB(QAction *ac)
+{
+    for (quint8 i = 0; i < 3; i++)
+        actionB[i]->setChecked(false);
+
+    ac->setChecked(true);
 }
 
 void SWForm::LoadComboBoxes()
@@ -88,13 +138,36 @@ void SWForm::SlotRegExp()
     if (!sw->IsRegExp())
     {
         sw->SetRegExp(true);
-        regexpButton->setStyleSheet("background-color: qlineargradient(spread:pad, x1:1, y1:0.00568182, x2:0, y2:0, stop:0 rgba(0, 255, 28, 255), stop:1 rgba(255, 255, 255, 255));");
+        regexpButton->setStyleSheet(
+            QString("QPushButton {"
+                "border: 1px solid #000000;"
+                "border-radius: 10px;"
+	            "background-color: qlineargradient(x1:0, y1:0, x2: 0, y2: 1, "
+									            "stop:0 #00FF1C, stop: 0.5 #70FC83,"
+									            "stop: 0.51 #00FF1C, stop: 1 #70FC83);"
+                "color: #000000;"
+                "font: bold 12px;"
+                "min-width: 80px;"
+            "}"));
     }
     else
     {
         sw->SetRegExp(false);
-        regexpButton->setStyleSheet("background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));");
+        regexpButton->setStyleSheet(
+            QString("QPushButton {"
+                "border: 1px solid #000000;"
+                "border-radius: 10px;"
+	            "background-color: qlineargradient(x1:0, y1:0, x2: 0, y2: 1, "
+									            "stop:0 #FF0000, stop: 0.5 #FF7070,"
+									            "stop: 0.51 #FF0000, stop: 1 #FF7070);"
+                "color: #000000;"
+                "font: bold 12px;"
+                "min-width: 80px;"
+            "}"));
     }
+
+    if (!SpellList->model())
+        return;
 
     if (SpellEntry const *spellInfo = sSpellStore.LookupEntry(SpellList->model()->data(SpellList->model()->index(SpellList->currentIndex().row(), 0)).toInt()))
         sw->ShowInfo(spellInfo);
@@ -151,4 +224,28 @@ bool SWForm::event(QEvent *ev)
     }
 
     return QWidget::event(ev);
+}
+
+quint8 SWForm::GetToolState(quint8 Tool)
+{
+    if (Tool == TOOL_ONE)
+    {
+        if (actionA[STATE_NONE]->isChecked())
+            return STATE_NONE;
+        else if (actionA[STATE_CONTAIN]->isChecked())
+            return STATE_CONTAIN;
+        else if (actionA[STATE_NOT_CONTAIN]->isChecked())
+            return STATE_NOT_CONTAIN;
+    }
+    else if (Tool == TOOL_TWO)
+    {
+        if (actionB[STATE_NONE]->isChecked())
+            return STATE_NONE;
+        else if (actionB[STATE_CONTAIN]->isChecked())
+            return STATE_CONTAIN;
+        else if (actionB[STATE_NOT_CONTAIN]->isChecked())
+            return STATE_NOT_CONTAIN;
+    }
+
+    return STATE_NONE;
 }

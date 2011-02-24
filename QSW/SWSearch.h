@@ -13,7 +13,7 @@ class SWSearch
         ~SWSearch();
 
         void Search();
-        bool HasValue(quint8 index, QString str, SpellEntry const *m_spellInfo);
+        bool HasValue(quint8 index, QString str, SpellEntry const *m_spellInfo, quint8 state);
 
     private:
         SWObject *m_sw;
