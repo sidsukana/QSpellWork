@@ -612,7 +612,7 @@ bool SWSearch::HasValue(quint8 index, QString str, SpellEntry const *m_spellInfo
             }
             else if (state == STATE_NOT_CONTAIN)
             {
-                if (~m_spellInfo->SpellFamilyFlags & str.toUInt())
+                if (~m_spellInfo->SpellFamilyFlags & str.toULongLong())
                     return true;
             }
             break;
