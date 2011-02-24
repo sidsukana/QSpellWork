@@ -173,7 +173,7 @@
         <rect>
          <x>190</x>
          <y>72</y>
-         <width>81</width>
+         <width>82</width>
          <height>31</height>
         </rect>
        </property>
@@ -181,7 +181,18 @@
         <enum>Qt::StrongFocus</enum>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));</string>
+        <string notr="true">QPushButton {
+    border: 1px solid #000000;
+    border-radius: 10px;
+	background-color: qlineargradient(x1:0, y1:0, x2: 0, y2: 1, 
+									stop:0 #FF0000, stop: 0.5 #FF7070,
+									stop: 0.51 #FF0000, stop: 1 #FF7070);
+    color: #000000;
+    font: bold 12px;
+    min-width: 80px;
+}
+
+</string>
        </property>
        <property name="text">
         <string>RegExp</string>
@@ -356,7 +367,7 @@
         <rect>
          <x>5</x>
          <y>20</y>
-         <width>151</width>
+         <width>121</width>
          <height>22</height>
         </rect>
        </property>
@@ -367,9 +378,9 @@
       <widget class="QLineEdit" name="adLine1">
        <property name="geometry">
         <rect>
-         <x>160</x>
+         <x>130</x>
          <y>20</y>
-         <width>111</width>
+         <width>121</width>
          <height>21</height>
         </rect>
        </property>
@@ -377,9 +388,9 @@
       <widget class="QLineEdit" name="adLine2">
        <property name="geometry">
         <rect>
-         <x>160</x>
+         <x>130</x>
          <y>43</y>
-         <width>111</width>
+         <width>121</width>
          <height>21</height>
         </rect>
        </property>
@@ -389,12 +400,62 @@
         <rect>
          <x>5</x>
          <y>43</y>
-         <width>151</width>
+         <width>121</width>
          <height>22</height>
         </rect>
        </property>
        <property name="maxVisibleItems">
         <number>30</number>
+       </property>
+      </widget>
+      <widget class="QToolButton" name="toolButton">
+       <property name="geometry">
+        <rect>
+         <x>255</x>
+         <y>20</y>
+         <width>21</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>-&gt;</string>
+       </property>
+       <property name="autoExclusive">
+        <bool>false</bool>
+       </property>
+       <property name="popupMode">
+        <enum>QToolButton::InstantPopup</enum>
+       </property>
+       <property name="toolButtonStyle">
+        <enum>Qt::ToolButtonIconOnly</enum>
+       </property>
+       <property name="autoRaise">
+        <bool>false</bool>
+       </property>
+       <property name="arrowType">
+        <enum>Qt::RightArrow</enum>
+       </property>
+      </widget>
+      <widget class="QToolButton" name="toolButton_2">
+       <property name="geometry">
+        <rect>
+         <x>255</x>
+         <y>43</y>
+         <width>21</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>-&gt;</string>
+       </property>
+       <property name="popupMode">
+        <enum>QToolButton::InstantPopup</enum>
+       </property>
+       <property name="arrowType">
+        <enum>Qt::RightArrow</enum>
        </property>
       </widget>
      </widget>

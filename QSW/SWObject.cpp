@@ -907,6 +907,16 @@ void SWObject::ShowInfo(SpellEntry const *spellInfo)
             .arg(spellInfo->TargetAuraState)
             .arg(me.valueToKey(spellInfo->TargetAuraState)));
 
+    if (spellInfo->CasterAuraStateNot)
+        browser->append(QString("CasterAuraStateNot = %0 (%1)")
+            .arg(spellInfo->CasterAuraStateNot)
+            .arg(me.valueToKey(spellInfo->CasterAuraStateNot)));
+
+    if (spellInfo->TargetAuraStateNot)
+        browser->append(QString("TargetAuraStateNot = %0 (%1)")
+            .arg(spellInfo->TargetAuraStateNot)
+            .arg(me.valueToKey(spellInfo->TargetAuraStateNot)));
+
     if (spellInfo->RequiresSpellFocus)
         browser->append(QString("Requires Spell Focus %0").arg(spellInfo->RequiresSpellFocus));
 
