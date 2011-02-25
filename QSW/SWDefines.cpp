@@ -1,6 +1,6 @@
 #include "SWDefines.h"
 
-char* SpellStruct[] =
+QString SpellStruct[] =
 {
     "None",
     "Id",
@@ -114,7 +114,7 @@ char* SpellStruct[] =
     "SpellDifficultyId"
 };
 
-char* ProcFlagDesc[] =
+QString ProcFlagDesc[] =
 {
     //00 0x00000001 000000000000000000000001 -
     "00 Killed by aggressor that receive experience or honor",

@@ -173,7 +173,7 @@ void SWForm::SlotRegExp()
 
 void SWForm::SlotAbout()
 {
-    AboutForm *aform = new AboutForm;
+    new AboutForm;
 }
 
 void SWForm::SlotButtonSearch()
@@ -219,6 +219,8 @@ bool SWForm::event(QEvent *ev)
             return true;
         }
         break;
+        default:
+            break;
     }
 
     return QWidget::event(ev);

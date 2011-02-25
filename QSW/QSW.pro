@@ -12,7 +12,6 @@ TARGET = QSW
 DESTDIR = ../Debug
 QT += core gui qtmain
 CONFIG += debug
-DEFINES += QT_LARGEFILE_SUPPORT
 INCLUDEPATH += ./GeneratedFiles \
     ./GeneratedFiles/Debug \
     ./Includes \
