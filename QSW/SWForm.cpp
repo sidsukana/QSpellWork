@@ -173,7 +173,7 @@ void SWForm::SlotRegExp()
 
 void SWForm::SlotAbout()
 {
-    AboutForm *aform = new AboutForm;
+    new AboutForm;
 }
 
 void SWForm::SlotButtonSearch()

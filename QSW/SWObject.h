@@ -38,7 +38,7 @@ class SWObject
         void ThreadUnset(quint8 id) { ThreadSemaphore[id] = false; }
         bool ThreadExist(quint8 id) { return ThreadSemaphore[id]; }
 
-        void SetMetaEnum(char* e)
+        void SetMetaEnum(const char* e)
         {
             e_idx = mo.indexOfEnumerator(e);
             me = mo.enumerator(e_idx);
