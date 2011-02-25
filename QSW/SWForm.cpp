@@ -219,6 +219,8 @@ bool SWForm::event(QEvent *ev)
             return true;
         }
         break;
+        default:
+            break;
     }
 
     return QWidget::event(ev);
