@@ -2,6 +2,7 @@
 #define DBCSTORE_H
 
 #include <list>
+#include <cstring>
 #include "DBCFileLoader.h"
 
 template<class T>

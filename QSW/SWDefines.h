@@ -1,8 +1,10 @@
 #ifndef SWDEFINES_H
 #define SWDEFINES_H
 
-extern char* SpellStruct[];
-extern char* ProcFlagDesc[];
+#include <QtCore/QString>
+
+extern QString SpellStruct[];
+extern QString ProcFlagDesc[];
 
 #define MAX_STRUCT 91
 #define MAX_PROC 32 
