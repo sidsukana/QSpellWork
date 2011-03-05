@@ -900,6 +900,7 @@ public:
         TARGET_GAMEOBJECT_ITEM                  = 26,
         TARGET_MASTER                           = 27,
         TARGET_ALL_ENEMY_IN_AREA_CHANNELED      = 28,
+        TARGET_29                               = 29,
         TARGET_ALL_FRIENDLY_UNITS_AROUND_CASTER = 30,
         TARGET_ALL_FRIENDLY_UNITS_IN_AREA       = 31,
         TARGET_MINION                           = 32,
