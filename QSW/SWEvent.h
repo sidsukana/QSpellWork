@@ -36,4 +36,20 @@ class SendModel : public QEvent
         QStandardItemModel* m_obj;
 };
 
+class SendCompareSpell : public QEvent
+{
+    public:
+        enum { TypeId = QEvent::User + 3 };
+        SendCompareSpell(SWForm *form, SpellEntry const* obj, quint8 num);
+        ~SendCompareSpell();
+
+        SpellEntry const* GetObject() { return m_obj; }
+        quint8 GetNum() { return m_num; }
+
+    private:
+        SWForm *m_form;
+        SpellEntry const* m_obj;
+        quint8 m_num;
+};
+
 #endif // EVENTMGR_H
