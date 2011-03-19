@@ -5,7 +5,7 @@ SWObject::SWObject(SWForm *form)
     : m_form(form)
 {
     useRegExp = false;
-    useFilter = false;
+    m_type = 0;         // Standart without filter
 
     for (quint8 i = 0; i < MAX_THREAD; i++)
         ThreadSemaphore[i] = false;
@@ -649,12 +649,12 @@ QString SWObject::GetDescription(QString str, SpellEntry const *spellInfo)
     return str;
 }
 
-void SWObject::ShowInfo(SpellEntry const *spellInfo)
+void SWObject::ShowInfo(SpellEntry const *spellInfo, quint8 num)
 {
     if (!spellInfo)
         return;
 
-    QTextBrowser *browser = m_form->GetBrowser();
+    QTextBrowser *browser = m_form->GetBrowser(num);
     browser->clear();
     QTextCursor cur = browser->textCursor();
     cur.clearSelection();
@@ -721,7 +721,7 @@ void SWObject::ShowInfo(SpellEntry const *spellInfo)
 
     browser->append(QString("SpellSchoolMask = %0 (%1)")
         .arg(spellInfo->SchoolMask)
-        .arg(CompareAttributes(spellInfo, TYPE_SCHOOL_MASK)));
+        .arg(ContainAttributes(spellInfo, TYPE_SCHOOL_MASK)));
 
     SetMetaEnum("DamageClass");
     browser->append(QString("DamageClass = %0 (%1)")
@@ -741,66 +741,66 @@ void SWObject::ShowInfo(SpellEntry const *spellInfo)
     if (spellInfo->Attributes)
         browser->append(QString("Attributes: 0x%0 (%1)")
             .arg(sAttributes.toUpper())
-            .arg(CompareAttributes(spellInfo, TYPE_ATTR)));
+            .arg(ContainAttributes(spellInfo, TYPE_ATTR)));
 
     if (spellInfo->AttributesEx)
         browser->append(QString("AttributesEx: 0x%0 (%1)")
             .arg(sAttributesEx.toUpper())
-            .arg(CompareAttributes(spellInfo, TYPE_ATTR_EX)));
+            .arg(ContainAttributes(spellInfo, TYPE_ATTR_EX)));
 
     if (spellInfo->AttributesEx2)
         browser->append(QString("AttributesEx2: 0x%0 (%1)")
             .arg(sAttributesEx2.toUpper())
-            .arg(CompareAttributes(spellInfo, TYPE_ATTR_EX2)));
+            .arg(ContainAttributes(spellInfo, TYPE_ATTR_EX2)));
 
     if (spellInfo->AttributesEx3)
         browser->append(QString("AttributesEx3: 0x%0 (%1)")
             .arg(sAttributesEx3.toUpper())
-            .arg(CompareAttributes(spellInfo, TYPE_ATTR_EX3)));
+            .arg(ContainAttributes(spellInfo, TYPE_ATTR_EX3)));
 
     if (spellInfo->AttributesEx4)
         browser->append(QString("AttributesEx4: 0x%0 (%1)")
             .arg(sAttributesEx4.toUpper())
-            .arg(CompareAttributes(spellInfo, TYPE_ATTR_EX4)));
+            .arg(ContainAttributes(spellInfo, TYPE_ATTR_EX4)));
 
     if (spellInfo->AttributesEx5)
         browser->append(QString("AttributesEx5: 0x%0 (%1)")
             .arg(sAttributesEx5.toUpper())
-            .arg(CompareAttributes(spellInfo, TYPE_ATTR_EX5)));
+            .arg(ContainAttributes(spellInfo, TYPE_ATTR_EX5)));
 
     if (spellInfo->AttributesEx6)
         browser->append(QString("AttributesEx6: 0x%0 (%1)")
             .arg(sAttributesEx6.toUpper())
-            .arg(CompareAttributes(spellInfo, TYPE_ATTR_EX6)));
+            .arg(ContainAttributes(spellInfo, TYPE_ATTR_EX6)));
 
     if (spellInfo->AttributesExG)
         browser->append(QString("AttributesExG: 0x%0 (%1)")
             .arg(sAttributesExG.toUpper())
-            .arg(CompareAttributes(spellInfo, TYPE_ATTR_EXG)));
+            .arg(ContainAttributes(spellInfo, TYPE_ATTR_EXG)));
 
     browser->append(line);
 
     if (spellInfo->Targets)
         browser->append(QString("Targets Mask = 0x%0 (%1)")
             .arg(sTargetMask.toUpper())
-            .arg(CompareAttributes(spellInfo, TYPE_TARGETS)));
+            .arg(ContainAttributes(spellInfo, TYPE_TARGETS)));
 
     if (spellInfo->TargetCreatureType)
         browser->append(QString("Creature Type Mask = 0x%0 (%1)")
             .arg(sCreatureTypeMask.toUpper())
-            .arg(CompareAttributes(spellInfo, TYPE_CREATURE)));
+            .arg(ContainAttributes(spellInfo, TYPE_CREATURE)));
 
     if (spellInfo->Stances[0])
         browser->append(QString("Stances: 0x%0 (%1)")
             .arg(sFormMask.toUpper())
-            .arg(CompareAttributes(spellInfo, TYPE_FORMS)));
+            .arg(ContainAttributes(spellInfo, TYPE_FORMS)));
 
     if (spellInfo->StancesNot[0])
         browser->append(QString("Stances not: 0x%0 (%1)")
             .arg(sFormMaskNot.toUpper())
-            .arg(CompareAttributes(spellInfo, TYPE_FORMS_NOT)));
+            .arg(ContainAttributes(spellInfo, TYPE_FORMS_NOT)));
 
-    AppendSkillLine(spellInfo);
+    AppendSkillLine(spellInfo, num);
 
     browser->append(QString("Spell Level = %0, BaseLevel %1, MaxLevel %2, MaxTargetLevel %3")
         .arg(spellInfo->SpellLevel)
@@ -823,17 +823,17 @@ void SWObject::ShowInfo(SpellEntry const *spellInfo)
                 case 2: // WEAPON
                 browser->append(QString("  SubClass mask 0x%0 (%1)")
                     .arg(sItemSubClassMask.toUpper())
-                    .arg(CompareAttributes(spellInfo, TYPE_ITEM_WEAPON)));
+                    .arg(ContainAttributes(spellInfo, TYPE_ITEM_WEAPON)));
                     break;
                 case 4: // ARMOR
                 browser->append(QString("  SubClass mask 0x%0 (%1)")
                     .arg(sItemSubClassMask.toUpper())
-                    .arg(CompareAttributes(spellInfo, TYPE_ITEM_ARMOR)));
+                    .arg(ContainAttributes(spellInfo, TYPE_ITEM_ARMOR)));
                     break;
                 case 15: // MISC
                 browser->append(QString("  SubClass mask 0x%0 (%1)")
                     .arg(sItemSubClassMask.toUpper())
-                    .arg(CompareAttributes(spellInfo, TYPE_ITEM_MISC)));
+                    .arg(ContainAttributes(spellInfo, TYPE_ITEM_MISC)));
                     break;
             }
         }
@@ -843,7 +843,7 @@ void SWObject::ShowInfo(SpellEntry const *spellInfo)
             QString sItemInventoryMask(QString("%0").arg(spellInfo->EquippedItemInventoryTypeMask, 8, 16, QChar('0')));
             browser->append(QString("  InventoryType mask = 0x%0 (%1)")
                 .arg(sItemInventoryMask.toUpper())
-                .arg(CompareAttributes(spellInfo, TYPE_ITEM_INVENTORY)));
+                .arg(ContainAttributes(spellInfo, TYPE_ITEM_INVENTORY)));
         }
     }
 
@@ -861,7 +861,7 @@ void SWObject::ShowInfo(SpellEntry const *spellInfo)
         .arg(spellInfo->Mechanic)
         .arg(me.valueToKey(spellInfo->Mechanic)));
 
-    AppendRangeInfo(spellInfo);
+    AppendRangeInfo(spellInfo, num);
 
     if (spellInfo->Speed)
         browser->append(QString("Speed: %0").arg(spellInfo->Speed, 0, 'f', 2));
@@ -869,7 +869,7 @@ void SWObject::ShowInfo(SpellEntry const *spellInfo)
     if (spellInfo->StackAmount)
         browser->append(QString("Stackable up to %0").arg(spellInfo->StackAmount));
 
-    AppendCastTimeLine(spellInfo);
+    AppendCastTimeLine(spellInfo, num);
 
     if (spellInfo->RecoveryTime || spellInfo->CategoryRecoveryTime || spellInfo->StartRecoveryCategory)
     {
@@ -882,7 +882,7 @@ void SWObject::ShowInfo(SpellEntry const *spellInfo)
             .arg(float(spellInfo->StartRecoveryTime), 0, 'f', 2));
     }
 
-    AppendDurationLine(spellInfo);
+    AppendDurationLine(spellInfo, num);
 
     if (spellInfo->ManaCost || spellInfo->ManaCostPercentage)
     {
@@ -989,7 +989,7 @@ void SWObject::ShowInfo(SpellEntry const *spellInfo)
             .arg(spellInfo->ProcCharges));
         browser->append(line);
 
-        AppendProcInfo(spellInfo);
+        AppendProcInfo(spellInfo, num);
     }
     else
     {
@@ -1000,12 +1000,15 @@ void SWObject::ShowInfo(SpellEntry const *spellInfo)
 
     browser->append(line);
 
-    AppendSpellEffectInfo(spellInfo);
+    AppendSpellEffectInfo(spellInfo, num);
+
+    if (num == 1)
+        Compare();
 }
 
-void SWObject::AppendRangeInfo(SpellEntry const* spellInfo)
+void SWObject::AppendRangeInfo(SpellEntry const* spellInfo, quint8 num)
 {
-    QTextBrowser *browser = m_form->GetBrowser();
+    QTextBrowser *browser = m_form->GetBrowser(num);
 
     SpellRangeEntry const *range = sSpellRangeStore.LookupEntry(spellInfo->RangeIndex);
     if (range)
@@ -1018,9 +1021,9 @@ void SWObject::AppendRangeInfo(SpellEntry const* spellInfo)
     }
 }
 
-void SWObject::AppendProcInfo(SpellEntry const *spellInfo)
+void SWObject::AppendProcInfo(SpellEntry const *spellInfo, quint8 num)
 {
-    QTextBrowser *browser = m_form->GetBrowser();
+    QTextBrowser *browser = m_form->GetBrowser(num);
 
     quint8 i = 0;
     quint64 proc = spellInfo->ProcFlags;
@@ -1033,9 +1036,9 @@ void SWObject::AppendProcInfo(SpellEntry const *spellInfo)
     }
 }
 
-void SWObject::AppendSpellEffectInfo(SpellEntry const* spellInfo)
+void SWObject::AppendSpellEffectInfo(SpellEntry const* spellInfo, quint8 num)
 {
-    QTextBrowser *browser = m_form->GetBrowser();
+    QTextBrowser *browser = m_form->GetBrowser(num);
 
     for (quint8 eff = EFFECT_INDEX_0; eff < MAX_EFFECT_INDEX; eff++)
     {
@@ -1092,7 +1095,7 @@ void SWObject::AppendSpellEffectInfo(SpellEntry const* spellInfo)
                 .arg(me.valueToKey(spellInfo->EffectImplicitTargetA[eff]))
                 .arg(me.valueToKey(spellInfo->EffectImplicitTargetB[eff])));
 
-            AppendAuraInfo(spellInfo, eff);
+            AppendAuraInfo(spellInfo, eff, num);
 
             quint32 ClassMask[3];
 
@@ -1164,9 +1167,9 @@ void SWObject::AppendSpellEffectInfo(SpellEntry const* spellInfo)
                 }
             }
 
-            AppendRadiusInfo(spellInfo, eff);
+            AppendRadiusInfo(spellInfo, eff, num);
 
-            AppendTriggerInfo(spellInfo, eff);
+            AppendTriggerInfo(spellInfo, eff, num);
 
             if (spellInfo->EffectChainTarget[eff] != 0)
                 browser->append(QString("EffectChainTarget = %0").arg(spellInfo->EffectChainTarget[eff]));
@@ -1184,9 +1187,9 @@ void SWObject::AppendSpellEffectInfo(SpellEntry const* spellInfo)
     }
 }
 
-void SWObject::AppendTriggerInfo(SpellEntry const* spellInfo, quint8 index)
+void SWObject::AppendTriggerInfo(SpellEntry const* spellInfo, quint8 index, quint8 num)
 {
-    QTextBrowser *browser = m_form->GetBrowser();
+    QTextBrowser *browser = m_form->GetBrowser(num);
 
     quint32 trigger = spellInfo->EffectTriggerSpell[index];
     if (trigger != 0)
@@ -1213,7 +1216,7 @@ void SWObject::AppendTriggerInfo(SpellEntry const* spellInfo, quint8 index)
                     browser->append(QString("Charges - %0").arg(triggerSpell->ProcCharges));
                     browser->append(QString());
 
-                    AppendProcInfo(triggerSpell);
+                    AppendProcInfo(triggerSpell, num);
 
                     browser->append(QString());
                 }
@@ -1225,9 +1228,9 @@ void SWObject::AppendTriggerInfo(SpellEntry const* spellInfo, quint8 index)
     }
 }
 
-void SWObject::AppendRadiusInfo(SpellEntry const* spellInfo, quint8 index)
+void SWObject::AppendRadiusInfo(SpellEntry const* spellInfo, quint8 index, quint8 num)
 {
-    QTextBrowser *browser = m_form->GetBrowser();
+    QTextBrowser *browser = m_form->GetBrowser(num);
 
     quint16 rIndex = spellInfo->EffectRadiusIndex[index];
     if (rIndex != 0)
@@ -1242,9 +1245,9 @@ void SWObject::AppendRadiusInfo(SpellEntry const* spellInfo, quint8 index)
     }
 }
 
-void SWObject::AppendAuraInfo(SpellEntry const* spellInfo, quint8 index)
+void SWObject::AppendAuraInfo(SpellEntry const* spellInfo, quint8 index, quint8 num)
 {
-    QTextBrowser *browser = m_form->GetBrowser();
+    QTextBrowser *browser = m_form->GetBrowser(num);
 
     SetMetaEnum("AuraType");
     QString sAura(me.valueToKey(spellInfo->EffectApplyAuraName[index]));
@@ -1279,7 +1282,7 @@ void SWObject::AppendAuraInfo(SpellEntry const* spellInfo, quint8 index)
             _SpecialAuraInfo = QString("(%0").arg(me.valueToKey(misc));
             break;
         case 189:
-            _SpecialAuraInfo = QString("(%0").arg(CompareAttributes(spellInfo, TYPE_CR, index));
+            _SpecialAuraInfo = QString("(%0").arg(ContainAttributes(spellInfo, TYPE_CR, index));
             break;
         case 107:
         case 108:
@@ -1298,7 +1301,7 @@ void SWObject::AppendAuraInfo(SpellEntry const* spellInfo, quint8 index)
     browser->append(_Result);
 }
 
-QString SWObject::CompareAttributes(SpellEntry const* spellInfo, AttrType attr, quint8 index)
+QString SWObject::ContainAttributes(SpellEntry const* spellInfo, AttrType attr, quint8 index)
 {
     QString str("");
     switch (attr)
@@ -1595,9 +1598,9 @@ QString SWObject::CompareAttributes(SpellEntry const* spellInfo, AttrType attr, 
     return str;
 }
 
-void SWObject::AppendSkillLine(SpellEntry const* spellInfo)
+void SWObject::AppendSkillLine(SpellEntry const* spellInfo, quint8 num)
 {
-    QTextBrowser *browser = m_form->GetBrowser();
+    QTextBrowser *browser = m_form->GetBrowser(num);
 
     for (quint32 i = 0; i < sSkillLineAbilityStore.GetNumRows(); i++)
     {
@@ -1619,9 +1622,9 @@ void SWObject::AppendSkillLine(SpellEntry const* spellInfo)
     }
 }
 
-void SWObject::AppendCastTimeLine(SpellEntry const* spellInfo)
+void SWObject::AppendCastTimeLine(SpellEntry const* spellInfo, quint8 num)
 {
-    QTextBrowser *browser = m_form->GetBrowser();
+    QTextBrowser *browser = m_form->GetBrowser(num);
 
     SpellCastTimesEntry const *castInfo = sSpellCastTimesStore.LookupEntry(spellInfo->CastingTimeIndex);
     if (castInfo)
@@ -1632,9 +1635,9 @@ void SWObject::AppendCastTimeLine(SpellEntry const* spellInfo)
     }
 }
 
-void SWObject::AppendDurationLine(SpellEntry const* spellInfo)
+void SWObject::AppendDurationLine(SpellEntry const* spellInfo, quint8 num)
 {
-    QTextBrowser *browser = m_form->GetBrowser();
+    QTextBrowser *browser = m_form->GetBrowser(num);
 
     SpellDurationEntry const *durationInfo = sSpellDurationStore.LookupEntry(spellInfo->DurationIndex);
     if (durationInfo)
@@ -1647,4 +1650,72 @@ void SWObject::AppendDurationLine(SpellEntry const* spellInfo)
     }
 }
 
+void SWObject::Compare()
+{
+    QStringList list1 = m_form->SpellInfoBrowser->toPlainText().split("\n");
+    QStringList list2 = m_form->SpellInfoBrowser2->toPlainText().split("\n");
 
+    m_form->SpellInfoBrowser->clear();
+    m_form->SpellInfoBrowser2->clear();
+
+    QString line("==================================================");
+
+    for (quint32 i = 0; i < list1.size(); i++)
+    {
+        bool yes = false;
+
+        for (quint32 j = 0; j < list2.size(); j++)
+        {
+            if (list1.at(i) == list2.at(j))
+            {
+                yes = true;
+                break;
+            }
+        }
+
+        if (list1.at(i) == line)
+        {
+            m_form->SpellInfoBrowser->append(line);
+            continue;
+        }
+
+        if (yes)
+        {
+            m_form->SpellInfoBrowser->append(QString("<span style='background-color: cyan'>%0</span>").arg(list1.at(i)));
+        }
+        else
+        {
+            m_form->SpellInfoBrowser->append(QString("<span style='background-color: salmon'>%0</span>").arg(list1.at(i)));
+        }
+    }
+
+    // second
+    for (quint32 i = 0; i < list2.size(); i++)
+    {
+        bool yes = false;
+
+        for (quint32 j = 0; j < list1.size(); j++)
+        {
+            if (list2.at(i) == list1.at(j))
+            {
+                yes = true;
+                break;
+            }
+        }
+
+        if (list2.at(i) == line)
+        {
+            m_form->SpellInfoBrowser2->append(line);
+            continue;
+        }
+
+        if (yes)
+        {
+            m_form->SpellInfoBrowser2->append(QString("<span style='background-color: cyan'>%0</span>").arg(list2.at(i)));
+        }
+        else
+        {
+            m_form->SpellInfoBrowser2->append(QString("<span style='background-color: salmon'>%0</span>").arg(list2.at(i)));
+        }
+    }
+}

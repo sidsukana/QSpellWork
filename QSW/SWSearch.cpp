@@ -872,7 +872,7 @@ void SWSearch::Search()
     model->setHorizontalHeaderItem(0, new QStandardItem("ID"));
     model->setHorizontalHeaderItem(1, new QStandardItem("Name"));
 
-    if (m_sw->IsFilter())
+    if (m_sw->GetType() == 1)
     {
         for (quint32 i = 0; i < sSpellStore.GetNumRows(); i++)
         {
@@ -990,6 +990,20 @@ void SWSearch::Search()
             }
         }
         QApplication::postEvent(form, new SendModel(form, model));
+    }
+    else if (m_sw->GetType() == 2)
+    {
+        if (!form->compareSpell_1->text().isEmpty() && !form->compareSpell_2->text().isEmpty())
+        {
+            SpellEntry const *sInfo1 = sSpellStore.LookupEntry(form->compareSpell_1->text().toInt());
+            SpellEntry const *sInfo2 = sSpellStore.LookupEntry(form->compareSpell_2->text().toInt());
+
+            if (sInfo1 && sInfo2)
+            {
+                QApplication::postEvent(form, new SendCompareSpell(form, sInfo1, 0));
+                QApplication::postEvent(form, new SendCompareSpell(form, sInfo2, 1));
+            }
+        }
     }
     else
     {
