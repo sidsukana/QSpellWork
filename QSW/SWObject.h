@@ -18,19 +18,20 @@ class SWObject
         SWObject(SWForm *form = NULL);
         ~SWObject();
 
-        void ShowInfo(SpellEntry const* spellInfo);
+        void ShowInfo(SpellEntry const* spellInfo, quint8 num = 0);
+        void Compare();
 
-        void AppendSkillLine(SpellEntry const* spellInfo);
-        void AppendCastTimeLine(SpellEntry const* spellInfo);
-        void AppendDurationLine(SpellEntry const* spellInfo);
-        void AppendRangeInfo(SpellEntry const* spellInfo);
-        void AppendSpellEffectInfo(SpellEntry const* spellInfo);
-        void AppendAuraInfo(SpellEntry const* spellInfo, quint8 index);
-        void AppendRadiusInfo(SpellEntry const* spellInfo, quint8 index);
-        void AppendTriggerInfo(SpellEntry const* spellInfo, quint8 index);
-        void AppendProcInfo(SpellEntry const *spellInfo);
+        void AppendSkillLine(SpellEntry const* spellInfo, quint8 num);
+        void AppendCastTimeLine(SpellEntry const* spellInfo, quint8 num);
+        void AppendDurationLine(SpellEntry const* spellInfo, quint8 num);
+        void AppendRangeInfo(SpellEntry const* spellInfo, quint8 num);
+        void AppendSpellEffectInfo(SpellEntry const* spellInfo, quint8 num);
+        void AppendAuraInfo(SpellEntry const* spellInfo, quint8 index, quint8 num);
+        void AppendRadiusInfo(SpellEntry const* spellInfo, quint8 index, quint8 num);
+        void AppendTriggerInfo(SpellEntry const* spellInfo, quint8 index, quint8 num);
+        void AppendProcInfo(SpellEntry const *spellInfo, quint8 num);
 
-        QString CompareAttributes(SpellEntry const* spellInfo, AttrType attr, quint8 index = 0);
+        QString ContainAttributes(SpellEntry const* spellInfo, AttrType attr, quint8 index = 0);
         QString GetDescription(QString str, SpellEntry const *spellInfo);
 
         void ThreadBegin(quint8 id);
@@ -47,9 +48,9 @@ class SWObject
         QMetaEnum GetMetaEnum() { return me; }
         SWForm* GetForm() { return m_form; }
         bool IsRegExp() const { return useRegExp; }
-        bool IsFilter() const { return useFilter; }
+        quint8 GetType() const { return m_type; }
         void SetRegExp(bool on) { useRegExp = on; }
-        void SetFilter(bool on) { useFilter = on; }
+        void SetType(quint8 type) { m_type = type; }
 
         QMetaEnum me;
 
@@ -57,7 +58,7 @@ class SWObject
         SWForm *m_form;
 
         bool useRegExp;
-        bool useFilter;
+        quint8 m_type;
 
         QMetaObject mo;
         quint8 e_idx;

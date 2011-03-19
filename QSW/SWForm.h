@@ -28,19 +28,21 @@ class SWForm : public QMainWindow, public Ui::SWFormUI
         SWForm(QWidget *parent = 0);
         ~SWForm();
 
-        QTextBrowser *GetBrowser() { return SpellInfoBrowser; }
+        QTextBrowser *GetBrowser(quint8 num) { return(num == 0 ? SpellInfoBrowser : SpellInfoBrowser2); }
         quint8 GetToolState(quint8 Tool);
 
     signals:
-        void SignalSearch(bool filter);
+        void SignalSearch(quint8 type);
 
     private slots:
         void SlotAbout();
         void SlotFilterSearch();
         void SlotButtonSearch();
+        void SlotCompareSearch();
+        void SlotSetMode(QAction *ac);
         void SlotSetCheckedA(QAction *ac);
         void SlotSetCheckedB(QAction *ac);
-        void SlotSearch(bool filter);
+        void SlotSearch(quint8 type);
         void SlotSearchFromList(const QModelIndex &index);
 
         void SlotRegExp();
@@ -923,7 +925,7 @@ public:
         TARGET_DYNAMIC_OBJECT_LEFT_SIDE         = 49,
         TARGET_DYNAMIC_OBJECT_RIGHT_SIDE        = 50,
         TARGET_51                               = 51,
-        TARGET_AREAEFFECT_CUSTOM_2              = 52,
+        TARGET_AREAEFFECT_GO_AROUND_DEST        = 52,
         TARGET_CURRENT_ENEMY_COORDINATES        = 53,
         TARGET_LARGE_FRONTAL_CONE               = 54,
         TARGET_55                               = 55,

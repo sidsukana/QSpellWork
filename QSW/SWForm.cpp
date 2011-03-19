@@ -7,6 +7,9 @@ SWForm::SWForm(QWidget *parent)
     setupUi(this);
 
     sw = new SWObject(this);
+    layoutWidget1->hide();
+    slabel1->hide();
+    compareSpell_1->hide();
 
     LoadComboBoxes();
     LoadToolButtons();
@@ -37,11 +40,48 @@ SWForm::SWForm(QWidget *parent)
     connect(adLine2, SIGNAL(returnPressed()), this, SLOT(SlotFilterSearch()));
 
     // Search connection
-    connect(this, SIGNAL(SignalSearch(bool)), this, SLOT(SlotSearch(bool)));
+    connect(this, SIGNAL(SignalSearch(quint8)), this, SLOT(SlotSearch(quint8)));
+
+    connect(menuMode, SIGNAL(triggered(QAction*)), this, SLOT(SlotSetMode(QAction*)));
+    connect(compareSpell_1, SIGNAL(returnPressed()), this, SLOT(SlotCompareSearch()));
+    connect(compareSpell_2, SIGNAL(returnPressed()), this, SLOT(SlotCompareSearch()));
 }
 
 SWForm::~SWForm()
 {
+}
+
+void SWForm::SlotSetMode(QAction *ac)
+{
+    modeStandart->setChecked(false);
+    modeCompare->setChecked(false);
+
+    ac->setChecked(true);
+
+    if (modeCompare->isChecked())
+    {
+        groupBox->hide();
+        groupBox_2->hide();
+        groupBox_3->hide();
+        SpellList->hide();
+        SpellInfoBrowser->clear();
+        SpellInfoBrowser2->clear();
+        layoutWidget1->show();
+        slabel1->show();
+        compareSpell_1->show();
+    }
+    else
+    {
+        groupBox->show();
+        groupBox_2->show();
+        groupBox_3->show();
+        SpellList->show();
+        SpellInfoBrowser->clear();
+        SpellInfoBrowser2->clear();
+        layoutWidget1->hide();
+        slabel1->hide();
+        compareSpell_1->hide();
+    }
 }
 
 void SWForm::LoadToolButtons()
@@ -178,18 +218,25 @@ void SWForm::SlotAbout()
 
 void SWForm::SlotButtonSearch()
 {
-    emit SignalSearch(false);
+    emit SignalSearch(0);
 }
 
 void SWForm::SlotFilterSearch()
 {
-    emit SignalSearch(true);
+    emit SignalSearch(1);
 }
 
-void SWForm::SlotSearch(bool filter)
+void SWForm::SlotCompareSearch()
 {
-    sw->SetFilter(filter);
-    delete SpellList->model();
+    emit SignalSearch(2);
+}
+
+void SWForm::SlotSearch(quint8 type)
+{
+    if (type != 2)
+        delete SpellList->model();
+
+    sw->SetType(type);
     sw->ThreadBegin(THREAD_SEARCH);
 }
 
@@ -216,6 +263,13 @@ bool SWForm::event(QEvent *ev)
         {
             SendSpell* m_ev = (SendSpell*)ev;
             sw->ShowInfo(m_ev->GetObject());
+            return true;
+        }
+        break;
+        case SendCompareSpell::TypeId:
+        {
+            SendCompareSpell* m_ev = (SendCompareSpell*)ev;
+            sw->ShowInfo(m_ev->GetObject(), m_ev->GetNum());
             return true;
         }
         break;
