@@ -185,7 +185,7 @@ p, li { white-space: pre-wrap; }
         <rect>
          <x>74</x>
          <y>22</y>
-         <width>111</width>
+         <width>191</width>
          <height>21</height>
         </rect>
        </property>
@@ -214,32 +214,9 @@ p, li { white-space: pre-wrap; }
         <rect>
          <x>74</x>
          <y>80</y>
-         <width>111</width>
+         <width>191</width>
          <height>21</height>
         </rect>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="findButton">
-       <property name="geometry">
-        <rect>
-         <x>190</x>
-         <y>20</y>
-         <width>81</width>
-         <height>51</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <weight>50</weight>
-         <italic>false</italic>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Search!</string>
-       </property>
-       <property name="autoDefault">
-        <bool>true</bool>
        </property>
       </widget>
       <widget class="QLabel" name="findLine_l3">
@@ -260,45 +237,9 @@ p, li { white-space: pre-wrap; }
         <rect>
          <x>74</x>
          <y>50</y>
-         <width>111</width>
+         <width>191</width>
          <height>21</height>
         </rect>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="regexpButton">
-       <property name="geometry">
-        <rect>
-         <x>190</x>
-         <y>72</y>
-         <width>82</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::StrongFocus</enum>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-    border: 1px solid #000000;
-    border-radius: 10px;
-	background-color: qlineargradient(x1:0, y1:0, x2: 0, y2: 1, 
-									stop:0 #FF0000, stop: 0.5 #FF7070,
-									stop: 0.51 #FF0000, stop: 1 #FF7070);
-    color: #000000;
-    font: bold 12px;
-    min-width: 80px;
-}
-
-</string>
-       </property>
-       <property name="text">
-        <string>RegExp</string>
-       </property>
-       <property name="checkable">
-        <bool>false</bool>
-       </property>
-       <property name="checked">
-        <bool>false</bool>
        </property>
       </widget>
      </widget>
@@ -326,7 +267,7 @@ p, li { white-space: pre-wrap; }
       <property name="title">
        <string>Spell Filter</string>
       </property>
-      <widget class="QComboBox" name="comboBox">
+      <widget class="QFontComboBox" name="comboBox">
        <property name="geometry">
         <rect>
          <x>4</x>
@@ -335,22 +276,27 @@ p, li { white-space: pre-wrap; }
          <height>20</height>
         </rect>
        </property>
-       <property name="font">
-        <font>
-         <pointsize>7</pointsize>
-        </font>
+       <property name="editable">
+        <bool>false</bool>
        </property>
        <property name="currentIndex">
-        <number>-1</number>
+        <number>181</number>
        </property>
        <property name="maxVisibleItems">
-        <number>30</number>
+        <number>20</number>
        </property>
-       <property name="insertPolicy">
-        <enum>QComboBox::InsertAfterCurrent</enum>
+       <property name="frame">
+        <bool>true</bool>
+       </property>
+       <property name="currentFont">
+        <font>
+         <family>MS Shell Dlg 2</family>
+         <pointsize>8</pointsize>
+         <stylestrategy>PreferDefault</stylestrategy>
+        </font>
        </property>
       </widget>
-      <widget class="QComboBox" name="comboBox_2">
+      <widget class="QFontComboBox" name="comboBox_2">
        <property name="geometry">
         <rect>
          <x>4</x>
@@ -359,22 +305,23 @@ p, li { white-space: pre-wrap; }
          <height>20</height>
         </rect>
        </property>
-       <property name="font">
-        <font>
-         <pointsize>7</pointsize>
-        </font>
+       <property name="editable">
+        <bool>false</bool>
        </property>
        <property name="currentIndex">
-        <number>-1</number>
+        <number>181</number>
        </property>
        <property name="maxVisibleItems">
-        <number>30</number>
+        <number>20</number>
        </property>
-       <property name="insertPolicy">
-        <enum>QComboBox::InsertAfterCurrent</enum>
+       <property name="currentFont">
+        <font>
+         <family>MS Shell Dlg 2</family>
+         <pointsize>8</pointsize>
+        </font>
        </property>
       </widget>
-      <widget class="QComboBox" name="comboBox_3">
+      <widget class="QFontComboBox" name="comboBox_3">
        <property name="geometry">
         <rect>
          <x>4</x>
@@ -383,55 +330,70 @@ p, li { white-space: pre-wrap; }
          <height>20</height>
         </rect>
        </property>
-       <property name="font">
-        <font>
-         <pointsize>7</pointsize>
-        </font>
+       <property name="editable">
+        <bool>false</bool>
        </property>
        <property name="currentIndex">
-        <number>-1</number>
+        <number>181</number>
        </property>
        <property name="maxVisibleItems">
-        <number>30</number>
+        <number>20</number>
        </property>
-       <property name="insertPolicy">
-        <enum>QComboBox::InsertAfterCurrent</enum>
+       <property name="currentFont">
+        <font>
+         <family>MS Shell Dlg 2</family>
+         <pointsize>8</pointsize>
+        </font>
        </property>
       </widget>
-      <widget class="QComboBox" name="comboBox_4">
+      <widget class="QFontComboBox" name="comboBox_4">
        <property name="geometry">
         <rect>
          <x>4</x>
          <y>78</y>
          <width>271</width>
-         <height>22</height>
+         <height>20</height>
         </rect>
        </property>
-       <property name="font">
-        <font>
-         <pointsize>7</pointsize>
-        </font>
+       <property name="editable">
+        <bool>false</bool>
+       </property>
+       <property name="currentIndex">
+        <number>181</number>
        </property>
        <property name="maxVisibleItems">
-        <number>30</number>
+        <number>20</number>
+       </property>
+       <property name="currentFont">
+        <font>
+         <family>MS Shell Dlg 2</family>
+         <pointsize>8</pointsize>
+        </font>
        </property>
       </widget>
-      <widget class="QComboBox" name="comboBox_5">
+      <widget class="QFontComboBox" name="comboBox_5">
        <property name="geometry">
         <rect>
          <x>4</x>
          <y>101</y>
          <width>271</width>
-         <height>22</height>
+         <height>20</height>
         </rect>
        </property>
-       <property name="font">
-        <font>
-         <pointsize>7</pointsize>
-        </font>
+       <property name="editable">
+        <bool>false</bool>
+       </property>
+       <property name="currentIndex">
+        <number>181</number>
        </property>
        <property name="maxVisibleItems">
-        <number>30</number>
+        <number>20</number>
+       </property>
+       <property name="currentFont">
+        <font>
+         <family>MS Shell Dlg 2</family>
+         <pointsize>8</pointsize>
+        </font>
        </property>
       </widget>
      </widget>
@@ -459,19 +421,6 @@ p, li { white-space: pre-wrap; }
       <property name="title">
        <string>Advanced Filter</string>
       </property>
-      <widget class="QComboBox" name="adBox1">
-       <property name="geometry">
-        <rect>
-         <x>5</x>
-         <y>20</y>
-         <width>121</width>
-         <height>22</height>
-        </rect>
-       </property>
-       <property name="maxVisibleItems">
-        <number>30</number>
-       </property>
-      </widget>
       <widget class="QLineEdit" name="adLine1">
        <property name="geometry">
         <rect>
@@ -490,19 +439,6 @@ p, li { white-space: pre-wrap; }
          <width>121</width>
          <height>21</height>
         </rect>
-       </property>
-      </widget>
-      <widget class="QComboBox" name="adBox2">
-       <property name="geometry">
-        <rect>
-         <x>5</x>
-         <y>43</y>
-         <width>121</width>
-         <height>22</height>
-        </rect>
-       </property>
-       <property name="maxVisibleItems">
-        <number>30</number>
        </property>
       </widget>
       <widget class="QToolButton" name="toolButton">
@@ -553,6 +489,56 @@ p, li { white-space: pre-wrap; }
        </property>
        <property name="arrowType">
         <enum>Qt::RightArrow</enum>
+       </property>
+      </widget>
+      <widget class="QFontComboBox" name="adBox1">
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>20</y>
+         <width>121</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="editable">
+        <bool>false</bool>
+       </property>
+       <property name="currentIndex">
+        <number>181</number>
+       </property>
+       <property name="maxVisibleItems">
+        <number>20</number>
+       </property>
+       <property name="currentFont">
+        <font>
+         <family>MS Shell Dlg 2</family>
+         <pointsize>8</pointsize>
+        </font>
+       </property>
+      </widget>
+      <widget class="QFontComboBox" name="adBox2">
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>43</y>
+         <width>121</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="editable">
+        <bool>false</bool>
+       </property>
+       <property name="currentIndex">
+        <number>181</number>
+       </property>
+       <property name="maxVisibleItems">
+        <number>20</number>
+       </property>
+       <property name="currentFont">
+        <font>
+         <family>MS Shell Dlg 2</family>
+         <pointsize>8</pointsize>
+        </font>
        </property>
       </widget>
      </widget>
@@ -672,8 +658,15 @@ p, li { white-space: pre-wrap; }
     <addaction name="modeStandart"/>
     <addaction name="modeCompare"/>
    </widget>
+   <widget class="QMenu" name="menuSettings">
+    <property name="title">
+     <string>Settings</string>
+    </property>
+    <addaction name="actionRegExp"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuMode"/>
+   <addaction name="menuSettings"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
@@ -734,6 +727,14 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="text">
     <string>Compare</string>
+   </property>
+  </action>
+  <action name="actionRegExp">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Use RegExp</string>
    </property>
   </action>
  </widget>
