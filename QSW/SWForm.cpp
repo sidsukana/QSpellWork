@@ -21,14 +21,13 @@ SWForm::SWForm(QWidget *parent)
     connect(findLine_e1, SIGNAL(returnPressed()), this, SLOT(SlotButtonSearch()));
     connect(findLine_e2, SIGNAL(returnPressed()), this, SLOT(SlotButtonSearch()));
     connect(findLine_e3, SIGNAL(returnPressed()), this, SLOT(SlotButtonSearch()));
-    connect(findButton, SIGNAL(clicked()), this, SLOT(SlotButtonSearch()));
 
     // Menu connections
     connect(actionAbout, SIGNAL(triggered()), this, SLOT(SlotAbout()));
     connect(actionExit, SIGNAL(triggered()), this, SLOT(close()));
 
     // RegExp connection
-    connect(regexpButton, SIGNAL(clicked()), this, SLOT(SlotRegExp()));
+    connect(actionRegExp, SIGNAL(triggered()), this, SLOT(SlotRegExp()));
 
     // Filter search connections
     connect(comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(SlotFilterSearch()));
@@ -174,35 +173,9 @@ void SWForm::LoadComboBoxes()
 void SWForm::SlotRegExp()
 {
     if (!sw->IsRegExp())
-    {
         sw->SetRegExp(true);
-        regexpButton->setStyleSheet(QString(
-            "QPushButton {"
-                "border: 1px solid #000000;"
-                "border-radius: 10px;"
-                "background-color: qlineargradient(x1:0, y1:0, x2: 0, y2: 1, "
-                "stop:0 #00FF1C, stop: 0.5 #70FC83,"
-                "stop: 0.51 #00FF1C, stop: 1 #70FC83);"
-                "color: #000000;"
-                "font: bold 12px;"
-                "min-width: 80px;"
-            "}"));
-    }
     else
-    {
         sw->SetRegExp(false);
-        regexpButton->setStyleSheet(QString(
-            "QPushButton {"
-                "border: 1px solid #000000;"
-                "border-radius: 10px;"
-	            "background-color: qlineargradient(x1:0, y1:0, x2: 0, y2: 1, "
-                "stop:0 #FF0000, stop: 0.5 #FF7070,"
-                "stop: 0.51 #FF0000, stop: 1 #FF7070);"
-                "color: #000000;"
-                "font: bold 12px;"
-                "min-width: 80px;"
-            "}"));
-    }
 
     if (!SpellList->model())
         return;
