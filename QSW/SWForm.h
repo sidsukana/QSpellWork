@@ -52,6 +52,7 @@ class SWForm : public QMainWindow, public Ui::SWFormUI
     private:
         void LoadComboBoxes();
         void LoadToolButtons();
+        void DetectLocale();
 
         Ui::SWFormUI ui;
         SWObject *sw;
@@ -63,6 +64,18 @@ class Enums : public QObject
 {
     Q_OBJECT
 public:
+
+    enum LocalesDBC
+    {
+        enUS,
+        koKR,
+        frFR,
+        deDE,
+        zhCN,
+        zhTW,
+        esES,
+        esMX
+    };
 
     enum Mechanic
     {
@@ -1043,6 +1056,7 @@ public:
         POWER_HEALTH        = -2,
     };
 
+    Q_ENUMS(LocalesDBC)
     Q_ENUMS(Mechanic)
     Q_ENUMS(PreventionType)
     Q_ENUMS(DamageClass)

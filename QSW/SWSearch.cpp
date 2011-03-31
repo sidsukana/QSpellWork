@@ -2,7 +2,7 @@
 #include "QtGui/QStandardItemModel"
 
 SWSearch::SWSearch(SWObject *sw)
-    : m_sw(sw)
+    : m_sw(sw), locale(sw->GetLocale())
 {
 }
 
@@ -548,7 +548,7 @@ bool SWSearch::HasValue(quint8 index, QString str, SpellEntry const *m_spellInfo
                 return true;
             break;
         case 69:
-            if (QString(m_spellInfo->SpellName[0]) == str)
+            if (QString(QString::fromUtf8(m_spellInfo->SpellName[locale])) == str)
                 return true;
             break;
         case 70:
@@ -556,7 +556,7 @@ bool SWSearch::HasValue(quint8 index, QString str, SpellEntry const *m_spellInfo
                 return true;
             break;
         case 71:
-            if (QString(m_spellInfo->Rank[0]) == str)
+            if (QString(QString::fromUtf8(m_spellInfo->Rank[locale])) == str)
                 return true;
             break;
         case 72:
@@ -564,7 +564,7 @@ bool SWSearch::HasValue(quint8 index, QString str, SpellEntry const *m_spellInfo
                 return true;
             break;
         case 73:
-            if (QString(m_spellInfo->Description[0]) == str)
+            if (QString(QString::fromUtf8(m_spellInfo->Description[locale])) == str)
                 return true;
             break;
         case 74:
@@ -572,7 +572,7 @@ bool SWSearch::HasValue(quint8 index, QString str, SpellEntry const *m_spellInfo
                 return true;
             break;
         case 75:
-            if (QString(m_spellInfo->ToolTip[0]) == str)
+            if (QString(QString::fromUtf8(m_spellInfo->ToolTip[locale])) == str)
                 return true;
             break;
         case 76:
@@ -768,15 +768,15 @@ void SWSearch::Search()
                 if (family && aura && effect && adFilter1 && adFilter2 && targetA && targetB)
                 {
                     count++;
-                    QString sRank(m_spellInfo->Rank[0]);
+                    QString sRank(QString::fromUtf8(m_spellInfo->Rank[locale]));
 
                     QStandardItem *item_id = new QStandardItem(QString("%0").arg(m_spellInfo->Id));
                     QStandardItem *item_name;
 
                     if (sRank.isEmpty())
-                        item_name = new QStandardItem(QString("%0").arg(m_spellInfo->SpellName[0]));
+                        item_name = new QStandardItem(QString("%0").arg(QString::fromUtf8(m_spellInfo->SpellName[locale])));
                     else
-                        item_name = new QStandardItem(QString("%0 (%1)").arg(m_spellInfo->SpellName[0]).arg(m_spellInfo->Rank[0]));
+                        item_name = new QStandardItem(QString("%0 (%1)").arg(QString::fromUtf8(m_spellInfo->SpellName[locale])).arg(QString::fromUtf8(m_spellInfo->Rank[locale])));
 
                     model->setItem(count, 0, item_id);
                     model->setItem(count, 1, item_name);
@@ -817,18 +817,18 @@ void SWSearch::Search()
                 for (quint32 i = 0; i < sSpellStore.GetNumRows(); i++)
                 {
                     SpellEntry const *m_spellInfo = sSpellStore.LookupEntry(i);
-                    if (m_spellInfo && QString(m_spellInfo->SpellName[0]).contains(form->findLine_e1->text(), Qt::CaseInsensitive))
+                    if (m_spellInfo && QString(QString::fromUtf8(m_spellInfo->SpellName[locale])).contains(form->findLine_e1->text(), Qt::CaseInsensitive))
                     {
                         count++;
-                        QString sRank(m_spellInfo->Rank[0]);
+                        QString sRank(QString::fromUtf8(m_spellInfo->Rank[locale]));
 
                         QStandardItem *item_id = new QStandardItem(QString("%0").arg(m_spellInfo->Id));
                         QStandardItem *item_name;
 
                         if (sRank.isEmpty())
-                            item_name = new QStandardItem(QString("%0").arg(m_spellInfo->SpellName[0]));
+                            item_name = new QStandardItem(QString("%0").arg(QString::fromUtf8(m_spellInfo->SpellName[locale])));
                         else
-                            item_name = new QStandardItem(QString("%0 (%1)").arg(m_spellInfo->SpellName[0]).arg(m_spellInfo->Rank[0]));
+                            item_name = new QStandardItem(QString("%0 (%1)").arg(QString::fromUtf8(m_spellInfo->SpellName[locale])).arg(QString::fromUtf8(m_spellInfo->Rank[locale])));
 
                         model->setItem(count, 0, item_id);
                         model->setItem(count, 1, item_name);
@@ -842,15 +842,15 @@ void SWSearch::Search()
 
                 if (m_spellInfo)
                 {
-                    QString sRank(m_spellInfo->Rank[0]);
+                    QString sRank(QString::fromUtf8(m_spellInfo->Rank[locale]));
 
                     QStandardItem  *item_id = new QStandardItem (QString("%0").arg(m_spellInfo->Id));
                     QStandardItem  *item_name;
 
                     if (sRank.isEmpty())
-                        item_name = new QStandardItem (QString("%0").arg(m_spellInfo->SpellName[0]));
+                        item_name = new QStandardItem (QString("%0").arg(QString::fromUtf8(m_spellInfo->SpellName[locale])));
                     else
-                        item_name = new QStandardItem (QString("%0 (%1)").arg(m_spellInfo->SpellName[0]).arg(m_spellInfo->Rank[0]));
+                        item_name = new QStandardItem (QString("%0 (%1)").arg(QString::fromUtf8(m_spellInfo->SpellName[locale])).arg(QString::fromUtf8(m_spellInfo->Rank[locale])));
 
                     model->setItem(0, 0, item_id);
                     model->setItem(0, 1, item_name);
@@ -867,15 +867,15 @@ void SWSearch::Search()
                 if (m_spellInfo && m_spellInfo->SpellIconID == form->findLine_e2->text().toInt())
                 {
                     count++;
-                    QString sRank(m_spellInfo->Rank[0]);
+                    QString sRank(QString::fromUtf8(m_spellInfo->Rank[locale]));
 
                     QStandardItem *item_id = new QStandardItem(QString("%0").arg(m_spellInfo->Id));
                     QStandardItem *item_name;
 
                     if (sRank.isEmpty())
-                        item_name = new QStandardItem(QString("%0").arg(m_spellInfo->SpellName[0]));
+                        item_name = new QStandardItem(QString("%0").arg(QString::fromUtf8(m_spellInfo->SpellName[locale])));
                     else
-                        item_name = new QStandardItem(QString("%0 (%1)").arg(m_spellInfo->SpellName[0]).arg(m_spellInfo->Rank[0]));
+                        item_name = new QStandardItem(QString("%0 (%1)").arg(QString::fromUtf8(m_spellInfo->SpellName[locale])).arg(QString::fromUtf8(m_spellInfo->Rank[locale])));
 
                     model->setItem(count, 0, item_id);
                     model->setItem(count, 1, item_name);
@@ -888,18 +888,18 @@ void SWSearch::Search()
             for (quint32 i = 0; i < sSpellStore.GetNumRows(); i++)
             {
                 SpellEntry const *m_spellInfo = sSpellStore.LookupEntry(i);
-                if (m_spellInfo && QString(m_spellInfo->Description[0]).contains(form->findLine_e3->text(), Qt::CaseInsensitive))
+                if (m_spellInfo && QString(QString::fromUtf8(m_spellInfo->Description[locale])).contains(form->findLine_e3->text(), Qt::CaseInsensitive))
                 {
                     count++;
-                    QString sRank(m_spellInfo->Rank[0]);
+                    QString sRank(QString::fromUtf8(m_spellInfo->Rank[locale]));
 
                     QStandardItem *item_id = new QStandardItem(QString("%0").arg(m_spellInfo->Id));
                     QStandardItem *item_name;
 
                     if (sRank.isEmpty())
-                        item_name = new QStandardItem(QString("%0").arg(m_spellInfo->SpellName[0]));
+                        item_name = new QStandardItem(QString("%0").arg(QString::fromUtf8(m_spellInfo->SpellName[locale])));
                     else
-                        item_name = new QStandardItem(QString("%0 (%1)").arg(m_spellInfo->SpellName[0]).arg(m_spellInfo->Rank[0]));
+                        item_name = new QStandardItem(QString("%0 (%1)").arg(QString::fromUtf8(m_spellInfo->SpellName[locale])).arg(QString::fromUtf8(m_spellInfo->Rank[locale])));
 
                     model->setItem(count, 0, item_id);
                     model->setItem(count, 1, item_name);
@@ -915,15 +915,15 @@ void SWSearch::Search()
                 if (m_spellInfo)
                 {
                     count++;
-                    QString sRank(m_spellInfo->Rank[0]);
+                    QString sRank(QString::fromUtf8(m_spellInfo->Rank[locale]));
 
                     QStandardItem *item_id = new QStandardItem(QString("%0").arg(m_spellInfo->Id));
                     QStandardItem *item_name;
 
                     if (sRank.isEmpty())
-                        item_name = new QStandardItem(QString("%0").arg(m_spellInfo->SpellName[0]));
+                        item_name = new QStandardItem(QString("%0").arg(QString::fromUtf8(m_spellInfo->SpellName[locale])));
                     else
-                        item_name = new QStandardItem(QString("%0 (%1)").arg(m_spellInfo->SpellName[0]).arg(m_spellInfo->Rank[0]));
+                        item_name = new QStandardItem(QString("%0 (%1)").arg(QString::fromUtf8(m_spellInfo->SpellName[locale])).arg(QString::fromUtf8(m_spellInfo->Rank[locale])));
 
                     model->setItem(count, 0, item_id);
                     model->setItem(count, 1, item_name);

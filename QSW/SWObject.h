@@ -51,6 +51,9 @@ class SWObject
         quint8 GetType() const { return m_type; }
         void SetRegExp(bool on) { useRegExp = on; }
         void SetType(quint8 type) { m_type = type; }
+        
+        void SetLocale(quint8 locale) { m_locale = locale; }
+        quint8 GetLocale() const { return m_locale; }
 
         QMetaEnum me;
 
@@ -59,6 +62,7 @@ class SWObject
 
         bool useRegExp;
         quint8 m_type;
+        quint8 m_locale;
 
         QMetaObject mo;
         quint8 e_idx;
