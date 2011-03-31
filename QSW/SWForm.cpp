@@ -13,6 +13,7 @@ SWForm::SWForm(QWidget *parent)
 
     LoadComboBoxes();
     LoadToolButtons();
+    DetectLocale();
 
     // List search connection
     connect(SpellList, SIGNAL(clicked(QModelIndex)), this, SLOT(SlotSearchFromList(QModelIndex)));
@@ -48,6 +49,25 @@ SWForm::SWForm(QWidget *parent)
 
 SWForm::~SWForm()
 {
+}
+
+void SWForm::DetectLocale()
+{
+    SpellEntry const *spellInfo = sSpellStore.LookupEntry(1);
+    sw->SetMetaEnum("LocalesDBC");
+    for (quint8 i = 0; i < sw->me.keyCount(); i++)
+    {
+        if (!QString::fromUtf8(spellInfo->SpellName[i]).isEmpty())
+        {
+            sw->SetLocale(i);
+            QLabel *label = new QLabel;
+            label->setText(QString("%0<b>DBC Locale: <font color=green>%1</font><b>")
+                .arg(QChar(QChar::Nbsp), 2, QChar(QChar::Nbsp))
+                .arg(sw->me.valueToKey(sw->me.value(i))));
+            mainToolBar->addWidget(label);
+            break;
+        }
+    }
 }
 
 void SWForm::SlotSetMode(QAction *ac)

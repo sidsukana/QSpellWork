@@ -17,6 +17,7 @@ class SWSearch
 
     private:
         SWObject *m_sw;
+        quint8 locale;
 };
 
 #endif // SWSEARCH_H
