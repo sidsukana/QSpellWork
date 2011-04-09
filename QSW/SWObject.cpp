@@ -2,7 +2,7 @@
 #include "QtGui/QStandardItemModel"
 
 SWObject::SWObject(SWForm *form)
-    : m_form(form), useRegExp(false), m_type(0), m_locale(0)
+    : m_form(form), useRegExp(false), m_type(0), locale(0)
 {
     for (quint8 i = 0; i < MAX_THREAD; i++)
         ThreadSemaphore[i] = false;
@@ -652,7 +652,6 @@ void SWObject::ShowInfo(SpellEntry const *spellInfo, quint8 num)
         return;
 
     QTextBrowser *browser = m_form->GetBrowser(num);
-    quint8 locale = GetLocale();
     browser->clear();
     QTextCursor cur = browser->textCursor();
     cur.clearSelection();
@@ -947,7 +946,6 @@ void SWObject::ShowInfo(SpellEntry const *spellInfo, quint8 num)
 void SWObject::AppendRangeInfo(SpellEntry const* spellInfo, quint8 num)
 {
     QTextBrowser *browser = m_form->GetBrowser(num);
-    quint8 locale = GetLocale();
 
     SpellRangeEntry const *range = sSpellRangeStore.LookupEntry(spellInfo->RangeIndex);
     if (range)
@@ -978,7 +976,6 @@ void SWObject::AppendProcInfo(SpellEntry const *spellInfo, quint8 num)
 void SWObject::AppendSpellEffectInfo(SpellEntry const* spellInfo, quint8 num)
 {
     QTextBrowser *browser = m_form->GetBrowser(num);
-    quint8 locale = GetLocale();
 
     for (quint8 eff = EFFECT_INDEX_0; eff < MAX_EFFECT_INDEX; eff++)
     {
@@ -1104,7 +1101,6 @@ void SWObject::AppendSpellEffectInfo(SpellEntry const* spellInfo, quint8 num)
 void SWObject::AppendTriggerInfo(SpellEntry const* spellInfo, quint8 index, quint8 num)
 {
     QTextBrowser *browser = m_form->GetBrowser(num);
-    quint8 locale = GetLocale();
 
     quint32 trigger = spellInfo->EffectTriggerSpell[index];
     if (trigger != 0)
@@ -1500,7 +1496,6 @@ QString SWObject::ContainAttributes(SpellEntry const* spellInfo, AttrType attr, 
 void SWObject::AppendSkillLine(SpellEntry const* spellInfo, quint8 num)
 {
     QTextBrowser *browser = m_form->GetBrowser(num);
-    quint8 locale = GetLocale();
 
     for (quint32 i = 0; i < sSkillLineAbilityStore.GetNumRows(); i++)
     {
