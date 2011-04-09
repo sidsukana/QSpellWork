@@ -2,7 +2,7 @@
 #include "QtGui/QStandardItemModel"
 
 SWObject::SWObject(SWForm *form)
-    : m_form(form), useRegExp(false), m_type(0), m_locale(0)
+    : m_form(form), useRegExp(false), m_type(0), locale(0)
 {
     for (quint8 i = 0; i < MAX_THREAD; i++)
         ThreadSemaphore[i] = false;
@@ -652,7 +652,6 @@ void SWObject::ShowInfo(SpellEntry const *spellInfo, quint8 num)
         return;
 
     QTextBrowser *browser = m_form->GetBrowser(num);
-    quint8 locale = GetLocale();
     browser->clear();
     QTextCursor cur = browser->textCursor();
     cur.clearSelection();
@@ -926,7 +925,6 @@ void SWObject::ShowInfo(SpellEntry const *spellInfo, quint8 num)
 void SWObject::AppendRangeInfo(SpellEntry const* spellInfo, quint8 num)
 {
     QTextBrowser *browser = m_form->GetBrowser(num);
-    quint8 locale = GetLocale();
 
     SpellRangeEntry const *range = sSpellRangeStore.LookupEntry(spellInfo->RangeIndex);
     if (range)
@@ -957,7 +955,6 @@ void SWObject::AppendProcInfo(SpellEntry const *spellInfo, quint8 num)
 void SWObject::AppendSpellEffectInfo(SpellEntry const* spellInfo, quint8 num)
 {
     QTextBrowser *browser = m_form->GetBrowser(num);
-    quint8 locale = GetLocale();
 
     for (quint8 eff = EFFECT_INDEX_0; eff < MAX_EFFECT_INDEX; eff++)
     {
@@ -1055,9 +1052,20 @@ void SWObject::AppendSpellEffectInfo(SpellEntry const* spellInfo, quint8 num)
                                     {
                                         hasSkill = true;
                                         if (!sRank.isEmpty())
-                                            browser->append(QString("%0<font color=blue>+ %1 - %2 (%3)</font>").arg(QChar(QChar::Nbsp), 4, QChar(QChar::Nbsp)).arg(t_spellInfo->Id).arg(QString::fromUtf8(t_spellInfo->SpellName[locale])).arg(sRank));
+                                        {
+                                            browser->append(QString("%0<font color=blue>+ %1 - %2 (%3)</font>")
+                                                .arg(QChar(QChar::Nbsp), 4, QChar(QChar::Nbsp))
+                                                .arg(t_spellInfo->Id)
+                                                .arg(QString::fromUtf8(t_spellInfo->SpellName[locale]))
+                                                .arg(sRank));
+                                        }
                                         else
-                                            browser->append(QString("%0<font color=blue>+ %1 - %2</font>").arg(QChar(QChar::Nbsp), 4, QChar(QChar::Nbsp)).arg(t_spellInfo->Id).arg(QString::fromUtf8(t_spellInfo->SpellName[locale])));
+                                        {
+                                            browser->append(QString("%0<font color=blue>+ %1 - %2</font>")
+                                                .arg(QChar(QChar::Nbsp), 4, QChar(QChar::Nbsp))
+                                                .arg(t_spellInfo->Id)
+                                                .arg(QString::fromUtf8(t_spellInfo->SpellName[locale])));
+                                        }
                                         break;
                                     }
                                 }
@@ -1065,9 +1073,20 @@ void SWObject::AppendSpellEffectInfo(SpellEntry const* spellInfo, quint8 num)
                                 if (!hasSkill)
                                 {
                                     if (!sRank.isEmpty())
-                                        browser->append(QString("%0<font color=red>- %1 - %2 (%3)</font>").arg(QChar(QChar::Nbsp), 4, QChar(QChar::Nbsp)).arg(t_spellInfo->Id).arg(QString::fromUtf8(t_spellInfo->SpellName[locale])).arg(sRank));
+                                    {
+                                        browser->append(QString("%0<font color=red>- %1 - %2 (%3)</font>")
+                                            .arg(QChar(QChar::Nbsp), 4, QChar(QChar::Nbsp))
+                                            .arg(t_spellInfo->Id)
+                                            .arg(QString::fromUtf8(t_spellInfo->SpellName[locale]))
+                                            .arg(sRank));
+                                    }
                                     else
-                                        browser->append(QString("%0<font color=red>- %1 - %2</font>").arg(QChar(QChar::Nbsp), 4, QChar(QChar::Nbsp)).arg(t_spellInfo->Id).arg(QString::fromUtf8(t_spellInfo->SpellName[locale])));
+                                    {
+                                        browser->append(QString("%0<font color=red>- %1 - %2</font>")
+                                            .arg(QChar(QChar::Nbsp), 4, QChar(QChar::Nbsp))
+                                            .arg(t_spellInfo->Id)
+                                            .arg(QString::fromUtf8(t_spellInfo->SpellName[locale])));
+                                    }
                                 }
                             }
                         }
@@ -1083,7 +1102,6 @@ void SWObject::AppendSpellEffectInfo(SpellEntry const* spellInfo, quint8 num)
 void SWObject::AppendTriggerInfo(SpellEntry const* spellInfo, quint8 index, quint8 num)
 {
     QTextBrowser *browser = m_form->GetBrowser(num);
-    quint8 locale = GetLocale();
 
     quint32 trigger = spellInfo->EffectTriggerSpell[index];
     if (trigger != 0)
@@ -1093,7 +1111,9 @@ void SWObject::AppendTriggerInfo(SpellEntry const* spellInfo, quint8 index, quin
         {
             browser->append(QString("<b><font color='blue'>   Trigger spell (%0) %1. Chance = %2</font></b>")
                 .arg(trigger)
-                .arg(QString("%0 (%1)").arg(QString::fromUtf8(triggerSpell->SpellName[locale])).arg(QString::fromUtf8(triggerSpell->Rank[locale])))
+                .arg(QString("%0 (%1)")
+                    .arg(QString::fromUtf8(triggerSpell->SpellName[locale]))
+                    .arg(QString::fromUtf8(triggerSpell->Rank[locale])))
                 .arg(triggerSpell->ProcChance));
 
                 QString sDescription(QString::fromUtf8(triggerSpell->Description[locale]));
@@ -1131,9 +1151,11 @@ void SWObject::AppendRadiusInfo(SpellEntry const* spellInfo, quint8 index, quint
     {
         SpellRadiusEntry const *spellRadius = sSpellRadiusStore.LookupEntry(rIndex);
         if (spellRadius)
+        {
             browser->append(QString("Radius (Id %0) %1")
                 .arg(rIndex)
                 .arg(spellRadius->Radius, 0, 'f', 2));
+        }
         else
             browser->append(QString("Radius (Id %0) Not found").arg(rIndex));
     }
@@ -1427,7 +1449,6 @@ QString SWObject::ContainAttributes(SpellEntry const* spellInfo, AttrType attr, 
 void SWObject::AppendSkillLine(SpellEntry const* spellInfo, quint8 num)
 {
     QTextBrowser *browser = m_form->GetBrowser(num);
-    quint8 locale = GetLocale();
 
     for (quint32 i = 0; i < sSkillLineAbilityStore.GetNumRows(); i++)
     {
