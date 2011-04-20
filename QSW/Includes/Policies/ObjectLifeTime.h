@@ -3,20 +3,20 @@
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  */
 
-#ifndef ANATHEMA_OBJECTLIFETIME_H
-#define ANATHEMA_OBJECTLIFETIME_H
+#ifndef QSW_OBJECTLIFETIME_H
+#define QSW_OBJECTLIFETIME_H
 
 #include <stdexcept>
 #include "Platform/Define.h"
 
 typedef void (* Destroyer)(void);
 
-namespace ANATHEMA
+namespace QSW
 {
-    void ANATHEMA_DLL_SPEC at_exit(void (*func)());
+    void QSW_DLL_SPEC at_exit(void (*func)());
 
     template<class T>
-    class ANATHEMA_DLL_DECL ObjectLifeTime
+    class QSW_DLL_DECL ObjectLifeTime
     {
         public:
 

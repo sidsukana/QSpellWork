@@ -1,21 +1,21 @@
 /*
- * Copyright (C) 2010 Anathema Engine project <http://valkyrie-wow.ru/>
+ * Copyright (C) 2010 QSW Engine project <http://valkyrie-wow.ru/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  */
 
-#ifndef ANATHEMA_CREATIONPOLICY_H
-#define ANATHEMA_CREATIONPOLICY_H
+#ifndef QSW_CREATIONPOLICY_H
+#define QSW_CREATIONPOLICY_H
 
 #include <stdlib.h>
 #include "Platform/Define.h"
 
-namespace ANATHEMA
+namespace QSW
 {
     /**
      * OperatorNew policy creates an object on the heap using new.
      */
     template<class T>
-    class ANATHEMA_DLL_DECL OperatorNew
+    class QSW_DLL_DECL OperatorNew
     {
         public:
 
@@ -35,7 +35,7 @@ namespace ANATHEMA
      * the first time call Create.
      */
     template<class T>
-    class ANATHEMA_DLL_DECL LocalStaticCreation
+    class QSW_DLL_DECL LocalStaticCreation
     {
         union MaxAlign
         {
@@ -69,7 +69,7 @@ namespace ANATHEMA
      * CreateUsingMalloc by pass the memory manger.
      */
     template<class T>
-    class ANATHEMA_DLL_DECL CreateUsingMalloc
+    class QSW_DLL_DECL CreateUsingMalloc
     {
         public:
 
@@ -94,7 +94,7 @@ namespace ANATHEMA
      * CreateOnCallBack creates the object base on the call back.
      */
     template<class T, class CALL_BACK>
-    class ANATHEMA_DLL_DECL CreateOnCallBack
+    class QSW_DLL_DECL CreateOnCallBack
     {
         public:
             static T* Create()

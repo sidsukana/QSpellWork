@@ -3,8 +3,8 @@
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  */
 
-#ifndef ANATHEMA_BYTECONVERTER_H
-#define ANATHEMA_BYTECONVERTER_H
+#ifndef QSW_BYTECONVERTER_H
+#define QSW_BYTECONVERTER_H
 
 /** ByteConverter reverse your byte order.  This is use
     for cross platform where they have different endians.
@@ -32,7 +32,7 @@ namespace ByteConverter
     }
 }
 
-#if ANATHEMA_ENDIAN == ANATHEMA_BIGENDIAN
+#if QSW_ENDIAN == QSW_BIGENDIAN
 template<typename T> inline void EndianConvert(T& val) { ByteConverter::apply<T>(&val); }
 template<typename T> inline void EndianConvertReverse(T&) { }
 #else

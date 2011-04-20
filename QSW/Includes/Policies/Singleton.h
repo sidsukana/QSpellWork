@@ -3,8 +3,8 @@
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  */
 
-#ifndef ANATHEMA_SINGLETON_H
-#define ANATHEMA_SINGLETON_H
+#ifndef QSW_SINGLETON_H
+#define QSW_SINGLETON_H
 
 /**
  * @brief class Singleton
@@ -14,16 +14,16 @@
 #include "ThreadingModel.h"
 #include "ObjectLifeTime.h"
 
-namespace ANATHEMA
+namespace QSW
 {
     template
     <
     typename T,
-    class ThreadingModel = ANATHEMA::SingleThreaded<T>,
-    class CreatePolicy = ANATHEMA::OperatorNew<T>,
-    class LifeTimePolicy = ANATHEMA::ObjectLifeTime<T>
+    class ThreadingModel = QSW::SingleThreaded<T>,
+    class CreatePolicy = QSW::OperatorNew<T>,
+    class LifeTimePolicy = QSW::ObjectLifeTime<T>
     >
-    class ANATHEMA_DLL_DECL Singleton
+    class QSW_DLL_DECL Singleton
     {
         public:
 

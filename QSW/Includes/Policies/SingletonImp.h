@@ -1,10 +1,10 @@
 /*
- * Copyright (C) 2010 Anathema Engine project <http://valkyrie-wow.ru/>
+ * Copyright (C) 2010 QSW Engine project <http://valkyrie-wow.ru/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  */
 
-#ifndef ANATHEMA_SINGLETONIMPL_H
-#define ANATHEMA_SINGLETONIMPL_H
+#ifndef QSW_SINGLETONIMPL_H
+#define QSW_SINGLETONIMPL_H
 
 #include "Policies/Singleton.h"
 
@@ -18,7 +18,7 @@ class ThreadingModel,
 class CreatePolicy,
 class LifeTimePolicy
 >
-T& ANATHEMA::Singleton<T, ThreadingModel, CreatePolicy, LifeTimePolicy>::Instance()
+T& QSW::Singleton<T, ThreadingModel, CreatePolicy, LifeTimePolicy>::Instance()
 {
     if (!si_instance)
     {
@@ -48,7 +48,7 @@ class ThreadingModel,
 class CreatePolicy,
 class LifeTimePolicy
 >
-void ANATHEMA::Singleton<T, ThreadingModel, CreatePolicy, LifeTimePolicy>::DestroySingleton()
+void QSW::Singleton<T, ThreadingModel, CreatePolicy, LifeTimePolicy>::DestroySingleton()
 {
     CreatePolicy::Destroy(si_instance);
     si_instance = NULL;
@@ -56,23 +56,23 @@ void ANATHEMA::Singleton<T, ThreadingModel, CreatePolicy, LifeTimePolicy>::Destr
 }
 
 #define INSTANTIATE_SINGLETON_1(TYPE) \
-    template class ANATHEMA_DLL_DECL ANATHEMA::Singleton<TYPE, ANATHEMA::SingleThreaded<TYPE>, ANATHEMA::OperatorNew<TYPE>, ANATHEMA::ObjectLifeTime<TYPE> >; \
-    template<> TYPE* ANATHEMA::Singleton<TYPE, ANATHEMA::SingleThreaded<TYPE>, ANATHEMA::OperatorNew<TYPE>, ANATHEMA::ObjectLifeTime<TYPE> >::si_instance = 0; \
-    template<> bool ANATHEMA::Singleton<TYPE, ANATHEMA::SingleThreaded<TYPE>, ANATHEMA::OperatorNew<TYPE>, ANATHEMA::ObjectLifeTime<TYPE> >::si_destroyed = false
+    template class QSW_DLL_DECL QSW::Singleton<TYPE, QSW::SingleThreaded<TYPE>, QSW::OperatorNew<TYPE>, QSW::ObjectLifeTime<TYPE> >; \
+    template<> TYPE* QSW::Singleton<TYPE, QSW::SingleThreaded<TYPE>, QSW::OperatorNew<TYPE>, QSW::ObjectLifeTime<TYPE> >::si_instance = 0; \
+    template<> bool QSW::Singleton<TYPE, QSW::SingleThreaded<TYPE>, QSW::OperatorNew<TYPE>, QSW::ObjectLifeTime<TYPE> >::si_destroyed = false
 
 #define INSTANTIATE_SINGLETON_2(TYPE, THREADINGMODEL) \
-    template class ANATHEMA_DLL_DECL ANATHEMA::Singleton<TYPE, THREADINGMODEL, ANATHEMA::OperatorNew<TYPE>, ANATHEMA::ObjectLifeTime<TYPE> >; \
-    template<> TYPE* ANATHEMA::Singleton<TYPE, THREADINGMODEL, ANATHEMA::OperatorNew<TYPE>, ANATHEMA::ObjectLifeTime<TYPE> >::si_instance = 0; \
-    template<> bool ANATHEMA::Singleton<TYPE, THREADINGMODEL, ANATHEMA::OperatorNew<TYPE>, ANATHEMA::ObjectLifeTime<TYPE> >::si_destroyed = false
+    template class QSW_DLL_DECL QSW::Singleton<TYPE, THREADINGMODEL, QSW::OperatorNew<TYPE>, QSW::ObjectLifeTime<TYPE> >; \
+    template<> TYPE* QSW::Singleton<TYPE, THREADINGMODEL, QSW::OperatorNew<TYPE>, QSW::ObjectLifeTime<TYPE> >::si_instance = 0; \
+    template<> bool QSW::Singleton<TYPE, THREADINGMODEL, QSW::OperatorNew<TYPE>, QSW::ObjectLifeTime<TYPE> >::si_destroyed = false
 
 #define INSTANTIATE_SINGLETON_3(TYPE, THREADINGMODEL, CREATIONPOLICY ) \
-    template class ANATHEMA_DLL_DECL ANATHEMA::Singleton<TYPE, THREADINGMODEL, CREATIONPOLICY, ANATHEMA::ObjectLifeTime<TYPE> >; \
-    template<> TYPE* ANATHEMA::Singleton<TYPE, THREADINGMODEL, CREATIONPOLICY, ANATHEMA::ObjectLifeTime<TYPE> >::si_instance = 0; \
-    template<> bool ANATHEMA::Singleton<TYPE, THREADINGMODEL, CREATIONPOLICY, ANATHEMA::ObjectLifeType<TYPE> >::si_destroyed = false
+    template class QSW_DLL_DECL QSW::Singleton<TYPE, THREADINGMODEL, CREATIONPOLICY, QSW::ObjectLifeTime<TYPE> >; \
+    template<> TYPE* QSW::Singleton<TYPE, THREADINGMODEL, CREATIONPOLICY, QSW::ObjectLifeTime<TYPE> >::si_instance = 0; \
+    template<> bool QSW::Singleton<TYPE, THREADINGMODEL, CREATIONPOLICY, QSW::ObjectLifeType<TYPE> >::si_destroyed = false
 
 #define INSTANTIATE_SINGLETON_4(TYPE, THREADINGMODEL, CREATIONPOLICY, OBJECTLIFETIME) \
-    template class ANATHEMA_DLL_DECL ANATHEMA::Singleton<TYPE, THREADINGMODEL, CREATIONPOLICY, OBJECTLIFETIME >; \
-    template<> TYPE* ANATHEMA::Singleton<TYPE, THREADINGMODEL, CREATIONPOLICY, OBJECTLIFETIME >::si_instance = 0; \
-    template<> bool ANATHEMA::Singleton<TYPE, THREADINGMODEL, CREATIONPOLICY, OBJECTLIFETIME >::si_destroyed = false
+    template class QSW_DLL_DECL QSW::Singleton<TYPE, THREADINGMODEL, CREATIONPOLICY, OBJECTLIFETIME >; \
+    template<> TYPE* QSW::Singleton<TYPE, THREADINGMODEL, CREATIONPOLICY, OBJECTLIFETIME >::si_instance = 0; \
+    template<> bool QSW::Singleton<TYPE, THREADINGMODEL, CREATIONPOLICY, OBJECTLIFETIME >::si_destroyed = false
 
 #endif
