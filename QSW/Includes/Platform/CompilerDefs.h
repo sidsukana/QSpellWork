@@ -1,10 +1,9 @@
 /*
- * Copyright (C) 2010 Anathema Engine project <http://valkyrie-wow.ru/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  */
 
-#ifndef ANATHEMA_COMPILERDEFS_H
-#define ANATHEMA_COMPILERDEFS_H
+#ifndef QSW_COMPILERDEFS_H
+#define QSW_COMPILERDEFS_H
 
 #define PLATFORM_WINDOWS 0
 #define PLATFORM_UNIX    1

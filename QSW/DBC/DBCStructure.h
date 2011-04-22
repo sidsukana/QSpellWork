@@ -14,6 +14,10 @@
 #pragma pack(push,1)
 #endif
 
+#define MAX_SPELL_REAGENTS 8
+#define MAX_SPELL_TOTEMS 2
+#define MAX_SPELL_TOTEM_CATEGORIES 2
+
 struct SkillLineEntry
 {
     quint32    Id;                                              // 0
@@ -45,10 +49,6 @@ struct SkillLineAbilityEntry
     quint32    MinValue;                                        // 11
     quint32    CharPoints[2];                                   // 12-13
 };
-
-#define MAX_SPELL_REAGENTS 8
-#define MAX_SPELL_TOTEMS 2
-#define MAX_SPELL_TOTEM_CATEGORIES 2
 
 struct SpellEntry
 {

@@ -1,10 +1,9 @@
 /*
- * Copyright (C) 2010 Anathema Engine project <http://valkyrie-wow.ru/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  */
 
-#ifndef ANATHEMA_GRID_H
-#define ANATHEMA_GRID_H
+#ifndef QSW_GRID_H
+#define QSW_GRID_H
 
 /*
   @class Grid
@@ -31,7 +30,7 @@ class ACTIVE_OBJECT,
 class WORLD_OBJECT_TYPES,
 class GRID_OBJECT_TYPES
 >
-class ANATHEMA_DLL_DECL Grid
+class QSW_DLL_DECL Grid
 {
     // allows the GridLoader to access its internals
     template<class A, class T, class O> friend class GridLoader;

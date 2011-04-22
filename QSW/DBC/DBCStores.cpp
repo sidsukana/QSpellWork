@@ -3,6 +3,9 @@
 #include "Policies/SingletonImp.h"
 #include "Platform/Define.h"
 
+#include <QtCore/QFile>
+#include <QtCore/QDataStream>
+
 DBCStorage <SkillLineEntry> sSkillLineStore(SkillLinefmt);
 DBCStorage <SkillLineAbilityEntry> sSkillLineAbilityStore(SkillLineAbilityfmt);
 DBCStorage <SpellEntry> sSpellStore(SpellEntryfmt);
@@ -22,22 +25,25 @@ static bool LoadDBC_assert_print(quint32 fsize, quint32 rsize, const std::string
 }
 
 template<class T>
-inline void LoadDBC(quint32& availableDbcLocales, StoreProblemList& errlist, DBCStorage<T>& storage, const std::string& dbc_path, const std::string& filename)
+inline void LoadDBC(StoreProblemList& errlist, DBCStorage<T>& storage, const std::string& dbc_path, const std::string& filename)
 {
-    // compatibility format and C++ structure sizes
+    // Compatibility format and C++ structure sizes
     assert(DBCFileLoader::GetFormatRecordSize(storage.GetFormat()) == sizeof(T) || LoadDBC_assert_print(DBCFileLoader::GetFormatRecordSize(storage.GetFormat()), sizeof(T), filename));
 
     std::string dbc_filename = dbc_path + filename;
     if (!storage.Load(dbc_filename.c_str()))
     {
-        // sort problematic dbc to (1) non compatible and (2) nonexistent
-        FILE *f = fopen(dbc_filename.c_str(), "rb");
-        if (f)
+        // Sort problematic dbc to (1) non compatible and (2) nonexistent
+
+        QFile file(dbc_filename.c_str());
+        
+        if (file.open(QIODevice::ReadOnly))
         {
             char buf[100];
-            sprintf(buf, " (exist, but have %d fields instead) Wrong client version DBC file?", storage.GetFieldCount(), strlen(storage.GetFormat()));
+            sprintf(buf, " (exist, but have %d fields instead) Wrong client version DBC file?",
+                storage.GetFieldCount(), strlen(storage.GetFormat()));
             errlist.push_back(dbc_filename + buf);
-            fclose(f);
+            file.close();
         }
         else
             errlist.push_back(dbc_filename);
@@ -50,16 +56,13 @@ void LoadDBCStores()
 
     StoreProblemList bad_dbc_files;
 
-    // bitmask for index of fullLocaleNameList
-    quint32 availableDbcLocales = 0xFFFFFFFF;
-
-    LoadDBC(availableDbcLocales, bad_dbc_files, sSkillLineStore,           dbcPath, "SkillLine.dbc");
-    LoadDBC(availableDbcLocales, bad_dbc_files, sSkillLineAbilityStore,    dbcPath, "SkillLineAbility.dbc");
-    LoadDBC(availableDbcLocales, bad_dbc_files, sSpellStore,               dbcPath, "Spell.dbc");
-    LoadDBC(availableDbcLocales, bad_dbc_files, sSpellCastTimesStore,      dbcPath, "SpellCastTimes.dbc");
-    LoadDBC(availableDbcLocales, bad_dbc_files, sSpellDurationStore,       dbcPath, "SpellDuration.dbc");
-    LoadDBC(availableDbcLocales, bad_dbc_files, sSpellRadiusStore,         dbcPath, "SpellRadius.dbc");
-    LoadDBC(availableDbcLocales, bad_dbc_files, sSpellRangeStore,          dbcPath, "SpellRange.dbc");
-    LoadDBC(availableDbcLocales, bad_dbc_files, sScreenEffectStore,        dbcPath, "ScreenEffect.dbc");
-    LoadDBC(availableDbcLocales, bad_dbc_files, sOverrideSpellDataStore,   dbcPath, "OverrideSpellData.dbc");
+    LoadDBC(bad_dbc_files, sSkillLineStore,           dbcPath, "SkillLine.dbc");
+    LoadDBC(bad_dbc_files, sSkillLineAbilityStore,    dbcPath, "SkillLineAbility.dbc");
+    LoadDBC(bad_dbc_files, sSpellStore,               dbcPath, "Spell.dbc");
+    LoadDBC(bad_dbc_files, sSpellCastTimesStore,      dbcPath, "SpellCastTimes.dbc");
+    LoadDBC(bad_dbc_files, sSpellDurationStore,       dbcPath, "SpellDuration.dbc");
+    LoadDBC(bad_dbc_files, sSpellRadiusStore,         dbcPath, "SpellRadius.dbc");
+    LoadDBC(bad_dbc_files, sSpellRangeStore,          dbcPath, "SpellRange.dbc");
+    LoadDBC(bad_dbc_files, sScreenEffectStore,        dbcPath, "ScreenEffect.dbc");
+    LoadDBC(bad_dbc_files, sOverrideSpellDataStore,   dbcPath, "OverrideSpellData.dbc");
 }
