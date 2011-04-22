@@ -16,6 +16,7 @@
 
 #define MAX_SPELL_REAGENTS 8
 #define MAX_SPELL_TOTEMS 2
+#define MAX_SPELL_TOTEM_CATEGORIES 2
 
 struct SkillLineEntry
 {
@@ -46,10 +47,6 @@ struct SkillLineAbilityEntry
     quint32    CharPoints[2];                                   // 12-13
     quint32    Reqtrainpoints;                                  // 14
 };
-
-#define MAX_SPELL_REAGENTS 8
-#define MAX_SPELL_TOTEMS 2
-#define MAX_SPELL_TOTEM_CATEGORIES 2
 
 struct SpellEntry
 {
