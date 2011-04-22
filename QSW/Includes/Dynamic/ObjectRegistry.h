@@ -1,10 +1,9 @@
 /*
- * Copyright (C) 2010 Anathema Engine project <http://valkyrie-wow.ru/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  */
 
-#ifndef ANATHEMA_OBJECTREGISTRY_H
-#define ANATHEMA_OBJECTREGISTRY_H
+#ifndef QSW_OBJECTREGISTRY_H
+#define QSW_OBJECTREGISTRY_H
 
 #include "Platform/Define.h"
 #include "Utilities/UnorderedMapSet.h"
@@ -17,7 +16,7 @@
 /** ObjectRegistry holds all registry item of the same type
  */
 template<class T, class Key = std::string>
-class ANATHEMA_DLL_DECL ObjectRegistry
+class QSW_DLL_DECL ObjectRegistry
 {
     public:
         typedef std::map<Key, T *> RegistryMapType;

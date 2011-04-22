@@ -1,5 +1,4 @@
 /*
- * Copyright (C) 2010 QSW Engine project <http://valkyrie-wow.ru/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  */
 

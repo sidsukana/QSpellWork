@@ -1,10 +1,9 @@
 /*
- * Copyright (C) 2010 Anathema Engine project <http://valkyrie-wow.ru/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  */
 
-#ifndef ANATHEMA_TYPECONTAINER_H
-#define ANATHEMA_TYPECONTAINER_H
+#ifndef QSW_TYPECONTAINER_H
+#define QSW_TYPECONTAINER_H
 
 /*
  * Here, you'll find a series of containers that allow you to hold multiple
@@ -193,7 +192,7 @@ struct ContainerMapList<TypeList<H, T> >
  */
 
 template<class OBJECT_TYPES>
-class ANATHEMA_DLL_DECL TypeMapContainer
+class QSW_DLL_DECL TypeMapContainer
 {
     public:
 

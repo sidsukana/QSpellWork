@@ -1,10 +1,9 @@
 /*
- * Copyright (C) 2010 Anathema Engine project <http://valkyrie-wow.ru/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  */
 
-#ifndef ANATHEMA_TYPELIST_H
-#define ANATHEMA_TYPELIST_H
+#ifndef QSW_TYPELIST_H
+#define QSW_TYPELIST_H
 
 /*
   @struct TypeList

@@ -1,10 +1,9 @@
 /*
- * Copyright (C) 2010 Anathema Engine project <http://valkyrie-wow.ru/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  */
 
-#ifndef ANATHEMA_FACTORY_HOLDER
-#define ANATHEMA_FACTORY_HOLDER
+#ifndef QSW_FACTORY_HOLDER
+#define QSW_FACTORY_HOLDER
 
 #include "Platform/Define.h"
 #include "Utilities/TypeList.h"
@@ -14,7 +13,7 @@
 /** FactoryHolder holds a factory object of a specific type
  */
 template<class T, class Key = std::string>
-class ANATHEMA_DLL_DECL FactoryHolder
+class QSW_DLL_DECL FactoryHolder
 {
     public:
         typedef ObjectRegistry<FactoryHolder<T, Key >, Key > FactoryHolderRegistry;
