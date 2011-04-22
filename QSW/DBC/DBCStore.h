@@ -10,7 +10,7 @@ class DBCStorage
 {
     typedef std::list<char*> StringPoolList;
     public:
-        explicit DBCStorage(const char *f) : nCount(0), fieldCount(0), fmt(f), indexTable(NULL), m_dataTable(NULL) { }
+        explicit DBCStorage(const char* f) : nCount(0), fieldCount(0), fmt(f), indexTable(NULL), m_dataTable(NULL) {}
         ~DBCStorage() { Clear(); }
 
         T const* LookupEntry(quint32 id) const { return (id >= nCount) ? NULL : indexTable[id]; }
@@ -21,19 +21,20 @@ class DBCStorage
         bool Load(char const* fn)
         {
             DBCFileLoader dbc;
+
             // Check if load was sucessful, only then continue
             if (!dbc.Load(fn, fmt))
                 return false;
 
             fieldCount = dbc.GetCols();
 
-            // load raw non-string data
+            // Load raw non-string data
             m_dataTable = (T*)dbc.AutoProduceData(fmt, nCount, (char**&)indexTable);
 
-            // load strings from dbc data
+            // Load strings from dbc data
             m_stringPoolList.push_back(dbc.AutoProduceStrings(fmt, (char*)m_dataTable));
 
-            // error in dbc file at loading if NULL
+            // Error in dbc file at loading if NULL
             return indexTable != NULL;
         }
 
@@ -44,11 +45,12 @@ class DBCStorage
                 return false;
 
             DBCFileLoader dbc;
+
             // Check if load was successful, only then continue
             if (!dbc.Load(fn, fmt))
                 return false;
 
-            // load strings from another locale dbc data
+            // Load strings from another locale dbc data
             m_stringPoolList.push_back(dbc.AutoProduceStrings(fmt, (char*)m_dataTable));
 
             return true;
@@ -61,6 +63,7 @@ class DBCStorage
 
             delete[] ((char*)indexTable);
             indexTable = NULL;
+
             delete[] ((char*)m_dataTable);
             m_dataTable = NULL;
 

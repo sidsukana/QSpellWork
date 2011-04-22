@@ -3,6 +3,8 @@
 #include <string.h>
 
 #include "DBCFileLoader.h"
+#include <QtCore/QFile>
+#include <QtCore/QDataStream>
 
 DBCFileLoader::DBCFileLoader()
 {
@@ -20,55 +22,52 @@ bool DBCFileLoader::Load(const char *filename, const char *fmt)
         data = NULL;
     }
 
-    FILE *f = fopen(filename, "rb");
-    if (!f)
+    QFile file(filename);
+        
+    if (!file.open(QIODevice::ReadOnly))
         return false;
 
-    if (fread(&header, 4, 1, f) != 1)                             // Number of records
-        return false;
+    QDataStream stream(&file);
+    stream.setByteOrder(QDataStream::ByteOrder(QSW_ENDIAN));
 
-    EndianConvert(header);
+    file.seek(0);
+    stream >> header;
+
+    // Check 'WDBC'
     if (header != 0x43424457)
-        return false;                                             //'WDBC'
+        return false; 
 
-    if (fread(&recordCount, 4, 1, f) != 1)                              // Number of records
-        return false;
+    file.seek(4);
+    stream >> recordCount;
 
-    EndianConvert(recordCount);
+    file.seek(8);
+    stream >> fieldCount;
 
-    if (fread(&fieldCount, 4, 1, f) != 1)                         // Number of fields
-        return false;
+    file.seek(12);
+    stream >> recordSize;
 
-    EndianConvert(fieldCount);
-
-    if (fread(&recordSize, 4, 1, f) != 1)                         // Size of a record
-        return false;
-
-    EndianConvert(recordSize);
-
-    if (fread(&stringSize, 4, 1, f) != 1)                         // String size
-        return false;
-
-    EndianConvert(stringSize);
+    file.seek(16);
+    stream >> stringSize;
 
     fieldsOffset = new quint32[fieldCount];
     fieldsOffset[0] = 0;
     for (quint32 i = 1; i < fieldCount; i++)
     {
         fieldsOffset[i] = fieldsOffset[i - 1];
-        if (fmt[i - 1] == 'b' || fmt[i - 1] == 'X')         // byte fields
+        if (fmt[i - 1] == 'b' || fmt[i - 1] == 'X')
             fieldsOffset[i] += 1;
-        else                                                // 4 byte fields (int32/float/strings)
+        else
             fieldsOffset[i] += 4;
     }
 
-    data = new unsigned char[recordSize * recordCount + stringSize];
+    data = new char[recordSize * recordCount + stringSize];
     stringTable = data + recordSize * recordCount;
 
-    if (fread(data, recordSize * recordCount + stringSize, 1, f) != 1)
-        return false;
+    file.seek(20);
+    file.read(data, recordSize * recordCount + stringSize);
 
-    fclose(f);
+    file.close();
+
     return true;
 }
 
@@ -76,6 +75,7 @@ DBCFileLoader::~DBCFileLoader()
 {
     if (data)
         delete []data;
+
     if (fieldsOffset)
         delete []fieldsOffset;
 }
@@ -86,19 +86,18 @@ DBCFileLoader::Record DBCFileLoader::getRecord(size_t id)
     return Record(*this, data + id * recordSize);
 }
 
-quint32 DBCFileLoader::GetFormatRecordSize(const char * format, qint32* index_pos)
+quint32 DBCFileLoader::GetFormatRecordSize(const char* format, qint32* index_pos)
 {
     quint32 recordsize = 0;
     qint32 i = -1;
     for (quint32 x = 0; format[x]; ++x)
+    {
         switch (format[x])
         {
             case FT_FLOAT:
             case FT_INT:
-                recordsize += 4;
-                break;
             case FT_STRING:
-                recordsize += sizeof(char*);
+                recordsize += 4;
                 break;
             case FT_SORT:
                 i = x;
@@ -111,6 +110,7 @@ quint32 DBCFileLoader::GetFormatRecordSize(const char * format, qint32* index_po
                 recordsize += 1;
                 break;
         }
+    }
 
     if (index_pos)
         *index_pos = i;
@@ -120,21 +120,21 @@ quint32 DBCFileLoader::GetFormatRecordSize(const char * format, qint32* index_po
 
 char* DBCFileLoader::AutoProduceData(const char* format, quint32& records, char**& indexTable)
 {
-    typedef char * ptr;
+    typedef char* ptr;
     if (strlen(format) != fieldCount)
         return NULL;
 
-    //get struct size and index pos
+    // Get struct size and index pos
     qint32 i;
-    quint32 recordsize=GetFormatRecordSize(format, &i);
+    quint32 recordsize = GetFormatRecordSize(format, &i);
 
     if (i >= 0)
     {
         quint32 maxi = 0;
-        //find max index
+        // Find max index
         for (quint32 y = 0; y < recordCount; y++)
         {
-            quint32 ind=getRecord(y).getUInt(i);
+            quint32 ind = getRecord(y).getUInt(i);
             if (ind > maxi)
                 maxi = ind;
         }
@@ -142,7 +142,7 @@ char* DBCFileLoader::AutoProduceData(const char* format, quint32& records, char*
         ++maxi;
         records = maxi;
         indexTable = new ptr[maxi];
-        memset(indexTable, 0, maxi*sizeof(ptr));
+        memset(indexTable, 0, maxi * sizeof(ptr));
     }
     else
     {
@@ -157,9 +157,7 @@ char* DBCFileLoader::AutoProduceData(const char* format, quint32& records, char*
     for (quint32 y = 0; y < recordCount; y++)
     {
         if (i >= 0)
-        {
             indexTable[getRecord(y).getUInt(i)] = &dataTable[offset];
-        }
         else
             indexTable[y] = &dataTable[offset];
 
@@ -181,7 +179,8 @@ char* DBCFileLoader::AutoProduceData(const char* format, quint32& records, char*
                     offset += 1;
                     break;
                 case FT_STRING:
-                    *((char**)(&dataTable[offset])) = NULL;   // will be replaces non-empty or "" strings in AutoProduceStrings
+                    // Will be replaces non-empty or "" strings in AutoProduceStrings
+                    *((char**)(&dataTable[offset])) = NULL;
                     offset += sizeof(char*);
                     break;
             }
@@ -216,11 +215,11 @@ char* DBCFileLoader::AutoProduceStrings(const char* format, char* dataTable)
                     break;
                 case FT_STRING:
                 {
-                    // fill only not filled entries
+                    // Fill only not filled entries
                     char** slot = (char**)(&dataTable[offset]);
                     if (!*slot || !**slot)
                     {
-                        const char * st = getRecord(y).getString(x);
+                        const char* st = getRecord(y).getString(x);
                         *slot = stringPool + (st - (const char*)stringTable);
                     }
                     offset += sizeof(char*);
@@ -231,7 +230,7 @@ char* DBCFileLoader::AutoProduceStrings(const char* format, char* dataTable)
                 case FT_SORT:
                     break;
                 default:
-                    assert(false && "unknown format character");
+                    assert(false && "Unknown format character");
             }
     }
 

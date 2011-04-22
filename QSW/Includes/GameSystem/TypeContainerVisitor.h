@@ -1,10 +1,9 @@
 /*
- * Copyright (C) 2010 Anathema Engine project <http://valkyrie-wow.ru/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  */
 
-#ifndef ANATHEMA_TYPECONTAINERVISITOR_H
-#define ANATHEMA_TYPECONTAINERVISITOR_H
+#ifndef QSW_TYPECONTAINERVISITOR_H
+#define QSW_TYPECONTAINERVISITOR_H
 
 /*
  * @class TypeContainerVisitor is implemented as a visitor pattern.  It is
@@ -53,7 +52,7 @@ void VisitorHelper(VISITOR &v, TypeMapContainer<OBJECT_TYPES> &c)
 }
 
 template<class VISITOR, class TYPE_CONTAINER>
-class ANATHEMA_DLL_DECL TypeContainerVisitor
+class QSW_DLL_DECL TypeContainerVisitor
 {
     public:
 

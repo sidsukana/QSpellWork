@@ -1,10 +1,9 @@
 /*
- * Copyright (C) 2010 Anathema Engine project <http://valkyrie-wow.ru/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  */
 
-#ifndef ANATHEMA_CALLBACK_H
-#define ANATHEMA_CALLBACK_H
+#ifndef QSW_CALLBACK_H
+#define QSW_CALLBACK_H
 
 /// ------------ BASE CLASSES ------------
 

@@ -54,6 +54,10 @@ SWForm::~SWForm()
 void SWForm::DetectLocale()
 {
     SpellEntry const *spellInfo = sSpellStore.LookupEntry(1);
+
+    if (!spellInfo)
+        return;
+
     sw->SetMetaEnum("LocalesDBC");
     for (quint8 i = 0; i < sw->me.keyCount(); i++)
     {

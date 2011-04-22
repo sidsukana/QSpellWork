@@ -1,5 +1,4 @@
 /*
- * Copyright (C) 2010 Anathema Engine project <http://valkyrie-wow.ru/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  */
 
@@ -11,7 +10,7 @@
 template<class OBJECT> class GridRefManager;
 
 template<class OBJECT>
-class ANATHEMA_DLL_SPEC GridReference : public Reference<GridRefManager<OBJECT>, OBJECT>
+class QSW_DLL_SPEC GridReference : public Reference<GridRefManager<OBJECT>, OBJECT>
 {
     protected:
 

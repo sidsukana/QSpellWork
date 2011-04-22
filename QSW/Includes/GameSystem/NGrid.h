@@ -1,10 +1,9 @@
 /*
- * Copyright (C) 2010 Anathema Engine project <http://valkyrie-wow.ru/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  */
 
-#ifndef ANATHEMA_NGRID_H
-#define ANATHEMA_NGRID_H
+#ifndef QSW_NGRID_H
+#define QSW_NGRID_H
 
 /** NGrid is nothing more than a wrapper of the Grid with an NxN cells
  */
@@ -71,7 +70,7 @@ class ACTIVE_OBJECT,
 class WORLD_OBJECT_TYPES,
 class GRID_OBJECT_TYPES
 >
-class ANATHEMA_DLL_DECL NGrid
+class QSW_DLL_DECL NGrid
 {
     public:
 

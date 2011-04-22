@@ -1,10 +1,9 @@
 /*
- * Copyright (C) 2010 Anathema Engine project <http://valkyrie-wow.ru/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  */
 
-#ifndef ANATHEMA_THREADINGMODEL_H
-#define ANATHEMA_THREADINGMODEL_H
+#ifndef QSW_THREADINGMODEL_H
+#define QSW_THREADINGMODEL_H
 
 /**
  * @class ThreadingModel<T>
@@ -16,7 +15,7 @@
 namespace ANATHEMA
 {
     template<typename MUTEX>
-    class ANATHEMA_DLL_DECL GeneralLock
+    class QSW_DLL_DECL GeneralLock
     {
         public:
 
@@ -39,7 +38,7 @@ namespace ANATHEMA
     };
 
     template<class T>
-    class ANATHEMA_DLL_DECL SingleThreaded
+    class QSW_DLL_DECL SingleThreaded
     {
         public:
 
@@ -59,7 +58,7 @@ namespace ANATHEMA
     };
 
     template<class T, class MUTEX>
-    class ANATHEMA_DLL_DECL ObjectLevelLockable
+    class QSW_DLL_DECL ObjectLevelLockable
     {
         public:
 
@@ -94,7 +93,7 @@ namespace ANATHEMA
     };
 
     template<class T, class MUTEX>
-    class ANATHEMA_DLL_DECL ClassLevelLockable
+    class QSW_DLL_DECL ClassLevelLockable
     {
         public:
 
@@ -139,6 +138,6 @@ namespace ANATHEMA
 template<class T, class MUTEX> MUTEX ANATHEMA::ClassLevelLockable<T, MUTEX>::si_mtx;
 
 #define INSTANTIATE_CLASS_MUTEX(CTYPE, MUTEX) \
-    template class ANATHEMA_DLL_DECL ANATHEMA::ClassLevelLockable<CTYPE, MUTEX>
+    template class QSW_DLL_DECL ANATHEMA::ClassLevelLockable<CTYPE, MUTEX>
 
 #endif

@@ -1,5 +1,4 @@
 /*
- * Copyright (C) 2010 Anathema Engine project <http://valkyrie-wow.ru/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  */
 
@@ -13,7 +12,7 @@ namespace ANATHEMA
         std::atexit((void (*)())p);
     }
 
-    void ANATHEMA_DLL_SPEC at_exit(void (*func)())
+    void QSW_DLL_SPEC at_exit(void (*func)())
     {
         external_wrapper((void*)func);
     }

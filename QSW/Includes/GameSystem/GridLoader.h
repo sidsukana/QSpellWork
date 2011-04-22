@@ -1,10 +1,9 @@
 /*
- * Copyright (C) 2010 Anathema Engine project <http://valkyrie-wow.ru/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  */
 
-#ifndef ANATHEMA_GRIDLOADER_H
-#define ANATHEMA_GRIDLOADER_H
+#ifndef QSW_GRIDLOADER_H
+#define QSW_GRIDLOADER_H
 
 /**
   @class GridLoader
@@ -27,7 +26,7 @@ class ACTIVE_OBJECT,
 class WORLD_OBJECT_TYPES,
 class GRID_OBJECT_TYPES
 >
-class ANATHEMA_DLL_DECL GridLoader
+class QSW_DLL_DECL GridLoader
 {
     public:
 

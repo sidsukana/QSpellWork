@@ -14,6 +14,9 @@
 #pragma pack(push,1)
 #endif
 
+#define MAX_SPELL_REAGENTS 8
+#define MAX_SPELL_TOTEMS 2
+
 struct SkillLineEntry
 {
     quint32    Id;                                              // 0
