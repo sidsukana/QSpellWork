@@ -41,7 +41,7 @@ quint32 GetDuration(SpellEntry const *spellInfo)
 
 quint32 GetRealDuration(SpellEntry const *spellInfo, quint8 effIndex)
 {
-    return quint32(GetDuration(spellInfo) / quint32(spellInfo->EffectAmplitude[effIndex] / 1000));
+    return quint32(GetDuration(spellInfo) / (spellInfo->EffectAmplitude[effIndex] ? quint32(spellInfo->EffectAmplitude[effIndex] / 1000) : 5));
 }
 
 void RegExpU(SpellEntry const *spellInfo, QRegExp rx, QString &str)
