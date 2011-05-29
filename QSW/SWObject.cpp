@@ -309,12 +309,12 @@ void RegExpA(SpellEntry const *spellInfo, QRegExp rx, QString &str)
             if (rx.cap(2) == QString("/"))
             {
                 str.replace(rx.cap(0), QString("%0")
-                    .arg(quint32(GetRadius(spellInfo, rx.cap(5).toInt()-1) / rx.cap(2).toInt())));
+                    .arg(quint32(GetRadius(spellInfo, rx.cap(6).toInt()-1) / rx.cap(2).toInt())));
             }
             else if (rx.cap(2) == QString("*"))
             {
                 str.replace(rx.cap(0), QString("%0")
-                    .arg(quint32(GetRadius(spellInfo, rx.cap(5).toInt()-1) * rx.cap(2).toInt())));
+                    .arg(quint32(GetRadius(spellInfo, rx.cap(6).toInt()-1) * rx.cap(2).toInt())));
             }
         }
     }
