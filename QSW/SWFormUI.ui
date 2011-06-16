@@ -426,7 +426,7 @@ p, li { white-space: pre-wrap; }
         <rect>
          <x>130</x>
          <y>20</y>
-         <width>121</width>
+         <width>141</width>
          <height>21</height>
         </rect>
        </property>
@@ -436,59 +436,9 @@ p, li { white-space: pre-wrap; }
         <rect>
          <x>130</x>
          <y>43</y>
-         <width>121</width>
+         <width>141</width>
          <height>21</height>
         </rect>
-       </property>
-      </widget>
-      <widget class="QToolButton" name="toolButton">
-       <property name="geometry">
-        <rect>
-         <x>255</x>
-         <y>20</y>
-         <width>21</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-       <property name="text">
-        <string>-&gt;</string>
-       </property>
-       <property name="autoExclusive">
-        <bool>false</bool>
-       </property>
-       <property name="popupMode">
-        <enum>QToolButton::InstantPopup</enum>
-       </property>
-       <property name="toolButtonStyle">
-        <enum>Qt::ToolButtonIconOnly</enum>
-       </property>
-       <property name="autoRaise">
-        <bool>false</bool>
-       </property>
-       <property name="arrowType">
-        <enum>Qt::RightArrow</enum>
-       </property>
-      </widget>
-      <widget class="QToolButton" name="toolButton_2">
-       <property name="geometry">
-        <rect>
-         <x>255</x>
-         <y>43</y>
-         <width>21</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>-&gt;</string>
-       </property>
-       <property name="popupMode">
-        <enum>QToolButton::InstantPopup</enum>
-       </property>
-       <property name="arrowType">
-        <enum>Qt::RightArrow</enum>
        </property>
       </widget>
       <widget class="QFontComboBox" name="adBox1">
@@ -680,7 +630,7 @@ p, li { white-space: pre-wrap; }
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>true</bool>
+    <bool>false</bool>
    </attribute>
   </widget>
   <action name="actionExit">

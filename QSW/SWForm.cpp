@@ -12,7 +12,6 @@ SWForm::SWForm(QWidget *parent)
     compareSpell_1->hide();
 
     LoadComboBoxes();
-    LoadToolButtons();
     DetectLocale();
 
     // List search connection
@@ -105,53 +104,6 @@ void SWForm::SlotSetMode(QAction *ac)
         slabel1->hide();
         compareSpell_1->hide();
     }
-}
-
-void SWForm::LoadToolButtons()
-{
-    for (quint8 i = 0; i < 3; i++)
-    {
-        actionA[i] = new QAction(this);
-        actionB[i] = new QAction(this);
-    }
-
-    actionA[0]->setText(QString("None"));
-    actionA[1]->setText(QString("Contain"));
-    actionA[2]->setText(QString("Not Contain"));
-
-    actionB[0]->setText(QString("None"));
-    actionB[1]->setText(QString("Contain"));
-    actionB[2]->setText(QString("Not Contain"));
-
-    for (quint8 i = 0; i < 3; i++)
-    {
-        actionA[i]->setCheckable(true);
-        actionB[i]->setCheckable(true);
-        toolButton->addAction(actionA[i]);
-        toolButton_2->addAction(actionB[i]);
-    }
-
-    actionA[0]->setChecked(true);
-    actionB[0]->setChecked(true);
-
-    connect(toolButton, SIGNAL(triggered(QAction*)), this, SLOT(SlotSetCheckedA(QAction*)));
-    connect(toolButton_2, SIGNAL(triggered(QAction*)), this, SLOT(SlotSetCheckedB(QAction*)));
-}
-
-void SWForm::SlotSetCheckedA(QAction *ac)
-{
-    for (quint8 i = 0; i < 3; i++)
-        actionA[i]->setChecked(false);
-
-    ac->setChecked(true);
-}
-
-void SWForm::SlotSetCheckedB(QAction *ac)
-{
-    for (quint8 i = 0; i < 3; i++)
-        actionB[i]->setChecked(false);
-
-    ac->setChecked(true);
 }
 
 void SWForm::LoadComboBoxes()
@@ -276,28 +228,4 @@ bool SWForm::event(QEvent *ev)
     
 
     return QWidget::event(ev);
-}
-
-quint8 SWForm::GetToolState(quint8 Tool)
-{
-    if (Tool == TOOL_ONE)
-    {
-        if (actionA[STATE_NONE]->isChecked())
-            return STATE_NONE;
-        else if (actionA[STATE_CONTAIN]->isChecked())
-            return STATE_CONTAIN;
-        else if (actionA[STATE_NOT_CONTAIN]->isChecked())
-            return STATE_NOT_CONTAIN;
-    }
-    else if (Tool == TOOL_TWO)
-    {
-        if (actionB[STATE_NONE]->isChecked())
-            return STATE_NONE;
-        else if (actionB[STATE_CONTAIN]->isChecked())
-            return STATE_CONTAIN;
-        else if (actionB[STATE_NOT_CONTAIN]->isChecked())
-            return STATE_NOT_CONTAIN;
-    }
-
-    return STATE_NONE;
 }

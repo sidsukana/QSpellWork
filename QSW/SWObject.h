@@ -19,6 +19,7 @@ class SWObject
         ~SWObject();
 
         void ShowInfo(SpellEntry const* spellInfo, quint8 num = 0);
+        quint32 GetParentSpellId(quint32 triggerId);
         void Compare();
 
         void AppendSkillLine(SpellEntry const* spellInfo, quint8 num);

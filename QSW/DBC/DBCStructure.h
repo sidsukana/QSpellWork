@@ -80,7 +80,7 @@ struct SpellEntry
     quint32    BaseLevel;                                       // 28
     quint32    SpellLevel;                                      // 29
     quint32    DurationIndex;                                   // 30
-    quint32    PowerType;                                       // 31
+    qint32     PowerType;                                       // 31
     quint32    ManaCost;                                        // 32
     quint32    ManaCostPerlevel;                                // 33
     quint32    ManaPerSecond;                                   // 34
@@ -134,7 +134,7 @@ struct SpellEntry
     quint32    MaxAffectedTargets;                              // 163
     quint32    DmgClass;                                        // 164 defenseType
     quint32    PreventionType;                                  // 165
-    float      StanceBarOrder;                                  // 166 not used
+    qint32     StanceBarOrder;                                  // 166 not used
     float      DmgMultiplier[MAX_EFFECT_INDEX];                 // 167-169
     quint32    MinFactionId;                                    // 170 not used, and 0 in 2.4.2
     quint32    MinReputation;                                   // 171 not used, and 0 in 2.4.2

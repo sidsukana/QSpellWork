@@ -646,6 +646,16 @@ QString SWObject::GetDescription(QString str, SpellEntry const *spellInfo)
     return str;
 }
 
+quint32 SWObject::GetParentSpellId(quint32 triggerId)
+{
+    for (quint32 i = 0; i < sSpellStore.GetNumRows(); i++)
+        if (SpellEntry const *spellInfo = sSpellStore.LookupEntry(i))
+            for (quint8 eff = EFFECT_INDEX_0; eff < MAX_EFFECT_INDEX; eff++)
+                if (spellInfo->EffectTriggerSpell[eff] == triggerId)
+                    return spellInfo->Id;
+    return 0;
+}
+
 void SWObject::ShowInfo(SpellEntry const *spellInfo, quint8 num)
 {
     if (!spellInfo)
@@ -676,14 +686,34 @@ void SWObject::ShowInfo(SpellEntry const *spellInfo, quint8 num)
     QString sAIF(QString("%0").arg(spellInfo->AuraInterruptFlags, 8, 16, QChar('0')));
     QString sCIF(QString("%0").arg(spellInfo->ChannelInterruptFlags, 8, 16, QChar('0')));
 
+    quint32 parentId = GetParentSpellId(spellInfo->Id);
+    if (parentId)
+    {
+        if (SpellEntry const *parentInfo = sSpellStore.LookupEntry(parentId))
+        {
+            QString sParentName(QString::fromUtf8(parentInfo->SpellName[locale]));
+            QString sParentRank(QString::fromUtf8(parentInfo->Rank[locale]));
+
+            if (sParentRank.isEmpty())
+                browser->append(QString("<b><font color=blue>Triggered by: </font><b> %0 - %1")
+                    .arg(parentId)
+                    .arg(sParentName));
+            else
+                browser->append(QString("<b><font color=blue>Triggered by: </font><b> %0 - %1 (%2)")
+                    .arg(parentId)
+                    .arg(sParentName)
+                    .arg(sParentRank));
+        }
+    }
+
+    browser->append(QString());
+
     browser->append(QString("<b>ID:</b> %0").arg(spellInfo->Id));
 
-    if (sRank.isEmpty())
-        browser->append(QString("<b>Name:</b> %0").arg(sName));
-    else
-        browser->append(QString("<b>Name:</b> %0 (%1)")
-            .arg(sName)
-            .arg(sRank));
+    if (!sRank.isEmpty())
+        sName.append(QString(" (%0)").arg(sRank));
+        
+    browser->append(QString("<b>Name:</b> %0").arg(sName));
 
     if (!sDescription.isEmpty())
         browser->append(QString("<b>Description:</b> %0").arg(GetDescription(sDescription, spellInfo)));

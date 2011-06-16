@@ -18,7 +18,7 @@ void TObject::run()
         case THREAD_SEARCH:
         {
             SWSearch *search = new SWSearch(m_sw);
-            search->Search();
+            search->search();
         }
         break;
     }
