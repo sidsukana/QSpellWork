@@ -1,100 +1,43 @@
 #include "SWSearch.h"
 #include "QtGui/QStandardItemModel"
 
-MetaSpell::MetaSpell(quint8 index, SpellEntry const *spellInfo, quint8 locale)
+MetaSpell::MetaSpell(SpellEntry const *spellInfo)
+    : m_spellInfo(spellInfo)
 {
-    switch (index)
+    // Тяжелый код. Необходим другой способ передачи массивов.
+    for (quint8 i = 0; i < MAX_SPELL_TOTEMS; i++)
     {
-        case 1: Id = spellInfo->Id; break;
-        case 2: School = spellInfo->School; break;
-        case 3: Category = spellInfo->Category; break;
-        case 4: CastUI = spellInfo->CastUI; break;
-        case 5: Dispel = spellInfo->Dispel; break;
-        case 6: Mechanic = spellInfo->Mechanic; break;
-        case 7: Attributes = spellInfo->Attributes; break;
-        case 8: AttributesEx = spellInfo->AttributesEx; break;
-        case 9: AttributesEx2 = spellInfo->AttributesEx2; break;
-        case 10: AttributesEx3 = spellInfo->AttributesEx3; break;
-        case 11: AttributesEx4 = spellInfo->AttributesEx4; break;
-        case 12: Stances = spellInfo->Stances; break;
-        case 13: StancesNot = spellInfo->StancesNot; break;
-        case 14: Targets = spellInfo->Targets; break;
-        case 15: TargetCreatureType = spellInfo->TargetCreatureType; break;
-        case 16: RequiresSpellFocus = spellInfo->RequiresSpellFocus; break;
-        case 17: CasterAuraState = spellInfo->CasterAuraState; break;
-        case 18: TargetAuraState = spellInfo->TargetAuraState; break;
-        case 19: CastingTimeIndex = spellInfo->CastingTimeIndex; break;
-        case 20: RecoveryTime = spellInfo->RecoveryTime; break;
-        case 21: CategoryRecoveryTime = spellInfo->CategoryRecoveryTime; break;
-        case 22: InterruptFlags = spellInfo->InterruptFlags; break;
-        case 23: AuraInterruptFlags = spellInfo->AuraInterruptFlags; break;
-        case 24: ChannelInterruptFlags = spellInfo->ChannelInterruptFlags; break;
-        case 25: ProcFlags = spellInfo->ProcFlags; break;
-        case 26: ProcChance = spellInfo->ProcChance; break;
-        case 27: ProcCharges = spellInfo->ProcCharges; break;
-        case 28: MaxLevel = spellInfo->MaxLevel; break;
-        case 29: BaseLevel = spellInfo->BaseLevel; break;
-        case 30: SpellLevel = spellInfo->SpellLevel; break;
-        case 31: DurationIndex = spellInfo->DurationIndex; break;
-        case 32: PowerType = spellInfo->PowerType; break;
-        case 33: ManaCost = spellInfo->ManaCost; break;
-        case 34: ManaCostPerlevel = spellInfo->ManaCostPerlevel; break;
-        case 35: ManaPerSecond = spellInfo->ManaPerSecond; break;
-        case 36: ManaPerSecondPerLevel = spellInfo->ManaPerSecondPerLevel; break;
-        case 37: RangeIndex = spellInfo->RangeIndex; break;
-        case 38: Speed = spellInfo->Speed; break;
-        case 39: ModalNextSpell = spellInfo->ModalNextSpell; break;
-        case 40: StackAmount = spellInfo->StackAmount; break;
-        case 41: for (quint8 i = 0; i < MAX_SPELL_TOTEMS; i++) { Totem.append(spellInfo->Totem[i]); } break;
-        case 42: for (quint8 i = 0; i < MAX_SPELL_REAGENTS; i++) { Reagent.append(spellInfo->Reagent[i]); } break;
-        case 43: for (quint8 i = 0; i < MAX_SPELL_REAGENTS; i++) { ReagentCount.append(spellInfo->ReagentCount[i]); } break;
-        case 44: EquippedItemClass = spellInfo->EquippedItemClass;
-        case 45: EquippedItemSubClassMask = spellInfo->EquippedItemSubClassMask;
-        case 46: EquippedItemInventoryTypeMask = spellInfo->EquippedItemInventoryTypeMask;
-        case 47: for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++) { Effect.append(spellInfo->Effect[i]); } break;
-        case 48: for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++) { EffectDieSides.append(spellInfo->EffectDieSides[i]); } break;
-        case 49: for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++) { EffectBaseDice.append(spellInfo->EffectBaseDice[i]); } break;
-        case 50: for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++) { EffectDicePerLevel.append(spellInfo->EffectDicePerLevel[i]); } break;
-        case 51: for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++) { EffectRealPointsPerLevel.append(spellInfo->EffectRealPointsPerLevel[i]); } break;
-        case 52: for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++) { EffectBasePoints.append(spellInfo->EffectBasePoints[i]); } break;
-        case 53: for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++) { EffectMechanic.append(spellInfo->EffectMechanic[i]); } break;
-        case 54: for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++) { EffectImplicitTargetA.append(spellInfo->EffectImplicitTargetA[i]); } break;
-        case 55: for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++) { EffectImplicitTargetB.append(spellInfo->EffectImplicitTargetB[i]); } break;
-        case 56: for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++) { EffectRadiusIndex.append(spellInfo->EffectRadiusIndex[i]); } break;
-        case 57: for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++) { EffectApplyAuraName.append(spellInfo->EffectApplyAuraName[i]); } break;
-        case 58: for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++) { EffectAmplitude.append(spellInfo->EffectAmplitude[i]); } break;
-        case 59: for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++) { EffectMultipleValue.append(spellInfo->EffectMultipleValue[i]); } break;
-        case 60: for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++) { EffectChainTarget.append(spellInfo->EffectChainTarget[i]); } break;
-        case 61: for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++) { EffectItemType.append(spellInfo->EffectItemType[i]); } break;
-        case 62: for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++) { EffectMiscValue.append(spellInfo->EffectMiscValue[i]); } break;
-        case 63: for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++) { EffectTriggerSpell.append(spellInfo->EffectTriggerSpell[i]); } break;
-        case 64: for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++) { EffectPointsPerComboPoint.append(spellInfo->EffectPointsPerComboPoint[i]); } break;
-        case 65: for (quint8 i = 0; i < 2; i++) { SpellVisual.append(spellInfo->SpellVisual[i]); } break;
-        case 66: SpellIconID = spellInfo->SpellIconID; break;
-        case 67: ActiveIconID = spellInfo->ActiveIconID; break;
-        case 68: SpellPriority = spellInfo->SpellPriority; break;
-        case 69: SpellName = QString::fromUtf8(spellInfo->SpellName[locale]); break;
-        case 70: SpellNameFlag = spellInfo->SpellNameFlag; break;
-        case 71: Rank = QString::fromUtf8(spellInfo->Rank[locale]); break;
-        case 72: RankFlags = spellInfo->RankFlags; break;
-        case 73: Description = QString::fromUtf8(spellInfo->Description[locale]); break;
-        case 74: DescriptionFlags = spellInfo->DescriptionFlags; break;
-        case 75: ToolTip = QString::fromUtf8(spellInfo->ToolTip[locale]); break;
-        case 76: ToolTipFlags = spellInfo->ToolTipFlags; break;
-        case 77: ManaCostPercentage = spellInfo->ManaCostPercentage; break;
-        case 78: StartRecoveryCategory = spellInfo->StartRecoveryCategory; break;
-        case 79: StartRecoveryTime = spellInfo->StartRecoveryTime; break;
-        case 80: MaxTargetLevel = spellInfo->MaxTargetLevel; break;
-        case 81: SpellFamilyName = spellInfo->SpellFamilyName; break;
-        case 82: SpellFamilyFlags = spellInfo->SpellFamilyFlags; break;
-        case 83: MaxAffectedTargets = spellInfo->MaxAffectedTargets; break;
-        case 84: DmgClass = spellInfo->DmgClass; break;
-        case 85: PreventionType = spellInfo->PreventionType; break;
-        case 86: StanceBarOrder = spellInfo->StanceBarOrder; break;
-        case 87: for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++) { DmgMultiplier.append(spellInfo->DmgMultiplier[i]); } break;
-        case 88: MinFactionId = spellInfo->MinFactionId; break;
-        case 89: MinReputation = spellInfo->MinReputation; break;
-        case 90: RequiredAuraVision = spellInfo->RequiredAuraVision; break;
+        Totem << spellInfo->Totem[i];
+        SpellVisual << spellInfo->SpellVisual[i];
+    }
+
+    for (quint8 i = 0; i < MAX_SPELL_REAGENTS; i++)
+    {
+        Reagent << spellInfo->Reagent[i];
+        ReagentCount << spellInfo->ReagentCount[i];
+    }
+
+    for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++)
+    {
+        Effect << spellInfo->Effect[i];
+        EffectDieSides << spellInfo->EffectDieSides[i];
+        EffectBaseDice << spellInfo->EffectBaseDice[i];
+        EffectDicePerLevel << spellInfo->EffectDicePerLevel[i];
+        EffectRealPointsPerLevel << spellInfo->EffectRealPointsPerLevel[i];
+        EffectBasePoints << spellInfo->EffectBasePoints[i];
+        EffectMechanic << spellInfo->EffectMechanic[i];
+        EffectImplicitTargetA << spellInfo->EffectImplicitTargetA[i];
+        EffectImplicitTargetB << spellInfo->EffectImplicitTargetB[i];
+        EffectRadiusIndex << spellInfo->EffectRadiusIndex[i];
+        EffectApplyAuraName << spellInfo->EffectApplyAuraName[i];
+        EffectAmplitude << spellInfo->EffectAmplitude[i];
+        EffectMultipleValue << spellInfo->EffectMultipleValue[i];
+        EffectChainTarget << spellInfo->EffectChainTarget[i];
+        EffectItemType << spellInfo->EffectItemType[i];
+        EffectMiscValue << spellInfo->EffectMiscValue[i];
+        EffectTriggerSpell << spellInfo->EffectTriggerSpell[i];
+        EffectPointsPerComboPoint << spellInfo->EffectPointsPerComboPoint[i];
+        DmgMultiplier << spellInfo->DmgMultiplier[i];
     }
 }
 
@@ -103,7 +46,7 @@ MetaSpell::~MetaSpell()
 }
 
 SWSearch::SWSearch(SWObject *sw)
-: m_sw(sw), m_locale(sw->GetLocale()), m_form(sw->GetForm())
+: m_sw(sw), m_form(sw->GetForm())
 {
 }
 
@@ -111,12 +54,13 @@ SWSearch::~SWSearch()
 {
 }
 
-bool SWSearch::hasValue(quint8 index, QString name, QString value, SpellEntry const *spellInfo)
+bool SWSearch::hasValue(QString name, QString value, SpellEntry const *spellInfo)
 {
-    MetaSpell metaSpell(index, spellInfo, m_locale);
+    MetaSpell metaSpell(spellInfo);
 
     QVariant spellValue = metaSpell.property(name.toAscii().data());
     QString typeName(spellValue.typeName());
+
     bool isList = typeName == "QVariantList";
 
     value.remove(QChar(32));
@@ -322,7 +266,7 @@ void SWSearch::search()
 
                 if (m_form->adBox1->currentIndex() > 0)
                 {
-                    if (hasValue(m_form->adBox1->currentIndex(), m_form->adBox1->itemText(m_form->adBox1->currentIndex()), m_form->adLine1->text(), m_spellInfo))
+                    if (hasValue(m_form->adBox1->itemText(m_form->adBox1->currentIndex()), m_form->adLine1->text(), m_spellInfo))
                         adFilter1 = true;
                 }
                 else
@@ -330,7 +274,7 @@ void SWSearch::search()
 
                 if (m_form->adBox2->currentIndex() > 0)
                 {
-                    if (hasValue(m_form->adBox2->currentIndex(), m_form->adBox2->itemText(m_form->adBox2->currentIndex()), m_form->adLine2->text(), m_spellInfo))
+                    if (hasValue(m_form->adBox2->itemText(m_form->adBox2->currentIndex()), m_form->adLine2->text(), m_spellInfo))
                         adFilter2 = true;
                 }
                 else
@@ -339,14 +283,14 @@ void SWSearch::search()
                 if (family && aura && effect && adFilter1 && adFilter2 && targetA && targetB)
                 {
                     count++;
-                    QString sRank(QString::fromUtf8(m_spellInfo->Rank[m_locale]));
-                    QString sFullName(QString::fromUtf8(m_spellInfo->SpellName[m_locale]));
+                    QString sRank(QString::fromUtf8(m_spellInfo->Rank[Locale]));
+                    QString sFullName(QString::fromUtf8(m_spellInfo->SpellName[Locale]));
 
                     QStandardItem *item_id = new QStandardItem(QString("%0").arg(m_spellInfo->Id));
                     QStandardItem *item_name;
 
                     if (!sRank.isEmpty())
-                        sFullName.append(QString(" (%0)").arg(QString::fromUtf8(m_spellInfo->Rank[m_locale])));
+                        sFullName.append(QString(" (%0)").arg(QString::fromUtf8(m_spellInfo->Rank[Locale])));
 
                     item_name = new QStandardItem(sFullName);
 
@@ -389,17 +333,17 @@ void SWSearch::search()
                 for (quint32 i = 0; i < sSpellStore.GetNumRows(); i++)
                 {
                     SpellEntry const *m_spellInfo = sSpellStore.LookupEntry(i);
-                    if (m_spellInfo && QString(QString::fromUtf8(m_spellInfo->SpellName[m_locale])).contains(m_form->findLine_e1->text(), Qt::CaseInsensitive))
+                    if (m_spellInfo && QString(QString::fromUtf8(m_spellInfo->SpellName[Locale])).contains(m_form->findLine_e1->text(), Qt::CaseInsensitive))
                     {
                         count++;
-                        QString sRank(QString::fromUtf8(m_spellInfo->Rank[m_locale]));
-                        QString sFullName(QString::fromUtf8(m_spellInfo->SpellName[m_locale]));
+                        QString sRank(QString::fromUtf8(m_spellInfo->Rank[Locale]));
+                        QString sFullName(QString::fromUtf8(m_spellInfo->SpellName[Locale]));
 
                         QStandardItem *item_id = new QStandardItem(QString("%0").arg(m_spellInfo->Id));
                         QStandardItem *item_name;
 
                         if (!sRank.isEmpty())
-                            sFullName.append(QString(" (%0)").arg(QString::fromUtf8(m_spellInfo->Rank[m_locale])));
+                            sFullName.append(QString(" (%0)").arg(QString::fromUtf8(m_spellInfo->Rank[Locale])));
 
                         item_name = new QStandardItem(sFullName);
 
@@ -415,14 +359,14 @@ void SWSearch::search()
 
                 if (m_spellInfo)
                 {
-                    QString sRank(QString::fromUtf8(m_spellInfo->Rank[m_locale]));
-                    QString sFullName(QString::fromUtf8(m_spellInfo->SpellName[m_locale]));
+                    QString sRank(QString::fromUtf8(m_spellInfo->Rank[Locale]));
+                    QString sFullName(QString::fromUtf8(m_spellInfo->SpellName[Locale]));
 
                     QStandardItem  *item_id = new QStandardItem (QString("%0").arg(m_spellInfo->Id));
                     QStandardItem  *item_name;
 
                     if (!sRank.isEmpty())
-                        sFullName.append(QString(" (%0)").arg(QString::fromUtf8(m_spellInfo->Rank[m_locale])));
+                        sFullName.append(QString(" (%0)").arg(QString::fromUtf8(m_spellInfo->Rank[Locale])));
 
                     item_name = new QStandardItem(sFullName);
 
@@ -441,14 +385,14 @@ void SWSearch::search()
                 if (m_spellInfo && m_spellInfo->SpellIconID == m_form->findLine_e2->text().toInt())
                 {
                     count++;
-                    QString sRank(QString::fromUtf8(m_spellInfo->Rank[m_locale]));
-                    QString sFullName(QString::fromUtf8(m_spellInfo->SpellName[m_locale]));
+                    QString sRank(QString::fromUtf8(m_spellInfo->Rank[Locale]));
+                    QString sFullName(QString::fromUtf8(m_spellInfo->SpellName[Locale]));
 
                     QStandardItem *item_id = new QStandardItem(QString("%0").arg(m_spellInfo->Id));
                     QStandardItem *item_name;
 
                     if (!sRank.isEmpty())
-                        sFullName.append(QString(" (%0)").arg(QString::fromUtf8(m_spellInfo->Rank[m_locale])));
+                        sFullName.append(QString(" (%0)").arg(QString::fromUtf8(m_spellInfo->Rank[Locale])));
 
                     item_name = new QStandardItem(sFullName);
 
@@ -463,17 +407,17 @@ void SWSearch::search()
             for (quint32 i = 0; i < sSpellStore.GetNumRows(); i++)
             {
                 SpellEntry const *m_spellInfo = sSpellStore.LookupEntry(i);
-                if (m_spellInfo && QString(QString::fromUtf8(m_spellInfo->Description[m_locale])).contains(m_form->findLine_e3->text(), Qt::CaseInsensitive))
+                if (m_spellInfo && QString(QString::fromUtf8(m_spellInfo->Description[Locale])).contains(m_form->findLine_e3->text(), Qt::CaseInsensitive))
                 {
                     count++;
-                    QString sRank(QString::fromUtf8(m_spellInfo->Rank[m_locale]));
-                    QString sFullName(QString::fromUtf8(m_spellInfo->SpellName[m_locale]));
+                    QString sRank(QString::fromUtf8(m_spellInfo->Rank[Locale]));
+                    QString sFullName(QString::fromUtf8(m_spellInfo->SpellName[Locale]));
 
                     QStandardItem *item_id = new QStandardItem(QString("%0").arg(m_spellInfo->Id));
                     QStandardItem *item_name;
 
                     if (!sRank.isEmpty())
-                        sFullName.append(QString(" (%0)").arg(QString::fromUtf8(m_spellInfo->Rank[m_locale])));
+                        sFullName.append(QString(" (%0)").arg(QString::fromUtf8(m_spellInfo->Rank[Locale])));
 
                     item_name = new QStandardItem(sFullName);
 
@@ -491,14 +435,14 @@ void SWSearch::search()
                 if (m_spellInfo)
                 {
                     count++;
-                    QString sRank(QString::fromUtf8(m_spellInfo->Rank[m_locale]));
-                    QString sFullName(QString::fromUtf8(m_spellInfo->SpellName[m_locale]));
+                    QString sRank(QString::fromUtf8(m_spellInfo->Rank[Locale]));
+                    QString sFullName(QString::fromUtf8(m_spellInfo->SpellName[Locale]));
 
                     QStandardItem *item_id = new QStandardItem(QString("%0").arg(m_spellInfo->Id));
                     QStandardItem *item_name;
 
                     if (!sRank.isEmpty())
-                        sFullName.append(QString(" (%0)").arg(QString::fromUtf8(m_spellInfo->Rank[m_locale])));
+                        sFullName.append(QString(" (%0)").arg(QString::fromUtf8(m_spellInfo->Rank[Locale])));
 
                     item_name = new QStandardItem(sFullName);
 

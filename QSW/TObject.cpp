@@ -1,5 +1,5 @@
 #include "TObject.h"
-#include "Defines.h"
+#include "SWDefines.h"
 
 TObject::TObject(quint8 id, SWObject *sw)
     : m_id(id), m_sw(sw)

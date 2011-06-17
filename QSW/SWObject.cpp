@@ -2,7 +2,7 @@
 #include "QtGui/QStandardItemModel"
 
 SWObject::SWObject(SWForm *form)
-    : m_form(form), useRegExp(false), m_type(0), locale(0)
+    : m_form(form), useRegExp(false), m_type(0)
 {
     for (quint8 i = 0; i < MAX_THREAD; i++)
         ThreadSemaphore[i] = false;
@@ -669,10 +669,10 @@ void SWObject::ShowInfo(SpellEntry const *spellInfo, quint8 num)
 
     QString line("==================================================");
 
-    QString sName(QString::fromUtf8(spellInfo->SpellName[locale]));
-    QString sDescription(QString::fromUtf8(spellInfo->Description[locale]));
-    QString sRank(QString::fromUtf8(spellInfo->Rank[locale]));
-    QString sToolTip(QString::fromUtf8(spellInfo->ToolTip[locale]));
+    QString sName(QString::fromUtf8(spellInfo->SpellName[Locale]));
+    QString sDescription(QString::fromUtf8(spellInfo->Description[Locale]));
+    QString sRank(QString::fromUtf8(spellInfo->Rank[Locale]));
+    QString sToolTip(QString::fromUtf8(spellInfo->ToolTip[Locale]));
     QString sSpellFamilyFlags(QString("%0").arg(spellInfo->SpellFamilyFlags, 16, 16, QChar('0')));
     QString sAttributes(QString("%0").arg(spellInfo->Attributes, 8, 16, QChar('0')));
     QString sAttributesEx(QString("%0").arg(spellInfo->AttributesEx, 8, 16, QChar('0')));
@@ -691,8 +691,8 @@ void SWObject::ShowInfo(SpellEntry const *spellInfo, quint8 num)
     {
         if (SpellEntry const *parentInfo = sSpellStore.LookupEntry(parentId))
         {
-            QString sParentName(QString::fromUtf8(parentInfo->SpellName[locale]));
-            QString sParentRank(QString::fromUtf8(parentInfo->Rank[locale]));
+            QString sParentName(QString::fromUtf8(parentInfo->SpellName[Locale]));
+            QString sParentRank(QString::fromUtf8(parentInfo->Rank[Locale]));
 
             if (sParentRank.isEmpty())
                 browser->append(QString("<b><font color=blue>Triggered by: </font><b> %0 - %1")
@@ -961,7 +961,7 @@ void SWObject::AppendRangeInfo(SpellEntry const* spellInfo, quint8 num)
     {
         browser->append(QString("SpellRange: (Id %0) \"%1\": MinRange = %2, MaxRange = %3")
             .arg(range->Id)
-            .arg(QString::fromUtf8(range->Name[locale]))
+            .arg(QString::fromUtf8(range->Name[Locale]))
             .arg(range->MinRange)
             .arg(range->MaxRange));
     }
@@ -1074,7 +1074,7 @@ void SWObject::AppendSpellEffectInfo(SpellEntry const* spellInfo, quint8 num)
                             if ((t_spellInfo->SpellFamilyName == spellInfo->SpellFamilyName) &&
                                 (t_spellInfo->SpellFamilyFlags & spellInfo->EffectItemType[eff]))
                             {
-                                QString sRank(QString::fromUtf8(t_spellInfo->Rank[locale]));
+                                QString sRank(QString::fromUtf8(t_spellInfo->Rank[Locale]));
                                 for (quint32 sk = 0; sk < sSkillLineAbilityStore.GetNumRows(); sk++)
                                 {
                                     SkillLineAbilityEntry const *skillInfo = sSkillLineAbilityStore.LookupEntry(sk);
@@ -1086,7 +1086,7 @@ void SWObject::AppendSpellEffectInfo(SpellEntry const* spellInfo, quint8 num)
                                             browser->append(QString("%0<font color=blue>+ %1 - %2 (%3)</font>")
                                                 .arg(QChar(QChar::Nbsp), 4, QChar(QChar::Nbsp))
                                                 .arg(t_spellInfo->Id)
-                                                .arg(QString::fromUtf8(t_spellInfo->SpellName[locale]))
+                                                .arg(QString::fromUtf8(t_spellInfo->SpellName[Locale]))
                                                 .arg(sRank));
                                         }
                                         else
@@ -1094,7 +1094,7 @@ void SWObject::AppendSpellEffectInfo(SpellEntry const* spellInfo, quint8 num)
                                             browser->append(QString("%0<font color=blue>+ %1 - %2</font>")
                                                 .arg(QChar(QChar::Nbsp), 4, QChar(QChar::Nbsp))
                                                 .arg(t_spellInfo->Id)
-                                                .arg(QString::fromUtf8(t_spellInfo->SpellName[locale])));
+                                                .arg(QString::fromUtf8(t_spellInfo->SpellName[Locale])));
                                         }
                                         break;
                                     }
@@ -1107,7 +1107,7 @@ void SWObject::AppendSpellEffectInfo(SpellEntry const* spellInfo, quint8 num)
                                         browser->append(QString("%0<font color=red>- %1 - %2 (%3)</font>")
                                             .arg(QChar(QChar::Nbsp), 4, QChar(QChar::Nbsp))
                                             .arg(t_spellInfo->Id)
-                                            .arg(QString::fromUtf8(t_spellInfo->SpellName[locale]))
+                                            .arg(QString::fromUtf8(t_spellInfo->SpellName[Locale]))
                                             .arg(sRank));
                                     }
                                     else
@@ -1115,7 +1115,7 @@ void SWObject::AppendSpellEffectInfo(SpellEntry const* spellInfo, quint8 num)
                                         browser->append(QString("%0<font color=red>- %1 - %2</font>")
                                             .arg(QChar(QChar::Nbsp), 4, QChar(QChar::Nbsp))
                                             .arg(t_spellInfo->Id)
-                                            .arg(QString::fromUtf8(t_spellInfo->SpellName[locale])));
+                                            .arg(QString::fromUtf8(t_spellInfo->SpellName[Locale])));
                                     }
                                 }
                             }
@@ -1142,12 +1142,12 @@ void SWObject::AppendTriggerInfo(SpellEntry const* spellInfo, quint8 index, quin
             browser->append(QString("<b><font color='blue'>   Trigger spell (%0) %1. Chance = %2</font></b>")
                 .arg(trigger)
                 .arg(QString("%0 (%1)")
-                    .arg(QString::fromUtf8(triggerSpell->SpellName[locale]))
-                    .arg(QString::fromUtf8(triggerSpell->Rank[locale])))
+                    .arg(QString::fromUtf8(triggerSpell->SpellName[Locale]))
+                    .arg(QString::fromUtf8(triggerSpell->Rank[Locale])))
                 .arg(triggerSpell->ProcChance));
 
-                QString sDescription(QString::fromUtf8(triggerSpell->Description[locale]));
-                QString sTooltip(QString::fromUtf8(triggerSpell->ToolTip[locale]));
+                QString sDescription(QString::fromUtf8(triggerSpell->Description[Locale]));
+                QString sTooltip(QString::fromUtf8(triggerSpell->ToolTip[Locale]));
 
                 if (!sDescription.isEmpty())
                     browser->append(QString("   Description: %0").arg(GetDescription(sDescription, triggerSpell)));
@@ -1488,7 +1488,7 @@ void SWObject::AppendSkillLine(SpellEntry const* spellInfo, quint8 num)
             SkillLineEntry const *skill = sSkillLineStore.LookupEntry(skillInfo->SkillId);
             browser->append(QString("Skill (Id %0) \"%1\", ReqSkillValue = %2, Forward Spell = %3, MinMaxValue (%4, %5), CharacterPoints (%6, %7)")
                 .arg(skill->Id)
-                .arg(QString::fromUtf8(skill->Name[locale]))
+                .arg(QString::fromUtf8(skill->Name[Locale]))
                 .arg(skillInfo->ReqSkillValue)
                 .arg(skillInfo->ForwardSpellId)
                 .arg(skillInfo->MinValue)

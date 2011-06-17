@@ -1,7 +1,7 @@
 #ifndef DBCSTRUCTURE_H
 #define DBCSTRUCTURE_H
 
-#include "Defines.h"
+#include "SWDefines.h"
 #include "Platform/Define.h"
 
 #include <map>
@@ -13,9 +13,6 @@
 #else
 #pragma pack(push,1)
 #endif
-
-#define MAX_SPELL_REAGENTS 8
-#define MAX_SPELL_TOTEMS 2
 
 struct SkillLineEntry
 {

@@ -226,10 +226,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\Defines.h"
-				>
-			</File>
-			<File
 				RelativePath=".\SWDefines.h"
 				>
 			</File>

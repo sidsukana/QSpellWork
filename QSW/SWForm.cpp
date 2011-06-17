@@ -62,7 +62,7 @@ void SWForm::DetectLocale()
     {
         if (!QString::fromUtf8(spellInfo->SpellName[i]).isEmpty())
         {
-            sw->SetLocale(i);
+            Locale = i;
             QLabel *label = new QLabel;
             label->setText(QString("%0<b>DBC Locale: <font color=green>%1</font><b>")
                 .arg(QChar(QChar::Nbsp), 2, QChar(QChar::Nbsp))
