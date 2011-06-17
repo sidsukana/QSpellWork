@@ -1,5 +1,7 @@
 #include "SWDefines.h"
 
+quint8 Locale = 0;
+
 QString SpellStruct[] =
 {
     "None",

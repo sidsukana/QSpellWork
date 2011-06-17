@@ -15,10 +15,11 @@ class TObject;
 class SWObject
 {
     public:
-        SWObject(SWForm *form = NULL);
+        SWObject(SWForm *form);
         ~SWObject();
 
         void ShowInfo(SpellEntry const* spellInfo, quint8 num = 0);
+        quint32 GetParentSpellId(quint32 triggerId);
         void Compare();
 
         void AppendSkillLine(SpellEntry const* spellInfo, quint8 num);
@@ -52,9 +53,6 @@ class SWObject
         void SetRegExp(bool on) { useRegExp = on; }
         void SetType(quint8 type) { m_type = type; }
 
-        void SetLocale(quint8 loc) { locale = loc; }
-        quint8 GetLocale() const { return locale; }
-
         QMetaEnum me;
 
     private:
@@ -62,7 +60,6 @@ class SWObject
 
         bool useRegExp;
         quint8 m_type;
-        quint8 locale;
 
         QMetaObject mo;
         quint8 e_idx;

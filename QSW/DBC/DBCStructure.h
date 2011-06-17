@@ -1,7 +1,7 @@
 #ifndef DBCSTRUCTURE_H
 #define DBCSTRUCTURE_H
 
-#include "Defines.h"
+#include "SWDefines.h"
 #include "Platform/Define.h"
 
 #include <map>
@@ -13,10 +13,6 @@
 #else
 #pragma pack(push,1)
 #endif
-
-#define MAX_SPELL_REAGENTS 8
-#define MAX_SPELL_TOTEMS 2
-#define MAX_SPELL_TOTEM_CATEGORIES 2
 
 struct SkillLineEntry
 {
@@ -85,7 +81,7 @@ struct SpellEntry
     quint32    BaseLevel;                                       // 32
     quint32    SpellLevel;                                      // 33
     quint32    DurationIndex;                                   // 34
-    quint32    PowerType;                                       // 35
+    qint32     PowerType;                                       // 35
     quint32    ManaCost;                                        // 36
     quint32    ManaCostPerlevel;                                // 37
     quint32    ManaPerSecond;                                   // 38
@@ -94,32 +90,32 @@ struct SpellEntry
     float      Speed;                                           // 41
     quint32    ModalNextSpell;                                  // 42
     quint32    StackAmount;                                     // 43
-    quint32    Totem[MAX_SPELL_TOTEMS];                         // 44-45
-    qint32     Reagent[MAX_SPELL_REAGENTS];                     // 46-53
-    quint32    ReagentCount[MAX_SPELL_REAGENTS];                // 54-61
+    uarray2    Totem;                                           // 44-45
+    iarray8    Reagent;                                         // 46-53
+    uarray8    ReagentCount;                                    // 54-61
     qint32     EquippedItemClass;                               // 62 (value)
     qint32     EquippedItemSubClassMask;                        // 63 (mask)
     qint32     EquippedItemInventoryTypeMask;                   // 64 (mask)
-    quint32    Effect[MAX_EFFECT_INDEX];                        // 65-67
-    qint32     EffectDieSides[MAX_EFFECT_INDEX];                // 68-70
-    quint32    EffectBaseDice[MAX_EFFECT_INDEX];                // 71-73
-    float      EffectDicePerLevel[MAX_EFFECT_INDEX];            // 74-76
-    float      EffectRealPointsPerLevel[MAX_EFFECT_INDEX];      // 77-79
-    qint32     EffectBasePoints[MAX_EFFECT_INDEX];              // 80-82 (don't must be used in spell/auras explicitly, must be used cached Spell::m_currentBasePoints)
-    quint32    EffectMechanic[MAX_EFFECT_INDEX];                // 83-85
-    quint32    EffectImplicitTargetA[MAX_EFFECT_INDEX];         // 86-88
-    quint32    EffectImplicitTargetB[MAX_EFFECT_INDEX];         // 89-91
-    quint32    EffectRadiusIndex[MAX_EFFECT_INDEX];             // 92-94 - spellradius.dbc
-    quint32    EffectApplyAuraName[MAX_EFFECT_INDEX];           // 95-97
-    quint32    EffectAmplitude[MAX_EFFECT_INDEX];               // 98-100
-    float      EffectMultipleValue[MAX_EFFECT_INDEX];           // 101-103
-    quint32    EffectChainTarget[MAX_EFFECT_INDEX];             // 104-106
-    quint32    EffectItemType[MAX_EFFECT_INDEX];                // 107-109
-    qint32     EffectMiscValue[MAX_EFFECT_INDEX];               // 110-112
-    qint32     EffectMiscValueB[MAX_EFFECT_INDEX];              // 113-115
-    quint32    EffectTriggerSpell[MAX_EFFECT_INDEX];            // 116-118
-    float      EffectPointsPerComboPoint[MAX_EFFECT_INDEX];     // 119-121
-    quint32    SpellVisual[2];                                  // 122-123
+    uarray3    Effect;                                          // 65-67
+    iarray3    EffectDieSides;                                  // 68-70
+    uarray3    EffectBaseDice;                                  // 71-73
+    farray3    EffectDicePerLevel;                              // 74-76
+    farray3    EffectRealPointsPerLevel;                        // 77-79
+    iarray3    EffectBasePoints;                                // 80-82 (don't must be used in spell/auras explicitly, must be used cached Spell::m_currentBasePoints)
+    uarray3    EffectMechanic;                                  // 83-85
+    uarray3    EffectImplicitTargetA;                           // 86-88
+    uarray3    EffectImplicitTargetB;                           // 89-91
+    uarray3    EffectRadiusIndex;                               // 92-94 - spellradius.dbc
+    uarray3    EffectApplyAuraName;                             // 95-97
+    uarray3    EffectAmplitude;                                 // 98-100
+    farray3    EffectMultipleValue;                             // 101-103
+    uarray3    EffectChainTarget;                               // 104-106
+    uarray3    EffectItemType;                                  // 107-109
+    iarray3    EffectMiscValue;                                 // 110-112
+    iarray3    EffectMiscValueB;                                // 113-115
+    uarray3    EffectTriggerSpell;                              // 116-118
+    farray3    EffectPointsPerComboPoint;                       // 119-121
+    uarray2    SpellVisual;                                     // 122-123
     quint32    SpellIconID;                                     // 124
     quint32    ActiveIconID;                                    // 125
     quint32    SpellPriority;                                   // 126
@@ -140,12 +136,12 @@ struct SpellEntry
     quint32    MaxAffectedTargets;                              // 202
     quint32    DmgClass;                                        // 203 defenseType
     quint32    PreventionType;                                  // 204
-    quint32    StanceBarOrder;                                  // 205 not used
-    float      DmgMultiplier[MAX_EFFECT_INDEX];                 // 206-208
+    qint32     StanceBarOrder;                                  // 205 not used
+    farray3    DmgMultiplier;                                   // 206-208
     quint32    MinFactionId;                                    // 209 not used, and 0 in 2.4.2
     quint32    MinReputation;                                   // 210 not used, and 0 in 2.4.2
     quint32    RequiredAuraVision;                              // 211 not used
-    quint32    TotemCategory[MAX_SPELL_TOTEM_CATEGORIES];       // 212-213
+    uarray2    TotemCategory;                                   // 212-213
     quint32    AreaId;                                          // 214
     quint32    SchoolMask;                                      // 215 school mask
 
