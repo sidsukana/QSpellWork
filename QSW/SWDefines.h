@@ -2,7 +2,7 @@
 #define SWDEFINES_H
 
 #include <QtCore/QString>
-
+#include <QtCore/QMetaType>
 
 extern quint8  Locale;
 extern QString SpellStruct[];
@@ -46,5 +46,60 @@ enum Threads
     MAX_THREAD
 };
 
+// Addition structure types for Meta-System
+struct uarray2
+{
+    quint32 value[2];
+};
+
+struct iarray2
+{
+    quint32 value[2];
+};
+
+struct farray2
+{
+    float value[2];
+};
+
+struct uarray3
+{
+    quint32 value[3];
+};
+
+struct iarray3
+{
+    quint32 value[3];
+};
+
+struct farray3
+{
+    float value[3];
+};
+
+struct uarray8
+{
+    quint32 value[8];
+};
+
+struct iarray8
+{
+    quint32 value[8];
+};
+
+struct farray8
+{
+    float value[8];
+};
+
+Q_DECLARE_METATYPE(uarray2);
+Q_DECLARE_METATYPE(iarray2);
+Q_DECLARE_METATYPE(farray2);
+Q_DECLARE_METATYPE(uarray3);
+Q_DECLARE_METATYPE(iarray3);
+Q_DECLARE_METATYPE(farray3);
+Q_DECLARE_METATYPE(uarray8);
+Q_DECLARE_METATYPE(iarray8);
+Q_DECLARE_METATYPE(farray8);
 
 #endif // SWDEFINES_H

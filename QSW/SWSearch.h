@@ -98,58 +98,32 @@ class MetaSpell : public QObject
         QString getDescription() { return QString::fromUtf8(m_spellInfo->Description[Locale]); }
         QString getToolTip() { return QString::fromUtf8(m_spellInfo->ToolTip[Locale]); }
 
-        QVariantList getTotem() { return Totem; }
-        QVariantList getReagent() { return Reagent; }
-        QVariantList getReagentCount() { return ReagentCount; }
-        QVariantList getEffect() { return Effect; }
-        QVariantList getEffectDieSides() { return EffectDieSides; }
-        QVariantList getEffectBaseDice() { return EffectBaseDice; }
-        QVariantList getEffectDicePerLevel() { return EffectDicePerLevel; }
-        QVariantList getEffectRealPointsPerLevel() { return EffectRealPointsPerLevel; }
-        QVariantList getEffectBasePoints() { return EffectBasePoints; }
-        QVariantList getEffectMechanic() { return EffectMechanic; }
-        QVariantList getEffectImplicitTargetA() { return EffectImplicitTargetA; }
-        QVariantList getEffectImplicitTargetB() { return EffectImplicitTargetB; }
-        QVariantList getEffectRadiusIndex() { return EffectRadiusIndex; }
-        QVariantList getEffectApplyAuraName() { return EffectApplyAuraName; }
-        QVariantList getEffectAmplitude() { return EffectAmplitude; }
-        QVariantList getEffectMultipleValue() { return EffectMultipleValue; }
-        QVariantList getEffectChainTarget() { return EffectChainTarget; }
-        QVariantList getEffectItemType() { return EffectItemType; }
-        QVariantList getEffectMiscValue() { return EffectMiscValue; }
-        QVariantList getEffectTriggerSpell() { return EffectTriggerSpell; }
-        QVariantList getEffectPointsPerComboPoint() { return EffectPointsPerComboPoint; }
-        QVariantList getSpellVisual() { return SpellVisual; }
-        QVariantList getDmgMultiplier() { return DmgMultiplier; }
+        QVariant getTotem() { return QVariant::fromValue(m_spellInfo->Totem); }
+        QVariant getReagent() { return QVariant::fromValue(m_spellInfo->Reagent); }
+        QVariant getReagentCount() { return QVariant::fromValue(m_spellInfo->ReagentCount); }
+        QVariant getEffect() { return QVariant::fromValue(m_spellInfo->Effect); }
+        QVariant getEffectDieSides() { return QVariant::fromValue(m_spellInfo->EffectDieSides); }
+        QVariant getEffectBaseDice() { return QVariant::fromValue(m_spellInfo->EffectBaseDice); }
+        QVariant getEffectDicePerLevel() { return QVariant::fromValue(m_spellInfo->EffectDicePerLevel); }
+        QVariant getEffectRealPointsPerLevel() { return QVariant::fromValue(m_spellInfo->EffectRealPointsPerLevel); }
+        QVariant getEffectBasePoints() { return QVariant::fromValue(m_spellInfo->EffectBasePoints); }
+        QVariant getEffectMechanic() { return QVariant::fromValue(m_spellInfo->EffectMechanic); }
+        QVariant getEffectImplicitTargetA() { return QVariant::fromValue(m_spellInfo->EffectImplicitTargetA); }
+        QVariant getEffectImplicitTargetB() { return QVariant::fromValue(m_spellInfo->EffectImplicitTargetB); }
+        QVariant getEffectRadiusIndex() { return QVariant::fromValue(m_spellInfo->EffectRadiusIndex); }
+        QVariant getEffectApplyAuraName() { return QVariant::fromValue(m_spellInfo->EffectApplyAuraName); }
+        QVariant getEffectAmplitude() { return QVariant::fromValue(m_spellInfo->EffectAmplitude); }
+        QVariant getEffectMultipleValue() { return QVariant::fromValue(m_spellInfo->EffectMultipleValue); }
+        QVariant getEffectChainTarget() { return QVariant::fromValue(m_spellInfo->EffectChainTarget); }
+        QVariant getEffectItemType() { return QVariant::fromValue(m_spellInfo->EffectItemType); }
+        QVariant getEffectMiscValue() { return QVariant::fromValue(m_spellInfo->EffectMiscValue); }
+        QVariant getEffectTriggerSpell() { return QVariant::fromValue(m_spellInfo->EffectTriggerSpell); }
+        QVariant getEffectPointsPerComboPoint() { return QVariant::fromValue(m_spellInfo->EffectPointsPerComboPoint); }
+        QVariant getSpellVisual() { return QVariant::fromValue(m_spellInfo->SpellVisual); }
+        QVariant getDmgMultiplier() { return QVariant::fromValue(m_spellInfo->DmgMultiplier); }
 
     private:
         SpellEntry const* m_spellInfo;
-
-        // Arrays values
-        QVariantList Totem;
-        QVariantList Reagent;
-        QVariantList ReagentCount;
-        QVariantList Effect;
-        QVariantList EffectDieSides;
-        QVariantList EffectBaseDice;
-        QVariantList EffectDicePerLevel;
-        QVariantList EffectRealPointsPerLevel;
-        QVariantList EffectBasePoints;
-        QVariantList EffectMechanic;
-        QVariantList EffectImplicitTargetA;
-        QVariantList EffectImplicitTargetB;
-        QVariantList EffectRadiusIndex;
-        QVariantList EffectApplyAuraName;
-        QVariantList EffectAmplitude;
-        QVariantList EffectMultipleValue;
-        QVariantList EffectChainTarget;
-        QVariantList EffectItemType;
-        QVariantList EffectMiscValue;
-        QVariantList EffectTriggerSpell;
-        QVariantList EffectPointsPerComboPoint;
-        QVariantList SpellVisual;
-        QVariantList DmgMultiplier;
-
 
     Q_PROPERTY(quint32 Id READ getId)
     Q_PROPERTY(quint32 School READ getSchool)
@@ -192,30 +166,30 @@ class MetaSpell : public QObject
     Q_PROPERTY(quint32 ModalNextSpell READ getModalNextSpell)
     Q_PROPERTY(quint32 StackAmount READ getStackAmount)
     Q_PROPERTY(QVariant Totem READ getTotem)
-    //Q_PROPERTY(QVariantList Reagent READ getReagent)
-    //Q_PROPERTY(QVariantList ReagentCount READ getReagentCount)
+    Q_PROPERTY(QVariant Reagent READ getReagent)
+    Q_PROPERTY(QVariant ReagentCount READ getReagentCount)
     Q_PROPERTY(qint32  EquippedItemClass READ getEquippedItemClass)
     Q_PROPERTY(qint32  EquippedItemSubClassMask READ getEquippedItemSubClassMask)
     Q_PROPERTY(qint32  EquippedItemInventoryTypeMask READ getEquippedItemInventoryTypeMask)
-    /*Q_PROPERTY(QVariantList Effect READ getEffect)
-    Q_PROPERTY(QVariantList EffectDieSides READ getEffectDieSides)
-    Q_PROPERTY(QVariantList EffectBaseDice READ getEffectBaseDice)
-    Q_PROPERTY(QVariantList EffectDicePerLevel READ getEffectDicePerLevel)
-    Q_PROPERTY(QVariantList EffectRealPointsPerLevel READ getEffectRealPointsPerLevel)
-    Q_PROPERTY(QVariantList EffectBasePoints READ getEffectBasePoints)
-    Q_PROPERTY(QVariantList EffectMechanic READ getEffectMechanic)
-    Q_PROPERTY(QVariantList EffectImplicitTargetA READ getEffectImplicitTargetA)
-    Q_PROPERTY(QVariantList EffectImplicitTargetB READ getEffectImplicitTargetB)
-    Q_PROPERTY(QVariantList EffectRadiusIndex READ getEffectRadiusIndex)
-    Q_PROPERTY(QVariantList EffectApplyAuraName READ getEffectApplyAuraName)
-    Q_PROPERTY(QVariantList EffectAmplitude READ getEffectAmplitude)
-    Q_PROPERTY(QVariantList EffectMultipleValue READ getEffectMultipleValue)
-    Q_PROPERTY(QVariantList EffectChainTarget READ getEffectChainTarget)
-    Q_PROPERTY(QVariantList EffectItemType READ getEffectItemType)
-    Q_PROPERTY(QVariantList EffectMiscValue READ getEffectMiscValue)
-    Q_PROPERTY(QVariantList EffectTriggerSpell READ getEffectTriggerSpell)
-    Q_PROPERTY(QVariantList EffectPointsPerComboPoint READ getEffectPointsPerComboPoint)
-    Q_PROPERTY(QVariantList SpellVisual READ getSpellVisual)*/
+    Q_PROPERTY(QVariant Effect READ getEffect)
+    Q_PROPERTY(QVariant EffectDieSides READ getEffectDieSides)
+    Q_PROPERTY(QVariant EffectBaseDice READ getEffectBaseDice)
+    Q_PROPERTY(QVariant EffectDicePerLevel READ getEffectDicePerLevel)
+    Q_PROPERTY(QVariant EffectRealPointsPerLevel READ getEffectRealPointsPerLevel)
+    Q_PROPERTY(QVariant EffectBasePoints READ getEffectBasePoints)
+    Q_PROPERTY(QVariant EffectMechanic READ getEffectMechanic)
+    Q_PROPERTY(QVariant EffectImplicitTargetA READ getEffectImplicitTargetA)
+    Q_PROPERTY(QVariant EffectImplicitTargetB READ getEffectImplicitTargetB)
+    Q_PROPERTY(QVariant EffectRadiusIndex READ getEffectRadiusIndex)
+    Q_PROPERTY(QVariant EffectApplyAuraName READ getEffectApplyAuraName)
+    Q_PROPERTY(QVariant EffectAmplitude READ getEffectAmplitude)
+    Q_PROPERTY(QVariant EffectMultipleValue READ getEffectMultipleValue)
+    Q_PROPERTY(QVariant EffectChainTarget READ getEffectChainTarget)
+    Q_PROPERTY(QVariant EffectItemType READ getEffectItemType)
+    Q_PROPERTY(QVariant EffectMiscValue READ getEffectMiscValue)
+    Q_PROPERTY(QVariant EffectTriggerSpell READ getEffectTriggerSpell)
+    Q_PROPERTY(QVariant EffectPointsPerComboPoint READ getEffectPointsPerComboPoint)
+    Q_PROPERTY(QVariant SpellVisual READ getSpellVisual)
     Q_PROPERTY(quint32 SpellIconID READ getSpellIconID)
     Q_PROPERTY(quint32 ActiveIconID READ getActiveIconID)
     Q_PROPERTY(quint32 SpellPriority READ getSpellPriority)
@@ -237,7 +211,7 @@ class MetaSpell : public QObject
     Q_PROPERTY(quint32 DmgClass READ getDmgClass)
     Q_PROPERTY(quint32 PreventionType READ getPreventionType)
     Q_PROPERTY(qint32  StanceBarOrder READ getStanceBarOrder)
-    //Q_PROPERTY(QVariantList DmgMultiplier READ getDmgMultiplier)
+    Q_PROPERTY(QVariant DmgMultiplier READ getDmgMultiplier)
     Q_PROPERTY(quint32 MinFactionId READ getMinFactionId)
     Q_PROPERTY(quint32 MinReputation READ getMinReputation)
     Q_PROPERTY(quint32 RequiredAuraVision READ getRequiredAuraVision)

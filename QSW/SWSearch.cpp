@@ -4,41 +4,6 @@
 MetaSpell::MetaSpell(SpellEntry const *spellInfo)
     : m_spellInfo(spellInfo)
 {
-    // Тяжелый код. Необходим другой способ передачи массивов.
-    for (quint8 i = 0; i < MAX_SPELL_TOTEMS; i++)
-    {
-        Totem << spellInfo->Totem[i];
-        SpellVisual << spellInfo->SpellVisual[i];
-    }
-
-    for (quint8 i = 0; i < MAX_SPELL_REAGENTS; i++)
-    {
-        Reagent << spellInfo->Reagent[i];
-        ReagentCount << spellInfo->ReagentCount[i];
-    }
-
-    for (quint8 i = 0; i < MAX_EFFECT_INDEX; i++)
-    {
-        Effect << spellInfo->Effect[i];
-        EffectDieSides << spellInfo->EffectDieSides[i];
-        EffectBaseDice << spellInfo->EffectBaseDice[i];
-        EffectDicePerLevel << spellInfo->EffectDicePerLevel[i];
-        EffectRealPointsPerLevel << spellInfo->EffectRealPointsPerLevel[i];
-        EffectBasePoints << spellInfo->EffectBasePoints[i];
-        EffectMechanic << spellInfo->EffectMechanic[i];
-        EffectImplicitTargetA << spellInfo->EffectImplicitTargetA[i];
-        EffectImplicitTargetB << spellInfo->EffectImplicitTargetB[i];
-        EffectRadiusIndex << spellInfo->EffectRadiusIndex[i];
-        EffectApplyAuraName << spellInfo->EffectApplyAuraName[i];
-        EffectAmplitude << spellInfo->EffectAmplitude[i];
-        EffectMultipleValue << spellInfo->EffectMultipleValue[i];
-        EffectChainTarget << spellInfo->EffectChainTarget[i];
-        EffectItemType << spellInfo->EffectItemType[i];
-        EffectMiscValue << spellInfo->EffectMiscValue[i];
-        EffectTriggerSpell << spellInfo->EffectTriggerSpell[i];
-        EffectPointsPerComboPoint << spellInfo->EffectPointsPerComboPoint[i];
-        DmgMultiplier << spellInfo->DmgMultiplier[i];
-    }
 }
 
 MetaSpell::~MetaSpell()
@@ -59,9 +24,8 @@ bool SWSearch::hasValue(QString name, QString value, SpellEntry const *spellInfo
     MetaSpell metaSpell(spellInfo);
 
     QVariant spellValue = metaSpell.property(name.toAscii().data());
-    QString typeName(spellValue.typeName());
 
-    bool isList = typeName == "QVariantList";
+    QString typeName(spellValue.typeName());
 
     value.remove(QChar(32));
 
@@ -70,32 +34,146 @@ bool SWSearch::hasValue(QString name, QString value, SpellEntry const *spellInfo
         case '=':
         {
             value.remove(0, 1);
-            if (isList)
+
+            if (typeName == "uarray2")
             {
-                if (spellValue.toList().contains(value.toLongLong()))
-                    return true;
+                uarray2 var = spellValue.value<uarray2>();
+                for (quint8 i = 0; i < 2; i++)
+                    if (var.value[i] == value.toULong())
+                        return true;
+            }
+            else if (typeName == "iarray2")
+            {
+                iarray2 var = spellValue.value<iarray2>();
+                for (quint8 i = 0; i < 2; i++)
+                    if (var.value[i] == value.toLong())
+                        return true;
+            }
+            else if (typeName == "farray2")
+            {
+                farray2 var = spellValue.value<farray2>();
+                for (quint8 i = 0; i < 2; i++)
+                    if (var.value[i] == value.toFloat())
+                        return true;
+            }
+            else if (typeName == "uarray3")
+            {
+                uarray3 var = spellValue.value<uarray3>();
+                for (quint8 i = 0; i < 3; i++)
+                    if (var.value[i] == value.toULong())
+                        return true;
+            }
+            else if (typeName == "iarray3")
+            {
+                iarray3 var = spellValue.value<iarray3>();
+                for (quint8 i = 0; i < 3; i++)
+                    if (var.value[i] == value.toLong())
+                        return true;
+            }
+            else if (typeName == "farray3")
+            {
+                farray3 var = spellValue.value<farray3>();
+                for (quint8 i = 0; i < 3; i++)
+                    if (var.value[i] == value.toFloat())
+                        return true;
+            }
+            else if (typeName == "uarray8")
+            {
+                uarray8 var = spellValue.value<uarray8>();
+                for (quint8 i = 0; i < 8; i++)
+                    if (var.value[i] == value.toULong())
+                        return true;
+            }
+            else if (typeName == "iarray8")
+            {
+                iarray8 var = spellValue.value<iarray8>();
+                for (quint8 i = 0; i < 8; i++)
+                    if (var.value[i] == value.toLong())
+                        return true;
+            }
+            else if (typeName == "farray8")
+            {
+                farray8 var = spellValue.value<farray8>();
+                for (quint8 i = 0; i < 8; i++)
+                    if (var.value[i] == value.toFloat())
+                        return true;
             }
             else
             {
-                if (spellValue.toString().toLongLong() == value.toLongLong())
+                if (spellValue.toLongLong() == value.toLongLong())
                     return true;
             }
-            
         }
         break;
         case '>':
         {
             value.remove(0, 1);
-            if (isList)
+            if (typeName == "uarray2")
             {
-                QVariantList values = spellValue.toList();
-                for (QVariantList::iterator itr = values.begin(); itr != values.end(); ++itr)
-                    if ((*itr).toLongLong() > value.toLongLong())
+                uarray2 var = spellValue.value<uarray2>();
+                for (quint8 i = 0; i < 2; i++)
+                    if (var.value[i] > value.toULong())
+                        return true;
+            }
+            else if (typeName == "iarray2")
+            {
+                iarray2 var = spellValue.value<iarray2>();
+                for (quint8 i = 0; i < 2; i++)
+                    if (var.value[i] > value.toLong())
+                        return true;
+            }
+            else if (typeName == "farray2")
+            {
+                farray2 var = spellValue.value<farray2>();
+                for (quint8 i = 0; i < 2; i++)
+                    if (var.value[i] > value.toFloat())
+                        return true;
+            }
+            else if (typeName == "uarray3")
+            {
+                uarray3 var = spellValue.value<uarray3>();
+                for (quint8 i = 0; i < 3; i++)
+                    if (var.value[i] > value.toULong())
+                        return true;
+            }
+            else if (typeName == "iarray3")
+            {
+                iarray3 var = spellValue.value<iarray3>();
+                for (quint8 i = 0; i < 3; i++)
+                    if (var.value[i] > value.toLong())
+                        return true;
+            }
+            else if (typeName == "farray3")
+            {
+                farray3 var = spellValue.value<farray3>();
+                for (quint8 i = 0; i < 3; i++)
+                    if (var.value[i] > value.toFloat())
+                        return true;
+            }
+            else if (typeName == "uarray8")
+            {
+                uarray8 var = spellValue.value<uarray8>();
+                for (quint8 i = 0; i < 8; i++)
+                    if (var.value[i] > value.toULong())
+                        return true;
+            }
+            else if (typeName == "iarray8")
+            {
+                iarray8 var = spellValue.value<iarray8>();
+                for (quint8 i = 0; i < 8; i++)
+                    if (var.value[i] > value.toLong())
+                        return true;
+            }
+            else if (typeName == "farray8")
+            {
+                farray8 var = spellValue.value<farray8>();
+                for (quint8 i = 0; i < 8; i++)
+                    if (var.value[i] > value.toFloat())
                         return true;
             }
             else
             {
-                if (spellValue.toString().toLongLong() > value.toLongLong())
+                if (spellValue.toLongLong() > value.toLongLong())
                     return true;
             }
         }
@@ -103,16 +181,72 @@ bool SWSearch::hasValue(QString name, QString value, SpellEntry const *spellInfo
         case '<':
         {
             value.remove(0, 1);
-            if (isList)
+            if (typeName == "uarray2")
             {
-                QVariantList values = spellValue.toList();
-                for (QVariantList::iterator itr = values.begin(); itr != values.end(); ++itr)
-                    if ((*itr).toLongLong() < value.toLongLong())
+                uarray2 var = spellValue.value<uarray2>();
+                for (quint8 i = 0; i < 2; i++)
+                    if (var.value[i] < value.toULong())
+                        return true;
+            }
+            else if (typeName == "iarray2")
+            {
+                iarray2 var = spellValue.value<iarray2>();
+                for (quint8 i = 0; i < 2; i++)
+                    if (var.value[i] < value.toLong())
+                        return true;
+            }
+            else if (typeName == "farray2")
+            {
+                farray2 var = spellValue.value<farray2>();
+                for (quint8 i = 0; i < 2; i++)
+                    if (var.value[i] < value.toFloat())
+                        return true;
+            }
+            else if (typeName == "uarray3")
+            {
+                uarray3 var = spellValue.value<uarray3>();
+                for (quint8 i = 0; i < 3; i++)
+                    if (var.value[i] < value.toULong())
+                        return true;
+            }
+            else if (typeName == "iarray3")
+            {
+                iarray3 var = spellValue.value<iarray3>();
+                for (quint8 i = 0; i < 3; i++)
+                    if (var.value[i] < value.toLong())
+                        return true;
+            }
+            else if (typeName == "farray3")
+            {
+                farray3 var = spellValue.value<farray3>();
+                for (quint8 i = 0; i < 3; i++)
+                    if (var.value[i] < value.toFloat())
+                        return true;
+            }
+            else if (typeName == "uarray8")
+            {
+                uarray8 var = spellValue.value<uarray8>();
+                for (quint8 i = 0; i < 8; i++)
+                    if (var.value[i] < value.toULong())
+                        return true;
+            }
+            else if (typeName == "iarray8")
+            {
+                iarray8 var = spellValue.value<iarray8>();
+                for (quint8 i = 0; i < 8; i++)
+                    if (var.value[i] < value.toLong())
+                        return true;
+            }
+            else if (typeName == "farray8")
+            {
+                farray8 var = spellValue.value<farray8>();
+                for (quint8 i = 0; i < 8; i++)
+                    if (var.value[i] < value.toFloat())
                         return true;
             }
             else
             {
-                if (spellValue.toString().toLongLong() < value.toLongLong())
+                if (spellValue.toLongLong() < value.toLongLong())
                     return true;
             }
         }
@@ -120,11 +254,46 @@ bool SWSearch::hasValue(QString name, QString value, SpellEntry const *spellInfo
         case '&':
         {
             value.remove(0, 1);
-            if (isList)
+            if (typeName == "uarray2")
             {
-                QVariantList values = spellValue.toList();
-                for (QVariantList::iterator itr = values.begin(); itr != values.end(); ++itr)
-                    if ((*itr).toLongLong() & value.toLongLong())
+                uarray2 var = spellValue.value<uarray2>();
+                for (quint8 i = 0; i < 2; i++)
+                    if (var.value[i] & value.toULong())
+                        return true;
+            }
+            else if (typeName == "iarray2")
+            {
+                iarray2 var = spellValue.value<iarray2>();
+                for (quint8 i = 0; i < 2; i++)
+                    if (var.value[i] & value.toLong())
+                        return true;
+            }
+            else if (typeName == "uarray3")
+            {
+                uarray3 var = spellValue.value<uarray3>();
+                for (quint8 i = 0; i < 3; i++)
+                    if (var.value[i] & value.toULong())
+                        return true;
+            }
+            else if (typeName == "iarray3")
+            {
+                iarray3 var = spellValue.value<iarray3>();
+                for (quint8 i = 0; i < 3; i++)
+                    if (var.value[i] & value.toLong())
+                        return true;
+            }
+            else if (typeName == "uarray8")
+            {
+                uarray8 var = spellValue.value<uarray8>();
+                for (quint8 i = 0; i < 8; i++)
+                    if (var.value[i] & value.toULong())
+                        return true;
+            }
+            else if (typeName == "iarray8")
+            {
+                iarray8 var = spellValue.value<iarray8>();
+                for (quint8 i = 0; i < 8; i++)
+                    if (var.value[i] & value.toLong())
                         return true;
             }
             else
@@ -137,11 +306,46 @@ bool SWSearch::hasValue(QString name, QString value, SpellEntry const *spellInfo
         case '~':
         {
             value.remove(0, 1);
-            if (isList)
+            if (typeName == "uarray2")
             {
-                QVariantList values = spellValue.toList();
-                for (QVariantList::iterator itr = values.begin(); itr != values.end(); ++itr)
-                    if (~(*itr).toLongLong() & value.toLongLong())
+                uarray2 var = spellValue.value<uarray2>();
+                for (quint8 i = 0; i < 2; i++)
+                    if (~var.value[i] & value.toULong())
+                        return true;
+            }
+            else if (typeName == "iarray2")
+            {
+                iarray2 var = spellValue.value<iarray2>();
+                for (quint8 i = 0; i < 2; i++)
+                    if (~var.value[i] & value.toLong())
+                        return true;
+            }
+            else if (typeName == "uarray3")
+            {
+                uarray3 var = spellValue.value<uarray3>();
+                for (quint8 i = 0; i < 3; i++)
+                    if (~var.value[i] & value.toULong())
+                        return true;
+            }
+            else if (typeName == "iarray3")
+            {
+                iarray3 var = spellValue.value<iarray3>();
+                for (quint8 i = 0; i < 3; i++)
+                    if (~var.value[i] & value.toLong())
+                        return true;
+            }
+            else if (typeName == "uarray8")
+            {
+                uarray8 var = spellValue.value<uarray8>();
+                for (quint8 i = 0; i < 8; i++)
+                    if (~var.value[i] & value.toULong())
+                        return true;
+            }
+            else if (typeName == "iarray8")
+            {
+                iarray8 var = spellValue.value<iarray8>();
+                for (quint8 i = 0; i < 8; i++)
+                    if (~var.value[i] & value.toLong())
                         return true;
             }
             else
@@ -153,14 +357,72 @@ bool SWSearch::hasValue(QString name, QString value, SpellEntry const *spellInfo
         break;
         default:
         {
-            if (isList)
+            if (typeName == "uarray2")
             {
-                if (spellValue.toList().contains(value))
-                    return true;
+                uarray2 var = spellValue.value<uarray2>();
+                for (quint8 i = 0; i < 2; i++)
+                    if (var.value[i] == value.toULong())
+                        return true;
+            }
+            else if (typeName == "iarray2")
+            {
+                iarray2 var = spellValue.value<iarray2>();
+                for (quint8 i = 0; i < 2; i++)
+                    if (var.value[i] == value.toLong())
+                        return true;
+            }
+            else if (typeName == "farray2")
+            {
+                farray2 var = spellValue.value<farray2>();
+                for (quint8 i = 0; i < 2; i++)
+                    if (var.value[i] == value.toFloat())
+                        return true;
+            }
+            else if (typeName == "uarray3")
+            {
+                uarray3 var = spellValue.value<uarray3>();
+                for (quint8 i = 0; i < 3; i++)
+                    if (var.value[i] == value.toULong())
+                        return true;
+            }
+            else if (typeName == "iarray3")
+            {
+                iarray3 var = spellValue.value<iarray3>();
+                for (quint8 i = 0; i < 3; i++)
+                    if (var.value[i] == value.toLong())
+                        return true;
+            }
+            else if (typeName == "farray3")
+            {
+                farray3 var = spellValue.value<farray3>();
+                for (quint8 i = 0; i < 3; i++)
+                    if (var.value[i] == value.toFloat())
+                        return true;
+            }
+            else if (typeName == "uarray8")
+            {
+                uarray8 var = spellValue.value<uarray8>();
+                for (quint8 i = 0; i < 8; i++)
+                    if (var.value[i] == value.toULong())
+                        return true;
+            }
+            else if (typeName == "iarray8")
+            {
+                iarray8 var = spellValue.value<iarray8>();
+                for (quint8 i = 0; i < 8; i++)
+                    if (var.value[i] == value.toLong())
+                        return true;
+            }
+            else if (typeName == "farray8")
+            {
+                farray8 var = spellValue.value<farray8>();
+                for (quint8 i = 0; i < 8; i++)
+                    if (var.value[i] == value.toFloat())
+                        return true;
             }
             else
             {
-                if (spellValue.toString() == value)
+                if (spellValue.toLongLong() == value.toLongLong())
                     return true;
             }
         }
@@ -210,7 +472,7 @@ void SWSearch::search()
                 {
                     for (quint8 i = EFFECT_INDEX_0; i < MAX_EFFECT_INDEX; i++)
                     {
-                        if (m_spellInfo->EffectApplyAuraName[i] == m_sw->GetMetaEnum().value(m_form->comboBox_2->currentIndex()))
+                        if (m_spellInfo->EffectApplyAuraName.value[i] == m_sw->GetMetaEnum().value(m_form->comboBox_2->currentIndex()))
                         {
                             aura = true;
                             break;
@@ -225,7 +487,7 @@ void SWSearch::search()
                 {
                     for (quint8 i = EFFECT_INDEX_0; i < MAX_EFFECT_INDEX; i++)
                     {
-                        if (m_spellInfo->Effect[i] == m_sw->GetMetaEnum().value(m_form->comboBox_3->currentIndex()))
+                        if (m_spellInfo->Effect.value[i] == m_sw->GetMetaEnum().value(m_form->comboBox_3->currentIndex()))
                         {
                             effect = true;
                             break;
@@ -240,7 +502,7 @@ void SWSearch::search()
                 {
                     for (quint8 i = EFFECT_INDEX_0; i < MAX_EFFECT_INDEX; i++)
                     {
-                        if (m_spellInfo->EffectImplicitTargetA[i] == m_sw->GetMetaEnum().value(m_form->comboBox_4->currentIndex()))
+                        if (m_spellInfo->EffectImplicitTargetA.value[i] == m_sw->GetMetaEnum().value(m_form->comboBox_4->currentIndex()))
                         {
                             targetA = true;
                             break;
@@ -254,7 +516,7 @@ void SWSearch::search()
                 {
                     for (quint8 i = EFFECT_INDEX_0; i < MAX_EFFECT_INDEX; i++)
                     {
-                        if (m_spellInfo->EffectImplicitTargetB[i] == m_sw->GetMetaEnum().value(m_form->comboBox_5->currentIndex()))
+                        if (m_spellInfo->EffectImplicitTargetB.value[i] == m_sw->GetMetaEnum().value(m_form->comboBox_5->currentIndex()))
                         {
                             targetB = true;
                             break;
