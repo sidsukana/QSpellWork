@@ -31,23 +31,11 @@ bool DBCFileLoader::Load(const char *filename, const char *fmt)
     stream.setByteOrder(QDataStream::ByteOrder(QSW_ENDIAN));
 
     file.seek(0);
-    stream >> header;
+    stream >> header >> recordCount >> fieldCount >> recordSize >> stringSize;
 
     // Check 'WDBC'
     if (header != 0x43424457)
         return false;
-
-    file.seek(4);
-    stream >> recordCount;
-
-    file.seek(8);
-    stream >> fieldCount;
-
-    file.seek(12);
-    stream >> recordSize;
-
-    file.seek(16);
-    stream >> stringSize;
 
     fieldsOffset = new quint32[fieldCount];
     fieldsOffset[0] = 0;

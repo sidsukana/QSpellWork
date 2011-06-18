@@ -5,20 +5,6 @@
 #include "SWObject.h"
 #include "ui_SWFormUI.h"
 
-enum ToolBox
-{
-    TOOL_NONE,
-    TOOL_ONE,
-    TOOL_TWO
-};
-
-enum ToolState
-{
-    STATE_NONE,
-    STATE_CONTAIN,
-    STATE_NOT_CONTAIN
-};
-
 class SWObject;
 class SWForm : public QMainWindow, public Ui::SWFormUI
 {
@@ -29,7 +15,6 @@ class SWForm : public QMainWindow, public Ui::SWFormUI
         ~SWForm();
 
         QTextBrowser *GetBrowser(quint8 num) { return(num == 0 ? SpellInfoBrowser : SpellInfoBrowser2); }
-        quint8 GetToolState(quint8 Tool);
 
     signals:
         void SignalSearch(quint8 type);
@@ -40,8 +25,6 @@ class SWForm : public QMainWindow, public Ui::SWFormUI
         void SlotButtonSearch();
         void SlotCompareSearch();
         void SlotSetMode(QAction *ac);
-        void SlotSetCheckedA(QAction *ac);
-        void SlotSetCheckedB(QAction *ac);
         void SlotSearch(quint8 type);
         void SlotSearchFromList(const QModelIndex &index);
 
@@ -51,13 +34,10 @@ class SWForm : public QMainWindow, public Ui::SWFormUI
 
     private:
         void LoadComboBoxes();
-        void LoadToolButtons();
         void DetectLocale();
 
         Ui::SWFormUI ui;
         SWObject *sw;
-        QAction *actionA[3];
-        QAction *actionB[3];
 };
 
 class Enums : public QObject

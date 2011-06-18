@@ -7,17 +7,12 @@
 
 #include <sys/types.h>
 
-//#include <ace/Basic_Types.h>
-//#include <ace/Default_Constants.h>
-//#include <ace/OS_NS_dlfcn.h>
-//#include <ace/ACE_export.h>
-
 #include "Platform/CompilerDefs.h"
 
-#define QSW_LITTLEENDIAN 0
-#define QSW_BIGENDIAN    1
+#define QSW_LITTLEENDIAN 1
+#define QSW_BIGENDIAN    0
 
-#if !defined(QSW_ENDIAN)
+#ifndef QSW_ENDIAN
 #  if defined (ACE_BIG_ENDIAN)
 #    define QSW_ENDIAN QSW_BIGENDIAN
 #  else //ACE_BYTE_ORDER != ACE_BIG_ENDIAN
@@ -63,10 +58,10 @@
 #  define DECLSPEC_NORETURN
 #endif //PLATFORM
 
-#if !defined(DEBUG)
+#ifndef DEBUG
 #  define QSW_INLINE inline
 #else //DEBUG
-#  if !defined(QSW_DEBUG)
+#  ifndef QSW_DEBUG
 #    define QSW_DEBUG
 #  endif //QSW_DEBUG
 #  define QSW_INLINE
