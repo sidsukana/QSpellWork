@@ -2,42 +2,53 @@
 #define SWFORM_H
 
 #include <QtGui/QMainWindow>
+#include <QtGui/QToolButton>
+#include <QtGui/QIcon>
+#include <QtWebKit/QWebView>
+#include <QtWebKit/QWebFrame>
 #include "SWObject.h"
 #include "ui_SWFormUI.h"
 
 class SWObject;
+class SpellListSortedModel;
+
 class SWForm : public QMainWindow, public Ui::SWFormUI
 {
     Q_OBJECT
 
     public:
-        SWForm(QWidget *parent = 0);
+        SWForm(QWidget* parent = 0);
         ~SWForm();
 
-        QTextBrowser *GetBrowser(quint8 num) { return(num == 0 ? SpellInfoBrowser : SpellInfoBrowser2); }
+        QWebView* getBrowser(quint8 num) { return(num == 0 ? webView : webView_2); }
 
     signals:
-        void SignalSearch(quint8 type);
+        void signalSearch(quint8 type);
 
     private slots:
-        void SlotAbout();
-        void SlotFilterSearch();
-        void SlotButtonSearch();
-        void SlotCompareSearch();
-        void SlotSetMode(QAction *ac);
-        void SlotSearch(quint8 type);
-        void SlotSearchFromList(const QModelIndex &index);
-
-        void SlotRegExp();
+        void slotAbout();
+        void slotFilterSearch();
+        void slotButtonSearch();
+        void slotCompareSearch();
+        void slotSetMode(QAction* ac);
+        void slotSearch(quint8 type);
+        void slotSearchFromList(const QModelIndex &index);
+        void slotLinkClicked(const QUrl &url);
+        void slotRegExp();
 
         bool event(QEvent* ev);
 
     private:
-        void LoadComboBoxes();
-        void DetectLocale();
+        void loadComboBoxes();
+        void detectLocale();
+        void createModeButton();
 
-        Ui::SWFormUI ui;
-        SWObject *sw;
+        SpellListSortedModel* m_sortedModel;
+        Ui::SWFormUI m_ui;
+        SWObject* m_sw;
+        QToolButton* m_modeButton;
+        QAction* m_regExp;
+        QAction* m_about;
 };
 
 class Enums : public QObject
@@ -305,9 +316,7 @@ public:
         SPELL_EFFECT_ALLOW_RENAME_PET           = 159,
         SPELL_EFFECT_160                        = 160,
         SPELL_EFFECT_TALENT_SPEC_COUNT          = 161,
-        SPELL_EFFECT_TALENT_SPEC_SELECT         = 162,
-        SPELL_EFFECT_163                        = 163,
-        SPELL_EFFECT_164                        = 164
+        SPELL_EFFECT_TALENT_SPEC_SELECT         = 162
     };
 
     enum TargetFlags
@@ -605,42 +614,6 @@ public:
         SPELL_ATTR_EX6_UNK31                      = 1 << 0x1F
     };
 
-    enum AttributesExG
-    {
-        SPELL_ATTR_EXG_UNK0                       = 1 << 0x00,
-        SPELL_ATTR_EXG_UNK1                       = 1 << 0x01,
-        SPELL_ATTR_EXG_UNK2                       = 1 << 0x02,
-        SPELL_ATTR_EXG_UNK3                       = 1 << 0x03,
-        SPELL_ATTR_EXG_UNK4                       = 1 << 0x04,
-        SPELL_ATTR_EXG_UNK5                       = 1 << 0x05,
-        SPELL_ATTR_EXG_UNK6                       = 1 << 0x06,
-        SPELL_ATTR_EXG_UNK7                       = 1 << 0x07,
-        SPELL_ATTR_EXG_UNK8                       = 1 << 0x08,
-        SPELL_ATTR_EXG_UNK9                       = 1 << 0x09,
-        SPELL_ATTR_EXG_UNK10                      = 1 << 0x0A,
-        SPELL_ATTR_EXG_UNK11                      = 1 << 0x0B,
-        SPELL_ATTR_EXG_UNK12                      = 1 << 0x0C,
-        SPELL_ATTR_EXG_UNK13                      = 1 << 0x0D,
-        SPELL_ATTR_EXG_UNK14                      = 1 << 0x0E,
-        SPELL_ATTR_EXG_UNK15                      = 1 << 0x0F,
-        SPELL_ATTR_EXG_UNK16                      = 1 << 0x10,
-        SPELL_ATTR_EXG_UNK17                      = 1 << 0x11,
-        SPELL_ATTR_EXG_UNK18                      = 1 << 0x12,
-        SPELL_ATTR_EXG_UNK19                      = 1 << 0x13,
-        SPELL_ATTR_EXG_UNK20                      = 1 << 0x14,
-        SPELL_ATTR_EXG_UNK21                      = 1 << 0x15,
-        SPELL_ATTR_EXG_UNK22                      = 1 << 0x16,
-        SPELL_ATTR_EXG_UNK23                      = 1 << 0x17,
-        SPELL_ATTR_EXG_UNK24                      = 1 << 0x18,
-        SPELL_ATTR_EXG_UNK25                      = 1 << 0x19,
-        SPELL_ATTR_EXG_UNK26                      = 1 << 0x1A,
-        SPELL_ATTR_EXG_UNK27                      = 1 << 0x1B,
-        SPELL_ATTR_EXG_UNK28                      = 1 << 0x1C,
-        SPELL_ATTR_EXG_UNK29                      = 1 << 0x1D,
-        SPELL_ATTR_EXG_UNK30                      = 1 << 0x1E,
-        SPELL_ATTR_EXG_UNK31                      = 1 << 0x1F
-    };
-
     enum AuraType
     {
         SPELL_AURA_NONE                                     = 0,
@@ -904,62 +877,7 @@ public:
         SPELL_AURA_258                                      = 258,
         SPELL_AURA_259                                      = 259,
         SPELL_AURA_SCREEN_EFFECT                            = 260,
-        SPELL_AURA_PHASE                                    = 261,
-        SPELL_AURA_262                                      = 262,
-        SPELL_AURA_ALLOW_ONLY_ABILITY                       = 263,
-        SPELL_AURA_264                                      = 264,
-        SPELL_AURA_265                                      = 265,
-        SPELL_AURA_266                                      = 266,
-        SPELL_AURA_MOD_IMMUNE_AURA_APPLY_SCHOOL             = 267,
-        SPELL_AURA_MOD_ATTACK_POWER_OF_STAT_PERCENT         = 268,
-        SPELL_AURA_MOD_IGNORE_DAMAGE_REDUCTION_SCHOOL       = 269,
-        SPELL_AURA_MOD_IGNORE_TARGET_RESIST                 = 270,
-        SPELL_AURA_MOD_DAMAGE_FROM_CASTER                   = 271,
-        SPELL_AURA_MAELSTROM_WEAPON                         = 272,
-        SPELL_AURA_X_RAY                                    = 273,
-        SPELL_AURA_274                                      = 274,
-        SPELL_AURA_MOD_IGNORE_SHAPESHIFT                    = 275,
-        SPELL_AURA_276                                      = 276,
-        SPELL_AURA_MOD_MAX_AFFECTED_TARGETS                 = 277,
-        SPELL_AURA_MOD_DISARM_RANGED                        = 278,
-        SPELL_AURA_279                                      = 279,
-        SPELL_AURA_MOD_TARGET_ARMOR_PCT                     = 280,
-        SPELL_AURA_MOD_HONOR_GAIN                           = 281,
-        SPELL_AURA_MOD_BASE_HEALTH_PCT                      = 282,
-        SPELL_AURA_MOD_HEALING_RECEIVED                     = 283,
-        SPELL_AURA_LINKED_AURA                              = 284,
-        SPELL_AURA_MOD_ATTACK_POWER_OF_ARMOR                = 285,
-        SPELL_AURA_ABILITY_PERIODIC_CRIT                    = 286,
-        SPELL_AURA_DEFLECT_SPELLS                           = 287,
-        SPELL_AURA_288                                      = 288,
-        SPELL_AURA_289                                      = 289,
-        SPELL_AURA_MOD_ALL_CRIT_CHANCE                      = 290,
-        SPELL_AURA_MOD_QUEST_XP_PCT                         = 291,
-        SPELL_AURA_OPEN_STABLE                              = 292,
-        SPELL_AURA_OVERRIDE_SPELLS                          = 293,
-        SPELL_AURA_STOP_MANA_REGEN                          = 294,
-        SPELL_AURA_295                                      = 295,
-        SPELL_AURA_296                                      = 296,
-        SPELL_AURA_ROOT_NO_FALL                             = 297,
-        SPELL_AURA_STUN_NO_FALL                             = 298,
-        SPELL_AURA_299                                      = 299,
-        SPELL_AURA_SHARE_DAMAGE_PCT                         = 300,
-        SPELL_AURA_HEAL_ABSORB                              = 301,
-        SPELL_AURA_302                                      = 302,
-        SPELL_AURA_MOD_DAMAGE_DONE_TO_AURA_STATE_PCT        = 303,
-        SPELL_AURA_304                                      = 304,
-        SPELL_AURA_MOD_MINIMUM_SPEED                        = 305,
-        SPELL_AURA_306                                      = 306,
-        SPELL_AURA_HEAL_ABSORB_2                            = 307,
-        SPELL_AURA_308                                      = 308,
-        SPELL_AURA_309                                      = 309,
-        SPELL_AURA_MOD_AOE_DAMAGE                           = 310,
-        SPELL_AURA_311                                      = 311,
-        SPELL_AURA_312                                      = 312,
-        SPELL_AURA_313                                      = 313,
-        SPELL_AURA_314                                      = 314,
-        SPELL_AURA_UNDERWATER_WALKING                       = 315,
-        SPELL_AURA_HASTE_AFFECT_DOT_TICK                    = 316
+        SPELL_AURA_PHASE                                    = 261
     };
 
     enum ShapeshiftFormMask
@@ -1282,13 +1200,7 @@ public:
         TARGET_101                              = 101,
         TARGET_102                              = 102,
         TARGET_103                              = 103,
-        TARGET_IN_FRONT_OF_CASTER_30            = 104,
-        TARGET_105                              = 105,
-        TARGET_106                              = 106,
-        TARGET_107                              = 107,
-        TARGET_108                              = 108,
-        TARGET_109                              = 109,
-        TARGET_110                              = 110
+        TARGET_IN_FRONT_OF_CASTER_30            = 104
     };
 
     enum UnitMods
@@ -1378,7 +1290,7 @@ public:
         SPELLFAMILY_UNK2        = 12,
         SPELLFAMILY_POTION      = 13,
         // unused               = 14,
-        SPELLFAMILY_DEATHKNIGHT = 15,
+        // unused               = 15,
         // unused               = 16,
         SPELLFAMILY_PET         = 17
     };
@@ -1410,7 +1322,6 @@ public:
     Q_ENUMS(AttributesEx4)
     Q_ENUMS(AttributesEx5)
     Q_ENUMS(AttributesEx6)
-    Q_ENUMS(AttributesExG)
     Q_ENUMS(AuraType)
     Q_ENUMS(ShapeshiftFormMask)
     Q_ENUMS(ItemClass)

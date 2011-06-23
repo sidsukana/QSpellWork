@@ -1,10 +1,9 @@
 #include "DBCStores.h"
 #include "DBCfmt.h"
-#include "Policies/SingletonImp.h"
-#include "Platform/Define.h"
+#include "Define.h"
 
 #include <QtCore/QFile>
-#include <QtCore/QDataStream>
+#include <QtCore/QStringList>
 
 DBCStorage <SkillLineEntry> sSkillLineStore(SkillLinefmt);
 DBCStorage <SkillLineAbilityEntry> sSkillLineAbilityStore(SkillLineAbilityfmt);
@@ -13,36 +12,34 @@ DBCStorage <SpellCastTimesEntry> sSpellCastTimesStore(SpellCastTimefmt);
 DBCStorage <SpellDurationEntry> sSpellDurationStore(SpellDurationfmt);
 DBCStorage <SpellRadiusEntry> sSpellRadiusStore(SpellRadiusfmt);
 DBCStorage <SpellRangeEntry> sSpellRangeStore(SpellRangefmt);
-DBCStorage <ScreenEffectEntry> sScreenEffectStore(ScreenEffectfmt);
-DBCStorage <OverrideSpellDataEntry> sOverrideSpellDataStore(OverrideSpellDatafmt);
+DBCStorage <SpellIconEntry> sSpellIconStore(SpellIconfmt);
 
-typedef std::list<std::string> StoreProblemList;
+typedef QStringList StoreProblemList;
 
-static bool LoadDBC_assert_print(quint32 fsize, quint32 rsize, const std::string& filename)
+static bool LoadDBC_assert_print(quint32 fsize, quint32 rsize, const QString filename)
 {
     // ASSERT must fail after function call
     return false;
 }
 
 template<class T>
-inline void LoadDBC(StoreProblemList& errlist, DBCStorage<T>& storage, const std::string& dbc_path, const std::string& filename)
+inline void LoadDBC(StoreProblemList& errlist, DBCStorage<T>& storage, const QString dbc_path, const QString filename)
 {
     // Compatibility format and C++ structure sizes
     assert(DBCFileLoader::GetFormatRecordSize(storage.GetFormat()) == sizeof(T) || LoadDBC_assert_print(DBCFileLoader::GetFormatRecordSize(storage.GetFormat()), sizeof(T), filename));
 
-    std::string dbc_filename = dbc_path + filename;
-    if (!storage.Load(dbc_filename.c_str()))
+    QString dbc_filename = dbc_path + filename;
+    if (!storage.Load(dbc_filename))
     {
         // Sort problematic dbc to (1) non compatible and (2) nonexistent
 
-        QFile file(dbc_filename.c_str());
+        QFile file(dbc_filename);
         
         if (file.open(QIODevice::ReadOnly))
         {
             char buf[100];
-            sprintf(buf, " (exist, but have %d fields instead) Wrong client version DBC file?",
-                storage.GetFieldCount(), strlen(storage.GetFormat()));
-            errlist.push_back(dbc_filename + buf);
+            sprintf(buf, " (exist, but have %d fields instead) Wrong client version DBC file?", storage.GetFieldCount(), storage.GetFormat().length());
+            errlist.push_back(dbc_filename + QString(buf));
             file.close();
         }
         else
@@ -52,7 +49,7 @@ inline void LoadDBC(StoreProblemList& errlist, DBCStorage<T>& storage, const std
 
 void LoadDBCStores()
 {
-    std::string dbcPath = "DBC/";
+    QString dbcPath("DBC/");
 
     StoreProblemList bad_dbc_files;
 
@@ -63,6 +60,5 @@ void LoadDBCStores()
     LoadDBC(bad_dbc_files, sSpellDurationStore,       dbcPath, "SpellDuration.dbc");
     LoadDBC(bad_dbc_files, sSpellRadiusStore,         dbcPath, "SpellRadius.dbc");
     LoadDBC(bad_dbc_files, sSpellRangeStore,          dbcPath, "SpellRange.dbc");
-    LoadDBC(bad_dbc_files, sScreenEffectStore,        dbcPath, "ScreenEffect.dbc");
-    LoadDBC(bad_dbc_files, sOverrideSpellDataStore,   dbcPath, "OverrideSpellData.dbc");
+    LoadDBC(bad_dbc_files, sSpellIconStore,           dbcPath, "SpellIcon.dbc");
 }

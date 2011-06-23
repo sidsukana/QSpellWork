@@ -2,7 +2,7 @@
 #define DBCSTRUCTURE_H
 
 #include "SWDefines.h"
-#include "Platform/Define.h"
+#include "Define.h"
 
 #include <map>
 #include <set>
@@ -198,25 +198,10 @@ struct SpellDurationEntry
     qint32     Duration[3];
 };
 
-struct ScreenEffectEntry
+struct SpellIconEntry
 {
-    quint32 Id;
-    char*   Name[16];
-    quint32 Unk0;
-    float   Unk1;
-    quint32 Unk2;
-    quint32 Unk3;           // % of smth?
-    quint32 Unk4;           // all 0
-    qint32  Unk5;
-    quint32 Unk6;
-    quint32 Unk7;
-};
-
-struct OverrideSpellDataEntry
-{
-    quint32 Id;
-    quint32 Spells[10];
-    quint32 unk;
+    quint32    IconId;
+    char*      IconPath;
 };
 
 // GCC have alternative #pragma pack() syntax and old gcc version not support pack(pop), also any gcc version not support it at some platform
