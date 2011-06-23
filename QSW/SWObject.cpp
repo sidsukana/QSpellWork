@@ -776,6 +776,7 @@ void SWObject::showInfo(SpellEntry const* spellInfo, quint8 num)
     QString sTargetMask(QString("%0").arg(spellInfo->Targets, 8, 16, QChar('0')));
     QString sCreatureTypeMask(QString("%0").arg(spellInfo->TargetCreatureType, 8, 16, QChar('0')));
     QString sFormMask(QString("%0").arg(spellInfo->Stances, 8, 16, QChar('0')));
+    QString sFormMaskNot(QString("%0").arg(spellInfo->StancesNot, 8, 16, QChar('0')));
     QString sIF(QString("%0").arg(spellInfo->InterruptFlags, 8, 16, QChar('0')));
     QString sAIF(QString("%0").arg(spellInfo->AuraInterruptFlags, 8, 16, QChar('0')));
     QString sCIF(QString("%0").arg(spellInfo->ChannelInterruptFlags, 8, 16, QChar('0')));
@@ -907,7 +908,7 @@ void SWObject::showInfo(SpellEntry const* spellInfo, quint8 num)
 
     if (spellInfo->StancesNot)
         html.append(QString("Stances not: 0x%0 (%1)<br>")
-            .arg(sFormMask.toUpper())
+            .arg(sFormMaskNot.toUpper())
             .arg(containAttributes(spellInfo, TYPE_FORMS_NOT)));
 
     appendSkillLine(spellInfo, num);
