@@ -55,7 +55,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="qtmain.lib QtCore4.lib QtGui4.lib"
+				AdditionalDependencies="qtmain.lib QtCore4.lib QtGui4.lib QtWebKit4.lib"
 				OutputFile="$(OutDir)\$(ProjectName).exe"
 				AdditionalLibraryDirectories="$(QTDIR)\lib"
 				GenerateDebugInformation="false"
@@ -124,7 +124,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="qtmaind.lib QtCored4.lib QtGuid4.lib"
+				AdditionalDependencies="qtmaind.lib QtCored4.lib QtGuid4.lib QtWebKitd4.lib"
 				OutputFile="$(OutDir)\$(ProjectName).exe"
 				AdditionalLibraryDirectories="$(QTDIR)\lib"
 				GenerateDebugInformation="true"
@@ -163,6 +163,10 @@
 			>
 			<File
 				RelativePath=".\AboutForm.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Alphanum.cpp"
 				>
 			</File>
 			<File
@@ -226,6 +230,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\Alphanum.h"
+				>
+			</File>
+			<File
 				RelativePath=".\SWDefines.h"
 				>
 			</File>
@@ -262,6 +270,28 @@
 			<File
 				RelativePath=".\SWObject.h"
 				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing $(InputFileName)..."
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.&quot; &quot;-I.\GeneratedFiles&quot; &quot;-I.\GeneratedFiles\$(ConfigurationName)\.&quot; &quot;-I.\Includes&quot; &quot;-I.\Includes\ACE_wrappers&quot; -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_LARGEFILE_SUPPORT -DQT_NO_DEBUG -DUNICODE -DWIN32&#x0D;&#x0A;"
+						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
+						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing $(InputFileName)..."
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.&quot; &quot;-I.\GeneratedFiles&quot; &quot;-I.\GeneratedFiles\$(ConfigurationName)\.&quot; &quot;-I.\Includes&quot; -DQT_CORE_LIB -DQT_GUI_LIB -DQT_LARGEFILE_SUPPORT -DUNICODE -DWIN32&#x0D;&#x0A;"
+						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
+						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\SWSearch.h"
@@ -350,142 +380,18 @@
 			<Filter
 				Name="Includes"
 				>
-				<Filter
-					Name="Dynamic"
+				<File
+					RelativePath=".\Includes\ByteConverter.h"
 					>
-					<File
-						RelativePath=".\Includes\Dynamic\FactoryHolder.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Includes\Dynamic\ObjectRegistry.h"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="GameSystem"
+				</File>
+				<File
+					RelativePath=".\Includes\Platform\CompilerDefs.h"
 					>
-					<File
-						RelativePath=".\Includes\GameSystem\Grid.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Includes\GameSystem\GridLoader.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Includes\GameSystem\GridReference.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Includes\GameSystem\GridRefManager.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Includes\GameSystem\NGrid.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Includes\GameSystem\TypeContainer.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Includes\GameSystem\TypeContainerFunctions.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Includes\GameSystem\TypeContainerFunctionsPtr.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Includes\GameSystem\TypeContainerVisitor.h"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="Platform"
+				</File>
+				<File
+					RelativePath=".\Includes\Platform\Define.h"
 					>
-					<File
-						RelativePath=".\Includes\Platform\CompilerDefs.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Includes\Platform\Define.h"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="Policies"
-					>
-					<File
-						RelativePath=".\Includes\Policies\CreationPolicy.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Includes\Policies\ObjectLifeTime.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Includes\Policies\ObjectLifeTime.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Includes\Policies\Singleton.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Includes\Policies\SingletonImp.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Includes\Policies\ThreadingModel.h"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="Utilities"
-					>
-					<File
-						RelativePath=".\Includes\Utilities\ByteConverter.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Includes\Utilities\Callback.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Includes\Utilities\EventProcessor.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Includes\Utilities\EventProcessor.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Includes\Utilities\LinkedList.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Includes\Utilities\TypeList.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Includes\Utilities\UnorderedMapSet.h"
-						>
-					</File>
-					<Filter
-						Name="LinkedReference"
-						>
-						<File
-							RelativePath=".\Includes\Utilities\LinkedReference\Reference.h"
-							>
-						</File>
-						<File
-							RelativePath=".\Includes\Utilities\LinkedReference\RefManager.h"
-							>
-						</File>
-					</Filter>
-				</Filter>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -687,6 +593,18 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath=".\GeneratedFiles\Release\moc_SWObject.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath=".\GeneratedFiles\Release\moc_SWSearch.cpp"
 					>
 					<FileConfiguration
@@ -718,6 +636,18 @@
 				</File>
 				<File
 					RelativePath=".\GeneratedFiles\debug\moc_SWForm.cpp"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\GeneratedFiles\Debug\moc_SWObject.cpp"
 					>
 					<FileConfiguration
 						Name="Release|Win32"

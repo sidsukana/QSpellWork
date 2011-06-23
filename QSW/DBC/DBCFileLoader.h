@@ -2,8 +2,8 @@
 #define DBC_FILE_LOADER_H
 
 #include <QtCore/QtGlobal>
-#include "Platform/Define.h"
-#include "Utilities/ByteConverter.h"
+#include "Define.h"
+#include "ByteConverter.h"
 #include <cassert>
 
 enum
@@ -25,7 +25,7 @@ class DBCFileLoader
         DBCFileLoader();
         ~DBCFileLoader();
 
-        bool Load(const char* filename, const char* fmt);
+        bool Load(const QString filename, const QString fmt);
 
         class Record
         {
@@ -75,9 +75,9 @@ class DBCFileLoader
         quint32 GetOffset(size_t id) const { return ((fieldsOffset != NULL && id < fieldCount) ? fieldsOffset[id] : 0); }
 
         bool IsLoaded() { return (data != NULL); }
-        char* AutoProduceData(const char* fmt, quint32& count, char**& indexTable);
-        char* AutoProduceStrings(const char* fmt, char* dataTable);
-        static quint32 GetFormatRecordSize(const char* format, qint32* index_pos = NULL);
+        char* AutoProduceData(const QString fmt, quint32& count, char**& indexTable);
+        char* AutoProduceStrings(const QString fmt, char* dataTable);
+        static quint32 GetFormatRecordSize(const QString format, qint32* index_pos = NULL);
     private:
 
         quint32 recordSize;
