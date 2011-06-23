@@ -2,23 +2,22 @@
 #define EVENT_H
 
 #include <QtCore/QEvent>
-#include <SWForm.h>
-#include "QtGui/QStandardItemModel"
+#include "SWForm.h"
 #include "DBC/DBCStores.h"
 
 class SWForm;
+class SpellListModel;
 
 class SendSpell : public QEvent
 {
     public:
         enum { TypeId = QEvent::User + 1 };
-        SendSpell(SWForm *form, SpellEntry const* obj);
+        SendSpell(SpellEntry const* obj);
         ~SendSpell();
 
-        SpellEntry const* GetObject() { return m_obj; }
+        SpellEntry const* getObject() { return m_obj; }
 
     private:
-        SWForm *m_form;
         SpellEntry const* m_obj;
 };
 
@@ -26,28 +25,26 @@ class SendModel : public QEvent
 {
     public:
         enum { TypeId = QEvent::User + 2 };
-        SendModel(SWForm *form, QStandardItemModel* obj);
+        SendModel(SpellListModel* obj);
         ~SendModel();
 
-        QStandardItemModel* GetObject() { return m_obj; }
+        SpellListModel* getObject() { return m_obj; }
 
     private:
-        SWForm *m_form;
-        QStandardItemModel* m_obj;
+        SpellListModel* m_obj;
 };
 
 class SendCompareSpell : public QEvent
 {
     public:
         enum { TypeId = QEvent::User + 3 };
-        SendCompareSpell(SWForm *form, SpellEntry const* obj, quint8 num);
+        SendCompareSpell(SpellEntry const* obj, quint8 num);
         ~SendCompareSpell();
 
-        SpellEntry const* GetObject() { return m_obj; }
-        quint8 GetNum() { return m_num; }
+        SpellEntry const* getObject() { return m_obj; }
+        quint8 getNum() { return m_num; }
 
     private:
-        SWForm *m_form;
         SpellEntry const* m_obj;
         quint8 m_num;
 };

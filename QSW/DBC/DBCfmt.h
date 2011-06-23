@@ -1,12 +1,13 @@
 #ifndef DBCSFRM_H
 #define DBCSFRM_H
 
-const char SkillLinefmt[] = "niissssssssissssssssii";
-const char SkillLineAbilityfmt[] = "niiiiiiiiiiiiii";
-const char SpellCastTimefmt[] = "nifi";
-const char SpellDurationfmt[] = "niii";
-const char SpellEntryfmt[] = "niiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiifiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiffffffiiiiiiiiiiiiiiiiiiiiifffiiiiiiiiiiiifffiiiiissssssssissssssssissssssssissssssssiiiiiiiiiiiffffiii";
-const char SpellRadiusfmt[] = "nfif";
-const char SpellRangefmt[] = "nffissssssssissssssssi";
+const QString SkillLinefmt("niissssssssissssssssii");
+const QString SkillLineAbilityfmt("niiiiiiiiiiiiii");
+const QString SpellCastTimefmt("nifi");
+const QString SpellDurationfmt("niii");
+const QString SpellEntryfmt("niiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiifiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiffffffiiiiiiiiiiiiiiiiiiiiifffiiiiiiiiiiiifffiiiiissssssssissssssssissssssssissssssssiiiiiiiiiiiffffiii");
+const QString SpellRadiusfmt("nfif");
+const QString SpellRangefmt("nffissssssssissssssssi");
+const QString SpellIconfmt("ns");
 
 #endif

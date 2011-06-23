@@ -1,7 +1,7 @@
 #include "TObject.h"
 #include "SWDefines.h"
 
-TObject::TObject(quint8 id, SWObject *sw)
+TObject::TObject(quint8 id, SWObject* sw)
     : m_id(id), m_sw(sw)
 {
     moveToThread(this);
@@ -17,7 +17,7 @@ void TObject::run()
     {
         case THREAD_SEARCH:
         {
-            SWSearch *search = new SWSearch(m_sw);
+            SWSearch* search = new SWSearch(m_sw);
             search->search();
         }
         break;

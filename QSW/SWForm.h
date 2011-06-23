@@ -2,42 +2,54 @@
 #define SWFORM_H
 
 #include <QtGui/QMainWindow>
+#include <QtGui/QToolButton>
+#include <QtGui/QPixmap>
+#include <QtGui/QIcon>
+#include <QtWebKit/QWebView>
+#include <QtWebKit/QWebFrame>
 #include "SWObject.h"
 #include "ui_SWFormUI.h"
 
 class SWObject;
+class SpellListSortedModel;
+
 class SWForm : public QMainWindow, public Ui::SWFormUI
 {
     Q_OBJECT
 
     public:
-        SWForm(QWidget *parent = 0);
+        SWForm(QWidget* parent = 0);
         ~SWForm();
 
-        QTextBrowser *GetBrowser(quint8 num) { return(num == 0 ? SpellInfoBrowser : SpellInfoBrowser2); }
+        QWebView* getBrowser(quint8 num) { return(num == 0 ? webView : webView_2); }
 
     signals:
-        void SignalSearch(quint8 type);
+        void signalSearch(quint8 type);
 
     private slots:
-        void SlotAbout();
-        void SlotFilterSearch();
-        void SlotButtonSearch();
-        void SlotCompareSearch();
-        void SlotSetMode(QAction *ac);
-        void SlotSearch(quint8 type);
-        void SlotSearchFromList(const QModelIndex &index);
-
-        void SlotRegExp();
+        void slotAbout();
+        void slotFilterSearch();
+        void slotButtonSearch();
+        void slotCompareSearch();
+        void slotSetMode(QAction* ac);
+        void slotSearch(quint8 type);
+        void slotSearchFromList(const QModelIndex &index);
+        void slotLinkClicked(const QUrl &url);
+        void slotRegExp();
 
         bool event(QEvent* ev);
 
     private:
-        void LoadComboBoxes();
-        void DetectLocale();
+        void loadComboBoxes();
+        void detectLocale();
+        void createModeButton();
 
-        Ui::SWFormUI ui;
-        SWObject *sw;
+        SpellListSortedModel* m_sortedModel;
+        Ui::SWFormUI m_ui;
+        SWObject* m_sw;
+        QToolButton* m_modeButton;
+        QAction* m_regExp;
+        QAction* m_about;
 };
 
 class Enums : public QObject

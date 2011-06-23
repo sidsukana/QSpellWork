@@ -1,93 +1,134 @@
 #include "SWForm.h"
 #include "AboutForm.h"
 
-SWForm::SWForm(QWidget *parent)
+SWForm::SWForm(QWidget* parent)
     : QMainWindow(parent)
 {
     setupUi(this);
 
-    sw = new SWObject(this);
+    m_sw = new SWObject(this);
     layoutWidget1->hide();
     slabel1->hide();
     compareSpell_1->hide();
 
-    LoadComboBoxes();
-    DetectLocale();
+    m_sortedModel = new SpellListSortedModel(this);
+    m_sortedModel->setDynamicSortFilter(true);
+    SpellList->setModel(m_sortedModel);
+
+    loadComboBoxes();
+    detectLocale();
+    createModeButton();
+
+    mainToolBar->addSeparator();
+    mainToolBar->addWidget(m_modeButton);
+    mainToolBar->addSeparator();
+    m_regExp = mainToolBar->addAction(QIcon(":/SpellWork/regExp.png"), "<font color=red>Off</font>");
+    mainToolBar->addSeparator();
+    m_about = mainToolBar->addAction(QIcon(":/SpellWork/about.png"), "About");
 
     // List search connection
-    connect(SpellList, SIGNAL(clicked(QModelIndex)), this, SLOT(SlotSearchFromList(QModelIndex)));
+    connect(SpellList, SIGNAL(clicked(QModelIndex)), this, SLOT(slotSearchFromList(QModelIndex)));
 
     // Main search connections
-    connect(findLine_e1, SIGNAL(returnPressed()), this, SLOT(SlotButtonSearch()));
-    connect(findLine_e2, SIGNAL(returnPressed()), this, SLOT(SlotButtonSearch()));
-    connect(findLine_e3, SIGNAL(returnPressed()), this, SLOT(SlotButtonSearch()));
+    connect(findLine_e1, SIGNAL(returnPressed()), this, SLOT(slotButtonSearch()));
+    connect(findLine_e2, SIGNAL(returnPressed()), this, SLOT(slotButtonSearch()));
+    connect(findLine_e3, SIGNAL(returnPressed()), this, SLOT(slotButtonSearch()));
 
     // Menu connections
-    connect(actionAbout, SIGNAL(triggered()), this, SLOT(SlotAbout()));
-    connect(actionExit, SIGNAL(triggered()), this, SLOT(close()));
+    connect(m_about, SIGNAL(triggered()), this, SLOT(slotAbout()));
 
     // RegExp connection
-    connect(actionRegExp, SIGNAL(triggered()), this, SLOT(SlotRegExp()));
+    connect(m_regExp, SIGNAL(triggered()), this, SLOT(slotRegExp()));
 
     // Filter search connections
-    connect(comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(SlotFilterSearch()));
-    connect(comboBox_2, SIGNAL(currentIndexChanged(int)), this, SLOT(SlotFilterSearch()));
-    connect(comboBox_3, SIGNAL(currentIndexChanged(int)), this, SLOT(SlotFilterSearch()));
-    connect(comboBox_4, SIGNAL(currentIndexChanged(int)), this, SLOT(SlotFilterSearch()));
-    connect(comboBox_5, SIGNAL(currentIndexChanged(int)), this, SLOT(SlotFilterSearch()));
-    connect(adLine1, SIGNAL(returnPressed()), this, SLOT(SlotFilterSearch()));
-    connect(adLine2, SIGNAL(returnPressed()), this, SLOT(SlotFilterSearch()));
+    connect(comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(slotFilterSearch()));
+    connect(comboBox_2, SIGNAL(currentIndexChanged(int)), this, SLOT(slotFilterSearch()));
+    connect(comboBox_3, SIGNAL(currentIndexChanged(int)), this, SLOT(slotFilterSearch()));
+    connect(comboBox_4, SIGNAL(currentIndexChanged(int)), this, SLOT(slotFilterSearch()));
+    connect(comboBox_5, SIGNAL(currentIndexChanged(int)), this, SLOT(slotFilterSearch()));
+    connect(adLine1, SIGNAL(returnPressed()), this, SLOT(slotFilterSearch()));
+    connect(adLine2, SIGNAL(returnPressed()), this, SLOT(slotFilterSearch()));
 
     // Search connection
-    connect(this, SIGNAL(SignalSearch(quint8)), this, SLOT(SlotSearch(quint8)));
+    connect(this, SIGNAL(signalSearch(quint8)), this, SLOT(slotSearch(quint8)));
 
-    connect(menuMode, SIGNAL(triggered(QAction*)), this, SLOT(SlotSetMode(QAction*)));
-    connect(compareSpell_1, SIGNAL(returnPressed()), this, SLOT(SlotCompareSearch()));
-    connect(compareSpell_2, SIGNAL(returnPressed()), this, SLOT(SlotCompareSearch()));
+    connect(compareSpell_1, SIGNAL(returnPressed()), this, SLOT(slotCompareSearch()));
+    connect(compareSpell_2, SIGNAL(returnPressed()), this, SLOT(slotCompareSearch()));
+
+    connect(webView, SIGNAL(linkClicked(QUrl)), this, SLOT(slotLinkClicked(QUrl)));
 }
 
 SWForm::~SWForm()
 {
 }
 
-void SWForm::DetectLocale()
+void SWForm::createModeButton()
+{   
+    QAction* actionShow = new QAction(QIcon(":/SpellWork/show.png"), "Show", this);
+    actionShow->setCheckable(true);
+    actionShow->setChecked(true);
+
+    QAction* actionCompare = new QAction(QIcon(":/SpellWork/compare.png"), "Compare", this);
+    actionCompare->setCheckable(true);
+    actionCompare->setChecked(false);
+
+    m_modeButton = new QToolButton(this);
+    m_modeButton->setText("Mode");
+    m_modeButton->setIcon(actionShow->icon());
+    m_modeButton->setPopupMode(QToolButton::InstantPopup);
+
+    m_modeButton->addAction(actionShow);
+    m_modeButton->addAction(actionCompare);
+
+    connect(m_modeButton, SIGNAL(triggered(QAction*)), this, SLOT(slotSetMode(QAction*)));
+}
+
+void SWForm::detectLocale()
 {
-    SpellEntry const *spellInfo = sSpellStore.LookupEntry(1);
+    SpellEntry const* spellInfo = sSpellStore.LookupEntry(1);
 
     if (!spellInfo)
         return;
 
-    sw->SetMetaEnum("LocalesDBC");
-    for (quint8 i = 0; i < sw->me.keyCount(); i++)
+    m_sw->setMetaEnum("LocalesDBC");
+    for (quint8 i = 0; i < m_sw->getMetaEnum().keyCount(); i++)
     {
         if (!QString::fromUtf8(spellInfo->SpellName[i]).isEmpty())
         {
             Locale = i;
-            QLabel *label = new QLabel;
-            label->setText(QString("%0<b>DBC Locale: <font color=green>%1</font><b>")
+            QLabel* label = new QLabel;
+            label->setText(QString("%0<b>DBC Locale: <font color=green>%1 </font><b>")
                 .arg(QChar(QChar::Nbsp), 2, QChar(QChar::Nbsp))
-                .arg(sw->me.valueToKey(sw->me.value(i))));
+                .arg(m_sw->getMetaEnum().valueToKey(m_sw->getMetaEnum().value(i))));
             mainToolBar->addWidget(label);
             break;
         }
     }
 }
 
-void SWForm::SlotSetMode(QAction *ac)
+void SWForm::slotLinkClicked(const QUrl &url)
 {
-    modeStandart->setChecked(false);
-    modeCompare->setChecked(false);
+    QString id = url.toString().section('/', -1);
+    if (SpellEntry const* spellInfo = sSpellStore.LookupEntry(id.toInt()))
+        m_sw->showInfo(spellInfo);
+}
 
+void SWForm::slotSetMode(QAction* ac)
+{
+    for (QList<QAction*>::iterator itr = m_modeButton->actions().begin(); itr != m_modeButton->actions().end(); ++itr)
+        (*itr)->setChecked(false);
+
+    m_modeButton->setIcon(ac->icon());
     ac->setChecked(true);
 
-    if (modeCompare->isChecked())
+    if (ac->text() == "Compare")
     {
         groupBox->hide();
         groupBox_2->hide();
         groupBox_3->hide();
         SpellList->hide();
-        SpellInfoBrowser->clear();
-        SpellInfoBrowser2->clear();
+        webView->setHtml("", QUrl("http://SpellWork"));
+        webView_2->setHtml("", QUrl("http://SpellWork"));
         layoutWidget1->show();
         slabel1->show();
         compareSpell_1->show();
@@ -98,44 +139,44 @@ void SWForm::SlotSetMode(QAction *ac)
         groupBox_2->show();
         groupBox_3->show();
         SpellList->show();
-        SpellInfoBrowser->clear();
-        SpellInfoBrowser2->clear();
+        webView->setHtml("", QUrl("http://SpellWork"));
+        webView_2->setHtml("", QUrl("http://SpellWork"));
         layoutWidget1->hide();
         slabel1->hide();
         compareSpell_1->hide();
     }
 }
 
-void SWForm::LoadComboBoxes()
+void SWForm::loadComboBoxes()
 {
     comboBox->clear();
     comboBox->insertItem(-1, "SpellFamilyName");
-    sw->SetMetaEnum("SpellFamilyNames");
-    for (quint16 i = 0; i < sw->me.keyCount(); i++)
-        comboBox->insertItem(i, QString("(%0) %1").arg(i, 3, 10, QChar('0')).arg(sw->me.valueToKey(sw->me.value(i))));
+    m_sw->setMetaEnum("SpellFamilyNames");
+    for (quint16 i = 0; i < m_sw->getMetaEnum().keyCount(); i++)
+        comboBox->insertItem(i, QString("(%0) %1").arg(i, 3, 10, QChar('0')).arg(m_sw->getMetaEnum().valueToKey(m_sw->getMetaEnum().value(i))));
 
     comboBox_2->clear();
     comboBox_2->insertItem(-1, "Aura");
-    sw->SetMetaEnum("AuraType");
-    for (quint16 i = 0; i < sw->me.keyCount(); i++)
-        comboBox_2->insertItem(i, QString("(%0) %1").arg(i, 3, 10, QChar('0')).arg(sw->me.valueToKey(sw->me.value(i))));
+    m_sw->setMetaEnum("AuraType");
+    for (quint16 i = 0; i < m_sw->getMetaEnum().keyCount(); i++)
+        comboBox_2->insertItem(i, QString("(%0) %1").arg(i, 3, 10, QChar('0')).arg(m_sw->getMetaEnum().valueToKey(m_sw->getMetaEnum().value(i))));
 
     comboBox_3->clear();
     comboBox_3->insertItem(-1, "Effect");
-    sw->SetMetaEnum("Effects");
-    for (quint16 i = 0; i < sw->me.keyCount(); i++)
-        comboBox_3->insertItem(i, QString("(%0) %1").arg(i, 3, 10, QChar('0')).arg(sw->me.valueToKey(sw->me.value(i))));
+    m_sw->setMetaEnum("Effects");
+    for (quint16 i = 0; i < m_sw->getMetaEnum().keyCount(); i++)
+        comboBox_3->insertItem(i, QString("(%0) %1").arg(i, 3, 10, QChar('0')).arg(m_sw->getMetaEnum().valueToKey(m_sw->getMetaEnum().value(i))));
 
     comboBox_4->clear();
-    sw->SetMetaEnum("Targets");
+    m_sw->setMetaEnum("Targets");
     comboBox_4->insertItem(-1, "Target A");
-    for (quint16 i = 0; i < sw->me.keyCount(); i++)
-        comboBox_4->insertItem(i, QString("(%0) %1").arg(i, 3, 10, QChar('0')).arg(sw->me.key(i)));
+    for (quint16 i = 0; i < m_sw->getMetaEnum().keyCount(); i++)
+        comboBox_4->insertItem(i, QString("(%0) %1").arg(i, 3, 10, QChar('0')).arg(m_sw->getMetaEnum().key(i)));
 
     comboBox_5->clear();
     comboBox_5->insertItem(-1, "Target B");
-    for (quint16 i = 0; i < sw->me.keyCount(); i++)
-        comboBox_5->insertItem(i, QString("(%0) %1").arg(i, 3, 10, QChar('0')).arg(sw->me.key(i)));
+    for (quint16 i = 0; i < m_sw->getMetaEnum().keyCount(); i++)
+        comboBox_5->insertItem(i, QString("(%0) %1").arg(i, 3, 10, QChar('0')).arg(m_sw->getMetaEnum().key(i)));
 
     adBox1->clear();
     adBox2->clear();
@@ -146,79 +187,92 @@ void SWForm::LoadComboBoxes()
     }
 }
 
-void SWForm::SlotRegExp()
+void SWForm::slotRegExp()
 {
-    if (!sw->IsRegExp())
-        sw->SetRegExp(true);
+    if (!m_sw->isRegExp())
+    {
+        m_sw->setRegExp(true);
+        m_regExp->setIcon(QIcon(":/SpellWork/regExp.png"));
+        m_regExp->setText("<font color=green>On</font>");
+    }
     else
-        sw->SetRegExp(false);
+    {
+        m_sw->setRegExp(false);
+        m_regExp->setIcon(QIcon(":/SpellWork/regExp.png"));
+        m_regExp->setText("<font color=red>Off</font>");
+    }
 
     if (!SpellList->model())
         return;
 
-    if (SpellEntry const *spellInfo = sSpellStore.LookupEntry(SpellList->model()->data(SpellList->model()->index(SpellList->currentIndex().row(), 0)).toInt()))
-        sw->ShowInfo(spellInfo);
+    if (SpellEntry const* spellInfo = sSpellStore.LookupEntry(SpellList->model()->data(SpellList->model()->index(SpellList->currentIndex().row(), 0)).toInt()))
+        m_sw->showInfo(spellInfo);
 }
 
-void SWForm::SlotAbout()
+void SWForm::slotAbout()
 {
     new AboutForm;
 }
 
-void SWForm::SlotButtonSearch()
+void SWForm::slotButtonSearch()
 {
-    emit SignalSearch(0);
+    emit signalSearch(0);
 }
 
-void SWForm::SlotFilterSearch()
+void SWForm::slotFilterSearch()
 {
-    emit SignalSearch(1);
+    emit signalSearch(1);
 }
 
-void SWForm::SlotCompareSearch()
+void SWForm::slotCompareSearch()
 {
-    emit SignalSearch(2);
+    emit signalSearch(2);
 }
 
-void SWForm::SlotSearch(quint8 type)
+void SWForm::slotSearch(quint8 type)
 {
     if (type != 2)
-        delete SpellList->model();
+    {
+        SpellListSortedModel* smodel = static_cast<SpellListSortedModel*>(SpellList->model());
+        SpellListModel* model = static_cast<SpellListModel*>(smodel->sourceModel());
+        if (model)
+            delete model;
+    }
 
-    sw->SetType(type);
-    sw->ThreadBegin(THREAD_SEARCH);
+    m_sw->setType(type);
+    m_sw->threadBegin(THREAD_SEARCH);
 }
 
-void SWForm::SlotSearchFromList(const QModelIndex &index)
+void SWForm::slotSearchFromList(const QModelIndex &index)
 {
     QVariant var = SpellList->model()->data(SpellList->model()->index(index.row(), 0));
 
-    if (SpellEntry const *spellInfo = sSpellStore.LookupEntry(var.toInt()))
-        sw->ShowInfo(spellInfo);
+    if (SpellEntry const* spellInfo = sSpellStore.LookupEntry(var.toInt()))
+        m_sw->showInfo(spellInfo);
 }
 
-bool SWForm::event(QEvent *ev)
+bool SWForm::event(QEvent* ev)
 {
     switch (ev->type())
     {
         case SendModel::TypeId:
         {
             SendModel* m_ev = (SendModel*)ev;
-            SpellList->setModel(m_ev->GetObject());
+            m_sortedModel->setSourceModel(m_ev->getObject());
             return true;
         }
         break;
         case SendSpell::TypeId:
         {
             SendSpell* m_ev = (SendSpell*)ev;
-            sw->ShowInfo(m_ev->GetObject());
+            m_sw->showInfo(m_ev->getObject());
             return true;
         }
         break;
         case SendCompareSpell::TypeId:
         {
             SendCompareSpell* m_ev = (SendCompareSpell*)ev;
-            sw->ShowInfo(m_ev->GetObject(), m_ev->GetNum());
+            m_sw->showInfo(m_ev->getObject(), m_ev->getNum());
             return true;
         }
         break;

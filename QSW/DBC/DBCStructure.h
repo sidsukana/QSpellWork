@@ -2,10 +2,7 @@
 #define DBCSTRUCTURE_H
 
 #include "SWDefines.h"
-#include "Platform/Define.h"
-
-#include <map>
-#include <set>
+#include "Define.h"
 
 // GCC have alternative #pragma pack(N) syntax and old gcc version not support pack(push,N), also any gcc version not support it at some platform
 #if defined( __GNUC__ )
@@ -174,6 +171,13 @@ struct SpellDurationEntry
     quint32    Id;
     qint32     Duration[3];
 };
+
+struct SpellIconEntry
+{
+    quint32    IconId;
+    char*      IconPath;
+};
+
 
 // GCC have alternative #pragma pack() syntax and old gcc version not support pack(pop), also any gcc version not support it at some platform
 #if defined( __GNUC__ )

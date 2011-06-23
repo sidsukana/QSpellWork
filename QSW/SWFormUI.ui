@@ -94,22 +94,14 @@
          <widget class="QLineEdit" name="compareSpell_1"/>
         </item>
         <item row="1" column="0" colspan="2">
-         <widget class="QTextBrowser" name="SpellInfoBrowser">
-          <property name="baseSize">
-           <size>
-            <width>1000</width>
-            <height>1000</height>
-           </size>
-          </property>
+         <widget class="QWebView" name="webView">
           <property name="styleSheet">
-           <string notr="true">background-color: rgb(208, 208, 208);</string>
+           <string notr="true">background-color: rgb(206, 206, 206);</string>
           </property>
-          <property name="html">
-           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <property name="url">
+           <url>
+            <string>about:blank</string>
+           </url>
           </property>
          </widget>
         </item>
@@ -128,9 +120,14 @@ p, li { white-space: pre-wrap; }
          <widget class="QLineEdit" name="compareSpell_2"/>
         </item>
         <item row="1" column="0" colspan="2">
-         <widget class="QTextBrowser" name="SpellInfoBrowser2">
+         <widget class="QWebView" name="webView_2">
           <property name="styleSheet">
-           <string notr="true">background-color: rgb(208, 208, 208);</string>
+           <string notr="true">background-color: rgb(206, 206, 206);</string>
+          </property>
+          <property name="url">
+           <url>
+            <string>about:blank</string>
+           </url>
           </property>
          </widget>
         </item>
@@ -525,6 +522,9 @@ p, li { white-space: pre-wrap; }
       <property name="horizontalScrollBarPolicy">
        <enum>Qt::ScrollBarAlwaysOff</enum>
       </property>
+      <property name="autoScroll">
+       <bool>false</bool>
+      </property>
       <property name="editTriggers">
        <set>QAbstractItemView::NoEditTriggers</set>
       </property>
@@ -548,6 +548,9 @@ p, li { white-space: pre-wrap; }
       </property>
       <property name="gridStyle">
        <enum>Qt::SolidLine</enum>
+      </property>
+      <property name="sortingEnabled">
+       <bool>true</bool>
       </property>
       <property name="wordWrap">
        <bool>false</bool>
@@ -579,45 +582,6 @@ p, li { white-space: pre-wrap; }
      </widget>
     </item>
    </layout>
-  </widget>
-  <widget class="QMenuBar" name="menuBar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>900</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <widget class="QMenu" name="menuFile">
-    <property name="title">
-     <string>File</string>
-    </property>
-    <addaction name="actionExit"/>
-   </widget>
-   <widget class="QMenu" name="menuHelp">
-    <property name="title">
-     <string>Help</string>
-    </property>
-    <addaction name="actionAbout"/>
-   </widget>
-   <widget class="QMenu" name="menuMode">
-    <property name="title">
-     <string>Mode</string>
-    </property>
-    <addaction name="modeStandart"/>
-    <addaction name="modeCompare"/>
-   </widget>
-   <widget class="QMenu" name="menuSettings">
-    <property name="title">
-     <string>Settings</string>
-    </property>
-    <addaction name="actionRegExp"/>
-   </widget>
-   <addaction name="menuFile"/>
-   <addaction name="menuMode"/>
-   <addaction name="menuSettings"/>
-   <addaction name="menuHelp"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <property name="movable">
@@ -695,6 +659,13 @@ p, li { white-space: pre-wrap; }
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>QWebView</class>
+   <extends>QWidget</extends>
+   <header>QtWebKit/QWebView</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="SpellWork.qrc"/>
  </resources>

@@ -11,15 +11,15 @@ class TObject: public QThread
 {
 public:
     
-    TObject(quint8 id = 0, SWObject *sw = NULL);
+    TObject(quint8 id, SWObject* sw);
     ~TObject();
 
     virtual void run();
-    quint8 GetId() { return m_id; }
+    quint8 getId() { return m_id; }
 private:
 
     quint8 m_id;
-    SWObject *m_sw;
+    SWObject* m_sw;
 };
 
 #endif

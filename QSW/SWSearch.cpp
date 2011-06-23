@@ -1,5 +1,4 @@
 #include "SWSearch.h"
-#include "QtGui/QStandardItemModel"
 
 MetaSpell::MetaSpell(SpellEntry const *spellInfo)
     : m_spellInfo(spellInfo)
@@ -10,8 +9,8 @@ MetaSpell::~MetaSpell()
 {
 }
 
-SWSearch::SWSearch(SWObject *sw)
-: m_sw(sw), m_form(sw->GetForm())
+SWSearch::SWSearch(SWObject* sw)
+: m_sw(sw), m_form(sw->getForm())
 {
 }
 
@@ -19,7 +18,7 @@ SWSearch::~SWSearch()
 {
 }
 
-bool SWSearch::hasValue(QString name, QString value, SpellEntry const *spellInfo)
+bool SWSearch::hasValue(QString name, QString value, SpellEntry const* spellInfo)
 {
     MetaSpell metaSpell(spellInfo);
 
@@ -355,6 +354,81 @@ bool SWSearch::hasValue(QString name, QString value, SpellEntry const *spellInfo
             }
         }
         break;
+        case '!':
+        {
+            value.remove(0, 1);
+            if (typeName == "uarray2")
+            {
+                uarray2 var = spellValue.value<uarray2>();
+                for (quint8 i = 0; i < 2; i++)
+                    if (var.value[i] == value.toULong())
+                        return false;
+            }
+            else if (typeName == "iarray2")
+            {
+                iarray2 var = spellValue.value<iarray2>();
+                for (quint8 i = 0; i < 2; i++)
+                    if (var.value[i] == value.toLong())
+                        return false;
+            }
+            else if (typeName == "farray2")
+            {
+                farray2 var = spellValue.value<farray2>();
+                for (quint8 i = 0; i < 2; i++)
+                    if (var.value[i] == value.toFloat())
+                        return false;
+            }
+            else if (typeName == "uarray3")
+            {
+                uarray3 var = spellValue.value<uarray3>();
+                for (quint8 i = 0; i < 3; i++)
+                    if (var.value[i] == value.toULong())
+                        return false;
+            }
+            else if (typeName == "iarray3")
+            {
+                iarray3 var = spellValue.value<iarray3>();
+                for (quint8 i = 0; i < 3; i++)
+                    if (var.value[i] == value.toLong())
+                        return false;
+            }
+            else if (typeName == "farray3")
+            {
+                farray3 var = spellValue.value<farray3>();
+                for (quint8 i = 0; i < 3; i++)
+                    if (var.value[i] == value.toFloat())
+                        return false;
+            }
+            else if (typeName == "uarray8")
+            {
+                uarray8 var = spellValue.value<uarray8>();
+                for (quint8 i = 0; i < 8; i++)
+                    if (var.value[i] == value.toULong())
+                        return false;
+            }
+            else if (typeName == "iarray8")
+            {
+                iarray8 var = spellValue.value<iarray8>();
+                for (quint8 i = 0; i < 8; i++)
+                    if (var.value[i] == value.toLong())
+                        return false;
+            }
+            else if (typeName == "farray8")
+            {
+                farray8 var = spellValue.value<farray8>();
+                for (quint8 i = 0; i < 8; i++)
+                    if (var.value[i] == value.toFloat())
+                        return false;
+            }
+            else
+            {
+                if (spellValue.toLongLong() != value.toLongLong())
+                    return true;
+            }
+
+            return true;
+        }
+        break;
         default:
         {
             if (typeName == "uarray2")
@@ -422,7 +496,7 @@ bool SWSearch::hasValue(QString name, QString value, SpellEntry const *spellInfo
             }
             else
             {
-                if (spellValue.toLongLong() == value.toLongLong())
+                if (spellValue.toString() == value)
                     return true;
             }
         }
@@ -434,15 +508,12 @@ bool SWSearch::hasValue(QString name, QString value, SpellEntry const *spellInfo
 
 void SWSearch::search()
 {
-    m_sw->ThreadSet(THREAD_SEARCH);
+    m_sw->threadSet(THREAD_SEARCH);
     bool isString = false;
-    qint32 count = -1;
 
-    QStandardItemModel *model = new QStandardItemModel(1, 2);
-    model->setHorizontalHeaderItem(0, new QStandardItem("ID"));
-    model->setHorizontalHeaderItem(1, new QStandardItem("Name"));
+    SpellListModel *model = new SpellListModel;
 
-    if (m_sw->GetType() == 1)
+    if (m_sw->getType() == 1)
     {
         for (quint32 i = 0; i < sSpellStore.GetNumRows(); i++)
         {
@@ -454,25 +525,25 @@ void SWSearch::search()
             bool targetA = false;
             bool targetB = false;
 
-            SpellEntry const *m_spellInfo = sSpellStore.LookupEntry(i);
+            SpellEntry const* m_spellInfo = sSpellStore.LookupEntry(i);
 
             if (m_spellInfo)
             {
-                m_sw->SetMetaEnum("SpellFamilyNames");
-                if (m_form->comboBox->currentIndex() < m_sw->GetMetaEnum().keyCount())
+                m_sw->setMetaEnum("SpellFamilyNames");
+                if (m_form->comboBox->currentIndex() < m_sw->getMetaEnum().keyCount())
                 {
-                    if (m_spellInfo->SpellFamilyName == m_sw->GetMetaEnum().value(m_form->comboBox->currentIndex()))
+                    if (m_spellInfo->SpellFamilyName == m_sw->getMetaEnum().value(m_form->comboBox->currentIndex()))
                         family = true;
                 }
                 else
                     family = true;
 
-                m_sw->SetMetaEnum("AuraType");
-                if (m_form->comboBox_2->currentIndex() < m_sw->GetMetaEnum().keyCount())
+                m_sw->setMetaEnum("AuraType");
+                if (m_form->comboBox_2->currentIndex() < m_sw->getMetaEnum().keyCount())
                 {
                     for (quint8 i = EFFECT_INDEX_0; i < MAX_EFFECT_INDEX; i++)
                     {
-                        if (m_spellInfo->EffectApplyAuraName.value[i] == m_sw->GetMetaEnum().value(m_form->comboBox_2->currentIndex()))
+                        if (m_spellInfo->EffectApplyAuraName.value[i] == m_sw->getMetaEnum().value(m_form->comboBox_2->currentIndex()))
                         {
                             aura = true;
                             break;
@@ -482,12 +553,12 @@ void SWSearch::search()
                 else
                     aura = true;
 
-                m_sw->SetMetaEnum("Effects");
-                if (m_form->comboBox_3->currentIndex() < m_sw->GetMetaEnum().keyCount())
+                m_sw->setMetaEnum("Effects");
+                if (m_form->comboBox_3->currentIndex() < m_sw->getMetaEnum().keyCount())
                 {
                     for (quint8 i = EFFECT_INDEX_0; i < MAX_EFFECT_INDEX; i++)
                     {
-                        if (m_spellInfo->Effect.value[i] == m_sw->GetMetaEnum().value(m_form->comboBox_3->currentIndex()))
+                        if (m_spellInfo->Effect.value[i] == m_sw->getMetaEnum().value(m_form->comboBox_3->currentIndex()))
                         {
                             effect = true;
                             break;
@@ -497,12 +568,12 @@ void SWSearch::search()
                 else
                     effect = true;
 
-                m_sw->SetMetaEnum("Targets");
-                if (m_form->comboBox_4->currentIndex() < m_sw->GetMetaEnum().keyCount())
+                m_sw->setMetaEnum("Targets");
+                if (m_form->comboBox_4->currentIndex() < m_sw->getMetaEnum().keyCount())
                 {
                     for (quint8 i = EFFECT_INDEX_0; i < MAX_EFFECT_INDEX; i++)
                     {
-                        if (m_spellInfo->EffectImplicitTargetA.value[i] == m_sw->GetMetaEnum().value(m_form->comboBox_4->currentIndex()))
+                        if (m_spellInfo->EffectImplicitTargetA.value[i] == m_sw->getMetaEnum().value(m_form->comboBox_4->currentIndex()))
                         {
                             targetA = true;
                             break;
@@ -512,11 +583,11 @@ void SWSearch::search()
                 else
                     targetA = true;
 
-                if (m_form->comboBox_5->currentIndex() < m_sw->GetMetaEnum().keyCount())
+                if (m_form->comboBox_5->currentIndex() < m_sw->getMetaEnum().keyCount())
                 {
                     for (quint8 i = EFFECT_INDEX_0; i < MAX_EFFECT_INDEX; i++)
                     {
-                        if (m_spellInfo->EffectImplicitTargetB.value[i] == m_sw->GetMetaEnum().value(m_form->comboBox_5->currentIndex()))
+                        if (m_spellInfo->EffectImplicitTargetB.value[i] == m_sw->getMetaEnum().value(m_form->comboBox_5->currentIndex()))
                         {
                             targetB = true;
                             break;
@@ -544,36 +615,32 @@ void SWSearch::search()
 
                 if (family && aura && effect && adFilter1 && adFilter2 && targetA && targetB)
                 {
-                    count++;
                     QString sRank(QString::fromUtf8(m_spellInfo->Rank[Locale]));
                     QString sFullName(QString::fromUtf8(m_spellInfo->SpellName[Locale]));
-
-                    QStandardItem *item_id = new QStandardItem(QString("%0").arg(m_spellInfo->Id));
-                    QStandardItem *item_name;
 
                     if (!sRank.isEmpty())
                         sFullName.append(QString(" (%0)").arg(QString::fromUtf8(m_spellInfo->Rank[Locale])));
 
-                    item_name = new QStandardItem(sFullName);
+                    QStringList spellRecord;
+                    spellRecord << QString("%0").arg(m_spellInfo->Id) << sFullName;
 
-                    model->setItem(count, 0, item_id);
-                    model->setItem(count, 1, item_name);
+                    model->appendRecord(spellRecord);
                 }
             }
         }
-        QApplication::postEvent(m_form, new SendModel(m_form, model));
+        QApplication::postEvent(m_form, new SendModel(model));
     }
-    else if (m_sw->GetType() == 2)
+    else if (m_sw->getType() == 2)
     {
         if (!m_form->compareSpell_1->text().isEmpty() && !m_form->compareSpell_2->text().isEmpty())
         {
-            SpellEntry const *sInfo1 = sSpellStore.LookupEntry(m_form->compareSpell_1->text().toInt());
-            SpellEntry const *sInfo2 = sSpellStore.LookupEntry(m_form->compareSpell_2->text().toInt());
+            SpellEntry const* sInfo1 = sSpellStore.LookupEntry(m_form->compareSpell_1->text().toInt());
+            SpellEntry const* sInfo2 = sSpellStore.LookupEntry(m_form->compareSpell_2->text().toInt());
 
             if (sInfo1 && sInfo2)
             {
-                QApplication::postEvent(m_form, new SendCompareSpell(m_form, sInfo1, 0));
-                QApplication::postEvent(m_form, new SendCompareSpell(m_form, sInfo2, 1));
+                QApplication::postEvent(m_form, new SendCompareSpell(sInfo1, 0));
+                QApplication::postEvent(m_form, new SendCompareSpell(sInfo2, 1));
             }
         }
     }
@@ -594,48 +661,41 @@ void SWSearch::search()
             {
                 for (quint32 i = 0; i < sSpellStore.GetNumRows(); i++)
                 {
-                    SpellEntry const *m_spellInfo = sSpellStore.LookupEntry(i);
+                    SpellEntry const* m_spellInfo = sSpellStore.LookupEntry(i);
                     if (m_spellInfo && QString(QString::fromUtf8(m_spellInfo->SpellName[Locale])).contains(m_form->findLine_e1->text(), Qt::CaseInsensitive))
                     {
-                        count++;
                         QString sRank(QString::fromUtf8(m_spellInfo->Rank[Locale]));
                         QString sFullName(QString::fromUtf8(m_spellInfo->SpellName[Locale]));
-
-                        QStandardItem *item_id = new QStandardItem(QString("%0").arg(m_spellInfo->Id));
-                        QStandardItem *item_name;
 
                         if (!sRank.isEmpty())
                             sFullName.append(QString(" (%0)").arg(QString::fromUtf8(m_spellInfo->Rank[Locale])));
 
-                        item_name = new QStandardItem(sFullName);
+                        QStringList spellRecord;
+                        spellRecord << QString("%0").arg(m_spellInfo->Id) << sFullName;
 
-                        model->setItem(count, 0, item_id);
-                        model->setItem(count, 1, item_name);
+                        model->appendRecord(spellRecord);
                     }
                 }
-                QApplication::postEvent(m_form, new SendModel(m_form, model));
+                QApplication::postEvent(m_form, new SendModel(model));
             }
             else
             {
-                SpellEntry const *m_spellInfo = sSpellStore.LookupEntry(m_form->findLine_e1->text().toInt());
+                SpellEntry const* m_spellInfo = sSpellStore.LookupEntry(m_form->findLine_e1->text().toInt());
 
                 if (m_spellInfo)
                 {
                     QString sRank(QString::fromUtf8(m_spellInfo->Rank[Locale]));
                     QString sFullName(QString::fromUtf8(m_spellInfo->SpellName[Locale]));
 
-                    QStandardItem  *item_id = new QStandardItem (QString("%0").arg(m_spellInfo->Id));
-                    QStandardItem  *item_name;
-
                     if (!sRank.isEmpty())
                         sFullName.append(QString(" (%0)").arg(QString::fromUtf8(m_spellInfo->Rank[Locale])));
 
-                    item_name = new QStandardItem(sFullName);
+                    QStringList spellRecord;
+                    spellRecord << QString("%0").arg(m_spellInfo->Id) << sFullName;
 
-                    model->setItem(0, 0, item_id);
-                    model->setItem(0, 1, item_name);
-                    QApplication::postEvent(m_form, new SendModel(m_form, model));
-                    QApplication::postEvent(m_form, new SendSpell(m_form, m_spellInfo));
+                    model->appendRecord(spellRecord);
+                    QApplication::postEvent(m_form, new SendModel(model));
+                    QApplication::postEvent(m_form, new SendSpell(m_spellInfo));
                 }
             }
         }
@@ -643,77 +703,65 @@ void SWSearch::search()
         {
             for (quint32 i = 0; i < sSpellStore.GetNumRows(); i++)
             {
-                SpellEntry const *m_spellInfo = sSpellStore.LookupEntry(i);
+                SpellEntry const* m_spellInfo = sSpellStore.LookupEntry(i);
                 if (m_spellInfo && m_spellInfo->SpellIconID == m_form->findLine_e2->text().toInt())
                 {
-                    count++;
                     QString sRank(QString::fromUtf8(m_spellInfo->Rank[Locale]));
                     QString sFullName(QString::fromUtf8(m_spellInfo->SpellName[Locale]));
-
-                    QStandardItem *item_id = new QStandardItem(QString("%0").arg(m_spellInfo->Id));
-                    QStandardItem *item_name;
 
                     if (!sRank.isEmpty())
                         sFullName.append(QString(" (%0)").arg(QString::fromUtf8(m_spellInfo->Rank[Locale])));
 
-                    item_name = new QStandardItem(sFullName);
+                    QStringList spellRecord;
+                    spellRecord << QString("%0").arg(m_spellInfo->Id) << sFullName;
 
-                    model->setItem(count, 0, item_id);
-                    model->setItem(count, 1, item_name);
+                    model->appendRecord(spellRecord);
                 }
             }
-            QApplication::postEvent(m_form, new SendModel(m_form, model));
+            QApplication::postEvent(m_form, new SendModel(model));
         }
         else if (!m_form->findLine_e3->text().isEmpty())
         {
             for (quint32 i = 0; i < sSpellStore.GetNumRows(); i++)
             {
-                SpellEntry const *m_spellInfo = sSpellStore.LookupEntry(i);
+                SpellEntry const* m_spellInfo = sSpellStore.LookupEntry(i);
                 if (m_spellInfo && QString(QString::fromUtf8(m_spellInfo->Description[Locale])).contains(m_form->findLine_e3->text(), Qt::CaseInsensitive))
                 {
-                    count++;
                     QString sRank(QString::fromUtf8(m_spellInfo->Rank[Locale]));
                     QString sFullName(QString::fromUtf8(m_spellInfo->SpellName[Locale]));
-
-                    QStandardItem *item_id = new QStandardItem(QString("%0").arg(m_spellInfo->Id));
-                    QStandardItem *item_name;
 
                     if (!sRank.isEmpty())
                         sFullName.append(QString(" (%0)").arg(QString::fromUtf8(m_spellInfo->Rank[Locale])));
 
-                    item_name = new QStandardItem(sFullName);
+                    QStringList spellRecord;
+                    spellRecord << QString("%0").arg(m_spellInfo->Id) << sFullName;
 
-                    model->setItem(count, 0, item_id);
-                    model->setItem(count, 1, item_name);
+                    model->appendRecord(spellRecord);
                 }
             }
-            QApplication::postEvent(m_form, new SendModel(m_form, model));
+            QApplication::postEvent(m_form, new SendModel(model));
         }
         else
         {
             for (quint32 i = 0; i < sSpellStore.GetNumRows(); i++)
             {
-                SpellEntry const *m_spellInfo = sSpellStore.LookupEntry(i);
+                SpellEntry const* m_spellInfo = sSpellStore.LookupEntry(i);
                 if (m_spellInfo)
                 {
-                    count++;
                     QString sRank(QString::fromUtf8(m_spellInfo->Rank[Locale]));
                     QString sFullName(QString::fromUtf8(m_spellInfo->SpellName[Locale]));
-
-                    QStandardItem *item_id = new QStandardItem(QString("%0").arg(m_spellInfo->Id));
-                    QStandardItem *item_name;
 
                     if (!sRank.isEmpty())
                         sFullName.append(QString(" (%0)").arg(QString::fromUtf8(m_spellInfo->Rank[Locale])));
 
-                    item_name = new QStandardItem(sFullName);
+                    QStringList spellRecord;
+                    spellRecord << QString("%0").arg(m_spellInfo->Id) << sFullName;
 
-                    model->setItem(count, 0, item_id);
-                    model->setItem(count, 1, item_name);
+                    model->appendRecord(spellRecord);
                 }
             }
-            QApplication::postEvent(m_form, new SendModel(m_form, model));
+            QApplication::postEvent(m_form, new SendModel(model));
         }
     }
-    m_sw->ThreadUnset(THREAD_SEARCH);
+    m_sw->threadUnset(THREAD_SEARCH);
 }

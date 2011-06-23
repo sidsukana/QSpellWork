@@ -6,7 +6,7 @@
 #define QSW_DEFINE_H
 
 #include <sys/types.h>
-#include "Platform/CompilerDefs.h"
+#include "CompilerDefs.h"
 
 #define QSW_LITTLEENDIAN 1
 #define QSW_BIGENDIAN    0

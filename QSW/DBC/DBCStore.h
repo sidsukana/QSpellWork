@@ -4,21 +4,22 @@
 #include <list>
 #include <cstring>
 #include "DBCFileLoader.h"
+#include <QtCore/QString>
 
 template<class T>
 class DBCStorage
 {
     typedef std::list<char*> StringPoolList;
     public:
-        explicit DBCStorage(const char* f) : nCount(0), fieldCount(0), fmt(f), indexTable(NULL), m_dataTable(NULL) {}
+        explicit DBCStorage(const QString f) : nCount(0), fieldCount(0), fmt(f), indexTable(NULL), m_dataTable(NULL) {}
         ~DBCStorage() { Clear(); }
 
         T const* LookupEntry(quint32 id) const { return (id >= nCount) ? NULL : indexTable[id]; }
         quint32  GetNumRows() const { return nCount; }
-        char const* GetFormat() const { return fmt; }
+        const QString GetFormat() const { return fmt; }
         quint32 GetFieldCount() const { return fieldCount; }
 
-        bool Load(char const* fn)
+        bool Load(const QString fn)
         {
             DBCFileLoader dbc;
 
@@ -80,7 +81,7 @@ class DBCStorage
     private:
         quint32 nCount;
         quint32 fieldCount;
-        char const* fmt;
+        const QString fmt;
         T** indexTable;
         T* m_dataTable;
         StringPoolList m_stringPoolList;
