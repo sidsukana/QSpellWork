@@ -3,7 +3,6 @@
 
 #include <QtGui/QMainWindow>
 #include <QtGui/QToolButton>
-#include <QtGui/QPixmap>
 #include <QtGui/QIcon>
 #include <QtWebKit/QWebView>
 #include <QtWebKit/QWebFrame>
