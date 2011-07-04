@@ -26,6 +26,11 @@ SWForm::SWForm(QWidget* parent)
     mainToolBar->addSeparator();
     m_about = mainToolBar->addAction(QIcon(":/SpellWork/about.png"), "About");
 
+    QAction* actionCopy = webView->pageAction(QWebPage::Copy);
+    actionCopy->setShortcut(QKeySequence::Copy);
+
+    webView->addAction(actionCopy);
+
     // List search connection
     connect(SpellList, SIGNAL(clicked(QModelIndex)), this, SLOT(slotSearchFromList(QModelIndex)));
 
