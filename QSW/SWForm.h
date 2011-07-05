@@ -3,6 +3,7 @@
 
 #include <QtGui/QMainWindow>
 #include <QtGui/QToolButton>
+#include <QtGui/QCompleter>
 #include <QtGui/QPixmap>
 #include <QtGui/QIcon>
 #include <QtWebKit/QWebView>
@@ -36,6 +37,8 @@ class SWForm : public QMainWindow, public Ui::SWFormUI
         void slotSearchFromList(const QModelIndex &index);
         void slotLinkClicked(const QUrl &url);
         void slotRegExp();
+        void slotPrevRow();
+        void slotNextRow();
 
         bool event(QEvent* ev);
 
@@ -43,6 +46,7 @@ class SWForm : public QMainWindow, public Ui::SWFormUI
         void loadComboBoxes();
         void detectLocale();
         void createModeButton();
+        void initializeCompleter();
 
         SpellListSortedModel* m_sortedModel;
         Ui::SWFormUI m_ui;
