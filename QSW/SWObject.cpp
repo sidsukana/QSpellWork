@@ -798,7 +798,15 @@ void SWObject::showInfo(SpellEntry const* spellInfo, quint8 num)
 
     html.append("<table>");
 
-    html.append(QString("<tr><td rowspan=5><img src='http://static.wowhead.com/images/wow/icons/large/%0.jpg'></td></tr>").arg(getSpellIconName(spellInfo->SpellIconID).toLower()));
+    html.append(QString("<tr><td rowspan=5>"
+                        "<style>"
+                        "div.icon { width: 68px; height: 68px; background: url(http://static.wowhead.com/images/wow/icons/large/%0.jpg) no-repeat center; }"
+                        "div.icon div { background: url(http://static.wowhead.com/images/Icon/large/border/default.png) no-repeat center;}"
+                        "div.icon div div:hover { background: url(http://static.wowhead.com/images/Icon/large/hilite/default.png) no-repeat center; }"
+                        "div.icon div div {width: 68px; height: 68px;}"
+                        "</style>"
+                        "<div class='icon'><div><div>"
+                        "</div></div></div> </td></tr>").arg(getSpellIconName(spellInfo->SpellIconID).toLower()));
 
     if (!sRank.isEmpty())
         sName.append(QString(" (%0)").arg(sRank));
