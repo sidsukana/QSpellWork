@@ -508,7 +508,6 @@ bool SWSearch::hasValue(QString name, QString value, SpellEntry const* spellInfo
 void SWSearch::search()
 {
     m_sw->threadSet(THREAD_SEARCH);
-    bool isString = false;
 
     SpellListModel *model = new SpellListModel;
 
@@ -617,7 +616,7 @@ void SWSearch::search()
                     QString sFullName(QString::fromUtf8(m_spellInfo->SpellName[Locale]));
 
                     if (!sRank.isEmpty())
-                        sFullName.append(QString(" (%0)").arg(QString::fromUtf8(m_spellInfo->Rank[Locale])));
+                        sFullName.append(QString(" (%0)").arg(sRank));
 
                     QStringList spellRecord;
                     spellRecord << QString("%0").arg(m_spellInfo->Id) << sFullName;
@@ -646,16 +645,7 @@ void SWSearch::search()
     {
         if (!m_form->findLine_e1->text().isEmpty())
         {
-            for (quint8 i = 0; i < m_form->findLine_e1->text().size(); ++i)
-            {
-                if (m_form->findLine_e1->text().at(i) > QChar('9'))
-                {
-                    isString = true;
-                    break;
-                }
-            }
-
-            if (isString)
+            if (!m_form->findLine_e1->text().toInt())
             {
                 for (quint32 i = 0; i < sSpellStore.GetNumRows(); i++)
                 {
@@ -666,7 +656,7 @@ void SWSearch::search()
                         QString sFullName(QString::fromUtf8(m_spellInfo->SpellName[Locale]));
 
                         if (!sRank.isEmpty())
-                            sFullName.append(QString(" (%0)").arg(QString::fromUtf8(m_spellInfo->Rank[Locale])));
+                            sFullName.append(QString(" (%0)").arg(sRank));
 
                         QStringList spellRecord;
                         spellRecord << QString("%0").arg(m_spellInfo->Id) << sFullName;
@@ -686,7 +676,7 @@ void SWSearch::search()
                     QString sFullName(QString::fromUtf8(m_spellInfo->SpellName[Locale]));
 
                     if (!sRank.isEmpty())
-                        sFullName.append(QString(" (%0)").arg(QString::fromUtf8(m_spellInfo->Rank[Locale])));
+                        sFullName.append(QString(" (%0)").arg(sRank));
 
                     QStringList spellRecord;
                     spellRecord << QString("%0").arg(m_spellInfo->Id) << sFullName;
@@ -708,7 +698,7 @@ void SWSearch::search()
                     QString sFullName(QString::fromUtf8(m_spellInfo->SpellName[Locale]));
 
                     if (!sRank.isEmpty())
-                        sFullName.append(QString(" (%0)").arg(QString::fromUtf8(m_spellInfo->Rank[Locale])));
+                        sFullName.append(QString(" (%0)").arg(sRank));
 
                     QStringList spellRecord;
                     spellRecord << QString("%0").arg(m_spellInfo->Id) << sFullName;
@@ -729,7 +719,7 @@ void SWSearch::search()
                     QString sFullName(QString::fromUtf8(m_spellInfo->SpellName[Locale]));
 
                     if (!sRank.isEmpty())
-                        sFullName.append(QString(" (%0)").arg(QString::fromUtf8(m_spellInfo->Rank[Locale])));
+                        sFullName.append(QString(" (%0)").arg(sRank));
 
                     QStringList spellRecord;
                     spellRecord << QString("%0").arg(m_spellInfo->Id) << sFullName;
@@ -750,7 +740,7 @@ void SWSearch::search()
                     QString sFullName(QString::fromUtf8(m_spellInfo->SpellName[Locale]));
 
                     if (!sRank.isEmpty())
-                        sFullName.append(QString(" (%0)").arg(QString::fromUtf8(m_spellInfo->Rank[Locale])));
+                        sFullName.append(QString(" (%0)").arg(sRank));
 
                     QStringList spellRecord;
                     spellRecord << QString("%0").arg(m_spellInfo->Id) << sFullName;
