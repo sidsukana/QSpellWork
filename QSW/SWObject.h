@@ -76,7 +76,6 @@ class SWObject
         QMetaEnum getMetaEnum() { return m_metaEnum; }
         void setMetaEnum(const char* enumName);
 
-        
         bool isRegExp() const { return m_regExp; }
         void setRegExp(bool on) { m_regExp = on; }
 

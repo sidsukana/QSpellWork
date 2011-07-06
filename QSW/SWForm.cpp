@@ -31,6 +31,18 @@ SWForm::SWForm(QWidget* parent)
 
     webView->addAction(actionCopy);
 
+    initializeCompleter();
+
+    QAction* selectedAction = new QAction(this);
+    selectedAction->setShortcut(QKeySequence::MoveToPreviousLine);
+    connect(selectedAction, SIGNAL(triggered()), this, SLOT(slotPrevRow()));
+    SpellList->addAction(selectedAction);
+
+    selectedAction = new QAction(this);
+    selectedAction->setShortcut(QKeySequence::MoveToNextLine);
+    connect(selectedAction, SIGNAL(triggered()), this, SLOT(slotNextRow()));
+    SpellList->addAction(selectedAction);
+
     // List search connection
     connect(SpellList, SIGNAL(clicked(QModelIndex)), this, SLOT(slotSearchFromList(QModelIndex)));
 
@@ -65,6 +77,46 @@ SWForm::SWForm(QWidget* parent)
 
 SWForm::~SWForm()
 {
+}
+
+void SWForm::slotPrevRow()
+{
+    SpellList->selectRow(SpellList->currentIndex().row() - 1);
+
+    QVariant var = SpellList->model()->data(SpellList->model()->index(SpellList->currentIndex().row(), 0));
+
+    if (SpellEntry const* spellInfo = sSpellStore.LookupEntry(var.toInt()))
+        m_sw->showInfo(spellInfo);
+}
+
+void SWForm::slotNextRow()
+{
+    SpellList->selectRow(SpellList->currentIndex().row() + 1);
+
+    QVariant var = SpellList->model()->data(SpellList->model()->index(SpellList->currentIndex().row(), 0));
+
+    if (SpellEntry const* spellInfo = sSpellStore.LookupEntry(var.toInt()))
+        m_sw->showInfo(spellInfo);
+}
+
+void SWForm::initializeCompleter()
+{
+    QStringList names;
+
+    for (quint32 i = 0; i < sSpellStore.GetNumRows(); i++)
+    {
+        SpellEntry const* spellInfo = sSpellStore.LookupEntry(i);
+        if (spellInfo)
+        {
+            QString sName = QString::fromUtf8(spellInfo->SpellName[Locale]);
+            if (!names.contains(sName, Qt::CaseInsensitive))
+                names << sName;
+        }
+    }
+
+    QCompleter* completer = new QCompleter(names, this);
+    completer->setCaseSensitivity(Qt::CaseInsensitive);
+    findLine_e1->setCompleter(completer);
 }
 
 void SWForm::createModeButton()
