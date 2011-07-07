@@ -1694,3 +1694,31 @@ void SWObject::compare()
     m_form->webView->setHtml(html);
     m_form->webView_2->setHtml(html2);
 }
+
+quint64 Converter::getULongLong(QString value)
+{
+    bool ok;
+    quint64 dec = value.toULongLong(&ok, 10);
+    return ok ? dec : value.toULongLong(&ok, 16);
+}
+
+qint64 Converter::getLongLong(QString value)
+{
+    bool ok;
+    qint64 dec = value.toLongLong(&ok, 10);
+    return ok ? dec : value.toLongLong(&ok, 16);
+}
+
+quint32 Converter::getULong(QString value)
+{
+    bool ok;
+    quint32 dec = value.toULong(&ok, 10);
+    return ok ? dec : value.toULong(&ok, 16);
+}
+
+qint32 Converter::getLong(QString value)
+{
+    bool ok;
+    qint32 dec = value.toLong(&ok, 10);;
+    return ok ? dec : value.toLong(&ok, 16);
+}
