@@ -37,14 +37,14 @@ bool SWSearch::hasValue(QString name, QString value, SpellEntry const* spellInfo
             {
                 uarray2 var = spellValue.value<uarray2>();
                 for (quint8 i = 0; i < 2; i++)
-                    if (var.value[i] == value.toULong())
+                    if (var.value[i] == Converter::getULong(value))
                         return true;
             }
             else if (typeName == "iarray2")
             {
                 iarray2 var = spellValue.value<iarray2>();
                 for (quint8 i = 0; i < 2; i++)
-                    if (var.value[i] == value.toLong())
+                    if (var.value[i] == Converter::getLong(value))
                         return true;
             }
             else if (typeName == "farray2")
@@ -58,14 +58,14 @@ bool SWSearch::hasValue(QString name, QString value, SpellEntry const* spellInfo
             {
                 uarray3 var = spellValue.value<uarray3>();
                 for (quint8 i = 0; i < 3; i++)
-                    if (var.value[i] == value.toULong())
+                    if (var.value[i] == Converter::getULong(value))
                         return true;
             }
             else if (typeName == "iarray3")
             {
                 iarray3 var = spellValue.value<iarray3>();
                 for (quint8 i = 0; i < 3; i++)
-                    if (var.value[i] == value.toLong())
+                    if (var.value[i] == Converter::getLong(value))
                         return true;
             }
             else if (typeName == "farray3")
@@ -79,14 +79,14 @@ bool SWSearch::hasValue(QString name, QString value, SpellEntry const* spellInfo
             {
                 uarray8 var = spellValue.value<uarray8>();
                 for (quint8 i = 0; i < 8; i++)
-                    if (var.value[i] == value.toULong())
+                    if (var.value[i] == Converter::getULong(value))
                         return true;
             }
             else if (typeName == "iarray8")
             {
                 iarray8 var = spellValue.value<iarray8>();
                 for (quint8 i = 0; i < 8; i++)
-                    if (var.value[i] == value.toLong())
+                    if (var.value[i] == Converter::getLong(value))
                         return true;
             }
             else if (typeName == "farray8")
@@ -96,9 +96,14 @@ bool SWSearch::hasValue(QString name, QString value, SpellEntry const* spellInfo
                     if (var.value[i] == value.toFloat())
                         return true;
             }
+            else if (typeName == "QString")
+            {
+                if (spellValue.toString() == value)
+                    return true;
+            }
             else
             {
-                if (spellValue.toLongLong() == value.toLongLong())
+                if (spellValue.toLongLong() == Converter::getLongLong(value))
                     return true;
             }
         }
@@ -110,14 +115,14 @@ bool SWSearch::hasValue(QString name, QString value, SpellEntry const* spellInfo
             {
                 uarray2 var = spellValue.value<uarray2>();
                 for (quint8 i = 0; i < 2; i++)
-                    if (var.value[i] > value.toULong())
+                    if (var.value[i] > Converter::getULong(value))
                         return true;
             }
             else if (typeName == "iarray2")
             {
                 iarray2 var = spellValue.value<iarray2>();
                 for (quint8 i = 0; i < 2; i++)
-                    if (var.value[i] > value.toLong())
+                    if (var.value[i] > Converter::getLong(value))
                         return true;
             }
             else if (typeName == "farray2")
@@ -131,14 +136,14 @@ bool SWSearch::hasValue(QString name, QString value, SpellEntry const* spellInfo
             {
                 uarray3 var = spellValue.value<uarray3>();
                 for (quint8 i = 0; i < 3; i++)
-                    if (var.value[i] > value.toULong())
+                    if (var.value[i] > Converter::getULong(value))
                         return true;
             }
             else if (typeName == "iarray3")
             {
                 iarray3 var = spellValue.value<iarray3>();
                 for (quint8 i = 0; i < 3; i++)
-                    if (var.value[i] > value.toLong())
+                    if (var.value[i] > Converter::getLong(value))
                         return true;
             }
             else if (typeName == "farray3")
@@ -152,14 +157,14 @@ bool SWSearch::hasValue(QString name, QString value, SpellEntry const* spellInfo
             {
                 uarray8 var = spellValue.value<uarray8>();
                 for (quint8 i = 0; i < 8; i++)
-                    if (var.value[i] > value.toULong())
+                    if (var.value[i] > Converter::getULong(value))
                         return true;
             }
             else if (typeName == "iarray8")
             {
                 iarray8 var = spellValue.value<iarray8>();
                 for (quint8 i = 0; i < 8; i++)
-                    if (var.value[i] > value.toLong())
+                    if (var.value[i] > Converter::getLong(value))
                         return true;
             }
             else if (typeName == "farray8")
@@ -171,7 +176,7 @@ bool SWSearch::hasValue(QString name, QString value, SpellEntry const* spellInfo
             }
             else
             {
-                if (spellValue.toLongLong() > value.toLongLong())
+                if (spellValue.toLongLong() > Converter::getLongLong(value))
                     return true;
             }
         }
@@ -183,14 +188,14 @@ bool SWSearch::hasValue(QString name, QString value, SpellEntry const* spellInfo
             {
                 uarray2 var = spellValue.value<uarray2>();
                 for (quint8 i = 0; i < 2; i++)
-                    if (var.value[i] < value.toULong())
+                    if (var.value[i] < Converter::getULong(value))
                         return true;
             }
             else if (typeName == "iarray2")
             {
                 iarray2 var = spellValue.value<iarray2>();
                 for (quint8 i = 0; i < 2; i++)
-                    if (var.value[i] < value.toLong())
+                    if (var.value[i] < Converter::getLong(value))
                         return true;
             }
             else if (typeName == "farray2")
@@ -204,14 +209,14 @@ bool SWSearch::hasValue(QString name, QString value, SpellEntry const* spellInfo
             {
                 uarray3 var = spellValue.value<uarray3>();
                 for (quint8 i = 0; i < 3; i++)
-                    if (var.value[i] < value.toULong())
+                    if (var.value[i] < Converter::getULong(value))
                         return true;
             }
             else if (typeName == "iarray3")
             {
                 iarray3 var = spellValue.value<iarray3>();
                 for (quint8 i = 0; i < 3; i++)
-                    if (var.value[i] < value.toLong())
+                    if (var.value[i] < Converter::getLong(value))
                         return true;
             }
             else if (typeName == "farray3")
@@ -225,14 +230,14 @@ bool SWSearch::hasValue(QString name, QString value, SpellEntry const* spellInfo
             {
                 uarray8 var = spellValue.value<uarray8>();
                 for (quint8 i = 0; i < 8; i++)
-                    if (var.value[i] < value.toULong())
+                    if (var.value[i] < Converter::getULong(value))
                         return true;
             }
             else if (typeName == "iarray8")
             {
                 iarray8 var = spellValue.value<iarray8>();
                 for (quint8 i = 0; i < 8; i++)
-                    if (var.value[i] < value.toLong())
+                    if (var.value[i] < Converter::getLong(value))
                         return true;
             }
             else if (typeName == "farray8")
@@ -244,7 +249,7 @@ bool SWSearch::hasValue(QString name, QString value, SpellEntry const* spellInfo
             }
             else
             {
-                if (spellValue.toLongLong() < value.toLongLong())
+                if (spellValue.toLongLong() < Converter::getLongLong(value))
                     return true;
             }
         }
@@ -256,47 +261,47 @@ bool SWSearch::hasValue(QString name, QString value, SpellEntry const* spellInfo
             {
                 uarray2 var = spellValue.value<uarray2>();
                 for (quint8 i = 0; i < 2; i++)
-                    if (var.value[i] & value.toULong())
+                    if (var.value[i] & Converter::getULong(value))
                         return true;
             }
             else if (typeName == "iarray2")
             {
                 iarray2 var = spellValue.value<iarray2>();
                 for (quint8 i = 0; i < 2; i++)
-                    if (var.value[i] & value.toLong())
+                    if (var.value[i] & Converter::getLong(value))
                         return true;
             }
             else if (typeName == "uarray3")
             {
                 uarray3 var = spellValue.value<uarray3>();
                 for (quint8 i = 0; i < 3; i++)
-                    if (var.value[i] & value.toULong())
+                    if (var.value[i] & Converter::getULong(value))
                         return true;
             }
             else if (typeName == "iarray3")
             {
                 iarray3 var = spellValue.value<iarray3>();
                 for (quint8 i = 0; i < 3; i++)
-                    if (var.value[i] & value.toLong())
+                    if (var.value[i] & Converter::getLong(value))
                         return true;
             }
             else if (typeName == "uarray8")
             {
                 uarray8 var = spellValue.value<uarray8>();
                 for (quint8 i = 0; i < 8; i++)
-                    if (var.value[i] & value.toULong())
+                    if (var.value[i] & Converter::getULong(value))
                         return true;
             }
             else if (typeName == "iarray8")
             {
                 iarray8 var = spellValue.value<iarray8>();
                 for (quint8 i = 0; i < 8; i++)
-                    if (var.value[i] & value.toLong())
+                    if (var.value[i] & Converter::getLong(value))
                         return true;
             }
             else
             {
-                if (spellValue.toLongLong() & value.toLongLong())
+                if (spellValue.toLongLong() & Converter::getLongLong(value))
                     return true;
             }
         }
@@ -308,47 +313,47 @@ bool SWSearch::hasValue(QString name, QString value, SpellEntry const* spellInfo
             {
                 uarray2 var = spellValue.value<uarray2>();
                 for (quint8 i = 0; i < 2; i++)
-                    if (~var.value[i] & value.toULong())
+                    if (~var.value[i] & Converter::getULong(value))
                         return true;
             }
             else if (typeName == "iarray2")
             {
                 iarray2 var = spellValue.value<iarray2>();
                 for (quint8 i = 0; i < 2; i++)
-                    if (~var.value[i] & value.toLong())
+                    if (~var.value[i] & Converter::getLong(value))
                         return true;
             }
             else if (typeName == "uarray3")
             {
                 uarray3 var = spellValue.value<uarray3>();
                 for (quint8 i = 0; i < 3; i++)
-                    if (~var.value[i] & value.toULong())
+                    if (~var.value[i] & Converter::getULong(value))
                         return true;
             }
             else if (typeName == "iarray3")
             {
                 iarray3 var = spellValue.value<iarray3>();
                 for (quint8 i = 0; i < 3; i++)
-                    if (~var.value[i] & value.toLong())
+                    if (~var.value[i] & Converter::getLong(value))
                         return true;
             }
             else if (typeName == "uarray8")
             {
                 uarray8 var = spellValue.value<uarray8>();
                 for (quint8 i = 0; i < 8; i++)
-                    if (~var.value[i] & value.toULong())
+                    if (~var.value[i] & Converter::getULong(value))
                         return true;
             }
             else if (typeName == "iarray8")
             {
                 iarray8 var = spellValue.value<iarray8>();
                 for (quint8 i = 0; i < 8; i++)
-                    if (~var.value[i] & value.toLong())
+                    if (~var.value[i] & Converter::getLong(value))
                         return true;
             }
             else
             {
-                if (~spellValue.toLongLong() & value.toLongLong())
+                if (~spellValue.toLongLong() & Converter::getLongLong(value))
                     return true;
             }
         }
@@ -360,14 +365,14 @@ bool SWSearch::hasValue(QString name, QString value, SpellEntry const* spellInfo
             {
                 uarray2 var = spellValue.value<uarray2>();
                 for (quint8 i = 0; i < 2; i++)
-                    if (var.value[i] == value.toULong())
+                    if (var.value[i] == Converter::getULong(value))
                         return false;
             }
             else if (typeName == "iarray2")
             {
                 iarray2 var = spellValue.value<iarray2>();
                 for (quint8 i = 0; i < 2; i++)
-                    if (var.value[i] == value.toLong())
+                    if (var.value[i] == Converter::getLong(value))
                         return false;
             }
             else if (typeName == "farray2")
@@ -381,14 +386,14 @@ bool SWSearch::hasValue(QString name, QString value, SpellEntry const* spellInfo
             {
                 uarray3 var = spellValue.value<uarray3>();
                 for (quint8 i = 0; i < 3; i++)
-                    if (var.value[i] == value.toULong())
+                    if (var.value[i] == Converter::getULong(value))
                         return false;
             }
             else if (typeName == "iarray3")
             {
                 iarray3 var = spellValue.value<iarray3>();
                 for (quint8 i = 0; i < 3; i++)
-                    if (var.value[i] == value.toLong())
+                    if (var.value[i] == Converter::getLong(value))
                         return false;
             }
             else if (typeName == "farray3")
@@ -402,14 +407,14 @@ bool SWSearch::hasValue(QString name, QString value, SpellEntry const* spellInfo
             {
                 uarray8 var = spellValue.value<uarray8>();
                 for (quint8 i = 0; i < 8; i++)
-                    if (var.value[i] == value.toULong())
+                    if (var.value[i] == Converter::getULong(value))
                         return false;
             }
             else if (typeName == "iarray8")
             {
                 iarray8 var = spellValue.value<iarray8>();
                 for (quint8 i = 0; i < 8; i++)
-                    if (var.value[i] == value.toLong())
+                    if (var.value[i] == Converter::getLong(value))
                         return false;
             }
             else if (typeName == "farray8")
@@ -419,13 +424,18 @@ bool SWSearch::hasValue(QString name, QString value, SpellEntry const* spellInfo
                     if (var.value[i] == value.toFloat())
                         return false;
             }
+            else if (typeName == "QString")
+            {
+                if (spellValue.toString() != value)
+                    return true;
+            }
             else
             {
-                if (spellValue.toLongLong() != value.toLongLong())
+                if (spellValue.toLongLong() != Converter::getLongLong(value))
                     return true;
             }
 
-            return true;
+            return false;
         }
         break;
         default:
@@ -434,14 +444,14 @@ bool SWSearch::hasValue(QString name, QString value, SpellEntry const* spellInfo
             {
                uarray2 var = spellValue.value<uarray2>();
                 for (quint8 i = 0; i < 2; i++)
-                    if (var.value[i] == value.toULong())
+                    if (var.value[i] == Converter::getULong(value))
                         return true;
             }
             else if (typeName == "iarray2")
             {
                 iarray2 var = spellValue.value<iarray2>();
                 for (quint8 i = 0; i < 2; i++)
-                    if (var.value[i] == value.toLong())
+                    if (var.value[i] == Converter::getLong(value))
                         return true;
             }
             else if (typeName == "farray2")
@@ -455,14 +465,14 @@ bool SWSearch::hasValue(QString name, QString value, SpellEntry const* spellInfo
             {
                 uarray3 var = spellValue.value<uarray3>();
                 for (quint8 i = 0; i < 3; i++)
-                    if (var.value[i] == value.toULong())
+                    if (var.value[i] == Converter::getULong(value))
                         return true;
             }
             else if (typeName == "iarray3")
             {
                 iarray3 var = spellValue.value<iarray3>();
                 for (quint8 i = 0; i < 3; i++)
-                    if (var.value[i] == value.toLong())
+                    if (var.value[i] == Converter::getLong(value))
                         return true;
             }
             else if (typeName == "farray3")
@@ -476,14 +486,14 @@ bool SWSearch::hasValue(QString name, QString value, SpellEntry const* spellInfo
             {
                 uarray8 var = spellValue.value<uarray8>();
                 for (quint8 i = 0; i < 8; i++)
-                    if (var.value[i] == value.toULong())
+                    if (var.value[i] == Converter::getULong(value))
                         return true;
             }
             else if (typeName == "iarray8")
             {
                 iarray8 var = spellValue.value<iarray8>();
                 for (quint8 i = 0; i < 8; i++)
-                    if (var.value[i] == value.toLong())
+                    if (var.value[i] == Converter::getLong(value))
                         return true;
             }
             else if (typeName == "farray8")
@@ -493,9 +503,14 @@ bool SWSearch::hasValue(QString name, QString value, SpellEntry const* spellInfo
                     if (var.value[i] == value.toFloat())
                         return true;
             }
-            else
+            else if (typeName == "QString")
             {
                 if (spellValue.toString() == value)
+                    return true;
+            }
+            else
+            {
+                if (spellValue.toLongLong() == Converter::getLongLong(value))
                     return true;
             }
         }
