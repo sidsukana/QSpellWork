@@ -95,4 +95,12 @@ class SWObject
         bool threadSemaphore[MAX_THREAD];
 };
 
+namespace Converter
+{
+    quint64 getULongLong(QString value);
+    qint64  getLongLong(QString value);
+    quint32 getULong(QString value);
+    qint32  getLong(QString value);
+};
+
 #endif // SWOBJECT_H
