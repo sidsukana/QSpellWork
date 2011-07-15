@@ -316,6 +316,8 @@ bool SWForm::event(QEvent* ev)
         {
             SendModel* m_ev = (SendModel*)ev;
             m_sortedModel->setSourceModel(m_ev->getObject());
+            SpellList->setColumnWidth(0, 40);
+            SpellList->setColumnWidth(1, 150);
             return true;
         }
         break;
