@@ -59,7 +59,7 @@ struct uarray2
 
 struct iarray2
 {
-    quint32 value[2];
+    qint32 value[2];
 };
 
 struct farray2
@@ -74,7 +74,7 @@ struct uarray3
 
 struct iarray3
 {
-    quint32 value[3];
+    qint32 value[3];
 };
 
 struct farray3
@@ -89,7 +89,7 @@ struct uarray8
 
 struct iarray8
 {
-    quint32 value[8];
+    qint32 value[8];
 };
 
 struct farray8
