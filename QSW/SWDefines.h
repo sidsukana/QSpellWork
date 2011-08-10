@@ -3,7 +3,12 @@
 
 #include <QtCore/QString>
 #include <QtCore/QMetaType>
- 
+
+extern QString QSW_VERSION;
+extern QString CLIENT_VERSION;
+extern QString QSW_BUILD;
+extern QString CLIENT_BUILD;
+
 extern quint8  Locale;
 extern QString SpellStruct[];
 extern QString ProcFlagDesc[];
@@ -23,7 +28,8 @@ enum AttrType
     TYPE_ATTR_EX4,
     TYPE_ATTR_EX5,
     TYPE_ATTR_EX6,
-    TYPE_ATTR_EXG,
+    TYPE_ATTR_EX7,
+    TYPE_ATTR_EX8,
     TYPE_TARGETS,
     TYPE_CREATURE,
     TYPE_FORMS,
@@ -55,6 +61,12 @@ enum Threads
 struct uarray2
 {
     quint32 value[2];
+
+    uarray2()
+    {
+        for (quint8 i = 0; i < 2; i++)
+            value[i] = 0;
+    }
 };
 
 struct iarray2

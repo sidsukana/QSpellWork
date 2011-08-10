@@ -16,7 +16,7 @@ SWForm::SWForm(QWidget* parent)
     SpellList->setModel(m_sortedModel);
 
     loadComboBoxes();
-    detectLocale();
+    //detectLocale();
     createModeButton();
 
     mainToolBar->addSeparator();
@@ -108,7 +108,7 @@ void SWForm::initializeCompleter()
         SpellEntry const* spellInfo = sSpellStore.LookupEntry(i);
         if (spellInfo)
         {
-            QString sName = QString::fromUtf8(spellInfo->SpellName[Locale]);
+            QString sName = QString::fromUtf8(spellInfo->SpellName);
             if (!names.contains(sName, Qt::CaseInsensitive))
                 names << sName;
         }
@@ -140,7 +140,7 @@ void SWForm::createModeButton()
     connect(m_modeButton, SIGNAL(triggered(QAction*)), this, SLOT(slotSetMode(QAction*)));
 }
 
-void SWForm::detectLocale()
+/*void SWForm::detectLocale()
 {
     SpellEntry const* spellInfo = sSpellStore.LookupEntry(1);
 
@@ -161,7 +161,7 @@ void SWForm::detectLocale()
             break;
         }
     }
-}
+}*/
 
 void SWForm::slotLinkClicked(const QUrl &url)
 {

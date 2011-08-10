@@ -544,7 +544,7 @@ void SWSearch::search()
                 m_sw->setMetaEnum("SpellFamilyNames");
                 if (m_form->comboBox->currentIndex() < m_sw->getMetaEnum().keyCount())
                 {
-                    if (m_spellInfo->SpellFamilyName == m_sw->getMetaEnum().value(m_form->comboBox->currentIndex()))
+                    if (m_spellInfo->getSpellFamilyName() == m_sw->getMetaEnum().value(m_form->comboBox->currentIndex()))
                         family = true;
                 }
                 else
@@ -555,7 +555,7 @@ void SWSearch::search()
                 {
                     for (quint8 i = EFFECT_INDEX_0; i < MAX_EFFECT_INDEX; i++)
                     {
-                        if (m_spellInfo->EffectApplyAuraName.value[i] == m_sw->getMetaEnum().value(m_form->comboBox_2->currentIndex()))
+                        if (m_spellInfo->getEffectApplyAuraName(i) == m_sw->getMetaEnum().value(m_form->comboBox_2->currentIndex()))
                         {
                             aura = true;
                             break;
@@ -570,7 +570,7 @@ void SWSearch::search()
                 {
                     for (quint8 i = EFFECT_INDEX_0; i < MAX_EFFECT_INDEX; i++)
                     {
-                        if (m_spellInfo->Effect.value[i] == m_sw->getMetaEnum().value(m_form->comboBox_3->currentIndex()))
+                        if (m_spellInfo->getEffect(i) == m_sw->getMetaEnum().value(m_form->comboBox_3->currentIndex()))
                         {
                             effect = true;
                             break;
@@ -585,7 +585,7 @@ void SWSearch::search()
                 {
                     for (quint8 i = EFFECT_INDEX_0; i < MAX_EFFECT_INDEX; i++)
                     {
-                        if (m_spellInfo->EffectImplicitTargetA.value[i] == m_sw->getMetaEnum().value(m_form->comboBox_4->currentIndex()))
+                        if (m_spellInfo->getEffectImplicitTargetA(i) == m_sw->getMetaEnum().value(m_form->comboBox_4->currentIndex()))
                         {
                             targetA = true;
                             break;
@@ -599,7 +599,7 @@ void SWSearch::search()
                 {
                     for (quint8 i = EFFECT_INDEX_0; i < MAX_EFFECT_INDEX; i++)
                     {
-                        if (m_spellInfo->EffectImplicitTargetB.value[i] == m_sw->getMetaEnum().value(m_form->comboBox_5->currentIndex()))
+                        if (m_spellInfo->getEffectImplicitTargetB(i) == m_sw->getMetaEnum().value(m_form->comboBox_5->currentIndex()))
                         {
                             targetB = true;
                             break;
@@ -627,8 +627,8 @@ void SWSearch::search()
 
                 if (family && aura && effect && adFilter1 && adFilter2 && targetA && targetB)
                 {
-                    QString sRank(QString::fromUtf8(m_spellInfo->Rank[Locale]));
-                    QString sFullName(QString::fromUtf8(m_spellInfo->SpellName[Locale]));
+                    QString sRank(QString::fromUtf8(m_spellInfo->Rank));
+                    QString sFullName(QString::fromUtf8(m_spellInfo->SpellName));
 
                     if (!sRank.isEmpty())
                         sFullName.append(QString(" (%0)").arg(sRank));
@@ -665,10 +665,10 @@ void SWSearch::search()
                 for (quint32 i = 0; i < sSpellStore.GetNumRows(); i++)
                 {
                     SpellEntry const* m_spellInfo = sSpellStore.LookupEntry(i);
-                    if (m_spellInfo && QString(QString::fromUtf8(m_spellInfo->SpellName[Locale])).contains(m_form->findLine_e1->text(), Qt::CaseInsensitive))
+                    if (m_spellInfo && QString(QString::fromUtf8(m_spellInfo->SpellName)).contains(m_form->findLine_e1->text(), Qt::CaseInsensitive))
                     {
-                        QString sRank(QString::fromUtf8(m_spellInfo->Rank[Locale]));
-                        QString sFullName(QString::fromUtf8(m_spellInfo->SpellName[Locale]));
+                        QString sRank(QString::fromUtf8(m_spellInfo->Rank));
+                        QString sFullName(QString::fromUtf8(m_spellInfo->SpellName));
 
                         if (!sRank.isEmpty())
                             sFullName.append(QString(" (%0)").arg(sRank));
@@ -687,8 +687,8 @@ void SWSearch::search()
 
                 if (m_spellInfo)
                 {
-                    QString sRank(QString::fromUtf8(m_spellInfo->Rank[Locale]));
-                    QString sFullName(QString::fromUtf8(m_spellInfo->SpellName[Locale]));
+                    QString sRank(QString::fromUtf8(m_spellInfo->Rank));
+                    QString sFullName(QString::fromUtf8(m_spellInfo->SpellName));
 
                     if (!sRank.isEmpty())
                         sFullName.append(QString(" (%0)").arg(sRank));
@@ -707,10 +707,10 @@ void SWSearch::search()
             for (quint32 i = 0; i < sSpellStore.GetNumRows(); i++)
             {
                 SpellEntry const* m_spellInfo = sSpellStore.LookupEntry(i);
-                if (m_spellInfo && m_spellInfo->SpellIconID == m_form->findLine_e2->text().toInt())
+                if (m_spellInfo && m_spellInfo->SpellIconId == m_form->findLine_e2->text().toInt())
                 {
-                    QString sRank(QString::fromUtf8(m_spellInfo->Rank[Locale]));
-                    QString sFullName(QString::fromUtf8(m_spellInfo->SpellName[Locale]));
+                    QString sRank(QString::fromUtf8(m_spellInfo->Rank));
+                    QString sFullName(QString::fromUtf8(m_spellInfo->SpellName));
 
                     if (!sRank.isEmpty())
                         sFullName.append(QString(" (%0)").arg(sRank));
@@ -728,10 +728,10 @@ void SWSearch::search()
             for (quint32 i = 0; i < sSpellStore.GetNumRows(); i++)
             {
                 SpellEntry const* m_spellInfo = sSpellStore.LookupEntry(i);
-                if (m_spellInfo && QString(QString::fromUtf8(m_spellInfo->Description[Locale])).contains(m_form->findLine_e3->text(), Qt::CaseInsensitive))
+                if (m_spellInfo && QString(QString::fromUtf8(m_spellInfo->Description)).contains(m_form->findLine_e3->text(), Qt::CaseInsensitive))
                 {
-                    QString sRank(QString::fromUtf8(m_spellInfo->Rank[Locale]));
-                    QString sFullName(QString::fromUtf8(m_spellInfo->SpellName[Locale]));
+                    QString sRank(QString::fromUtf8(m_spellInfo->Rank));
+                    QString sFullName(QString::fromUtf8(m_spellInfo->SpellName));
 
                     if (!sRank.isEmpty())
                         sFullName.append(QString(" (%0)").arg(sRank));
@@ -751,8 +751,8 @@ void SWSearch::search()
                 SpellEntry const* m_spellInfo = sSpellStore.LookupEntry(i);
                 if (m_spellInfo)
                 {
-                    QString sRank(QString::fromUtf8(m_spellInfo->Rank[Locale]));
-                    QString sFullName(QString::fromUtf8(m_spellInfo->SpellName[Locale]));
+                    QString sRank(QString::fromUtf8(m_spellInfo->Rank));
+                    QString sFullName(QString::fromUtf8(m_spellInfo->SpellName));
 
                     if (!sRank.isEmpty())
                         sFullName.append(QString(" (%0)").arg(sRank));

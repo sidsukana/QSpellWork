@@ -354,6 +354,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\DBC\DBCStructure.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\DBC\DBCStructure.h"
 					>
 					<FileConfiguration

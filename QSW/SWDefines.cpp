@@ -2,6 +2,11 @@
 
 quint8 Locale = 0;
 
+QString QSW_VERSION("4.0");
+QString CLIENT_VERSION("4.2.0");
+QString QSW_BUILD("1");
+QString CLIENT_BUILD("14333");
+
 QString SpellStruct[] =
 {
     "None",
@@ -16,7 +21,8 @@ QString SpellStruct[] =
     "AttributesEx4",
     "AttributesEx5",
     "AttributesEx6",
-    "AttributesExG",
+    "AttributesEx7",
+    "AttributesEx8",
     "Stances",
     "StancesNot",
     "Targets",
@@ -151,7 +157,7 @@ QString ProcFlagDesc[] =
     //15 0x00008000 000000001000000000000000 -
     "15 Taken positive spell hit",
     //16 0x00010000 000000010000000000000000 -
-    "16 Successful damage from harmful spell cast (каст дамажащего спелла)",
+    "16 Successful damage from harmful spell cast",
     //17 0x00020000 000000100000000000000000 -
     "17 Taken spell damage",
     //18 0x00040000 000001000000000000000000 -
@@ -161,7 +167,7 @@ QString ProcFlagDesc[] =
     //20 0x00100000 000100000000000000000000 -
     "20 Taken any damage",
     //21 0x00200000 001000000000000000000000 -
-    "21 On trap activation (ѕри срабатывании ловушки)",
+    "21 On trap activation",
     //22 0x00800000 010000000000000000000000 -
     "22 Taken off-hand melee attacks",
     //23 0x00800000 100000000000000000000000 -
