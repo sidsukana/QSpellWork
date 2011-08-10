@@ -619,6 +619,42 @@ public:
         SPELL_ATTR_EX6_UNK30                      = 1 << 0x1E,
         SPELL_ATTR_EX6_UNK31                      = 1 << 0x1F
     };
+    
+    enum AttributesEx7
+    {
+        SPELL_ATTR_EX7_UNK0                       = 1 << 0x00,
+        SPELL_ATTR_EX7_UNK1                       = 1 << 0x01,
+        SPELL_ATTR_EX7_REACTIVATE_AT_RESURRECT    = 1 << 0x02,
+        SPELL_ATTR_EX7_DISABLED_CLIENT_SIDE       = 1 << 0x03,
+        SPELL_ATTR_EX7_UNK4                       = 1 << 0x04,
+        SPELL_ATTR_EX7_SUMMON_PLAYER_TOTEM        = 1 << 0x05,
+        SPELL_ATTR_EX7_UNK6                       = 1 << 0x06,
+        SPELL_ATTR_EX7_UNK7                       = 1 << 0x07,
+        SPELL_ATTR_EX7_HORDE_ONLY                 = 1 << 0x08,
+        SPELL_ATTR_EX7_ALLIANCE_ONLY              = 1 << 0x09,
+        SPELL_ATTR_EX7_DISPEL_CHARGES             = 1 << 0x0A,
+        SPELL_ATTR_EX7_INTERRUPT_ONLY_NONPLAYER   = 1 << 0x0B,
+        SPELL_ATTR_EX7_UNK12                      = 1 << 0x0C,
+        SPELL_ATTR_EX7_UNK13                      = 1 << 0x0D,
+        SPELL_ATTR_EX7_UNK14                      = 1 << 0x0E,
+        SPELL_ATTR_EX7_UNK15                      = 1 << 0x0F,
+        SPELL_ATTR_EX7_UNK16                      = 1 << 0x10,
+        SPELL_ATTR_EX7_UNK17                      = 1 << 0x11,
+        SPELL_ATTR_EX7_HAS_CHARGE_EFFECT          = 1 << 0x12,
+        SPELL_ATTR_EX7_ZONE_TELEPORT              = 1 << 0x13,
+        SPELL_ATTR_EX7_UNK20                      = 1 << 0x14,
+        SPELL_ATTR_EX7_UNK21                      = 1 << 0x15,
+        SPELL_ATTR_EX7_UNK22                      = 1 << 0x16,
+        SPELL_ATTR_EX7_UNK23                      = 1 << 0x17,
+        SPELL_ATTR_EX7_UNK24                      = 1 << 0x18,
+        SPELL_ATTR_EX7_UNK25                      = 1 << 0x19,
+        SPELL_ATTR_EX7_UNK26                      = 1 << 0x1A,
+        SPELL_ATTR_EX7_UNK27                      = 1 << 0x1B,
+        SPELL_ATTR_EX7_UNK28                      = 1 << 0x1C,
+        SPELL_ATTR_EX7_UNK29                      = 1 << 0x1D,
+        SPELL_ATTR_EX7_UNK30                      = 1 << 0x1E,
+        SPELL_ATTR_EX7_UNK31                      = 1 << 0x1F
+    };
 
     enum AuraType
     {
@@ -1383,6 +1419,7 @@ public:
     Q_ENUMS(AttributesEx4)
     Q_ENUMS(AttributesEx5)
     Q_ENUMS(AttributesEx6)
+    Q_ENUMS(AttributesEx7)
     Q_ENUMS(AuraType)
     Q_ENUMS(ShapeshiftFormMask)
     Q_ENUMS(ItemClass)
