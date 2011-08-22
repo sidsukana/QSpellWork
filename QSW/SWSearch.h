@@ -89,14 +89,14 @@ class MetaSpell : public QObject
         quint32 getDmgClass() { return m_spellInfo->getDmgClass(); }
         quint32 getPreventionType() { return m_spellInfo->getPreventionType(); }
         qint32  getStanceBarOrder() { return m_spellInfo->getStanceBarOrder(); }
-        //quint32 getMinFactionId() { return m_spellInfo->GetSpellCastingRequirements()->MinFactionId; }
-        //quint32 getMinReputation() { return m_spellInfo->GetSpellCastingRequirements()->MinReputation; }
-        //quint32 getRequiredAuraVision() { return m_spellInfo->GetSpellCastingRequirements()->RequiredAuraVision; }
+        quint32 getMinFactionId() { return m_spellInfo->getMinFactionId(); }
+        quint32 getMinReputation() { return m_spellInfo->getMinReputation(); }
+        quint32 getRequiredAuraVision() { return m_spellInfo->getRequiredAuraVision(); }
         quint32 getAreaGroupId() { return m_spellInfo->getAreaGroupId(); }
         quint32 getSchoolMask() { return m_spellInfo->SchoolMask; }
         quint32 getRuneCostID() { return m_spellInfo->RuneCostId; }
         quint32 getSpellMissileId() { return m_spellInfo->SpellMissileId; }
-        //quint32 getPowerDisplayId() { return m_spellInfo->GetSpellPower()->PowerDisplayId; }
+        quint32 getPowerDisplayId() { return m_spellInfo->getPowerDisplayId(); }
         quint32 getSpellDescriptionVariableId() { return m_spellInfo->SpellDescriptionVariableId; }
         quint32 getSpellDifficultyId() { return m_spellInfo->SpellDifficultyId; }
 
@@ -107,31 +107,33 @@ class MetaSpell : public QObject
 
         QVariant getStances() { return QVariant::fromValue(m_spellInfo->getStances()); }
         QVariant getStancesNot() { return QVariant::fromValue(m_spellInfo->getStancesNot()); }
-        /*QVariant getTotem() { return QVariant::fromValue(m_spellInfo->GetSpellTotems()->Totem); }
-        QVariant getTotemCategory() { return QVariant::fromValue(m_spellInfo->GetSpellTotems()->TotemCategory); }
-        QVariant getReagent() { return QVariant::fromValue(m_spellInfo->GetSpellReagents()->Reagent); }
-        QVariant getReagentCount() { return QVariant::fromValue(m_spellInfo->GetSpellReagents()->ReagentCount); }
-        QVariant getEffect() { return QVariant::fromValue(m_spellInfo->GetSpellEffect()->Effect); }
-        QVariant getEffectDieSides() { return QVariant::fromValue(m_spellInfo->EffectDieSides); }
-        QVariant getEffectRealPointsPerLevel() { return QVariant::fromValue(m_spellInfo->EffectRealPointsPerLevel); }
-        QVariant getEffectBasePoints() { return QVariant::fromValue(m_spellInfo->EffectBasePoints); }
-        QVariant getEffectMechanic() { return QVariant::fromValue(m_spellInfo->EffectMechanic); }
-        QVariant getEffectImplicitTargetA() { return QVariant::fromValue(m_spellInfo->EffectImplicitTargetA); }
-        QVariant getEffectImplicitTargetB() { return QVariant::fromValue(m_spellInfo->EffectImplicitTargetB); }
-        QVariant getEffectRadiusIndex() { return QVariant::fromValue(m_spellInfo->EffectRadiusIndex); }
-        QVariant getEffectApplyAuraName() { return QVariant::fromValue(m_spellInfo->EffectApplyAuraName); }
-        QVariant getEffectAmplitude() { return QVariant::fromValue(m_spellInfo->EffectAmplitude); }
-        QVariant getEffectMultipleValue() { return QVariant::fromValue(m_spellInfo->EffectMultipleValue); }
-        QVariant getEffectChainTarget() { return QVariant::fromValue(m_spellInfo->EffectChainTarget); }
-        QVariant getEffectItemType() { return QVariant::fromValue(m_spellInfo->EffectItemType); }
-        QVariant getEffectMiscValue() { return QVariant::fromValue(m_spellInfo->EffectMiscValue); }
-        QVariant getEffectMiscValueB() { return QVariant::fromValue(m_spellInfo->EffectMiscValueB); }
-        QVariant getEffectTriggerSpell() { return QVariant::fromValue(m_spellInfo->EffectTriggerSpell); }
-        QVariant getEffectPointsPerComboPoint() { return QVariant::fromValue(m_spellInfo->EffectPointsPerComboPoint); }
-        QVariant getEffectSpellClassMaskA() { return QVariant::fromValue(m_spellInfo->EffectSpellClassMaskA); }
-        QVariant getEffectSpellClassMaskB() { return QVariant::fromValue(m_spellInfo->EffectSpellClassMaskB); }
-        QVariant getEffectSpellClassMaskC() { return QVariant::fromValue(m_spellInfo->EffectSpellClassMaskC); }
-        QVariant getDmgMultiplier() { return QVariant::fromValue(m_spellInfo->EffectDamageMultiplier); }*/
+        QVariant getTotem() { return QVariant::fromValue(m_spellInfo->getTotem()); }
+        QVariant getTotemCategory() { return QVariant::fromValue(m_spellInfo->getTotemCategory()); }
+        QVariant getReagent() { return QVariant::fromValue(m_spellInfo->getReagent()); }
+        QVariant getReagentCount() { return QVariant::fromValue(m_spellInfo->getReagentCount()); }
+
+        QVariant getEffect() { return QVariant::fromValue(m_spellInfo->getEffect()); }
+        QVariant getEffectDieSides() { return QVariant::fromValue(m_spellInfo->getEffectDieSides()); }
+        QVariant getEffectRealPointsPerLevel() { return QVariant::fromValue(m_spellInfo->getEffectRealPointsPerLevel()); }
+        QVariant getEffectBasePoints() { return QVariant::fromValue(m_spellInfo->getEffectBasePoints()); }
+        QVariant getEffectMechanic() { return QVariant::fromValue(m_spellInfo->getEffectMechanic()); }
+        QVariant getEffectImplicitTargetA() { return QVariant::fromValue(m_spellInfo->getEffectImplicitTargetA()); }
+        QVariant getEffectImplicitTargetB() { return QVariant::fromValue(m_spellInfo->getEffectImplicitTargetB()); }
+        QVariant getEffectRadiusIndex() { return QVariant::fromValue(m_spellInfo->getEffectRadiusIndex()); }
+        QVariant getEffectApplyAuraName() { return QVariant::fromValue(m_spellInfo->getEffectApplyAuraName()); }
+        QVariant getEffectAmplitude() { return QVariant::fromValue(m_spellInfo->getEffectAmplitude()); }
+        QVariant getEffectValueMultiplier() { return QVariant::fromValue(m_spellInfo->getEffectValueMultiplier()); }
+        QVariant getEffectChainTarget() { return QVariant::fromValue(m_spellInfo->getEffectChainTarget()); }
+        QVariant getEffectItemType() { return QVariant::fromValue(m_spellInfo->getEffectItemType()); }
+        QVariant getEffectMiscValue() { return QVariant::fromValue(m_spellInfo->getEffectMiscValue()); }
+        QVariant getEffectMiscValueB() { return QVariant::fromValue(m_spellInfo->getEffectMiscValueB()); }
+        QVariant getEffectTriggerSpell() { return QVariant::fromValue(m_spellInfo->getEffectTriggerSpell()); }
+        QVariant getEffectPointsPerComboPoint() { return QVariant::fromValue(m_spellInfo->getEffectPointsPerComboPoint()); }
+        QVariant getEffectSpellClassMaskA() { return QVariant::fromValue(m_spellInfo->getEffectSpellClassMaskA()); }
+        QVariant getEffectSpellClassMaskB() { return QVariant::fromValue(m_spellInfo->getEffectSpellClassMaskB()); }
+        QVariant getEffectSpellClassMaskC() { return QVariant::fromValue(m_spellInfo->getEffectSpellClassMaskC()); }
+        QVariant getEffectDamageMultiplier() { return QVariant::fromValue(m_spellInfo->getEffectDamageMultiplier()); }
+
         QVariant getSpellFamilyFlags() { return QVariant::fromValue(m_spellInfo->getSpellFamilyFlags()); }
         QVariant getSpellVisual() { return QVariant::fromValue(m_spellInfo->SpellVisual); }
 
@@ -182,18 +184,18 @@ class MetaSpell : public QObject
     Q_PROPERTY(quint32 ManaCost READ getManaCost)
     Q_PROPERTY(quint32 ManaCostPerlevel READ getManaCostPerlevel)
     Q_PROPERTY(quint32 ManaPerSecond READ getManaPerSecond)
-    //Q_PROPERTY(quint32 ManaPerSecondPerLevel READ getManaPerSecondPerLevel)
     Q_PROPERTY(quint32 RangeIndex READ getRangeIndex)
     Q_PROPERTY(float   Speed READ getSpeed)
     Q_PROPERTY(quint32 ModalNextSpell READ getModalNextSpell)
     Q_PROPERTY(quint32 StackAmount READ getStackAmount)
-    //Q_PROPERTY(QVariant Totem READ getTotem)
-    //Q_PROPERTY(QVariant Reagent READ getReagent)
-    //Q_PROPERTY(QVariant ReagentCount READ getReagentCount)
+    Q_PROPERTY(QVariant Totem READ getTotem)
+    Q_PROPERTY(QVariant Reagent READ getReagent)
+    Q_PROPERTY(QVariant ReagentCount READ getReagentCount)
     Q_PROPERTY(qint32  EquippedItemClass READ getEquippedItemClass)
     Q_PROPERTY(qint32  EquippedItemSubClassMask READ getEquippedItemSubClassMask)
     Q_PROPERTY(qint32  EquippedItemInventoryTypeMask READ getEquippedItemInventoryTypeMask)
-    /*Q_PROPERTY(QVariant Effect READ getEffect)
+
+    Q_PROPERTY(QVariant Effect READ getEffect)
     Q_PROPERTY(QVariant EffectDieSides READ getEffectDieSides)
     Q_PROPERTY(QVariant EffectRealPointsPerLevel READ getEffectRealPointsPerLevel)
     Q_PROPERTY(QVariant EffectBasePoints READ getEffectBasePoints)
@@ -203,7 +205,7 @@ class MetaSpell : public QObject
     Q_PROPERTY(QVariant EffectRadiusIndex READ getEffectRadiusIndex)
     Q_PROPERTY(QVariant EffectApplyAuraName READ getEffectApplyAuraName)
     Q_PROPERTY(QVariant EffectAmplitude READ getEffectAmplitude)
-    Q_PROPERTY(QVariant EffectMultipleValue READ getEffectMultipleValue)
+    Q_PROPERTY(QVariant EffectValueMultiplier READ getEffectValueMultiplier)
     Q_PROPERTY(QVariant EffectChainTarget READ getEffectChainTarget)
     Q_PROPERTY(QVariant EffectItemType READ getEffectItemType)
     Q_PROPERTY(QVariant EffectMiscValue READ getEffectMiscValue)
@@ -212,19 +214,16 @@ class MetaSpell : public QObject
     Q_PROPERTY(QVariant EffectPointsPerComboPoint READ getEffectPointsPerComboPoint)
     Q_PROPERTY(QVariant EffectSpellClassMaskA READ getEffectSpellClassMaskA)
     Q_PROPERTY(QVariant EffectSpellClassMaskB READ getEffectSpellClassMaskB)
-    Q_PROPERTY(QVariant EffectSpellClassMaskC READ getEffectSpellClassMaskC)*/
+    Q_PROPERTY(QVariant EffectSpellClassMaskC READ getEffectSpellClassMaskC)
+    Q_PROPERTY(QVariant EffectDamageMultiplier READ getEffectDamageMultiplier)
+
     Q_PROPERTY(QVariant SpellVisual READ getSpellVisual)
     Q_PROPERTY(quint32 SpellIconId READ getSpellIconId)
     Q_PROPERTY(quint32 ActiveIconId READ getActiveIconId)
-    //Q_PROPERTY(quint32 SpellPriority READ getSpellPriority)
     Q_PROPERTY(QString SpellName READ getSpellName)
-    //Q_PROPERTY(quint32 SpellNameFlag READ getSpellNameFlag)
     Q_PROPERTY(QString Rank READ getRank)
-    //Q_PROPERTY(quint32 RankFlags READ getRankFlags)
     Q_PROPERTY(QString Description READ getDescription)
-    //Q_PROPERTY(quint32 DescriptionFlags READ getDescriptionFlags)
     Q_PROPERTY(QString ToolTip READ getToolTip)
-    //Q_PROPERTY(quint32 ToolTipFlags READ getToolTipFlags)
     Q_PROPERTY(quint32 ManaCostPercentage READ getManaCostPercentage)
     Q_PROPERTY(quint32 StartRecoveryCategory READ getStartRecoveryCategory)
     Q_PROPERTY(quint32 StartRecoveryTime READ getStartRecoveryTime)
@@ -235,16 +234,15 @@ class MetaSpell : public QObject
     Q_PROPERTY(quint32 DmgClass READ getDmgClass)
     Q_PROPERTY(quint32 PreventionType READ getPreventionType)
     Q_PROPERTY(qint32  StanceBarOrder READ getStanceBarOrder)
-    //Q_PROPERTY(QVariant DmgMultiplier READ getDmgMultiplier)
-    //Q_PROPERTY(quint32 MinFactionId READ getMinFactionId)
-    //Q_PROPERTY(quint32 MinReputation READ getMinReputation)
-    //Q_PROPERTY(quint32 RequiredAuraVision READ getRequiredAuraVision)
-    //Q_PROPERTY(QVariant TotemCategory READ getTotemCategory)
+    Q_PROPERTY(quint32 MinFactionId READ getMinFactionId)
+    Q_PROPERTY(quint32 MinReputation READ getMinReputation)
+    Q_PROPERTY(quint32 RequiredAuraVision READ getRequiredAuraVision)
+    Q_PROPERTY(QVariant TotemCategory READ getTotemCategory)
     Q_PROPERTY(quint32 AreaGroupId READ getAreaGroupId)
     Q_PROPERTY(quint32 SchoolMask READ getSchoolMask)
     Q_PROPERTY(quint32 RuneCostId READ getRuneCostID)
     Q_PROPERTY(quint32 SpellMissileId READ getSpellMissileId)
-    //Q_PROPERTY(quint32 PowerDisplayId READ getPowerDisplayId)
+    Q_PROPERTY(quint32 PowerDisplayId READ getPowerDisplayId)
     Q_PROPERTY(quint32 SpellDescriptionVariableId READ getSpellDescriptionVariableId)
     Q_PROPERTY(quint32 SpellDifficultyId READ getSpellDifficultyId)
 };

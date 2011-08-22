@@ -4,7 +4,7 @@ quint8 Locale = 0;
 
 QString QSW_VERSION("4.0");
 QString CLIENT_VERSION("4.2.0");
-QString QSW_BUILD("1");
+QString QSW_BUILD("2");
 QString CLIENT_BUILD("14333");
 
 QString SpellStruct[] =
@@ -75,7 +75,7 @@ QString SpellStruct[] =
     "EffectRadiusIndex",
     "EffectApplyAuraName",
     "EffectAmplitude",
-    "EffectMultipleValue",
+    "EffectValueMultiplier",
     "EffectChainTarget",
     "EffectItemType",
     "EffectMiscValue",
@@ -85,6 +85,7 @@ QString SpellStruct[] =
     "EffectSpellClassMaskA",
     "EffectSpellClassMaskB",
     "EffectSpellClassMaskC",
+    "EffectDamageMultiplier",
     "SpellVisual",
     "SpellIconID",
     "ActiveIconID",
@@ -107,7 +108,6 @@ QString SpellStruct[] =
     "DmgClass",
     "PreventionType",
     "StanceBarOrder",
-    "DmgMultiplier",
     "MinFactionId",
     "MinReputation",
     "RequiredAuraVision",
@@ -117,7 +117,6 @@ QString SpellStruct[] =
     "RuneCostID",
     "SpellMissileId",
     "PowerDisplayId",
-    "Unk3",
     "SpellDescriptionVariableId",
     "SpellDifficultyId"
 };

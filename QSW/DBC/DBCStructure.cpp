@@ -183,6 +183,24 @@ quint32 SpellEntry::getRequiresSpellFocus() const
     return castReq ? castReq->RequiresSpellFocus : 0;
 }
 
+quint32 SpellEntry::getMinFactionId() const
+{
+    SpellCastingRequirementsEntry const* castReq = getSpellCastingRequirements();
+    return castReq ? castReq->MinFactionId : 0;
+}
+
+quint32 SpellEntry::getMinReputation() const
+{
+    SpellCastingRequirementsEntry const* castReq = getSpellCastingRequirements();
+    return castReq ? castReq->MinReputation : 0;
+}
+
+quint32 SpellEntry::getRequiredAuraVision() const
+{
+    SpellCastingRequirementsEntry const* castReq = getSpellCastingRequirements();
+    return castReq ? castReq->RequiredAuraVision : 0;
+}
+
 /**
     SpellCategories methods
  */
@@ -361,6 +379,12 @@ quint32 SpellEntry::getManaCostPerLevel() const
     return power ? power->ManaCostPerlevel : 0;
 }
 
+quint32 SpellEntry::getPowerDisplayId() const
+{
+    SpellPowerEntry const* power = getSpellPower();
+    return power ? power->PowerDisplayId : 0;
+}
+
 /**
     SpellShapeshift methods
  */
@@ -411,9 +435,397 @@ quint32 SpellEntry::getMaxTargetLevel() const
     return target ? target->MaxTargetLevel : 0;
 }
 
+float SpellEntry::getMaxTargetRadius() const
+{
+    SpellTargetRestrictionsEntry const* target = getSpellTargetRestrictions();
+    return target ? target->MaxTargetRadius : 0.0f;
+}
+
 /**
     SpellEffect methods
  */
+
+uarray3 SpellEntry::getEffect() const
+{
+    uarray3 effects = uarray3();
+    for (quint8 eff = 0; eff < 3; eff++)
+    {
+        SpellEffectEntry const* effect = getSpellEffect(eff);
+
+        if (effect)
+            effects.value[eff] = effect->Effect;
+        else
+            effects.value[eff] = 0;
+    }
+
+    return effects;
+}
+
+uarray3 SpellEntry::getEffectApplyAuraName() const
+{
+    uarray3 effects = uarray3();
+    for (quint8 eff = 0; eff < 3; eff++)
+    {
+        SpellEffectEntry const* effect = getSpellEffect(eff);
+
+        if (effect)
+            effects.value[eff] = effect->EffectApplyAuraName;
+        else
+            effects.value[eff] = 0;
+    }
+
+    return effects;
+}
+
+farray3 SpellEntry::getEffectValueMultiplier() const
+{
+    farray3 effects = farray3();
+    for (quint8 eff = 0; eff < 3; eff++)
+    {
+        SpellEffectEntry const* effect = getSpellEffect(eff);
+
+        if (effect)
+            effects.value[eff] = effect->EffectValueMultiplier;
+        else
+            effects.value[eff] = 0.0f;
+    }
+
+    return effects;
+}
+
+uarray3 SpellEntry::getEffectAmplitude() const
+{
+    uarray3 effects = uarray3();
+    for (quint8 eff = 0; eff < 3; eff++)
+    {
+        SpellEffectEntry const* effect = getSpellEffect(eff);
+
+        if (effect)
+            effects.value[eff] = effect->EffectAmplitude;
+        else
+            effects.value[eff] = 0;
+    }
+
+    return effects;
+}
+
+iarray3 SpellEntry::getEffectBasePoints() const
+{
+    iarray3 effects = iarray3();
+    for (quint8 eff = 0; eff < 3; eff++)
+    {
+        SpellEffectEntry const* effect = getSpellEffect(eff);
+
+        if (effect)
+            effects.value[eff] = effect->EffectBasePoints;
+        else
+            effects.value[eff] = 0;
+    }
+
+    return effects;
+}
+
+farray3 SpellEntry::getEffectBonusCoefficient() const
+{
+    farray3 effects = farray3();
+    for (quint8 eff = 0; eff < 3; eff++)
+    {
+        SpellEffectEntry const* effect = getSpellEffect(eff);
+
+        if (effect)
+            effects.value[eff] = effect->EffectBonusCoefficient;
+        else
+            effects.value[eff] = 0.0f;
+    }
+
+    return effects;
+}
+
+farray3 SpellEntry::getEffectDamageMultiplier() const
+{
+    farray3 effects = farray3();
+    for (quint8 eff = 0; eff < 3; eff++)
+    {
+        SpellEffectEntry const* effect = getSpellEffect(eff);
+
+        if (effect)
+            effects.value[eff] = effect->EffectDamageMultiplier;
+        else
+            effects.value[eff] = 0.0f;
+    }
+
+    return effects;
+}
+
+uarray3 SpellEntry::getEffectChainTarget() const
+{
+    uarray3 effects = uarray3();
+    for (quint8 eff = 0; eff < 3; eff++)
+    {
+        SpellEffectEntry const* effect = getSpellEffect(eff);
+
+        if (effect)
+            effects.value[eff] = effect->EffectChainTarget;
+        else
+            effects.value[eff] = 0;
+    }
+
+    return effects;
+}
+
+iarray3 SpellEntry::getEffectDieSides() const
+{
+    iarray3 effects = iarray3();
+    for (quint8 eff = 0; eff < 3; eff++)
+    {
+        SpellEffectEntry const* effect = getSpellEffect(eff);
+
+        if (effect)
+            effects.value[eff] = effect->EffectDieSides;
+        else
+            effects.value[eff] = 0;
+    }
+
+    return effects;
+}
+
+uarray3 SpellEntry::getEffectItemType() const
+{
+    uarray3 effects = uarray3();
+    for (quint8 eff = 0; eff < 3; eff++)
+    {
+        SpellEffectEntry const* effect = getSpellEffect(eff);
+
+        if (effect)
+            effects.value[eff] = effect->EffectItemType;
+        else
+            effects.value[eff] = 0;
+    }
+
+    return effects;
+}
+
+uarray3 SpellEntry::getEffectMechanic() const
+{
+    uarray3 effects = uarray3();
+    for (quint8 eff = 0; eff < 3; eff++)
+    {
+        SpellEffectEntry const* effect = getSpellEffect(eff);
+
+        if (effect)
+            effects.value[eff] = effect->EffectMechanic;
+        else
+            effects.value[eff] = 0;
+    }
+
+    return effects;
+}
+
+iarray3 SpellEntry::getEffectMiscValue() const
+{
+    iarray3 effects = iarray3();
+    for (quint8 eff = 0; eff < 3; eff++)
+    {
+        SpellEffectEntry const* effect = getSpellEffect(eff);
+
+        if (effect)
+            effects.value[eff] = effect->EffectMiscValue;
+        else
+            effects.value[eff] = 0;
+    }
+
+    return effects;
+}
+
+iarray3 SpellEntry::getEffectMiscValueB() const
+{
+    iarray3 effects = iarray3();
+    for (quint8 eff = 0; eff < 3; eff++)
+    {
+        SpellEffectEntry const* effect = getSpellEffect(eff);
+
+        if (effect)
+            effects.value[eff] = effect->EffectMiscValueB;
+        else
+            effects.value[eff] = 0;
+    }
+
+    return effects;
+}
+
+farray3 SpellEntry::getEffectPointsPerComboPoint() const
+{
+    farray3 effects = farray3();
+    for (quint8 eff = 0; eff < 3; eff++)
+    {
+        SpellEffectEntry const* effect = getSpellEffect(eff);
+
+        if (effect)
+            effects.value[eff] = effect->EffectPointsPerComboPoint;
+        else
+            effects.value[eff] = 0.0f;
+    }
+
+    return effects;
+}
+
+uarray3 SpellEntry::getEffectRadiusIndex() const
+{
+    uarray3 effects = uarray3();
+    for (quint8 eff = 0; eff < 3; eff++)
+    {
+        SpellEffectEntry const* effect = getSpellEffect(eff);
+
+        if (effect)
+            effects.value[eff] = effect->EffectRadiusIndex;
+        else
+            effects.value[eff] = 0;
+    }
+
+    return effects;
+}
+
+uarray3 SpellEntry::getEffectRadiusMaxIndex() const
+{
+    uarray3 effects = uarray3();
+    for (quint8 eff = 0; eff < 3; eff++)
+    {
+        SpellEffectEntry const* effect = getSpellEffect(eff);
+
+        if (effect)
+            effects.value[eff] = effect->EffectRadiusMaxIndex;
+        else
+            effects.value[eff] = 0;
+    }
+
+    return effects;
+}
+
+farray3 SpellEntry::getEffectRealPointsPerLevel() const
+{
+    farray3 effects = farray3();
+    for (quint8 eff = 0; eff < 3; eff++)
+    {
+        SpellEffectEntry const* effect = getSpellEffect(eff);
+
+        if (effect)
+            effects.value[eff] = effect->EffectRealPointsPerLevel;
+        else
+            effects.value[eff] = 0.0f;
+    }
+
+    return effects;
+}
+
+uarray3 SpellEntry::getEffectSpellClassMaskA() const
+{
+    SpellEffectEntry const* effect = getSpellEffect(0);
+
+    if (effect)
+        return effect->EffectSpellClassMask;
+
+    return uarray3();
+}
+
+uarray3 SpellEntry::getEffectSpellClassMaskB() const
+{
+    SpellEffectEntry const* effect = getSpellEffect(1);
+
+    if (effect)
+        return effect->EffectSpellClassMask;
+
+    return uarray3();
+}
+
+uarray3 SpellEntry::getEffectSpellClassMaskC() const
+{
+    SpellEffectEntry const* effect = getSpellEffect(2);
+
+    if (effect)
+        return effect->EffectSpellClassMask;
+
+    return uarray3();
+}
+
+uarray3 SpellEntry::getEffectTriggerSpell() const
+{
+    uarray3 effects = uarray3();
+    for (quint8 eff = 0; eff < 3; eff++)
+    {
+        SpellEffectEntry const* effect = getSpellEffect(eff);
+
+        if (effect)
+            effects.value[eff] = effect->EffectTriggerSpell;
+        else
+            effects.value[eff] = 0;
+    }
+
+    return effects;
+}
+
+uarray3 SpellEntry::getEffectImplicitTargetA() const
+{
+    uarray3 effects = uarray3();
+    for (quint8 eff = 0; eff < 3; eff++)
+    {
+        SpellEffectEntry const* effect = getSpellEffect(eff);
+
+        if (effect)
+            effects.value[eff] = effect->EffectImplicitTargetA;
+        else
+            effects.value[eff] = 0;
+    }
+
+    return effects;
+}
+
+uarray3 SpellEntry::getEffectImplicitTargetB() const
+{
+    uarray3 effects = uarray3();
+    for (quint8 eff = 0; eff < 3; eff++)
+    {
+        SpellEffectEntry const* effect = getSpellEffect(eff);
+
+        if (effect)
+            effects.value[eff] = effect->EffectImplicitTargetB;
+        else
+            effects.value[eff] = 0;
+    }
+
+    return effects;
+}
+
+uarray3 SpellEntry::getEffectSpellId() const
+{
+    uarray3 effects = uarray3();
+    for (quint8 eff = 0; eff < 3; eff++)
+    {
+        SpellEffectEntry const* effect = getSpellEffect(eff);
+
+        if (effect)
+            effects.value[eff] = effect->EffectSpellId;
+        else
+            effects.value[eff] = 0;
+    }
+
+    return effects;
+}
+
+uarray3 SpellEntry::getEffectIndex() const
+{
+    uarray3 effects = uarray3();
+    for (quint8 eff = 0; eff < 3; eff++)
+    {
+        SpellEffectEntry const* effect = getSpellEffect(eff);
+
+        if (effect)
+            effects.value[eff] = effect->EffectIndex;
+        else
+            effects.value[eff] = 0;
+    }
+
+    return effects;
+}
 
 quint32 SpellEntry::getEffect(quint8 index) const
 {
@@ -551,4 +963,36 @@ quint32 SpellEntry::getEffectIndex(quint8 index) const
 {
     SpellEffectEntry const* effect = getSpellEffect(index);
     return effect ? effect->EffectIndex : 0;
+}
+
+/**
+    SpellTotems methods
+ */
+
+uarray2 SpellEntry::getTotem() const
+{
+    SpellTotemsEntry const* totem = getSpellTotems();
+    return totem ? totem->Totem : uarray2();
+}
+
+uarray2 SpellEntry::getTotemCategory() const
+{
+    SpellTotemsEntry const* totem = getSpellTotems();
+    return totem ? totem->TotemCategory : uarray2();
+}
+
+/**
+    SpellReagents methods
+ */
+
+iarray8 SpellEntry::getReagent() const
+{
+    SpellReagentsEntry const* reagent = getSpellReagents();
+    return reagent ? reagent->Reagent : iarray8();
+}
+
+uarray8 SpellEntry::getReagentCount() const
+{
+    SpellReagentsEntry const* reagent = getSpellReagents();
+    return reagent ? reagent->ReagentCount : uarray8();
 }

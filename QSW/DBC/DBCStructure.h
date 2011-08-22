@@ -314,10 +314,10 @@ struct SpellEntry
 
     // SpellCastingRequirements methods
     quint32 getFacingCasterFlags() const;
-    //quint32 getMinFactionId() const;
-    //quint32 getMinReputation() const;
+    quint32 getMinFactionId() const;
+    quint32 getMinReputation() const;
     qint32  getAreaGroupId() const;
-    //quint32  getRequiredAuraVision() const;
+    quint32  getRequiredAuraVision() const;
     quint32 getRequiresSpellFocus() const;
 
     // SpellCategories methods
@@ -358,15 +358,18 @@ struct SpellEntry
     quint32 getManaCostPercentage() const;
     quint32 getManaPerSecond() const;
     quint32 getManaCostPerLevel() const;
+    quint32 getPowerDisplayId() const;
 
     // SpellReagents methods
-    // need implement
+    iarray8 getReagent() const;
+    uarray8 getReagentCount() const;
 
     // SpellScaling methods
     // need implement
 
     // SpellTotems methods
-    // need implement
+    uarray2 getTotem() const;
+    uarray2 getTotemCategory() const;
 
     // SpellShapeshift methods
     uarray2 getStances() const;
@@ -374,7 +377,7 @@ struct SpellEntry
     quint32 getStanceBarOrder() const;
 
     // SpellTargetRestrictions methods
-    //float   getMaxTargetRadius() const;
+    float   getMaxTargetRadius() const;
     quint32 getTargets() const;
     quint32 getTargetCreatureType() const;
     quint32 getMaxAffectedTargets() const;
@@ -404,6 +407,32 @@ struct SpellEntry
     quint32 getEffectImplicitTargetB(quint8 index) const;                        // 21       m_implicitTargetB
     quint32 getEffectSpellId(quint8 index) const;                                // 22       new 4.0.0
     quint32 getEffectIndex(quint8 index) const;                                  // 23       new 4.0.0
+
+    uarray3 getEffect() const;
+    farray3 getEffectValueMultiplier() const;
+    uarray3 getEffectApplyAuraName() const;
+    uarray3 getEffectAmplitude() const;
+    iarray3 getEffectBasePoints() const;
+    farray3 getEffectBonusCoefficient() const;
+    farray3 getEffectDamageMultiplier() const;
+    uarray3 getEffectChainTarget() const;
+    iarray3 getEffectDieSides() const;
+    uarray3 getEffectItemType() const;
+    uarray3 getEffectMechanic() const;
+    iarray3 getEffectMiscValue() const;
+    iarray3 getEffectMiscValueB() const;
+    farray3 getEffectPointsPerComboPoint() const;
+    uarray3 getEffectRadiusIndex() const;
+    uarray3 getEffectRadiusMaxIndex() const;
+    farray3 getEffectRealPointsPerLevel() const;
+    uarray3 getEffectSpellClassMaskA() const;
+    uarray3 getEffectSpellClassMaskB() const;
+    uarray3 getEffectSpellClassMaskC() const;
+    uarray3 getEffectTriggerSpell() const;
+    uarray3 getEffectImplicitTargetA() const;
+    uarray3 getEffectImplicitTargetB() const;
+    uarray3 getEffectSpellId() const;
+    uarray3 getEffectIndex() const;
 
     private:
         SpellEntry(SpellEntry const&);
