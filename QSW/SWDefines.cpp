@@ -2,6 +2,11 @@
 
 quint8 Locale = 0;
 
+QString QSW_VERSION("2.0");
+QString CLIENT_VERSION("2.4.3");
+QString QSW_BUILD("35");
+QString CLIENT_BUILD("8606");
+
 QString SpellStruct[] =
 {
     "None",
