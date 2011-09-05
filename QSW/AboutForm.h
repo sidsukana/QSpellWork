@@ -2,6 +2,7 @@
 #define ABOUTFORM_H
 
 #include <QtGui/QDialog>
+#include "SWDefines.h"
 #include "ui_AboutFormUI.h"
 
 class AboutForm : public QDialog, public Ui::AboutFormUI
