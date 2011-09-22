@@ -1,10 +1,11 @@
 <RCC>
   <qresource prefix="/SpellWork">
-    <file>about.png</file>
-    <file>compare.png</file>
-    <file>show.png</file>
-    <file>regExp.png</file>
-    <file>mangos.ico</file>
-    <file>qt-logo.png</file>
+    <file>Recources/styles.css</file>
+    <file>Recources/about.png</file>
+    <file>Recources/compare.png</file>
+    <file>Recources/show.png</file>
+    <file>Recources/regExp.png</file>
+    <file>Recources/mangos.ico</file>
+    <file>Recources/qt-logo.png</file>
   </qresource>
 </RCC>

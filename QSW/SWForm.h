@@ -1,6 +1,8 @@
 #ifndef SWFORM_H
 #define SWFORM_H
 
+#include <QtGui/QTextBrowser>
+
 #include <QtGui/QMainWindow>
 #include <QtGui/QToolButton>
 #include <QtGui/QCompleter>

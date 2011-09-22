@@ -1,4 +1,4 @@
 // Microsoft Visual C++ generated resource script.
 //
-IDI_APPICON ICON DISCARDABLE "mangos.ico"
+IDI_APPICON ICON DISCARDABLE "./Recources/mangos.ico"
 

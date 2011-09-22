@@ -21,7 +21,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="SpellWork.qrc">
-    <normaloff>:/SpellWork/mangos.ico</normaloff>:/SpellWork/mangos.ico</iconset>
+    <normaloff>:/SpellWork/Recources/mangos.ico</normaloff>:/SpellWork/Recources/mangos.ico</iconset>
   </property>
   <property name="documentMode">
    <bool>false</bool>
@@ -500,12 +500,6 @@
         </font>
        </property>
       </widget>
-      <zorder>adLine1</zorder>
-      <zorder>adLine2</zorder>
-      <zorder>adBox1</zorder>
-      <zorder>adBox2</zorder>
-      <zorder>SpellList</zorder>
-      <zorder>SpellList</zorder>
      </widget>
     </item>
     <item row="3" column="1">
