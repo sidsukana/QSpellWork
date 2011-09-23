@@ -675,20 +675,21 @@ QString SWObject::getDescription(QString str, SpellEntry const* spellInfo)
             {
                 case 'u': RegExpU(spellInfo, rx, str); break;
                 case 'h': RegExpH(spellInfo, rx, str); break;
-                case 'z': str.replace(rx.cap(0), QString("[Home]")); break;
                 case 'v': RegExpV(spellInfo, rx, str); break;
                 case 'q': RegExpQ(spellInfo, rx, str); break;
                 case 'i': RegExpI(spellInfo, rx, str); break;
                 case 'b': RegExpB(spellInfo, rx, str); break;
-                case 'm': RegExpM(spellInfo, rx, str); break;RegExpA(spellInfo, rx, str);break;
+                case 'm': RegExpM(spellInfo, rx, str); break;
+                case 'a': RegExpA(spellInfo, rx, str); break;
                 case 'd': RegExpD(spellInfo, rx, str); break;
                 case 'o': RegExpO(spellInfo, rx, str); break;
                 case 's': RegExpS(spellInfo, rx, str); break;
                 case 't': RegExpT(spellInfo, rx, str); break;
-                case 'l': str.replace(rx.cap(0), rx.cap(9)); break;
-                case 'g': str.replace(rx.cap(0), rx.cap(8)); break;
                 case 'n': RegExpN(spellInfo, rx, str); break;
                 case 'x': RegExpX(spellInfo, rx, str); break;
+                case 'l': str.replace(rx.cap(0), rx.cap(9)); break;
+                case 'g': str.replace(rx.cap(0), rx.cap(8)); break;
+                case 'z': str.replace(rx.cap(0), QString("[Home]")); break;
                 default: return str;
             }
         }
@@ -756,7 +757,7 @@ void SWObject::showInfo(SpellEntry const* spellInfo, quint8 num)
                         "</style>"
                         "<div class='icon'><div><div>"
                         "</div></div></div>"
-                        "</div>").arg(getSpellIconName(spellInfo->SpellIconID).toLower()));
+                        "</div>").arg(getSpellIconName(spellInfo->SpellIconId).toLower()));
 
     html.append("<div class='b-tooltip_body'>");
 
@@ -805,8 +806,8 @@ void SWObject::showInfo(SpellEntry const* spellInfo, quint8 num)
 
     html.append(QString("<li>Category = %0, SpellIconId = %1, ActiveIconId = %2, SpellVisual = (%3, %4)</li>")
         .arg(spellInfo->Category)
-        .arg(spellInfo->SpellIconID)
-        .arg(spellInfo->ActiveIconID)
+        .arg(spellInfo->SpellIconId)
+        .arg(spellInfo->ActiveIconId)
         .arg(spellInfo->SpellVisual.value[0])
         .arg(spellInfo->SpellVisual.value[1]));
 
@@ -822,8 +823,8 @@ void SWObject::showInfo(SpellEntry const* spellInfo, quint8 num)
 
     setMetaEnum("DamageClass");
     html.append(QString("<li>DamageClass = %0 (%1)</li>")
-        .arg(spellInfo->DmgClass)
-        .arg(m_metaEnum.valueToKey(spellInfo->DmgClass)));
+        .arg(spellInfo->DamageClass)
+        .arg(m_metaEnum.valueToKey(spellInfo->DamageClass)));
 
     setMetaEnum("PreventionType");
     html.append(QString("<li>PreventionType = %0 (%1)</li>")
@@ -1133,18 +1134,18 @@ void SWObject::appendSpellEffectInfo(SpellEntry const* spellInfo, quint8 num)
             if (spellInfo->EffectPointsPerComboPoint.value[eff] != 0)
                 _PointsPerCombo = QString(" + combo * %0").arg(spellInfo->EffectPointsPerComboPoint.value[eff], 0, 'f', 2);
 
-            QString _DmgMultiplier;
-            if (spellInfo->DmgMultiplier.value[eff] != 1.0f)
-                _DmgMultiplier = QString(" * %0").arg(spellInfo->DmgMultiplier.value[eff], 0, 'f', 2);
+            QString _DamageMultiplier;
+            if (spellInfo->DamageMultiplier.value[eff] != 1.0f)
+                _DamageMultiplier = QString(" * %0").arg(spellInfo->DamageMultiplier.value[eff], 0, 'f', 2);
 
             QString _Multiple;
             if (spellInfo->EffectMultipleValue.value[eff] != 0)
                 _Multiple = QString(", Multiple = %0").arg(spellInfo->EffectMultipleValue.value[eff], 0, 'f', 2);
 
-            QString _Result = _BasePoints + _RealPoints + _DieSides + _PointsPerCombo + _DmgMultiplier + _Multiple + "</li>";
+            QString _Result = _BasePoints + _RealPoints + _DieSides + _PointsPerCombo + _DamageMultiplier + _Multiple + "</li>";
 
             html.append(QString("<div class='b-effect_name'>Effect %0:</div>"
-                           "<ul>").arg(eff));
+                                "<ul>").arg(eff));
 
             setMetaEnum("Effects");
             html.append(QString("<li>Id: %1 (%2)</li>")

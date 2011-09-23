@@ -1,9 +1,14 @@
 #include "SWForm.h"
 #include "AboutForm.h"
 
+#include <QtCore/QTime>
+
 SWForm::SWForm(QWidget* parent)
     : QMainWindow(parent)
 {
+    QTime m_time;
+    m_time.start();
+
     setupUi(this);
 
     m_sw = new SWObject(this);
@@ -73,6 +78,8 @@ SWForm::SWForm(QWidget* parent)
     connect(compareSpell_2, SIGNAL(returnPressed()), this, SLOT(slotCompareSearch()));
 
     connect(webView, SIGNAL(linkClicked(QUrl)), this, SLOT(slotLinkClicked(QUrl)));
+
+    webView->setHtml(QString("Load time: %0 ms").arg(m_time.elapsed()));
 }
 
 SWForm::~SWForm()

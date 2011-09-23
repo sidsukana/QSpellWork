@@ -108,8 +108,8 @@ struct SpellEntry
     uarray3    EffectTriggerSpell;                              // 109-111
     farray3    EffectPointsPerComboPoint;                       // 112-114
     uarray2    SpellVisual;                                     // 115-116
-    quint32    SpellIconID;                                     // 117
-    quint32    ActiveIconID;                                    // 118
+    quint32    SpellIconId;                                     // 117
+    quint32    ActiveIconId;                                    // 118
     quint32    SpellPriority;                                   // 119
     char*      SpellName[8];                                    // 120-127
     quint32    SpellNameFlag;                                   // 128
@@ -126,10 +126,10 @@ struct SpellEntry
     quint32    SpellFamilyName;                                 // 160
     quint64    SpellFamilyFlags;                                // 161+162
     quint32    MaxAffectedTargets;                              // 163
-    quint32    DmgClass;                                        // 164 defenseType
+    quint32    DamageClass;                                     // 164 defenseType
     quint32    PreventionType;                                  // 165
     qint32     StanceBarOrder;                                  // 166 not used
-    farray3    DmgMultiplier;                                   // 167-169
+    farray3    DamageMultiplier;                                // 167-169
     quint32    MinFactionId;                                    // 170 not used, and 0 in 2.4.2
     quint32    MinReputation;                                   // 171 not used, and 0 in 2.4.2
     quint32    RequiredAuraVision;                              // 172 not used
