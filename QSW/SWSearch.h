@@ -78,8 +78,8 @@ class MetaSpell : public QObject
         qint32  getEquippedItemClass() { return m_spellInfo->EquippedItemClass; }
         qint32  getEquippedItemSubClassMask() { return m_spellInfo->EquippedItemSubClassMask; }
         qint32  getEquippedItemInventoryTypeMask() { return m_spellInfo->EquippedItemInventoryTypeMask; }
-        quint32 getSpellIconID() { return m_spellInfo->SpellIconID; }
-        quint32 getActiveIconID() { return m_spellInfo->ActiveIconID; }
+        quint32 getSpellIconId() { return m_spellInfo->SpellIconId; }
+        quint32 getActiveIconId() { return m_spellInfo->ActiveIconId; }
         quint32 getSpellPriority() { return m_spellInfo->SpellPriority; }
         quint32 getSpellNameFlag() { return m_spellInfo->SpellNameFlag; }
         quint32 getRankFlags() { return m_spellInfo->RankFlags; }
@@ -91,7 +91,7 @@ class MetaSpell : public QObject
         quint32 getMaxTargetLevel() { return m_spellInfo->MaxTargetLevel; }
         quint32 getSpellFamilyName() { return m_spellInfo->SpellFamilyName; }
         quint32 getMaxAffectedTargets() { return m_spellInfo->MaxAffectedTargets; }
-        quint32 getDmgClass() { return m_spellInfo->DmgClass; }
+        quint32 getDamageClass() { return m_spellInfo->DamageClass; }
         quint32 getPreventionType() { return m_spellInfo->PreventionType; }
         qint32  getStanceBarOrder() { return m_spellInfo->StanceBarOrder; }
         quint32 getMinFactionId() { return m_spellInfo->MinFactionId; }
@@ -99,7 +99,7 @@ class MetaSpell : public QObject
         quint32 getRequiredAuraVision() { return m_spellInfo->RequiredAuraVision; }
         quint32 getAreaGroupId() { return m_spellInfo->AreaGroupId; }
         quint32 getSchoolMask() { return m_spellInfo->SchoolMask; }
-        quint32 getRuneCostID() { return m_spellInfo->RuneCostID; }
+        quint32 getRuneCostId() { return m_spellInfo->RuneCostId; }
         quint32 getSpellMissileId() { return m_spellInfo->SpellMissileId; }
         quint32 getPowerDisplayId() { return m_spellInfo->PowerDisplayId; }
         quint32 getSpellDescriptionVariableId() { return m_spellInfo->SpellDescriptionVariableId; }
@@ -137,7 +137,7 @@ class MetaSpell : public QObject
         QVariant getEffectSpellClassMaskC() { return QVariant::fromValue(m_spellInfo->EffectSpellClassMaskC); }
         QVariant getSpellFamilyFlags() { return QVariant::fromValue(m_spellInfo->SpellFamilyFlags); }
         QVariant getSpellVisual() { return QVariant::fromValue(m_spellInfo->SpellVisual); }
-        QVariant getDmgMultiplier() { return QVariant::fromValue(m_spellInfo->DmgMultiplier); }
+        QVariant getDamageMultiplier() { return QVariant::fromValue(m_spellInfo->DamageMultiplier); }
         QVariant getTotemCategory() { return QVariant::fromValue(m_spellInfo->TotemCategory); }
         QVariant getUnk3() { return QVariant::fromValue(m_spellInfo->Unk3); }
 
@@ -219,8 +219,8 @@ class MetaSpell : public QObject
     Q_PROPERTY(QVariant EffectSpellClassMaskB READ getEffectSpellClassMaskB)
     Q_PROPERTY(QVariant EffectSpellClassMaskC READ getEffectSpellClassMaskC)
     Q_PROPERTY(QVariant SpellVisual READ getSpellVisual)
-    Q_PROPERTY(quint32 SpellIconID READ getSpellIconID)
-    Q_PROPERTY(quint32 ActiveIconID READ getActiveIconID)
+    Q_PROPERTY(quint32 SpellIconId READ getSpellIconId)
+    Q_PROPERTY(quint32 ActiveIconId READ getActiveIconId)
     Q_PROPERTY(quint32 SpellPriority READ getSpellPriority)
     Q_PROPERTY(QString SpellName READ getSpellName)
     Q_PROPERTY(quint32 SpellNameFlag READ getSpellNameFlag)
@@ -237,17 +237,17 @@ class MetaSpell : public QObject
     Q_PROPERTY(quint32 SpellFamilyName READ getSpellFamilyName)
     Q_PROPERTY(QVariant SpellFamilyFlags READ getSpellFamilyFlags)
     Q_PROPERTY(quint32 MaxAffectedTargets READ getMaxAffectedTargets)
-    Q_PROPERTY(quint32 DmgClass READ getDmgClass)
+    Q_PROPERTY(quint32 DamageClass READ getDamageClass)
     Q_PROPERTY(quint32 PreventionType READ getPreventionType)
     Q_PROPERTY(qint32  StanceBarOrder READ getStanceBarOrder)
-    Q_PROPERTY(QVariant DmgMultiplier READ getDmgMultiplier)
+    Q_PROPERTY(QVariant DamageMultiplier READ getDamageMultiplier)
     Q_PROPERTY(quint32 MinFactionId READ getMinFactionId)
     Q_PROPERTY(quint32 MinReputation READ getMinReputation)
     Q_PROPERTY(quint32 RequiredAuraVision READ getRequiredAuraVision)
     Q_PROPERTY(QVariant TotemCategory READ getTotemCategory)
     Q_PROPERTY(quint32 AreaGroupId READ getAreaGroupId)
     Q_PROPERTY(quint32 SchoolMask READ getSchoolMask)
-    Q_PROPERTY(quint32 RuneCostID READ getRuneCostID)
+    Q_PROPERTY(quint32 RuneCostId READ getRuneCostId)
     Q_PROPERTY(quint32 SpellMissileId READ getSpellMissileId)
     Q_PROPERTY(quint32 PowerDisplayId READ getPowerDisplayId)
     Q_PROPERTY(QVariant Unk3 READ getUnk3)

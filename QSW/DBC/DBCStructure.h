@@ -123,8 +123,8 @@ struct SpellEntry
     uarray3    EffectSpellClassMaskB;                           // 125-127  m_effectSpellClassMaskB, effect 1
     uarray3    EffectSpellClassMaskC;                           // 128-130  m_effectSpellClassMaskC, effect 2
     uarray2    SpellVisual;                                     // 131-132
-    quint32    SpellIconID;                                     // 133
-    quint32    ActiveIconID;                                    // 134
+    quint32    SpellIconId;                                     // 133
+    quint32    ActiveIconId;                                    // 134
     quint32    SpellPriority;                                   // 135
     char*      SpellName[16];                                   // 136-151
     quint32    SpellNameFlag;                                   // 152
@@ -141,17 +141,17 @@ struct SpellEntry
     quint32    SpellFamilyName;                                 // 208
     uarray3    SpellFamilyFlags;                                // 209+211
     quint32    MaxAffectedTargets;                              // 212
-    quint32    DmgClass;                                        // 213 defenseType
+    quint32    DamageClass;                                        // 213 defenseType
     quint32    PreventionType;                                  // 214
     qint32     StanceBarOrder;                                  // 215 not used
-    farray3    DmgMultiplier;                                   // 216-218
+    farray3    DamageMultiplier;                                   // 216-218
     quint32    MinFactionId;                                    // 219 not used, and 0 in 2.4.2
     quint32    MinReputation;                                   // 220 not used, and 0 in 2.4.2
     quint32    RequiredAuraVision;                              // 221 not used
     uarray2    TotemCategory;                                   // 222-223
     qint32     AreaGroupId;                                     // 224
     quint32    SchoolMask;                                      // 225 school mask
-    quint32    RuneCostID;                                      // 226
+    quint32    RuneCostId;                                      // 226
     quint32    SpellMissileId;                                  // 227
     quint32    PowerDisplayId;                                  // 228
     farray3    Unk3;                                            // 229-231

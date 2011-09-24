@@ -707,7 +707,7 @@ void SWSearch::search()
             for (quint32 i = 0; i < sSpellStore.GetNumRows(); i++)
             {
                 SpellEntry const* m_spellInfo = sSpellStore.LookupEntry(i);
-                if (m_spellInfo && m_spellInfo->SpellIconID == m_form->findLine_e2->text().toInt())
+                if (m_spellInfo && m_spellInfo->SpellIconId == m_form->findLine_e2->text().toInt())
                 {
                     QString sRank(QString::fromUtf8(m_spellInfo->Rank[Locale]));
                     QString sFullName(QString::fromUtf8(m_spellInfo->SpellName[Locale]));

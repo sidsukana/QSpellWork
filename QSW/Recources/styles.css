@@ -1,0 +1,15 @@
+body { font-family: Arial, Verdana, sans-serif; font-size: 12px; background: #cecece; }
+
+a { color:blue; font-weight: bold; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.b-box-title { background: #6f5b47; padding: 0px 5px; color: #fff; font-size: 16px; border-top: 1px solid #999; border-bottom: 1px solid #999; border-left: 5px solid #000; }
+.b-box-body { padding: 0 0 0 0; }
+.b-box { background: #ececec; padding: 3px 3px 3px 3px; margin-bottom: 5px; border-bottom: 1px solid #999; }
+.b-box li { margin-bottom: 3px; }
+.b-effect_name { font-size: 14px; font-weight: bold; border-bottom: 1px solid #333; margin-bottom: 5px; margin-top: 5px; }
+.b-vlink { background: #ececec; padding: 3px 5px; margin-bottom: 5px; border-left: 5px solid #444; border-bottom: 1px solid #444; border-top: 1px solid #444; margin-top: 5px; }
+.b-tooltip_icon { width: 90px; position: absolute; }
+.b-tooltip_body { background-color: #070c20; width: 80%; color: #fff; border-radius: 5px; margin-left: 75px; padding: 10px; clear: both;  min-height: 48px; margin-bottom: 5px; }
+.blue_link { color: blue; }
+.red_link { color: red; }

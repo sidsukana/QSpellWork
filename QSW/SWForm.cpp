@@ -1,9 +1,14 @@
 #include "SWForm.h"
 #include "AboutForm.h"
 
+#include <QtCore/QTime>
+
 SWForm::SWForm(QWidget* parent)
     : QMainWindow(parent)
 {
+    QTime m_time;
+    m_time.start();
+
     setupUi(this);
 
     m_sw = new SWObject(this);
@@ -22,9 +27,9 @@ SWForm::SWForm(QWidget* parent)
     mainToolBar->addSeparator();
     mainToolBar->addWidget(m_modeButton);
     mainToolBar->addSeparator();
-    m_regExp = mainToolBar->addAction(QIcon(":/SpellWork/regExp.png"), "<font color=red>Off</font>");
+    m_regExp = mainToolBar->addAction(QIcon(":/SpellWork/Recources/regExp.png"), "<font color=red>Off</font>");
     mainToolBar->addSeparator();
-    m_about = mainToolBar->addAction(QIcon(":/SpellWork/about.png"), "About");
+    m_about = mainToolBar->addAction(QIcon(":/SpellWork/Recources/about.png"), "About");
 
     QAction* actionCopy = webView->pageAction(QWebPage::Copy);
     actionCopy->setShortcut(QKeySequence::Copy);
@@ -73,6 +78,8 @@ SWForm::SWForm(QWidget* parent)
     connect(compareSpell_2, SIGNAL(returnPressed()), this, SLOT(slotCompareSearch()));
 
     connect(webView, SIGNAL(linkClicked(QUrl)), this, SLOT(slotLinkClicked(QUrl)));
+    
+    webView->setHtml(QString("Load time: %0 ms").arg(m_time.elapsed()));
 }
 
 SWForm::~SWForm()
@@ -121,11 +128,11 @@ void SWForm::initializeCompleter()
 
 void SWForm::createModeButton()
 {   
-    QAction* actionShow = new QAction(QIcon(":/SpellWork/show.png"), "Show", this);
+    QAction* actionShow = new QAction(QIcon(":/SpellWork/Recources/show.png"), "Show", this);
     actionShow->setCheckable(true);
     actionShow->setChecked(true);
 
-    QAction* actionCompare = new QAction(QIcon(":/SpellWork/compare.png"), "Compare", this);
+    QAction* actionCompare = new QAction(QIcon(":/SpellWork/Recources/compare.png"), "Compare", this);
     actionCompare->setCheckable(true);
     actionCompare->setChecked(false);
 
@@ -249,20 +256,17 @@ void SWForm::slotRegExp()
     if (!m_sw->isRegExp())
     {
         m_sw->setRegExp(true);
-        m_regExp->setIcon(QIcon(":/SpellWork/regExp.png"));
+        m_regExp->setIcon(QIcon(":/SpellWork/Recources/regExp.png"));
         m_regExp->setText("<font color=green>On</font>");
     }
     else
     {
         m_sw->setRegExp(false);
-        m_regExp->setIcon(QIcon(":/SpellWork/regExp.png"));
+        m_regExp->setIcon(QIcon(":/SpellWork/Recources/regExp.png"));
         m_regExp->setText("<font color=red>Off</font>");
     }
 
-    if (!SpellList->model())
-        return;
-
-    if (SpellEntry const* spellInfo = sSpellStore.LookupEntry(SpellList->model()->data(SpellList->model()->index(SpellList->currentIndex().row(), 0)).toInt()))
+    if (SpellEntry const* spellInfo = sSpellStore.LookupEntry(webView->url().path().remove(0, 1).toInt()))
         m_sw->showInfo(spellInfo);
 }
 
