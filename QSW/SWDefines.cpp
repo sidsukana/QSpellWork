@@ -2,9 +2,9 @@
 
 quint8 Locale = 0;
 
-QString QSW_VERSION("2.0");
+QString QSW_VERSION("2.1");
 QString CLIENT_VERSION("2.4.3");
-QString QSW_BUILD("35");
+QString QSW_BUILD("36");
 QString CLIENT_BUILD("8606");
 
 QString SpellStruct[] =
@@ -80,8 +80,8 @@ QString SpellStruct[] =
     "EffectTriggerSpell",
     "EffectPointsPerComboPoint",
     "SpellVisual",
-    "SpellIconID",
-    "ActiveIconID",
+    "SpellIconId",
+    "ActiveIconId",
     "SpellPriority",
     "SpellName",
     "SpellNameFlag",
@@ -98,10 +98,10 @@ QString SpellStruct[] =
     "SpellFamilyName",
     "SpellFamilyFlags",
     "MaxAffectedTargets",
-    "DmgClass",
+    "DamageClass",
     "PreventionType",
     "StanceBarOrder",
-    "DmgMultiplier",
+    "DamageMultiplier",
     "MinFactionId",
     "MinReputation",
     "RequiredAuraVision",

@@ -54,9 +54,9 @@ class SWObject
         quint32 getParentSpellId(quint32 triggerId);
         void compare();
 
-        void appendSkillLine(SpellEntry const* spellInfo, quint8 num);
-        void appendCastTimeLine(SpellEntry const* spellInfo, quint8 num);
-        void appendDurationLine(SpellEntry const* spellInfo, quint8 num);
+        void appendSkillInfo(SpellEntry const* spellInfo, quint8 num);
+        void appendCastTimeInfo(SpellEntry const* spellInfo, quint8 num);
+        void appendDurationInfo(SpellEntry const* spellInfo, quint8 num);
         void appendRangeInfo(SpellEntry const* spellInfo, quint8 num);
         void appendSpellEffectInfo(SpellEntry const* spellInfo, quint8 num);
         void appendAuraInfo(SpellEntry const* spellInfo, quint8 index, quint8 num);
