@@ -217,30 +217,40 @@ void SWForm::loadComboBoxes()
     comboBox->insertItem(-1, "SpellFamilyName");
     m_sw->setMetaEnum("SpellFamilyNames");
     for (quint16 i = 0; i < m_sw->getMetaEnum().keyCount(); i++)
-        comboBox->insertItem(i, QString("(%0) %1").arg(i, 3, 10, QChar('0')).arg(m_sw->getMetaEnum().valueToKey(m_sw->getMetaEnum().value(i))));
+        comboBox->insertItem(i, QString("(%0) %1")
+            .arg(m_sw->getMetaEnum().value(i), 3, 10, QChar('0'))
+            .arg(m_sw->getMetaEnum().valueToKey(m_sw->getMetaEnum().value(i))));
 
     comboBox_2->clear();
     comboBox_2->insertItem(-1, "Aura");
     m_sw->setMetaEnum("AuraType");
     for (quint16 i = 0; i < m_sw->getMetaEnum().keyCount(); i++)
-        comboBox_2->insertItem(i, QString("(%0) %1").arg(i, 3, 10, QChar('0')).arg(m_sw->getMetaEnum().valueToKey(m_sw->getMetaEnum().value(i))));
+        comboBox_2->insertItem(i, QString("(%0) %1")
+            .arg(m_sw->getMetaEnum().value(i), 3, 10, QChar('0'))
+            .arg(m_sw->getMetaEnum().valueToKey(m_sw->getMetaEnum().value(i))));
 
     comboBox_3->clear();
     comboBox_3->insertItem(-1, "Effect");
     m_sw->setMetaEnum("Effects");
     for (quint16 i = 0; i < m_sw->getMetaEnum().keyCount(); i++)
-        comboBox_3->insertItem(i, QString("(%0) %1").arg(i, 3, 10, QChar('0')).arg(m_sw->getMetaEnum().valueToKey(m_sw->getMetaEnum().value(i))));
+        comboBox_3->insertItem(i, QString("(%0) %1")
+            .arg(m_sw->getMetaEnum().value(i), 3, 10, QChar('0'))
+            .arg(m_sw->getMetaEnum().valueToKey(m_sw->getMetaEnum().value(i))));
 
     comboBox_4->clear();
     m_sw->setMetaEnum("Targets");
     comboBox_4->insertItem(-1, "Target A");
     for (quint16 i = 0; i < m_sw->getMetaEnum().keyCount(); i++)
-        comboBox_4->insertItem(i, QString("(%0) %1").arg(i, 3, 10, QChar('0')).arg(m_sw->getMetaEnum().key(i)));
+        comboBox_4->insertItem(i, QString("(%0) %1")
+            .arg(m_sw->getMetaEnum().value(i), 3, 10, QChar('0'))
+            .arg(m_sw->getMetaEnum().key(i)));
 
     comboBox_5->clear();
     comboBox_5->insertItem(-1, "Target B");
     for (quint16 i = 0; i < m_sw->getMetaEnum().keyCount(); i++)
-        comboBox_5->insertItem(i, QString("(%0) %1").arg(i, 3, 10, QChar('0')).arg(m_sw->getMetaEnum().key(i)));
+        comboBox_5->insertItem(i, QString("(%0) %1")
+            .arg(m_sw->getMetaEnum().value(i), 3, 10, QChar('0'))
+            .arg(m_sw->getMetaEnum().key(i)));
 
     adBox1->clear();
     adBox2->clear();
