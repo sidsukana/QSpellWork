@@ -79,7 +79,7 @@ struct SpellCategoriesEntry
 {
     // quint32    Id;                                           // 0       m_ID
     quint32    Category;                                     // 1       m_category
-    quint32    DmgClass;                                     // 2       m_defenseType
+    quint32    DamageClass;                                     // 2       m_defenseType
     quint32    Dispel;                                       // 3       m_dispelType
     quint32    Mechanic;                                     // 4       m_mechanic
     quint32    PreventionType;                               // 5       m_preventionType
@@ -322,7 +322,7 @@ struct SpellEntry
 
     // SpellCategories methods
     quint32 getCategory() const;
-    quint32 getDmgClass() const;
+    quint32 getDamageClass() const;
     quint32 getDispel() const;
     quint32 getMechanic() const;
     quint32 getPreventionType() const;

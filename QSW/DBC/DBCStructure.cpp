@@ -211,10 +211,10 @@ quint32 SpellEntry::getCategory() const
     return cat ? cat->Category : 0;
 }
 
-quint32 SpellEntry::getDmgClass() const
+quint32 SpellEntry::getDamageClass() const
 {
     SpellCategoriesEntry const* cat = getSpellCategories();
-    return cat ? cat->DmgClass : 0;
+    return cat ? cat->DamageClass : 0;
 }
 
 quint32 SpellEntry::getDispel() const

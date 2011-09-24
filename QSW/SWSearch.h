@@ -86,7 +86,7 @@ class MetaSpell : public QObject
         quint32 getMaxTargetLevel() { return m_spellInfo->getMaxTargetLevel(); }
         quint32 getSpellFamilyName() { return m_spellInfo->getSpellFamilyName(); }
         quint32 getMaxAffectedTargets() { return m_spellInfo->getMaxAffectedTargets(); }
-        quint32 getDmgClass() { return m_spellInfo->getDmgClass(); }
+        quint32 getDamageClass() { return m_spellInfo->getDamageClass(); }
         quint32 getPreventionType() { return m_spellInfo->getPreventionType(); }
         qint32  getStanceBarOrder() { return m_spellInfo->getStanceBarOrder(); }
         quint32 getMinFactionId() { return m_spellInfo->getMinFactionId(); }
@@ -94,7 +94,7 @@ class MetaSpell : public QObject
         quint32 getRequiredAuraVision() { return m_spellInfo->getRequiredAuraVision(); }
         quint32 getAreaGroupId() { return m_spellInfo->getAreaGroupId(); }
         quint32 getSchoolMask() { return m_spellInfo->SchoolMask; }
-        quint32 getRuneCostID() { return m_spellInfo->RuneCostId; }
+        quint32 getRuneCostId() { return m_spellInfo->RuneCostId; }
         quint32 getSpellMissileId() { return m_spellInfo->SpellMissileId; }
         quint32 getPowerDisplayId() { return m_spellInfo->getPowerDisplayId(); }
         quint32 getSpellDescriptionVariableId() { return m_spellInfo->SpellDescriptionVariableId; }
@@ -231,7 +231,7 @@ class MetaSpell : public QObject
     Q_PROPERTY(quint32 SpellFamilyName READ getSpellFamilyName)
     Q_PROPERTY(QVariant SpellFamilyFlags READ getSpellFamilyFlags)
     Q_PROPERTY(quint32 MaxAffectedTargets READ getMaxAffectedTargets)
-    Q_PROPERTY(quint32 DmgClass READ getDmgClass)
+    Q_PROPERTY(quint32 DamageClass READ getDamageClass)
     Q_PROPERTY(quint32 PreventionType READ getPreventionType)
     Q_PROPERTY(qint32  StanceBarOrder READ getStanceBarOrder)
     Q_PROPERTY(quint32 MinFactionId READ getMinFactionId)
@@ -240,7 +240,7 @@ class MetaSpell : public QObject
     Q_PROPERTY(QVariant TotemCategory READ getTotemCategory)
     Q_PROPERTY(quint32 AreaGroupId READ getAreaGroupId)
     Q_PROPERTY(quint32 SchoolMask READ getSchoolMask)
-    Q_PROPERTY(quint32 RuneCostId READ getRuneCostID)
+    Q_PROPERTY(quint32 RuneCostId READ getRuneCostId)
     Q_PROPERTY(quint32 SpellMissileId READ getSpellMissileId)
     Q_PROPERTY(quint32 PowerDisplayId READ getPowerDisplayId)
     Q_PROPERTY(quint32 SpellDescriptionVariableId READ getSpellDescriptionVariableId)
