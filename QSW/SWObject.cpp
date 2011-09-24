@@ -1148,7 +1148,7 @@ void SWObject::appendSpellEffectInfo(SpellEntry const* spellInfo, quint8 num)
                                 "<ul>").arg(eff));
 
             setMetaEnum("Effects");
-            html.append(QString("<li>Id: %1 (%2)</li>")
+            html.append(QString("<li>Id: %0 (%1)</li>")
                 .arg(spellInfo->Effect.value[eff])
                 .arg(m_metaEnum.valueToKey(spellInfo->Effect.value[eff])));
 
