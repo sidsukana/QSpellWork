@@ -830,7 +830,8 @@ void SWObject::showInfo(SpellEntry const* spellInfo, quint8 num)
 
     setMetaEnum("PreventionType");
     html.append(QString("<li>PreventionType = %0 (%1)</li>")
-        .arg(spellInfo->PreventionType));
+        .arg(spellInfo->PreventionType)
+        .arg(m_metaEnum.valueToKey(spellInfo->PreventionType)));
 
     html.append("</ul></div></div>");
 
