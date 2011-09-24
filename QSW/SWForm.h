@@ -1387,7 +1387,7 @@ public:
         SPELLFAMILY_UNK2        = 12,
         SPELLFAMILY_POTION      = 13,
         // unused               = 14,
-        // unused               = 15,
+        SPELLFAMILY_DEATHKNIGHT = 15,
         // unused               = 16,
         SPELLFAMILY_PET         = 17
     };
