@@ -1615,7 +1615,7 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
         break;
         case TYPE_CREATURE:
         {
-            setMetaEnum("CreatureType");
+            setMetaEnum("CreatureTypeMask");
             for (quint8 i = 0; i < m_metaEnum.keyCount(); i++)
             {
                 if (spellInfo->getTargetCreatureType() & m_metaEnum.value(i))
