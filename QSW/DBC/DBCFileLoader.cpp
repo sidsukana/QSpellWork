@@ -79,19 +79,23 @@ quint32 DBCFileLoader::GetFormatRecordSize(const QString format, qint32* index_p
         switch (format[x].toAscii())
         {
             case FT_FLOAT:
+                recordsize += sizeof(float);
+                break;
             case FT_INT:
+                recordsize += sizeof(quint32);
+                break;
             case FT_STRING:
-                recordsize += 4;
+                recordsize += sizeof(char*);
                 break;
             case FT_SORT:
                 i = x;
                 break;
             case FT_IND:
                 i = x;
-                recordsize += 4;
+                recordsize += sizeof(quint32);
                 break;
             case FT_BYTE:
-                recordsize += 1;
+                recordsize += sizeof(quint8);
                 break;
         }
     }
@@ -152,16 +156,16 @@ char* DBCFileLoader::AutoProduceData(const QString format, quint32& records, cha
             {
                 case FT_FLOAT:
                     *((float*)(&dataTable[offset])) = getRecord(y).getFloat(x);
-                    offset += 4;
+                    offset += sizeof(float);
                     break;
                 case FT_IND:
                 case FT_INT:
                     *((quint32*)(&dataTable[offset])) = getRecord(y).getUInt(x);
-                    offset += 4;
+                    offset += sizeof(quint32);
                     break;
                 case FT_BYTE:
                     *((quint8*)(&dataTable[offset])) = getRecord(y).getUInt8(x);
-                    offset += 1;
+                    offset += sizeof(quint8);
                     break;
                 case FT_STRING:
                     // Will be replaces non-empty or "" strings in AutoProduceStrings
@@ -192,12 +196,14 @@ char* DBCFileLoader::AutoProduceStrings(const QString format, char* dataTable)
             switch (format[x].toAscii())
             {
                 case FT_FLOAT:
+                    offset += sizeof(float);
+                    break;
                 case FT_IND:
                 case FT_INT:
-                    offset += 4;
+                    offset += sizeof(quint32);
                     break;
                 case FT_BYTE:
-                    offset += 1;
+                    offset += sizeof(quint8);
                     break;
                 case FT_STRING:
                 {
