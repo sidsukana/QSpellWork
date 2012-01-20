@@ -989,7 +989,7 @@ void SWObject::showInfo(SpellEntry const* spellInfo, quint8 num)
         setMetaEnum("Powers");
         html.append(QString("<li>Power Type = %0, Cost %1")
             .arg(m_metaEnum.valueToKey(spellInfo->PowerType))
-            .arg(spellInfo->ManaCost));
+            .arg(spellInfo->ManaCost ? spellInfo->ManaCost : spellInfo->ManaCostPercentage));
 
         if (spellInfo->ManaCostPerlevel)
             html.append(QString(" + lvl * %0")
