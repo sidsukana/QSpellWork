@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QSW", "QSW\QSW.vcproj", "{41F7E639-D141-409E-A523-631253C45BBF}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QSW", "QSW\QSW_VC90.vcproj", "{41F7E639-D141-409E-A523-631253C45BBF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
