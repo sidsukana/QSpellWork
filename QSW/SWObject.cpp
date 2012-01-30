@@ -1016,9 +1016,18 @@ void SWObject::showInfo(SpellEntry const* spellInfo, quint8 num)
     if (spellInfo->getManaCost() || spellInfo->getManaCostPercentage())
     {
         setMetaEnum("Powers");
-        html.append(QString("<li>Power Type = %0, Cost %1")
-            .arg(m_metaEnum.valueToKey(spellInfo->PowerType))
-            .arg(spellInfo->getManaCost()));
+        if (spellInfo->getManaCost())
+        {
+            html.append(QString("<li>Power Type = %0, Cost %1")
+                .arg(m_metaEnum.valueToKey(spellInfo->PowerType))
+                .arg(spellInfo->getManaCost()));
+        }
+        else if (spellInfo->getManaCostPercentage())
+        {
+            html.append(QString("<li>Power Type = %0, Cost %1% of base mana")
+                .arg(m_metaEnum.valueToKey(spellInfo->PowerType))
+                .arg(spellInfo->getManaCostPercentage()));
+        }
 
         if (spellInfo->getManaCostPerLevel())
             html.append(QString(" + lvl * %0")

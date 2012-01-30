@@ -353,7 +353,7 @@
 					RelativePath=".\DBC\DBCStores.h"
 					>
 				</File>
-				<File
+                <File
 					RelativePath=".\DBC\DBCStructure.cpp"
 					>
 				</File>
