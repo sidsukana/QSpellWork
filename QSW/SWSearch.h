@@ -5,7 +5,7 @@
 #include "DBC/DBCStores.h"
 
 class SWObject;
-class SWForm;
+class SWMainForm;
 
 class SWSearch
 {
@@ -18,7 +18,7 @@ class SWSearch
 
     private:
         SWObject* m_sw;
-        SWForm*   m_form;
+        SWMainForm*   m_form;
 };
 
 class MetaSpell : public QObject

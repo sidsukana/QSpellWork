@@ -10,18 +10,18 @@
 #include <QtWebKit/QWebView>
 #include <QtWebKit/QWebFrame>
 #include "SWObject.h"
-#include "ui_SWFormUI.h"
+#include "ui_SWMainUI.h"
 
 class SWObject;
 class SpellListSortedModel;
 
-class SWForm : public QMainWindow, public Ui::SWFormUI
+class SWMainForm : public QMainWindow, public Ui::SWMainUI
 {
     Q_OBJECT
 
     public:
-        SWForm(QWidget* parent = 0);
-        ~SWForm();
+        SWMainForm(QWidget* parent = 0);
+        ~SWMainForm();
 
         QWebView* getBrowser(quint8 num) { return(num == 0 ? webView : webView_2); }
 
@@ -29,6 +29,7 @@ class SWForm : public QMainWindow, public Ui::SWFormUI
         void signalSearch(quint8 type);
 
     private slots:
+        void slotUpdate();
         void slotAbout();
         void slotFilterSearch();
         void slotButtonSearch();
@@ -50,11 +51,12 @@ class SWForm : public QMainWindow, public Ui::SWFormUI
         void initializeCompleter();
 
         SpellListSortedModel* m_sortedModel;
-        Ui::SWFormUI m_ui;
+        Ui::SWMainUI m_ui;
         SWObject* m_sw;
         QToolButton* m_modeButton;
         QAction* m_regExp;
         QAction* m_about;
+        QAction* m_update;
 };
 
 class Enums : public QObject

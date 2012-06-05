@@ -138,6 +138,8 @@ struct SpellEntry
         SpellEntry(SpellEntry const&);
 };
 
+Q_DECLARE_METATYPE(const SpellEntry*);
+
 struct SpellCastTimesEntry
 {
     quint32    Id;                                              // 0

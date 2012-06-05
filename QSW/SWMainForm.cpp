@@ -1,9 +1,11 @@
-#include "SWForm.h"
-#include "AboutForm.h"
+#include "SWMainForm.h"
+#include "SWAboutForm.h"
+#include "SWUpdateForm.h"
 
+#include <QtCore/QtConcurrentRun>
 #include <QtCore/QTime>
 
-SWForm::SWForm(QWidget* parent)
+SWMainForm::SWMainForm(QWidget* parent)
     : QMainWindow(parent)
 {
     QTime m_time;
@@ -30,6 +32,8 @@ SWForm::SWForm(QWidget* parent)
     m_regExp = mainToolBar->addAction(QIcon(":/SpellWork/Recources/regExp.png"), "<font color=red>Off</font>");
     mainToolBar->addSeparator();
     m_about = mainToolBar->addAction(QIcon(":/SpellWork/Recources/about.png"), "About");
+    mainToolBar->addSeparator();
+    m_update = mainToolBar->addAction(QIcon(":/SpellWork/Recources/update.png"), "Update");
 
     QAction* actionCopy = webView->pageAction(QWebPage::Copy);
     actionCopy->setShortcut(QKeySequence::Copy);
@@ -55,6 +59,9 @@ SWForm::SWForm(QWidget* parent)
     connect(findLine_e1, SIGNAL(returnPressed()), this, SLOT(slotButtonSearch()));
     connect(findLine_e2, SIGNAL(returnPressed()), this, SLOT(slotButtonSearch()));
     connect(findLine_e3, SIGNAL(returnPressed()), this, SLOT(slotButtonSearch()));
+
+    // Update connect
+    connect(m_update, SIGNAL(triggered()), this, SLOT(slotUpdate()));
 
     // Menu connections
     connect(m_about, SIGNAL(triggered()), this, SLOT(slotAbout()));
@@ -82,11 +89,16 @@ SWForm::SWForm(QWidget* parent)
     webView->setHtml(QString("Load time: %0 ms").arg(m_time.elapsed()));
 }
 
-SWForm::~SWForm()
+SWMainForm::~SWMainForm()
 {
 }
 
-void SWForm::slotPrevRow()
+void SWMainForm::slotUpdate()
+{
+    SWUpdateForm* updateForm = new SWUpdateForm();
+}
+
+void SWMainForm::slotPrevRow()
 {
     SpellList->selectRow(SpellList->currentIndex().row() - 1);
 
@@ -96,7 +108,7 @@ void SWForm::slotPrevRow()
         m_sw->showInfo(spellInfo);
 }
 
-void SWForm::slotNextRow()
+void SWMainForm::slotNextRow()
 {
     SpellList->selectRow(SpellList->currentIndex().row() + 1);
 
@@ -106,7 +118,7 @@ void SWForm::slotNextRow()
         m_sw->showInfo(spellInfo);
 }
 
-void SWForm::initializeCompleter()
+void SWMainForm::initializeCompleter()
 {
     QStringList names;
 
@@ -126,7 +138,7 @@ void SWForm::initializeCompleter()
     findLine_e1->setCompleter(completer);
 }
 
-void SWForm::createModeButton()
+void SWMainForm::createModeButton()
 {   
     QAction* actionShow = new QAction(QIcon(":/SpellWork/Recources/show.png"), "Show", this);
     actionShow->setCheckable(true);
@@ -147,7 +159,7 @@ void SWForm::createModeButton()
     connect(m_modeButton, SIGNAL(triggered(QAction*)), this, SLOT(slotSetMode(QAction*)));
 }
 
-void SWForm::detectLocale()
+void SWMainForm::detectLocale()
 {
     SpellEntry const* spellInfo = sSpellStore.LookupEntry(1);
 
@@ -170,18 +182,15 @@ void SWForm::detectLocale()
     }
 }
 
-void SWForm::slotLinkClicked(const QUrl &url)
+void SWMainForm::slotLinkClicked(const QUrl &url)
 {
     QString id = url.toString().section('/', -1);
     if (SpellEntry const* spellInfo = sSpellStore.LookupEntry(id.toInt()))
         m_sw->showInfo(spellInfo);
 }
 
-void SWForm::slotSetMode(QAction* ac)
+void SWMainForm::slotSetMode(QAction* ac)
 {
-    for (QList<QAction*>::iterator itr = m_modeButton->actions().begin(); itr != m_modeButton->actions().end(); ++itr)
-        (*itr)->setChecked(false);
-
     m_modeButton->setIcon(ac->icon());
     ac->setChecked(true);
 
@@ -211,7 +220,7 @@ void SWForm::slotSetMode(QAction* ac)
     }
 }
 
-void SWForm::loadComboBoxes()
+void SWMainForm::loadComboBoxes()
 {
     comboBox->clear();
     comboBox->insertItem(-1, "SpellFamilyName");
@@ -261,7 +270,7 @@ void SWForm::loadComboBoxes()
     }
 }
 
-void SWForm::slotRegExp()
+void SWMainForm::slotRegExp()
 {
     if (!m_sw->isRegExp())
     {
@@ -280,27 +289,27 @@ void SWForm::slotRegExp()
         m_sw->showInfo(spellInfo);
 }
 
-void SWForm::slotAbout()
+void SWMainForm::slotAbout()
 {
-    new AboutForm;
+    new SWAboutForm;
 }
 
-void SWForm::slotButtonSearch()
+void SWMainForm::slotButtonSearch()
 {
     emit signalSearch(0);
 }
 
-void SWForm::slotFilterSearch()
+void SWMainForm::slotFilterSearch()
 {
     emit signalSearch(1);
 }
 
-void SWForm::slotCompareSearch()
+void SWMainForm::slotCompareSearch()
 {
     emit signalSearch(2);
 }
 
-void SWForm::slotSearch(quint8 type)
+void SWMainForm::slotSearch(quint8 type)
 {
     if (type != 2)
     {
@@ -311,10 +320,11 @@ void SWForm::slotSearch(quint8 type)
     }
 
     m_sw->setType(type);
-    m_sw->threadBegin(THREAD_SEARCH);
+
+    QtConcurrent::run(m_sw, &SWObject::search);
 }
 
-void SWForm::slotSearchFromList(const QModelIndex &index)
+void SWMainForm::slotSearchFromList(const QModelIndex &index)
 {
     QVariant var = SpellList->model()->data(SpellList->model()->index(index.row(), 0));
 
@@ -322,30 +332,31 @@ void SWForm::slotSearchFromList(const QModelIndex &index)
         m_sw->showInfo(spellInfo);
 }
 
-bool SWForm::event(QEvent* ev)
+bool SWMainForm::event(QEvent* ev)
 {
     switch (ev->type())
     {
-        case SendModel::TypeId:
+        case Event::EVENT_SEND_MODEL:
         {
-            SendModel* m_ev = (SendModel*)ev;
-            m_sortedModel->setSourceModel(m_ev->getObject());
+            Event* m_ev = (Event*)ev;
+            m_sortedModel->setSourceModel(m_ev->getValue(0).value<SpellListModel*>());
             SpellList->setColumnWidth(0, 40);
             SpellList->setColumnWidth(1, 150);
             return true;
         }
         break;
-        case SendSpell::TypeId:
+        case Event::EVENT_SEND_SPELL:
         {
-            SendSpell* m_ev = (SendSpell*)ev;
-            m_sw->showInfo(m_ev->getObject());
+            Event* m_ev = (Event*)ev;
+            m_sw->showInfo(m_ev->getValue(0).value<const SpellEntry*>());
             return true;
         }
         break;
-        case SendCompareSpell::TypeId:
+        case Event::EVENT_SEND_CSPELL:
         {
-            SendCompareSpell* m_ev = (SendCompareSpell*)ev;
-            m_sw->showInfo(m_ev->getObject(), m_ev->getNum());
+            Event* m_ev = (Event*)ev;
+            m_sw->showInfo(m_ev->getValue(0).value<const SpellEntry*>(), 0);
+            m_sw->showInfo(m_ev->getValue(1).value<const SpellEntry*>(), 1);
             return true;
         }
         break;
