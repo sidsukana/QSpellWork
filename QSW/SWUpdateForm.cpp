@@ -35,8 +35,22 @@ void SWUpdateForm::checkForUpdates()
     QNetworkAccessManager qnam;
     QNetworkReply *reply = qnam.get(QNetworkRequest(QUrl(QString("http://valkyrie-wow.ru/uploads/QSW/") + QString("Updates.xml"))));
     QEventLoop loop;
+    connect(this, SIGNAL(rejected()), &loop, SLOT(quit()));
+    connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), &loop, SLOT(quit()));
     connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
     loop.exec();
+
+    if (!reply->isFinished())
+    {
+        Event* clearEvent = new Event(Event::Type(Event::EVENT_SEND_ACTION));
+        clearEvent->addValue(0);
+        QApplication::postEvent(this, clearEvent);
+
+        Event* textEvent = new Event(Event::Type(Event::EVENT_SEND_TEXT));
+        textEvent->addValue(reply->errorString());
+        QApplication::postEvent(this, textEvent);
+        return;
+    }
 
     m_xmlData.setContent(reply->readAll());
 
@@ -125,17 +139,31 @@ void SWUpdateForm::updateSoftware()
         ev->addValue((*itr));
         QApplication::postEvent(this, ev);
 
-        QNetworkReply *reply = qnam.get(QNetworkRequest(QUrl(QString("http://valkyrie-wow.ru/uploads/QSW/Latest/") + (*itr))));
+        QNetworkReply *reply = qnam.get(QNetworkRequest(QUrl(QString("http://valkyrie-wow.ru/uploads/QSW/QSW1/") + (*itr))));
         QEventLoop loop;
+        connect(this, SIGNAL(rejected()), &loop, SLOT(quit()));
+        connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), &loop, SLOT(quit()));
         connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
         connect(reply, SIGNAL(finished()), progressBar, SLOT(reset()));
         connect(reply, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(slotUpdateProgress(qint64, qint64)));
         loop.exec();
 
-        QDir dir;
-        dir.setCurrent(QApplication::applicationDirPath());
+        if (!reply->isFinished())
+        {
+            Event* clearEvent = new Event(Event::Type(Event::EVENT_SEND_ACTION));
+            clearEvent->addValue(0);
+            QApplication::postEvent(this, clearEvent);
+
+            Event* textEvent = new Event(Event::Type(Event::EVENT_SEND_TEXT));
+            textEvent->addValue(reply->errorString());
+            QApplication::postEvent(this, textEvent);
+            return;
+        }
+
+        QDir path;
+        path.setCurrent(QApplication::applicationDirPath());
         
-        if (dir.mkdir("Temp"))
+        if (path.mkdir("Temp"))
         {
             QFile file("Temp/" + (*itr));
             if (file.open(QIODevice::WriteOnly))
@@ -145,6 +173,25 @@ void SWUpdateForm::updateSoftware()
                 file.close();
             }
         }
+    }
+
+    qint32 index = m_updateFiles.indexOf("Updater.exe");
+
+    if (index != -1)
+    {
+        QDir path;
+        path.setCurrent(QApplication::applicationDirPath());
+
+        if (path.exists("Temp"))
+        {
+            if (path.exists("Updater.exe"))
+            {
+                while (!path.remove("Updater.exe")) {}
+                while (!path.rename("Temp/Updater.exe", "Updater.exe")) {}
+            }
+        }
+
+        m_updateFiles.removeAt(index);
     }
 
     QProcess::startDetached("Updater.exe", m_updateFiles);

@@ -8,8 +8,8 @@ class Updater : public QObject
     Q_OBJECT
 
     public:
-        Updater(QObject* parent = 0);
-        ~Updater();
+        Updater(QObject* parent = 0) : QObject(parent) {}
+        ~Updater() {}
 
         void start();
 };
