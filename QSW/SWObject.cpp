@@ -1,4 +1,5 @@
 #include "SWObject.h"
+#include "SWSearch.h"
 #include "Alphanum.h"
 
 SpellListSortedModel::SpellListSortedModel(QObject *parent)
@@ -84,27 +85,21 @@ Qt::ItemFlags SpellListModel::flags(const QModelIndex &index) const
     return QAbstractTableModel::flags(index) | Qt::ItemIsEditable;
 }
 
-SWObject::SWObject(SWForm* form)
+SWObject::SWObject(SWMainForm* form)
     : m_form(form), m_regExp(false), m_type(0)
 {
-    for (quint8 i = 0; i < MAX_THREAD; i++)
-        threadSemaphore[i] = false;
-
     LoadDBCStores();
+}
+
+void SWObject::search()
+{
+    SWSearch* search = new SWSearch(this);
+    search->search();
 }
 
 void SWObject::setMetaEnum(const char* enumName)
 {
     m_metaEnum = Enums::staticMetaObject.enumerator(Enums::staticMetaObject.indexOfEnumerator(enumName));
-}
-
-void SWObject::threadBegin(quint8 id)
-{
-    if (!threadExist(id))
-    {
-        TObject* thread = new TObject(id, this);
-        thread->start();
-    }
 }
 
 float getRadius(SpellEntry const* spellInfo, quint8 effIndex)

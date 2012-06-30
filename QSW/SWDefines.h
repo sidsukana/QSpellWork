@@ -51,12 +51,6 @@ enum SpellEffectIndex
     MAX_EFFECT_INDEX
 };
 
-enum Threads
-{
-    THREAD_SEARCH,
-    MAX_THREAD
-};
-
 // Addition structure types for Meta-System
 struct uarray2
 {
@@ -72,41 +66,89 @@ struct uarray2
 struct iarray2
 {
     qint32 value[2];
+
+    iarray2()
+    {
+        for (quint8 i = 0; i < 2; i++)
+            value[i] = 0;
+    }
 };
 
 struct farray2
 {
     float value[2];
+
+    farray2()
+    {
+        for (quint8 i = 0; i < 2; i++)
+            value[i] = 0;
+    }
 };
 
 struct uarray3
 {
     quint32 value[3];
+
+    uarray3()
+    {
+        for (quint8 i = 0; i < 3; i++)
+            value[i] = 0;
+    }
 };
 
 struct iarray3
 {
     qint32 value[3];
+
+    iarray3()
+    {
+        for (quint8 i = 0; i < 3; i++)
+            value[i] = 0;
+    }
 };
 
 struct farray3
 {
     float value[3];
+
+    farray3()
+    {
+        for (quint8 i = 0; i < 3; i++)
+            value[i] = 0;
+    }
 };
 
 struct uarray8
 {
     quint32 value[8];
+
+    uarray8()
+    {
+        for (quint8 i = 0; i < 8; i++)
+            value[i] = 0;
+    }
 };
 
 struct iarray8
 {
     qint32 value[8];
+
+    iarray8()
+    {
+        for (quint8 i = 0; i < 8; i++)
+            value[i] = 0;
+    }
 };
 
 struct farray8
 {
     float value[8];
+
+    farray8()
+    {
+        for (quint8 i = 0; i < 8; i++)
+            value[i] = 0;
+    }
 };
 
 Q_DECLARE_METATYPE(uarray2);

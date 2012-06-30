@@ -9,8 +9,8 @@ MetaSpell::~MetaSpell()
 {
 }
 
-SWSearch::SWSearch(SWObject *sw)
-    : m_sw(sw), m_form(sw->getForm())
+SWSearch::SWSearch(SWObject* sw)
+: m_sw(sw), m_form(sw->getForm())
 {
 }
 
@@ -442,7 +442,7 @@ bool SWSearch::hasValue(QString name, QString value, SpellEntry const* spellInfo
         {
             if (typeName == "uarray2")
             {
-               uarray2 var = spellValue.value<uarray2>();
+                uarray2 var = spellValue.value<uarray2>();
                 for (quint8 i = 0; i < 2; i++)
                     if (var.value[i] == Converter::getULong(value))
                         return true;
@@ -522,8 +522,6 @@ bool SWSearch::hasValue(QString name, QString value, SpellEntry const* spellInfo
 
 void SWSearch::search()
 {
-    m_sw->threadSet(THREAD_SEARCH);
-
     SpellListModel *model = new SpellListModel;
 
     if (m_sw->getType() == 1)
@@ -539,6 +537,7 @@ void SWSearch::search()
             bool targetB = false;
 
             SpellEntry const* m_spellInfo = sSpellStore.LookupEntry(i);
+
             if (m_spellInfo)
             {
                 m_sw->setMetaEnum("SpellFamilyNames");
@@ -640,7 +639,9 @@ void SWSearch::search()
                 }
             }
         }
-        QApplication::postEvent(m_form, new SendModel(model));
+        Event* ev = new Event(Event::Type(Event::EVENT_SEND_MODEL));
+        ev->addValue(QVariant::fromValue(model));
+        QApplication::postEvent(m_form, ev);
     }
     else if (m_sw->getType() == 2)
     {
@@ -651,8 +652,10 @@ void SWSearch::search()
 
             if (sInfo1 && sInfo2)
             {
-                QApplication::postEvent(m_form, new SendCompareSpell(sInfo1, 0));
-                QApplication::postEvent(m_form, new SendCompareSpell(sInfo2, 1));
+                Event* ev = new Event(Event::Type(Event::EVENT_SEND_CSPELL));
+                ev->addValue(QVariant::fromValue(sInfo1));
+                ev->addValue(QVariant::fromValue(sInfo2));
+                QApplication::postEvent(m_form, ev);
             }
         }
     }
@@ -679,7 +682,10 @@ void SWSearch::search()
                         model->appendRecord(spellRecord);
                     }
                 }
-                QApplication::postEvent(m_form, new SendModel(model));
+
+                Event* ev = new Event(Event::Type(Event::EVENT_SEND_MODEL));
+                ev->addValue(QVariant::fromValue(model));
+                QApplication::postEvent(m_form, ev);
             }
             else
             {
@@ -697,8 +703,14 @@ void SWSearch::search()
                     spellRecord << QString("%0").arg(m_spellInfo->Id) << sFullName;
 
                     model->appendRecord(spellRecord);
-                    QApplication::postEvent(m_form, new SendModel(model));
-                    QApplication::postEvent(m_form, new SendSpell(m_spellInfo));
+
+                    Event* ev1 = new Event(Event::Type(Event::EVENT_SEND_MODEL));
+                    ev1->addValue(QVariant::fromValue(model));
+                    QApplication::postEvent(m_form, ev1);
+
+                    Event* ev2 = new Event(Event::Type(Event::EVENT_SEND_SPELL));
+                    ev2->addValue(QVariant::fromValue(m_spellInfo));
+                    QApplication::postEvent(m_form, ev2);
                 }
             }
         }
@@ -721,7 +733,9 @@ void SWSearch::search()
                     model->appendRecord(spellRecord);
                 }
             }
-            QApplication::postEvent(m_form, new SendModel(model));
+            Event* ev = new Event(Event::Type(Event::EVENT_SEND_MODEL));
+            ev->addValue(QVariant::fromValue(model));
+            QApplication::postEvent(m_form, ev);
         }
         else if (!m_form->findLine_e3->text().isEmpty())
         {
@@ -742,7 +756,10 @@ void SWSearch::search()
                     model->appendRecord(spellRecord);
                 }
             }
-            QApplication::postEvent(m_form, new SendModel(model));
+
+            Event* ev = new Event(Event::Type(Event::EVENT_SEND_MODEL));
+            ev->addValue(QVariant::fromValue(model));
+            QApplication::postEvent(m_form, ev);
         }
         else
         {
@@ -763,8 +780,9 @@ void SWSearch::search()
                     model->appendRecord(spellRecord);
                 }
             }
-            QApplication::postEvent(m_form, new SendModel(model));
+            Event* ev = new Event(Event::Type(Event::EVENT_SEND_MODEL));
+            ev->addValue(QVariant::fromValue(model));
+            QApplication::postEvent(m_form, ev);
         }
     }
-    m_sw->threadUnset(THREAD_SEARCH);
 }

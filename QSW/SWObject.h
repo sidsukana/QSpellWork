@@ -5,14 +5,12 @@
 #include <QtCore/QAbstractTableModel>
 #include <QtGui/QSortFilterProxyModel>
 
-#include "SWForm.h"
+#include "SWMainForm.h"
 #include "SWEvent.h"
-#include "TObject.h"
 #include "DBC/DBCStores.h"
 #include "SWDefines.h"
 
-class SWForm;
-class TObject;
+class SWMainForm;
 
 class SpellListSortedModel : public QSortFilterProxyModel
 {
@@ -44,15 +42,18 @@ class SpellListModel : public QAbstractTableModel
         QList<QStringList> m_spellList;
 };
 
+Q_DECLARE_METATYPE(SpellListModel*);
+
 class SWObject
 {
     public:
-        SWObject(SWForm *form);
+        SWObject(SWMainForm *form);
         ~SWObject();
 
         void showInfo(SpellEntry const* spellInfo, quint8 num = 0);
         quint32 getParentSpellId(quint32 triggerId);
         void compare();
+        void search();
 
         void appendSkillInfo(SpellEntry const* spellInfo, quint8 num);
         void appendCastTimeInfo(SpellEntry const* spellInfo, quint8 num);
@@ -68,11 +69,6 @@ class SWObject
         QString getDescription(QString str, SpellEntry const *spellInfo);
         QString getSpellIconName(quint32 iconId);
 
-        void threadBegin(quint8 id);
-        void threadSet(quint8 id) { threadSemaphore[id] = true; }
-        void threadUnset(quint8 id) { threadSemaphore[id] = false; }
-        bool threadExist(quint8 id) { return threadSemaphore[id]; }
-
         QMetaEnum getMetaEnum() { return m_metaEnum; }
         void setMetaEnum(const char* enumName);
 
@@ -82,17 +78,16 @@ class SWObject
         quint8 getType() const { return m_type; }
         void setType(quint8 type) { m_type = type; }
 
-        SWForm* getForm() { return m_form; }
+        SWMainForm* getForm() { return m_form; }
 
     private:
-        SWForm *m_form;
+        SWMainForm *m_form;
 
         bool m_regExp;
         QString html;
         quint8 m_type;
 
         QMetaEnum m_metaEnum;
-        bool threadSemaphore[MAX_THREAD];
 };
 
 namespace Converter
