@@ -27,7 +27,7 @@ class SWUpdateForm : public QDialog, public Ui::SWUpdateUI
     private:
         Ui::SWUpdateUI ui;
         QDomDocument m_xmlData;
-        QStringList m_updateFiles;
+        QString m_updateFile;
 };
 
 #endif // SW_UPDATE_FORM_H

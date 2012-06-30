@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QSW", "QSW\QSW_VC100.vcxproj", "{41F7E639-D141-409E-A523-631253C45BBF}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Updater", "Updater\Updater.vcxproj", "{7C5D4F90-44C9-4BFB-A9AE-BAEE73254495}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug_NoPCH|Win32 = Debug_NoPCH|Win32
@@ -24,15 +22,6 @@ Global
 		{41F7E639-D141-409E-A523-631253C45BBF}.Release|Win32.ActiveCfg = Release|Win32
 		{41F7E639-D141-409E-A523-631253C45BBF}.Release|Win32.Build.0 = Release|Win32
 		{41F7E639-D141-409E-A523-631253C45BBF}.Release|x64.ActiveCfg = Release|Win32
-		{7C5D4F90-44C9-4BFB-A9AE-BAEE73254495}.Debug_NoPCH|Win32.ActiveCfg = Debug|Win32
-		{7C5D4F90-44C9-4BFB-A9AE-BAEE73254495}.Debug_NoPCH|Win32.Build.0 = Debug|Win32
-		{7C5D4F90-44C9-4BFB-A9AE-BAEE73254495}.Debug_NoPCH|x64.ActiveCfg = Debug|Win32
-		{7C5D4F90-44C9-4BFB-A9AE-BAEE73254495}.Debug|Win32.ActiveCfg = Debug|Win32
-		{7C5D4F90-44C9-4BFB-A9AE-BAEE73254495}.Debug|Win32.Build.0 = Debug|Win32
-		{7C5D4F90-44C9-4BFB-A9AE-BAEE73254495}.Debug|x64.ActiveCfg = Debug|Win32
-		{7C5D4F90-44C9-4BFB-A9AE-BAEE73254495}.Release|Win32.ActiveCfg = Release|Win32
-		{7C5D4F90-44C9-4BFB-A9AE-BAEE73254495}.Release|Win32.Build.0 = Release|Win32
-		{7C5D4F90-44C9-4BFB-A9AE-BAEE73254495}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

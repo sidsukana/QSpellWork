@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Update</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="SpellWork.qrc">
+    <normaloff>:/SpellWork/Recources/mangos.ico</normaloff>:/SpellWork/Recources/mangos.ico</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0" colspan="3">
