@@ -1,6 +1,6 @@
-#include "AboutForm.h"
+#include "SWAboutForm.h"
 
-AboutForm::AboutForm(QWidget *parent)
+SWAboutForm::SWAboutForm(QWidget *parent)
     : QDialog(parent)
 {
     setupUi(this);
@@ -14,6 +14,6 @@ AboutForm::AboutForm(QWidget *parent)
     show();
 }
 
-AboutForm::~AboutForm()
+SWAboutForm::~SWAboutForm()
 {
 }

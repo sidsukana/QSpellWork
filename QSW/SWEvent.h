@@ -2,51 +2,38 @@
 #define EVENT_H
 
 #include <QtCore/QEvent>
-#include "SWForm.h"
-#include "DBC/DBCStores.h"
+#include <QtCore/QVariant>
+#include <QtCore/QVector>
 
-class SWForm;
-class SpellListModel;
-
-class SendSpell : public QEvent
+class Event : public QEvent
 {
     public:
-        enum { TypeId = QEvent::User + 1 };
-        SendSpell(SpellEntry const* obj);
-        ~SendSpell();
+        enum Events
+        {
+            EVENT_SEND_SPELL  = QEvent::User + 1,
+            EVENT_SEND_MODEL  = QEvent::User + 2,
+            EVENT_SEND_CSPELL = QEvent::User + 3,
+            EVENT_SEND_TEXT   = QEvent::User + 4,
+            EVENT_SEND_ACTION = QEvent::User + 5
+        };
+        Event(QEvent::Type type) : QEvent(type) {}
+        ~Event() {};
 
-        SpellEntry const* getObject() { return m_obj; }
+        void addValue(QVariant value) { m_values << value; }
 
-    private:
-        SpellEntry const* m_obj;
-};
+        QVariant getValue(int index) const
+        {
+            if (m_values.isEmpty() ||
+                m_values.size() - 1 < index)
+                return QVariant();
 
-class SendModel : public QEvent
-{
-    public:
-        enum { TypeId = QEvent::User + 2 };
-        SendModel(SpellListModel* obj);
-        ~SendModel();
+            return m_values[index];
+        }
 
-        SpellListModel* getObject() { return m_obj; }
-
-    private:
-        SpellListModel* m_obj;
-};
-
-class SendCompareSpell : public QEvent
-{
-    public:
-        enum { TypeId = QEvent::User + 3 };
-        SendCompareSpell(SpellEntry const* obj, quint8 num);
-        ~SendCompareSpell();
-
-        SpellEntry const* getObject() { return m_obj; }
-        quint8 getNum() { return m_num; }
+        int getCount() const { return m_values.size(); }
 
     private:
-        SpellEntry const* m_obj;
-        quint8 m_num;
+        QVector<QVariant> m_values;
 };
 
 #endif // EVENTMGR_H

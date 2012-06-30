@@ -1,4 +1,5 @@
 #include "SWObject.h"
+#include "SWSearch.h"
 #include "Alphanum.h"
 
 SpellListSortedModel::SpellListSortedModel(QObject *parent)
@@ -84,27 +85,21 @@ Qt::ItemFlags SpellListModel::flags(const QModelIndex &index) const
     return QAbstractTableModel::flags(index) | Qt::ItemIsEditable;
 }
 
-SWObject::SWObject(SWForm* form)
+SWObject::SWObject(SWMainForm* form)
     : m_form(form), m_regExp(false), m_type(0)
 {
-    for (quint8 i = 0; i < MAX_THREAD; i++)
-        threadSemaphore[i] = false;
-
     LoadDBCStores();
+}
+
+void SWObject::search()
+{
+    SWSearch* search = new SWSearch(this);
+    search->search();
 }
 
 void SWObject::setMetaEnum(const char* enumName)
 {
     m_metaEnum = Enums::staticMetaObject.enumerator(Enums::staticMetaObject.indexOfEnumerator(enumName));
-}
-
-void SWObject::threadBegin(quint8 id)
-{
-    if (!threadExist(id))
-    {
-        TObject* thread = new TObject(id, this);
-        thread->start();
-    }
 }
 
 float getRadius(SpellEntry const* spellInfo, quint8 effIndex)
@@ -140,6 +135,8 @@ void RegExpU(SpellEntry const* spellInfo, QRegExp rx, QString &str)
             str.replace(rx.cap(0), QString("%0")
                 .arg(tSpell->StackAmount));
         }
+        else
+            str.replace(rx.cap(0), "<font color=red>(Error)</font>");
     }
     else
     {
@@ -158,6 +155,8 @@ void RegExpH(SpellEntry const* spellInfo, QRegExp rx, QString &str)
             str.replace(rx.cap(0), QString("%0")
                 .arg(tSpell->ProcChance));
         }
+        else
+            str.replace(rx.cap(0), "<font color=red>(Error)</font>");
     }
     else
     {
@@ -176,6 +175,8 @@ void RegExpV(SpellEntry const* spellInfo, QRegExp rx, QString &str)
             str.replace(rx.cap(0), QString("%0")
                 .arg(tSpell->MaxTargetLevel));
         }
+        else
+            str.replace(rx.cap(0), "<font color=red>(Error)</font>");
     }
     else
     {
@@ -204,6 +205,8 @@ void RegExpQ(SpellEntry const* spellInfo, QRegExp rx, QString &str)
                         .arg(abs(qint32(tSpell->EffectMiscValue.value[rx.cap(6).toInt()-1] * rx.cap(3).toInt()))));
                 }
             }
+            else
+                str.replace(rx.cap(0), "<font color=red>(Error)</font>");
         }
         else
         {
@@ -227,6 +230,8 @@ void RegExpQ(SpellEntry const* spellInfo, QRegExp rx, QString &str)
             str.replace(rx.cap(0), QString("%0")
                 .arg(abs(tSpell->EffectMiscValue.value[rx.cap(6).toInt()-1])));
         }
+        else
+            str.replace(rx.cap(0), "<font color=red>(Error)</font>");
     }
     else
     {
@@ -252,6 +257,8 @@ void RegExpI(SpellEntry const* spellInfo, QRegExp rx, QString &str)
                 str.replace(rx.cap(0), QString("nearby"));
             }
         }
+        else
+            str.replace(rx.cap(0), "<font color=red>(Error)</font>");
     }
     else
     {
@@ -287,6 +294,8 @@ void RegExpB(SpellEntry const* spellInfo, QRegExp rx, QString &str)
                         .arg(abs(qint32((tSpell->EffectPointsPerComboPoint.value[rx.cap(6).toInt()-1]) * rx.cap(3).toInt()))));
                 }
             }
+            else
+                str.replace(rx.cap(0), "<font color=red>(Error)</font>");
         }
         else
         {
@@ -310,6 +319,8 @@ void RegExpB(SpellEntry const* spellInfo, QRegExp rx, QString &str)
             str.replace(rx.cap(0), QString("%0")
                 .arg(abs(qint32(tSpell->EffectPointsPerComboPoint.value[rx.cap(6).toInt()-1]))));
         }
+        else
+            str.replace(rx.cap(0), "<font color=red>(Error)</font>");
     }
     else
     {
@@ -338,6 +349,8 @@ void RegExpM(SpellEntry const* spellInfo, QRegExp rx, QString &str)
                         .arg(abs(qint32((tSpell->EffectBasePoints.value[rx.cap(6).toInt()-1] + 1) * rx.cap(3).toInt()))));
                 }
             }
+            else
+                str.replace(rx.cap(0), "<font color=red>(Error)</font>");
         }
         else
         {
@@ -361,6 +374,8 @@ void RegExpM(SpellEntry const* spellInfo, QRegExp rx, QString &str)
             str.replace(rx.cap(0), QString("%0")
                 .arg(abs(tSpell->EffectBasePoints.value[rx.cap(6).toInt()-1] + 1)));
         }
+        else
+            str.replace(rx.cap(0), "<font color=red>(Error)</font>");
     }
     else
     {
@@ -389,6 +404,8 @@ void RegExpA(SpellEntry const* spellInfo, QRegExp rx, QString &str)
                         .arg(quint32(getRadius(tSpell, rx.cap(6).toInt()-1) * rx.cap(2).toInt())));
                 }
             }
+            else
+                str.replace(rx.cap(0), "<font color=red>(Error)</font>");
         }
         else
         {
@@ -412,6 +429,8 @@ void RegExpA(SpellEntry const* spellInfo, QRegExp rx, QString &str)
             str.replace(rx.cap(0), QString("%0")
                 .arg(getRadius(tSpell, rx.cap(6).toInt()-1)));
         }
+        else
+            str.replace(rx.cap(0), "<font color=red>(Error)</font>");
     }
     else
     {
@@ -440,6 +459,8 @@ void RegExpD(SpellEntry const* spellInfo, QRegExp rx, QString &str)
                         .arg(quint32(getDuration(tSpell) * rx.cap(3).toInt())));
                 }
             }
+            else
+                str.replace(rx.cap(0), "<font color=red>(Error)</font>");
         }
         else
         {
@@ -463,6 +484,8 @@ void RegExpD(SpellEntry const* spellInfo, QRegExp rx, QString &str)
             str.replace(rx.cap(0), QString("%0 seconds")
                 .arg(getDuration(tSpell)));
         }
+        else
+            str.replace(rx.cap(0), "<font color=red>(Error)</font>");
     }
     else
     {
@@ -491,6 +514,8 @@ void RegExpO(SpellEntry const* spellInfo, QRegExp rx, QString &str)
                         .arg(quint32((getRealDuration(tSpell, rx.cap(6).toInt()-1) * (tSpell->EffectBasePoints.value[rx.cap(6).toInt()-1] + 1)) * rx.cap(3).toInt())));
                 }
             }
+            else
+                str.replace(rx.cap(0), "<font color=red>(Error)</font>");
         }
         else
         {
@@ -514,6 +539,8 @@ void RegExpO(SpellEntry const* spellInfo, QRegExp rx, QString &str)
             str.replace(rx.cap(0), QString("%0")
                 .arg(getRealDuration(tSpell, rx.cap(6).toInt()-1) * (tSpell->EffectBasePoints.value[rx.cap(6).toInt()-1] + 1)));
         }
+        else
+            str.replace(rx.cap(0), "<font color=red>(Error)</font>");
     }
     else
     {
@@ -542,6 +569,8 @@ void RegExpS(SpellEntry const* spellInfo, QRegExp rx, QString &str)
                         .arg(abs(qint32((tSpell->EffectBasePoints.value[rx.cap(6).toInt()-1] + 1) * rx.cap(3).toInt()))));
                 }
             }
+            else
+                str.replace(rx.cap(0), "<font color=red>(Error)</font>");
         }
         else
         {
@@ -565,6 +594,8 @@ void RegExpS(SpellEntry const* spellInfo, QRegExp rx, QString &str)
             str.replace(rx.cap(0), QString("%0")
                 .arg(abs(tSpell->EffectBasePoints.value[rx.cap(6).toInt()-1] + 1)));
         }
+        else
+            str.replace(rx.cap(0), "<font color=red>(Error)</font>");
     }
     else
     {
@@ -593,6 +624,8 @@ void RegExpT(SpellEntry const* spellInfo, QRegExp rx, QString &str)
                         .arg(quint32(quint32(tSpell->EffectAmplitude.value[rx.cap(6).toInt()-1] / 1000) * rx.cap(3).toInt())));
                 }
             }
+            else
+                str.replace(rx.cap(0), "<font color=red>(Error)</font>");
         }
         else
         {
@@ -616,6 +649,8 @@ void RegExpT(SpellEntry const* spellInfo, QRegExp rx, QString &str)
             str.replace(rx.cap(0), QString("%0")
                 .arg(quint32(tSpell->EffectAmplitude.value[rx.cap(6).toInt()-1] / 1000)));
         }
+        else
+            str.replace(rx.cap(0), "<font color=red>(Error)</font>");
     }
     else
     {
@@ -634,6 +669,8 @@ void RegExpN(SpellEntry const* spellInfo, QRegExp rx, QString &str)
             str.replace(rx.cap(0), QString("%0")
                 .arg(tSpell->ProcCharges));
         }
+        else
+            str.replace(rx.cap(0), "<font color=red>(Error)</font>");
     }
     else
     {
@@ -652,6 +689,8 @@ void RegExpX(SpellEntry const* spellInfo, QRegExp rx, QString &str)
             str.replace(rx.cap(0), QString("%0")
                 .arg(tSpell->EffectChainTarget.value[rx.cap(6).toInt()-1]));
         }
+        else
+            str.replace(rx.cap(0), "<font color=red>(Error)</font>");
     }
     else
     {
