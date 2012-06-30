@@ -1,10 +1,10 @@
-#include "SWForm.h"
+#include "SWMainForm.h"
 #include <QtGui/QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-    SWForm *form = new SWForm;
+    SWMainForm *form = new SWMainForm;
 
     form->setWindowTitle(QString("Qt SpellWork %0 (%1) for WoW %2 (%3)")
         .arg(QSW_VERSION)

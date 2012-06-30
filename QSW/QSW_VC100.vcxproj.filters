@@ -39,11 +39,13 @@
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
+    <Filter Include="Generated Files\Template">
+      <UniqueIdentifier>{d9b17114-7f1d-42ae-8951-621dc1c40d24}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AboutForm.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Alphanum.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -53,19 +55,10 @@
     <ClCompile Include="SWDefines.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SWEvent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SWForm.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SWObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SWSearch.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DBC\DBCFileLoader.cpp">
@@ -77,29 +70,53 @@
     <ClCompile Include="GeneratedFiles\qrc_SpellWork.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_AboutForm.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_SWForm.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_SWObject.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_SWSearch.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\debug\moc_AboutForm.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\debug\moc_SWForm.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_SWObject.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_SWSearch.cpp">
       <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_SWAboutForm.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_SWAboutForm.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Template\moc_SWAboutForm.cpp">
+      <Filter>Generated Files\Template</Filter>
+    </ClCompile>
+    <ClCompile Include="SWAboutForm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SWMainForm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_SWMainForm.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_SWMainForm.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Template\moc_SWMainForm.cpp">
+      <Filter>Generated Files\Template</Filter>
+    </ClCompile>
+    <ClCompile Include="SWUpdateForm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_SWUpdateForm.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_SWUpdateForm.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Template\moc_SWUpdateForm.cpp">
+      <Filter>Generated Files\Template</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -110,9 +127,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SWEvent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DBC\DBCFileLoader.h">
@@ -136,10 +150,13 @@
     <ClInclude Include="Includes\Platform\Define.h">
       <Filter>Header Files\Includes</Filter>
     </ClInclude>
-    <ClInclude Include="GeneratedFiles\ui_AboutFormUI.h">
+    <ClInclude Include="GeneratedFiles\ui_SWAboutUI.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
-    <ClInclude Include="GeneratedFiles\ui_SWFormUI.h">
+    <ClInclude Include="GeneratedFiles\ui_SWMainUI.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_SWUpdateUI.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -152,17 +169,8 @@
     <CustomBuildStep Include="mangos.ico">
       <Filter>Resource Files</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="qt-logo.png">
-      <Filter>Resource Files</Filter>
-    </CustomBuildStep>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="AboutForm.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="SWForm.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
     <CustomBuild Include="SWObject.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
@@ -172,14 +180,26 @@
     <CustomBuild Include="DBC\DBCStructure.h">
       <Filter>Header Files\DBC</Filter>
     </CustomBuild>
-    <CustomBuild Include="AboutFormUI.ui">
-      <Filter>Form Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="SWFormUI.ui">
-      <Filter>Form Files</Filter>
-    </CustomBuild>
     <CustomBuild Include="SpellWork.qrc">
       <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="SWAboutUI.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="SWAboutForm.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="SWMainForm.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="SWMainUI.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="SWUpdateUI.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="SWUpdateForm.h">
+      <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>

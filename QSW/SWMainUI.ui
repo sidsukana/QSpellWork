@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>SWFormUI</class>
- <widget class="QMainWindow" name="SWFormUI">
+ <class>SWMainUI</class>
+ <widget class="QMainWindow" name="SWMainUI">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>QSW - Qt SpellWork for 2.4.3</string>
+   <string>QSW - Qt SpellWork for 1.12.x</string>
   </property>
   <property name="windowIcon">
    <iconset resource="SpellWork.qrc">
@@ -46,6 +46,255 @@
     <property name="spacing">
      <number>5</number>
     </property>
+    <item row="1" column="1">
+     <widget class="QGroupBox" name="groupBox_2">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>280</width>
+        <height>130</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>280</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="title">
+       <string>Spell Filter</string>
+      </property>
+      <widget class="QFontComboBox" name="comboBox">
+       <property name="geometry">
+        <rect>
+         <x>4</x>
+         <y>15</y>
+         <width>271</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="editable">
+        <bool>false</bool>
+       </property>
+       <property name="currentIndex">
+        <number>184</number>
+       </property>
+       <property name="maxVisibleItems">
+        <number>20</number>
+       </property>
+       <property name="frame">
+        <bool>true</bool>
+       </property>
+       <property name="currentFont">
+        <font>
+         <family>MS Shell Dlg 2</family>
+         <pointsize>8</pointsize>
+         <stylestrategy>PreferDefault</stylestrategy>
+        </font>
+       </property>
+      </widget>
+      <widget class="QFontComboBox" name="comboBox_2">
+       <property name="geometry">
+        <rect>
+         <x>4</x>
+         <y>36</y>
+         <width>271</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="editable">
+        <bool>false</bool>
+       </property>
+       <property name="currentIndex">
+        <number>184</number>
+       </property>
+       <property name="maxVisibleItems">
+        <number>20</number>
+       </property>
+       <property name="currentFont">
+        <font>
+         <family>MS Shell Dlg 2</family>
+         <pointsize>8</pointsize>
+        </font>
+       </property>
+      </widget>
+      <widget class="QFontComboBox" name="comboBox_3">
+       <property name="geometry">
+        <rect>
+         <x>4</x>
+         <y>57</y>
+         <width>271</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="editable">
+        <bool>false</bool>
+       </property>
+       <property name="currentIndex">
+        <number>184</number>
+       </property>
+       <property name="maxVisibleItems">
+        <number>20</number>
+       </property>
+       <property name="currentFont">
+        <font>
+         <family>MS Shell Dlg 2</family>
+         <pointsize>8</pointsize>
+        </font>
+       </property>
+      </widget>
+      <widget class="QFontComboBox" name="comboBox_4">
+       <property name="geometry">
+        <rect>
+         <x>4</x>
+         <y>78</y>
+         <width>271</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="editable">
+        <bool>false</bool>
+       </property>
+       <property name="currentIndex">
+        <number>184</number>
+       </property>
+       <property name="maxVisibleItems">
+        <number>20</number>
+       </property>
+       <property name="currentFont">
+        <font>
+         <family>MS Shell Dlg 2</family>
+         <pointsize>8</pointsize>
+        </font>
+       </property>
+      </widget>
+      <widget class="QFontComboBox" name="comboBox_5">
+       <property name="geometry">
+        <rect>
+         <x>4</x>
+         <y>99</y>
+         <width>271</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="editable">
+        <bool>false</bool>
+       </property>
+       <property name="currentIndex">
+        <number>184</number>
+       </property>
+       <property name="maxVisibleItems">
+        <number>20</number>
+       </property>
+       <property name="currentFont">
+        <font>
+         <family>MS Shell Dlg 2</family>
+         <pointsize>8</pointsize>
+        </font>
+       </property>
+      </widget>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QGroupBox" name="groupBox_3">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>280</width>
+        <height>70</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>280</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="title">
+       <string>Advanced Filter</string>
+      </property>
+      <widget class="QLineEdit" name="adLine1">
+       <property name="geometry">
+        <rect>
+         <x>130</x>
+         <y>20</y>
+         <width>141</width>
+         <height>21</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="adLine2">
+       <property name="geometry">
+        <rect>
+         <x>130</x>
+         <y>43</y>
+         <width>141</width>
+         <height>21</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QFontComboBox" name="adBox1">
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>20</y>
+         <width>121</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="editable">
+        <bool>false</bool>
+       </property>
+       <property name="currentIndex">
+        <number>184</number>
+       </property>
+       <property name="maxVisibleItems">
+        <number>20</number>
+       </property>
+       <property name="currentFont">
+        <font>
+         <family>MS Shell Dlg 2</family>
+         <pointsize>8</pointsize>
+        </font>
+       </property>
+      </widget>
+      <widget class="QFontComboBox" name="adBox2">
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>43</y>
+         <width>121</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="editable">
+        <bool>false</bool>
+       </property>
+       <property name="currentIndex">
+        <number>184</number>
+       </property>
+       <property name="maxVisibleItems">
+        <number>20</number>
+       </property>
+       <property name="currentFont">
+        <font>
+         <family>MS Shell Dlg 2</family>
+         <pointsize>8</pointsize>
+        </font>
+       </property>
+      </widget>
+     </widget>
+    </item>
     <item row="0" column="0" rowspan="4">
      <widget class="QSplitter" name="splitter">
       <property name="sizePolicy">
@@ -249,255 +498,6 @@
          <width>191</width>
          <height>21</height>
         </rect>
-       </property>
-      </widget>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QGroupBox" name="groupBox_2">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>280</width>
-        <height>130</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>280</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <property name="title">
-       <string>Spell Filter</string>
-      </property>
-      <widget class="QFontComboBox" name="comboBox">
-       <property name="geometry">
-        <rect>
-         <x>4</x>
-         <y>15</y>
-         <width>271</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="editable">
-        <bool>false</bool>
-       </property>
-       <property name="currentIndex">
-        <number>181</number>
-       </property>
-       <property name="maxVisibleItems">
-        <number>20</number>
-       </property>
-       <property name="frame">
-        <bool>true</bool>
-       </property>
-       <property name="currentFont">
-        <font>
-         <family>MS Shell Dlg 2</family>
-         <pointsize>8</pointsize>
-         <stylestrategy>PreferDefault</stylestrategy>
-        </font>
-       </property>
-      </widget>
-      <widget class="QFontComboBox" name="comboBox_2">
-       <property name="geometry">
-        <rect>
-         <x>4</x>
-         <y>36</y>
-         <width>271</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="editable">
-        <bool>false</bool>
-       </property>
-       <property name="currentIndex">
-        <number>181</number>
-       </property>
-       <property name="maxVisibleItems">
-        <number>20</number>
-       </property>
-       <property name="currentFont">
-        <font>
-         <family>MS Shell Dlg 2</family>
-         <pointsize>8</pointsize>
-        </font>
-       </property>
-      </widget>
-      <widget class="QFontComboBox" name="comboBox_3">
-       <property name="geometry">
-        <rect>
-         <x>4</x>
-         <y>57</y>
-         <width>271</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="editable">
-        <bool>false</bool>
-       </property>
-       <property name="currentIndex">
-        <number>181</number>
-       </property>
-       <property name="maxVisibleItems">
-        <number>20</number>
-       </property>
-       <property name="currentFont">
-        <font>
-         <family>MS Shell Dlg 2</family>
-         <pointsize>8</pointsize>
-        </font>
-       </property>
-      </widget>
-      <widget class="QFontComboBox" name="comboBox_4">
-       <property name="geometry">
-        <rect>
-         <x>4</x>
-         <y>78</y>
-         <width>271</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="editable">
-        <bool>false</bool>
-       </property>
-       <property name="currentIndex">
-        <number>181</number>
-       </property>
-       <property name="maxVisibleItems">
-        <number>20</number>
-       </property>
-       <property name="currentFont">
-        <font>
-         <family>MS Shell Dlg 2</family>
-         <pointsize>8</pointsize>
-        </font>
-       </property>
-      </widget>
-      <widget class="QFontComboBox" name="comboBox_5">
-       <property name="geometry">
-        <rect>
-         <x>4</x>
-         <y>99</y>
-         <width>271</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="editable">
-        <bool>false</bool>
-       </property>
-       <property name="currentIndex">
-        <number>181</number>
-       </property>
-       <property name="maxVisibleItems">
-        <number>20</number>
-       </property>
-       <property name="currentFont">
-        <font>
-         <family>MS Shell Dlg 2</family>
-         <pointsize>8</pointsize>
-        </font>
-       </property>
-      </widget>
-     </widget>
-    </item>
-    <item row="2" column="1">
-     <widget class="QGroupBox" name="groupBox_3">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>280</width>
-        <height>70</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>280</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <property name="title">
-       <string>Advanced Filter</string>
-      </property>
-      <widget class="QLineEdit" name="adLine1">
-       <property name="geometry">
-        <rect>
-         <x>130</x>
-         <y>20</y>
-         <width>141</width>
-         <height>21</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="adLine2">
-       <property name="geometry">
-        <rect>
-         <x>130</x>
-         <y>43</y>
-         <width>141</width>
-         <height>21</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QFontComboBox" name="adBox1">
-       <property name="geometry">
-        <rect>
-         <x>5</x>
-         <y>20</y>
-         <width>121</width>
-         <height>22</height>
-        </rect>
-       </property>
-       <property name="editable">
-        <bool>false</bool>
-       </property>
-       <property name="currentIndex">
-        <number>181</number>
-       </property>
-       <property name="maxVisibleItems">
-        <number>20</number>
-       </property>
-       <property name="currentFont">
-        <font>
-         <family>MS Shell Dlg 2</family>
-         <pointsize>8</pointsize>
-        </font>
-       </property>
-      </widget>
-      <widget class="QFontComboBox" name="adBox2">
-       <property name="geometry">
-        <rect>
-         <x>5</x>
-         <y>43</y>
-         <width>121</width>
-         <height>22</height>
-        </rect>
-       </property>
-       <property name="editable">
-        <bool>false</bool>
-       </property>
-       <property name="currentIndex">
-        <number>181</number>
-       </property>
-       <property name="maxVisibleItems">
-        <number>20</number>
-       </property>
-       <property name="currentFont">
-        <font>
-         <family>MS Shell Dlg 2</family>
-         <pointsize>8</pointsize>
-        </font>
        </property>
       </widget>
      </widget>
