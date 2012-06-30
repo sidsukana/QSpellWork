@@ -58,61 +58,64 @@ void SWUpdateForm::checkForUpdates()
     quint32 currentBuild = QSW_BUILD.toUInt();
     quint32 newBuild = currentBuild;
 
-    QDomNodeList softwareNodes = m_xmlData.childNodes();
-    for (quint8 soft = 0; soft < softwareNodes.count(); soft++)
+    QDomNodeList softwareNodes = m_xmlData.elementsByTagName(softwareName);
+
+    Event* clearEvent = new Event(Event::Type(Event::EVENT_SEND_ACTION));
+    clearEvent->addValue(0);
+    QApplication::postEvent(this, clearEvent);
+
+    if (softwareNodes.isEmpty())
     {
-        QDomElement software = softwareNodes.at(soft).toElement();
-        if (software.tagName() == softwareName)
+        Event* textEvent = new Event(Event::Type(Event::EVENT_SEND_TEXT));
+        textEvent->addValue(QVariant("Software not found!"));
+        QApplication::postEvent(this, textEvent);
+        return;
+    }
+
+    QDomNodeList updateNodes = softwareNodes.at(0).toElement().childNodes();
+
+    for (quint32 upd = 0; upd < updateNodes.count(); upd++)
+    {
+        QDomElement update = updateNodes.at(upd).toElement();
+        if (update.attribute("build").toUInt() > newBuild)
         {
-            Event* clearEvent = new Event(Event::Type(Event::EVENT_SEND_ACTION));
-            clearEvent->addValue(0);
-            QApplication::postEvent(this, clearEvent);
+            newBuild = update.attribute("build").toUInt();
 
-            QDomNodeList updateNodes = software.childNodes();
-            for (quint32 upd = 0; upd < updateNodes.count(); upd++)
+            QDomNodeList descriptionNodes = update.childNodes();
+            for (quint32 desc = 0; desc < descriptionNodes.count(); desc++)
             {
-                QDomElement update = updateNodes.at(upd).toElement();
-                if (update.attribute("build").toUInt() > newBuild)
+                QDomElement description = descriptionNodes.at(desc).toElement();
+                if (description.tagName() == "Description")
                 {
-                    newBuild = update.attribute("build").toUInt();
+                    Event* textEvent = new Event(Event::Type(Event::EVENT_SEND_TEXT));
+                    textEvent->addValue(QVariant(description.text()));
+                    QApplication::postEvent(this, textEvent);
+                }
 
-                    QDomNodeList descriptionNodes = update.childNodes();
-                    for (quint32 desc = 0; desc < descriptionNodes.count(); desc++)
+                if (upd == updateNodes.count() - 1 && description.tagName() == "Files")
+                {
+                    QDomNodeList fileNodes = description.childNodes();
+                    for (quint32 f = 0; f < fileNodes.count(); f++)
                     {
-                        QDomElement description = descriptionNodes.at(desc).toElement();
-                        if (description.tagName() == "Description")
+                        QDomElement file = fileNodes.at(f).toElement();
+
+                        if (file.attribute("name").right(3) == "exe")
                         {
-                            Event* textEvent = new Event(Event::Type(Event::EVENT_SEND_TEXT));
-                            textEvent->addValue(QVariant(description.text()));
-                            QApplication::postEvent(this, textEvent);
+                            #ifdef Q_OS_WIN
+                            m_updateFile = file.attribute("name");
+                            #endif
                         }
-
-                        if (upd == updateNodes.count() - 1 && description.tagName() == "Files")
+                        else
                         {
-                            QDomNodeList fileNodes = description.childNodes();
-                            for (quint32 f = 0; f < fileNodes.count(); f++)
-                            {
-                                QDomElement file = fileNodes.at(f).toElement();
-
-                                if (file.attribute("name").right(3) == "exe")
-                                {
-                                    #ifdef Q_OS_WIN
-                                    m_updateFile = file.attribute("name");
-                                    #endif
-                                }
-                                else
-                                {
-                                    #ifdef Q_OS_UNIX
-                                    m_updateFile = file.attribute("name");
-                                    #endif
-                                }    
-                            }
-
-                            Event* enableEvent = new Event(Event::Type(Event::EVENT_SEND_ACTION));
-                            enableEvent->addValue(1);
-                            QApplication::postEvent(this, enableEvent);
-                        }
+                            #ifdef Q_OS_UNIX
+                            m_updateFile = file.attribute("name");
+                            #endif
+                        }    
                     }
+
+                    Event* enableEvent = new Event(Event::Type(Event::EVENT_SEND_ACTION));
+                    enableEvent->addValue(1);
+                    QApplication::postEvent(this, enableEvent);
                 }
             }
         }
