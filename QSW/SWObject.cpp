@@ -86,7 +86,7 @@ Qt::ItemFlags SpellListModel::flags(const QModelIndex &index) const
     if (!index.isValid())
         return Qt::ItemIsEnabled;
 
-    return QAbstractTableModel::flags(index) | Qt::ItemIsEditable;
+    return QAbstractTableModel::flags(index);
 }
 
 SWObject::SWObject(SWMainForm* form)
@@ -1063,9 +1063,6 @@ void SWObject::showInfo(SpellEntry const* spellInfo, quint8 num)
 
     browser->setHtml(html, QUrl(QString("http://spellwork/%0").arg(spellInfo->Id)));
     browser->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
-
-    if (num == 1)
-        compare();
 }
 
 void SWObject::appendRangeInfo(SpellEntry const* spellInfo, quint8 num)
@@ -1651,8 +1648,8 @@ void SWObject::appendDurationInfo(SpellEntry const* spellInfo, quint8 num)
 
 void SWObject::compare()
 {
-    QStringList list1 = m_form->webView->page()->mainFrame()->toHtml().split("\n");
-    QStringList list2 = m_form->webView_2->page()->mainFrame()->toHtml().split("\n");
+    QStringList list1 = m_form->webView2->page()->mainFrame()->toHtml().split("\n");
+    QStringList list2 = m_form->webView3->page()->mainFrame()->toHtml().split("\n");
 
     QString html2;
     html.clear();
@@ -1795,8 +1792,8 @@ void SWObject::compare()
         }
     }
 
-    m_form->webView->setHtml(html);
-    m_form->webView_2->setHtml(html2);
+    m_form->webView2->setHtml(html, m_form->webView2->url());
+    m_form->webView3->setHtml(html2, m_form->webView3->url());
 }
 
 quint64 Converter::getULongLong(QString value)
@@ -1825,4 +1822,116 @@ qint32 Converter::getLong(QString value)
     bool ok;
     qint32 dec = value.toLong(&ok, 10);;
     return ok ? dec : value.toLong(&ok, 16);
+}
+
+
+
+DNDModel::DNDModel(QObject *parent)
+    : QAbstractItemModel(parent)
+{
+    m_valueList.clear();
+    m_valueCount = 0;
+}
+
+void DNDModel::clear()
+{
+    beginResetModel();
+    m_valueHash.clear();
+    endResetModel();
+}
+
+int DNDModel::rowCount(const QModelIndex &parent) const
+{
+    Q_UNUSED(parent);
+    return m_valueList.size();
+}
+
+int DNDModel::columnCount(const QModelIndex &parent) const
+{
+    Q_UNUSED(parent);
+    return 2;
+}
+
+QVariant DNDModel::data(const QModelIndex &index, int role) const
+{
+    if (m_valueList.isEmpty())
+        return QVariant();
+
+    if (!index.isValid())
+        return QVariant();
+
+    if (index.row() >= m_valueList.size() || index.row() < 0)
+        return QVariant();
+
+    if (role == Qt::DisplayRole)
+        return m_valueList.at(index.row());
+
+    if (role == Qt::SizeHintRole)
+    {
+        QSize defSize ; 
+        defSize.setHeight(30);
+        return defSize ;
+    }
+
+    return QVariant();
+}
+
+QVariant DNDModel::headerData(int section, Qt::Orientation orientation, int role) const
+{
+    if (role != Qt::DisplayRole)
+        return QVariant();
+
+    if (orientation == Qt::Horizontal)
+        if (section == 0)
+            return QString("Name");
+
+    return QVariant();
+}
+
+Qt::ItemFlags DNDModel::flags(const QModelIndex &index) const
+{
+    if (!index.isValid())
+        return Qt::ItemIsEnabled;
+
+    return QAbstractItemModel::flags(index) | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemIsEditable;
+}
+
+bool DNDModel::setData(const QModelIndex &index, const QVariant &value, int role /* = Qt::EditRole */)
+{
+    if (m_valueList.isEmpty())
+        return false;
+
+    if (!index.isValid())
+        return false;
+
+    if (index.row() >= m_valueList.size() || index.row() < 0)
+        return false;
+
+    if (role == Qt::EditRole)
+    {
+        QString str = m_valueList.at(index.row());
+        str = value.toString();
+        m_valueList.replace(index.row(), str);
+        emit(dataChanged(index, index));
+
+        return true;
+    }
+
+    return false;
+}
+
+QModelIndex DNDModel::index(int row, int column, const QModelIndex &parent) const
+{
+    if (!parent.isValid())
+        return createIndex(row, column, 0);
+    if (!parent.internalId())
+        return createIndex(row, column, parent.row() + 1);
+    return QModelIndex();
+}
+
+QModelIndex DNDModel::parent(const QModelIndex &index) const
+{
+    if (index.internalId())
+        return createIndex(index.internalId() - 1, 0, 0);
+    return QModelIndex();
 }

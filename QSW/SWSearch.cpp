@@ -780,6 +780,7 @@ void SWSearch::search()
                     model->appendRecord(spellRecord);
                 }
             }
+
             Event* ev = new Event(Event::Type(Event::EVENT_SEND_MODEL));
             ev->addValue(QVariant::fromValue(model));
             QApplication::postEvent(m_form, ev);

@@ -118,6 +118,9 @@
     <ClCompile Include="GeneratedFiles\Template\moc_SWUpdateForm.cpp">
       <Filter>Generated Files\Template</Filter>
     </ClCompile>
+    <ClCompile Include="SWModels.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Alphanum.h">
@@ -199,6 +202,9 @@
       <Filter>Form Files</Filter>
     </CustomBuild>
     <CustomBuild Include="SWUpdateForm.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="SWModels.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>

@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/SpellWork">
+    <file>Recources/database.png</file>
     <file>Recources/update.png</file>
     <file>Recources/styles.css</file>
     <file>Recources/about.png</file>

@@ -5,6 +5,8 @@
 #include <QtCore/QtConcurrentRun>
 #include <QtCore/QTime>
 
+#include <QtGui/QMessageBox>
+
 SWMainForm::SWMainForm(QWidget* parent)
     : QMainWindow(parent)
 {
@@ -14,9 +16,6 @@ SWMainForm::SWMainForm(QWidget* parent)
     setupUi(this);
 
     m_sw = new SWObject(this);
-    layoutWidget1->hide();
-    slabel1->hide();
-    compareSpell_1->hide();
 
     m_sortedModel = new SpellListSortedModel(this);
     m_sortedModel->setDynamicSortFilter(true);
@@ -35,10 +34,9 @@ SWMainForm::SWMainForm(QWidget* parent)
     mainToolBar->addSeparator();
     m_update = mainToolBar->addAction(QIcon(":/SpellWork/Recources/update.png"), "Update");
 
-    QAction* actionCopy = webView->pageAction(QWebPage::Copy);
-    actionCopy->setShortcut(QKeySequence::Copy);
-
-    webView->addAction(actionCopy);
+    webView1->pageAction(QWebPage::Copy)->setShortcut(QKeySequence::Copy);
+    webView2->pageAction(QWebPage::Copy)->setShortcut(QKeySequence::Copy);
+    webView3->pageAction(QWebPage::Copy)->setShortcut(QKeySequence::Copy);
 
     initializeCompleter();
 
@@ -84,9 +82,11 @@ SWMainForm::SWMainForm(QWidget* parent)
     connect(compareSpell_1, SIGNAL(returnPressed()), this, SLOT(slotCompareSearch()));
     connect(compareSpell_2, SIGNAL(returnPressed()), this, SLOT(slotCompareSearch()));
 
-    connect(webView, SIGNAL(linkClicked(QUrl)), this, SLOT(slotLinkClicked(QUrl)));
+    connect(webView1, SIGNAL(linkClicked(QUrl)), this, SLOT(slotLinkClicked(QUrl)));
+    connect(webView2, SIGNAL(linkClicked(QUrl)), this, SLOT(slotLinkClicked(QUrl)));
+    connect(webView3, SIGNAL(linkClicked(QUrl)), this, SLOT(slotLinkClicked(QUrl)));
 
-    webView->setHtml(QString("Load time: %0 ms").arg(m_time.elapsed()));
+    webView1->setHtml(QString("Load time: %0 ms").arg(m_time.elapsed()));
 }
 
 SWMainForm::~SWMainForm()
@@ -141,12 +141,12 @@ void SWMainForm::initializeCompleter()
 void SWMainForm::createModeButton()
 {   
     QAction* actionShow = new QAction(QIcon(":/SpellWork/Recources/show.png"), "Show", this);
-    actionShow->setCheckable(true);
-    actionShow->setChecked(true);
-
     QAction* actionCompare = new QAction(QIcon(":/SpellWork/Recources/compare.png"), "Compare", this);
-    actionCompare->setCheckable(true);
-    actionCompare->setChecked(false);
+    QAction* actionDatabaase = new QAction(QIcon(":/SpellWork/Recources/database.png"), "Database", this);
+
+    connect(actionShow, SIGNAL(triggered()), this, SLOT(slotModeShow()));
+    connect(actionCompare, SIGNAL(triggered()), this, SLOT(slotModeCompare()));
+    connect(actionDatabaase, SIGNAL(triggered()), this, SLOT(slotModeDatabase()));
 
     m_modeButton = new QToolButton(this);
     m_modeButton->setText("Mode");
@@ -155,8 +155,7 @@ void SWMainForm::createModeButton()
 
     m_modeButton->addAction(actionShow);
     m_modeButton->addAction(actionCompare);
-
-    connect(m_modeButton, SIGNAL(triggered(QAction*)), this, SLOT(slotSetMode(QAction*)));
+    m_modeButton->addAction(actionDatabaase);
 }
 
 void SWMainForm::detectLocale()
@@ -184,40 +183,119 @@ void SWMainForm::detectLocale()
 
 void SWMainForm::slotLinkClicked(const QUrl &url)
 {
-    QString id = url.toString().section('/', -1);
-    if (SpellEntry const* spellInfo = sSpellStore.LookupEntry(id.toInt()))
-        m_sw->showInfo(spellInfo);
+    QWebView* webView = static_cast<QWebView*>(sender());
+
+    qint32 browserId = webView->objectName().at(7).digitValue();
+    qint32 id = url.toString().section('/', -1).toInt();
+
+    switch (browserId)
+    {
+        case 1:
+        {
+            if (SpellEntry const* spellInfo = sSpellStore.LookupEntry(id))
+                m_sw->showInfo(spellInfo, browserId);
+            break;
+        }
+        case 2:
+        {
+            if (SpellEntry const* spellInfo = sSpellStore.LookupEntry(id))
+                m_sw->showInfo(spellInfo, browserId);
+
+            qint32 id3 = webView3->url().toString().section('/', -1).toInt();
+            if (SpellEntry const* spellInfo = sSpellStore.LookupEntry(id3))
+                m_sw->showInfo(spellInfo, 3);
+
+            m_sw->compare();
+            break;
+        }
+        case 3:
+        {
+            if (SpellEntry const* spellInfo = sSpellStore.LookupEntry(id))
+                m_sw->showInfo(spellInfo, browserId);
+
+            qint32 id2 = webView2->url().toString().section('/', -1).toInt();
+            if (SpellEntry const* spellInfo = sSpellStore.LookupEntry(id2))
+                m_sw->showInfo(spellInfo, 2);
+
+            m_sw->compare();
+            break;
+        }
+        default: break;
+    }
 }
 
-void SWMainForm::slotSetMode(QAction* ac)
+void SWMainForm::slotModeShow()
 {
-    m_modeButton->setIcon(ac->icon());
-    ac->setChecked(true);
+    stackedWidget->setCurrentIndex(0);
+}
 
-    if (ac->text() == "Compare")
+void SWMainForm::slotModeCompare()
+{
+    stackedWidget->setCurrentIndex(1);
+}
+
+void SWMainForm::slotModeDatabase()
+{
+    stackedWidget->setCurrentIndex(2);
+
+    connect(dbConnectButton, SIGNAL(clicked()), this, SLOT(slotConnectToDatabase()));
+    connect(nextButton2, SIGNAL(clicked()), this, SLOT(slotSpellTable()));
+}
+
+void SWMainForm::slotSpellTable()
+{
+    QSqlTableModel* sqlModel = new QSqlTableModel(this, QSqlDatabase::database("DB"));
+
+    sqlModel->setTable("spell_dbc");
+    sqlModel->setEditStrategy(QSqlTableModel::OnFieldChange);
+    sqlModel->select();
+
+    spellDbcView->setModel(sqlModel);
+
+    stackedWidget->setCurrentIndex(4);
+}
+
+void SWMainForm::slotConnectToDatabase()
+{
+    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL", "DB");
+    db.setHostName(hostname->text());
+    db.setUserName(username->text());
+    db.setPassword(password->text());
+    db.setDatabaseName(database->text());
+    
+    if (!db.open())
     {
-        groupBox->hide();
-        groupBox_2->hide();
-        groupBox_3->hide();
-        SpellList->hide();
-        webView->setHtml("", QUrl("http://SpellWork"));
-        webView_2->setHtml("", QUrl("http://SpellWork"));
-        layoutWidget1->show();
-        slabel1->show();
-        compareSpell_1->show();
+        QMessageBox::warning(this, "MySQL Error!", db.lastError().text());
+        return;
     }
-    else
+
+    QSqlQuery result(QSqlDatabase::database("DB"));
+    result.exec("SHOW FULL FIELDS FROM `spell_dbc`");
+
+    DNDModel* sqlModel = new DNDModel();
+    DNDModel* dbcModel = new DNDModel();
+    
+    connect(sqlModel, SIGNAL(signalDataDropped(const QString&, const QString&)), this, SLOT(slotDataDropped(const QString &, const QString&)));
+    connect(dbcModel, SIGNAL(signalDataDropped(const QString&, const QString&)), this, SLOT(slotDataDropped(const QString &, const QString&)));
+
+    sqlModel->setViewerName("sql");
+    dbcModel->setViewerName("dbc");
+
+    while (result.next())
     {
-        groupBox->show();
-        groupBox_2->show();
-        groupBox_3->show();
-        SpellList->show();
-        webView->setHtml("", QUrl("http://SpellWork"));
-        webView_2->setHtml("", QUrl("http://SpellWork"));
-        layoutWidget1->hide();
-        slabel1->hide();
-        compareSpell_1->hide();
+        sqlModel->append(result.value(0).toString());
     }
+
+    sqlFieldsView->setModel(sqlModel);
+
+    SpellEntry const* spellInfo = sSpellStore.LookupEntry(1);
+
+    for (quint8 i = 0; i < MAX_STRUCT; i++)
+        dbcModel->append(SpellStruct[i]);
+
+    dbcFieldsView->setModel(dbcModel);
+
+    stackedWidget->setCurrentIndex(3);
 }
 
 void SWMainForm::loadComboBoxes()
@@ -285,7 +363,7 @@ void SWMainForm::slotRegExp()
         m_regExp->setText("<font color=red>Off</font>");
     }
 
-    if (SpellEntry const* spellInfo = sSpellStore.LookupEntry(webView->url().path().remove(0, 1).toInt()))
+    if (SpellEntry const* spellInfo = sSpellStore.LookupEntry(webView1->url().path().remove(0, 1).toInt()))
         m_sw->showInfo(spellInfo);
 }
 
@@ -355,8 +433,9 @@ bool SWMainForm::event(QEvent* ev)
         case Event::EVENT_SEND_CSPELL:
         {
             Event* m_ev = (Event*)ev;
-            m_sw->showInfo(m_ev->getValue(0).value<const SpellEntry*>(), 0);
-            m_sw->showInfo(m_ev->getValue(1).value<const SpellEntry*>(), 1);
+            m_sw->showInfo(m_ev->getValue(0).value<const SpellEntry*>(), 2);
+            m_sw->showInfo(m_ev->getValue(1).value<const SpellEntry*>(), 3);
+            m_sw->compare();
             return true;
         }
         break;
@@ -366,4 +445,32 @@ bool SWMainForm::event(QEvent* ev)
     
 
     return QWidget::event(ev);
+}
+
+void SWMainForm::slotDataDropped(const QString &curData, const QString &newData)
+{
+    if (curData.contains('=') || newData.contains('='))
+        return;
+
+    DNDModel* receiveModel = static_cast<DNDModel*>(sender());
+
+    if (receiveModel)
+    {
+        // dropped to sql viewer
+        if (receiveModel->getViewerName() == "sql")
+        {
+            receiveModel->setData(receiveModel->index(receiveModel->getDataRow(curData), 0, QModelIndex()), curData + " = " + newData);
+            if (DNDModel* dbcModel = (DNDModel*)dbcFieldsView->model())
+                dbcModel->setData(dbcModel->index(dbcModel->getDataRow(newData), 0, QModelIndex()), newData + " = " + curData);
+            m_relations[curData] = newData;
+        }
+        // dropped to dbc viewer
+        else
+        {
+            receiveModel->setData(receiveModel->index(receiveModel->getDataRow(curData), 0, QModelIndex()), curData + " = " + newData);
+            if (DNDModel* sqlModel = (DNDModel*)sqlFieldsView->model())
+                sqlModel->setData(sqlModel->index(sqlModel->getDataRow(newData), 0, QModelIndex()), newData + " = " + curData);
+            m_relations[newData] = curData;
+        }
+    }
 }

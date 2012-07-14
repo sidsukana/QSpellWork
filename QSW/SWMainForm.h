@@ -2,13 +2,22 @@
 #define SWFORM_H
 
 #include <QtGui/QTextBrowser>
-
+#include <QtGui/QDrag>
 #include <QtGui/QMainWindow>
 #include <QtGui/QToolButton>
 #include <QtGui/QCompleter>
 #include <QtGui/QIcon>
+
+#include <QtCore/QMimeData>
+
 #include <QtWebKit/QWebView>
 #include <QtWebKit/QWebFrame>
+
+#include <QtSql/QSqlDatabase>
+#include <QtSql/QSqlQuery>
+#include <QtSql/QSqlError>
+#include <QtSql/QSqlTableModel>
+
 #include "SWObject.h"
 #include "ui_SWMainUI.h"
 
@@ -23,7 +32,16 @@ class SWMainForm : public QMainWindow, public Ui::SWMainUI
         SWMainForm(QWidget* parent = 0);
         ~SWMainForm();
 
-        QWebView* getBrowser(quint8 num) { return(num == 0 ? webView : webView_2); }
+        QWebView* getBrowser(quint8 num) const
+        {
+            switch (num)
+            {
+                case 1: return webView1;
+                case 2: return webView2;
+                case 3: return webView3;
+                default: return webView1;
+            }
+        }
 
     signals:
         void signalSearch(quint8 type);
@@ -34,13 +52,19 @@ class SWMainForm : public QMainWindow, public Ui::SWMainUI
         void slotFilterSearch();
         void slotButtonSearch();
         void slotCompareSearch();
-        void slotSetMode(QAction* ac);
         void slotSearch(quint8 type);
         void slotSearchFromList(const QModelIndex &index);
         void slotLinkClicked(const QUrl &url);
         void slotRegExp();
+        void slotModeDatabase();
+        void slotModeShow();
+        void slotModeCompare();
         void slotPrevRow();
         void slotNextRow();
+
+        void slotConnectToDatabase();
+        void slotSpellTable();
+        void slotDataDropped(const QString &curData, const QString &newData);
 
         bool event(QEvent* ev);
 
@@ -57,6 +81,10 @@ class SWMainForm : public QMainWindow, public Ui::SWMainUI
         QAction* m_regExp;
         QAction* m_about;
         QAction* m_update;
+
+        QPoint dragStartPosition;
+
+        QHash<QString, QString> m_relations;
 };
 
 class Enums : public QObject
