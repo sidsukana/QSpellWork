@@ -523,7 +523,7 @@ bool SWSearch::hasValue(QString name, QString value, SpellEntry const* spellInfo
 
 void SWSearch::search()
 {
-    SpellListModel *model = new SpellListModel;
+    SpellListModel *model = new SpellListModel(m_form);
 
     if (m_sw->getType() == 1)
     {

@@ -15,6 +15,7 @@ void SWObject::search()
 {
     SWSearch* search = new SWSearch(this);
     search->search();
+    delete search;
 }
 
 void SWObject::setMetaEnum(const char* enumName)

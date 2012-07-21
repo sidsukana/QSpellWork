@@ -418,6 +418,7 @@ bool SWMainForm::event(QEvent* ev)
         case Event::EVENT_SEND_MODEL:
         {
             Event* m_ev = (Event*)ev;
+            m_sortedModel->sourceModel()->deleteLater();
             m_sortedModel->setSourceModel(m_ev->getValue(0).value<SpellListModel*>());
             SpellList->setColumnWidth(0, 40);
             SpellList->setColumnWidth(1, 150);
