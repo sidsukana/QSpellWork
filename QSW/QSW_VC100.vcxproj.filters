@@ -70,14 +70,8 @@
     <ClCompile Include="GeneratedFiles\qrc_SpellWork.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_SWObject.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_SWSearch.cpp">
       <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_SWObject.cpp">
-      <Filter>Generated Files\Debug</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_SWSearch.cpp">
       <Filter>Generated Files\Debug</Filter>
@@ -120,6 +114,15 @@
     </ClCompile>
     <ClCompile Include="SWModels.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_SWModels.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_SWModels.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Template\moc_SWModels.cpp">
+      <Filter>Generated Files\Template</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

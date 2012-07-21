@@ -2,13 +2,10 @@
 #define SWFORM_H
 
 #include <QtGui/QTextBrowser>
-#include <QtGui/QDrag>
 #include <QtGui/QMainWindow>
 #include <QtGui/QToolButton>
 #include <QtGui/QCompleter>
 #include <QtGui/QIcon>
-
-#include <QtCore/QMimeData>
 
 #include <QtWebKit/QWebView>
 #include <QtWebKit/QWebFrame>
@@ -64,7 +61,6 @@ class SWMainForm : public QMainWindow, public Ui::SWMainUI
 
         void slotConnectToDatabase();
         void slotSpellTable();
-        void slotDataDropped(const QString &curData, const QString &newData);
 
         bool event(QEvent* ev);
 
@@ -81,10 +77,6 @@ class SWMainForm : public QMainWindow, public Ui::SWMainUI
         QAction* m_regExp;
         QAction* m_about;
         QAction* m_update;
-
-        QPoint dragStartPosition;
-
-        QHash<QString, QString> m_relations;
 };
 
 class Enums : public QObject

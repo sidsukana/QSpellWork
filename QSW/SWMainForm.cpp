@@ -1,6 +1,7 @@
 #include "SWMainForm.h"
 #include "SWAboutForm.h"
 #include "SWUpdateForm.h"
+#include "SWModels.h"
 
 #include <QtCore/QtConcurrentRun>
 #include <QtCore/QTime>
@@ -238,8 +239,8 @@ void SWMainForm::slotModeDatabase()
 {
     stackedWidget->setCurrentIndex(2);
 
-    connect(dbConnectButton, SIGNAL(clicked()), this, SLOT(slotConnectToDatabase()));
-    connect(nextButton2, SIGNAL(clicked()), this, SLOT(slotSpellTable()));
+    connect(nextButton3, SIGNAL(clicked()), this, SLOT(slotConnectToDatabase()));
+    connect(nextButton4, SIGNAL(clicked()), this, SLOT(slotSpellTable()));
 }
 
 void SWMainForm::slotSpellTable()
@@ -272,28 +273,12 @@ void SWMainForm::slotConnectToDatabase()
     QSqlQuery result(QSqlDatabase::database("DB"));
     result.exec("SHOW FULL FIELDS FROM `spell_dbc`");
 
-    DNDModel* sqlModel = new DNDModel();
-    DNDModel* dbcModel = new DNDModel();
-    
-    connect(sqlModel, SIGNAL(signalDataDropped(const QString&, const QString&)), this, SLOT(slotDataDropped(const QString &, const QString&)));
-    connect(dbcModel, SIGNAL(signalDataDropped(const QString&, const QString&)), this, SLOT(slotDataDropped(const QString &, const QString&)));
-
-    sqlModel->setViewerName("sql");
-    dbcModel->setViewerName("dbc");
-
-    while (result.next())
-    {
-        sqlModel->append(result.value(0).toString());
-    }
-
-    sqlFieldsView->setModel(sqlModel);
-
-    SpellEntry const* spellInfo = sSpellStore.LookupEntry(1);
-
-    for (quint8 i = 0; i < MAX_STRUCT; i++)
-        dbcModel->append(SpellStruct[i]);
-
-    dbcFieldsView->setModel(dbcModel);
+//     while (result.next())
+//     {
+//         sqlModel->append(result.value(0).toString());
+//     }
+// 
+//     sqlFieldsView->setModel(sqlModel);
 
     stackedWidget->setCurrentIndex(3);
 }
@@ -365,6 +350,22 @@ void SWMainForm::slotRegExp()
 
     if (SpellEntry const* spellInfo = sSpellStore.LookupEntry(webView1->url().path().remove(0, 1).toInt()))
         m_sw->showInfo(spellInfo);
+
+    bool compared[2] = { false, false };
+    if (SpellEntry const* spellInfo = sSpellStore.LookupEntry(webView2->url().path().remove(0, 1).toInt()))
+    {
+        m_sw->showInfo(spellInfo, 2);
+        compared[0] = true;
+    }
+
+    if (SpellEntry const* spellInfo = sSpellStore.LookupEntry(webView3->url().path().remove(0, 1).toInt()))
+    {
+        m_sw->showInfo(spellInfo, 3);
+        compared[1] = true;
+    }
+
+    if (compared[0] || compared[1])
+        m_sw->compare();
 }
 
 void SWMainForm::slotAbout()
@@ -445,32 +446,4 @@ bool SWMainForm::event(QEvent* ev)
     
 
     return QWidget::event(ev);
-}
-
-void SWMainForm::slotDataDropped(const QString &curData, const QString &newData)
-{
-    if (curData.contains('=') || newData.contains('='))
-        return;
-
-    DNDModel* receiveModel = static_cast<DNDModel*>(sender());
-
-    if (receiveModel)
-    {
-        // dropped to sql viewer
-        if (receiveModel->getViewerName() == "sql")
-        {
-            receiveModel->setData(receiveModel->index(receiveModel->getDataRow(curData), 0, QModelIndex()), curData + " = " + newData);
-            if (DNDModel* dbcModel = (DNDModel*)dbcFieldsView->model())
-                dbcModel->setData(dbcModel->index(dbcModel->getDataRow(newData), 0, QModelIndex()), newData + " = " + curData);
-            m_relations[curData] = newData;
-        }
-        // dropped to dbc viewer
-        else
-        {
-            receiveModel->setData(receiveModel->index(receiveModel->getDataRow(curData), 0, QModelIndex()), curData + " = " + newData);
-            if (DNDModel* sqlModel = (DNDModel*)sqlFieldsView->model())
-                sqlModel->setData(sqlModel->index(sqlModel->getDataRow(newData), 0, QModelIndex()), newData + " = " + curData);
-            m_relations[newData] = curData;
-        }
-    }
 }

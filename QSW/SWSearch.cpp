@@ -1,4 +1,5 @@
 #include "SWSearch.h"
+#include "SWModels.h"
 
 MetaSpell::MetaSpell(SpellEntry const *spellInfo)
     : m_spellInfo(spellInfo)
