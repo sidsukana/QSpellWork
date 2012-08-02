@@ -4,3 +4,11 @@ Thanks to:
     Chestr aka DiSlord - for the idea and released source of original SpellWork.
     LordJZ and Konstantin - for source of C# SpellWork.
     MaNGOS - for DBC loader.
+    
+NOTE:
+    If you run QSW and get an error "Not found msvcr100.dll or msvcrp100.dll",
+    you need to install Microsoft Visual C + + 2010 Redistributable Package
+    
+    Links:
+    For 32-bit: http://www.microsoft.com/en-us/download/details.aspx?id=5555
+    For 64-bit: http://www.microsoft.com/en-us/download/details.aspx?id=14632
