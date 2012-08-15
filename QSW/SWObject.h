@@ -38,9 +38,6 @@ class SWObject
         QMetaEnum getMetaEnum() { return m_metaEnum; }
         void setMetaEnum(const char* enumName);
 
-        bool isRegExp() const { return m_regExp; }
-        void setRegExp(bool on) { m_regExp = on; }
-
         quint8 getType() const { return m_type; }
         void setType(quint8 type) { m_type = type; }
 

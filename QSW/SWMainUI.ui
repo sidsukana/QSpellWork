@@ -359,14 +359,17 @@
                 <bool>false</bool>
                </property>
                <property name="currentIndex">
-                <number>184</number>
+                <number>0</number>
                </property>
                <property name="maxVisibleItems">
                 <number>20</number>
                </property>
+               <property name="insertPolicy">
+                <enum>QComboBox::InsertAtBottom</enum>
+               </property>
                <property name="currentFont">
                 <font>
-                 <family>MS Shell Dlg 2</family>
+                 <family>Agency FB</family>
                  <pointsize>8</pointsize>
                 </font>
                </property>
@@ -706,6 +709,9 @@
       </widget>
       <widget class="QWidget" name="page_3">
        <layout class="QGridLayout" name="gridLayout_6">
+        <property name="margin">
+         <number>0</number>
+        </property>
         <item row="0" column="0">
          <widget class="QWidget" name="widget" native="true">
           <property name="maximumSize">
@@ -904,7 +910,10 @@
       </widget>
       <widget class="QWidget" name="page_4">
        <layout class="QGridLayout" name="gridLayout_5">
-        <item row="1" column="0">
+        <property name="margin">
+         <number>0</number>
+        </property>
+        <item row="2" column="0" colspan="2">
          <widget class="QLabel" name="label">
           <property name="font">
            <font>
@@ -917,33 +926,64 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
+        <item row="0" column="0" colspan="5">
+         <widget class="QTableView" name="fieldsView">
+          <property name="editTriggers">
+           <set>QAbstractItemView::AllEditTriggers</set>
+          </property>
+          <property name="dragEnabled">
+           <bool>false</bool>
+          </property>
+          <property name="dragDropOverwriteMode">
+           <bool>true</bool>
+          </property>
+          <property name="dragDropMode">
+           <enum>QAbstractItemView::NoDragDrop</enum>
+          </property>
+          <property name="alternatingRowColors">
+           <bool>true</bool>
+          </property>
+          <property name="selectionMode">
+           <enum>QAbstractItemView::SingleSelection</enum>
+          </property>
+          <property name="selectionBehavior">
+           <enum>QAbstractItemView::SelectRows</enum>
+          </property>
+          <property name="textElideMode">
+           <enum>Qt::ElideRight</enum>
+          </property>
+          <attribute name="horizontalHeaderCascadingSectionResizes">
+           <bool>false</bool>
+          </attribute>
+          <attribute name="horizontalHeaderDefaultSectionSize">
+           <number>200</number>
+          </attribute>
+          <attribute name="horizontalHeaderMinimumSectionSize">
+           <number>200</number>
+          </attribute>
+          <attribute name="horizontalHeaderStretchLastSection">
+           <bool>false</bool>
+          </attribute>
+         </widget>
+        </item>
+        <item row="2" column="4">
+         <widget class="QPushButton" name="nextButton4">
+          <property name="text">
+           <string>Next</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="3">
          <widget class="QPushButton" name="resetButton4">
           <property name="text">
            <string>Reset</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="0" colspan="4">
-         <widget class="QListView" name="fieldsView">
-          <property name="dragEnabled">
-           <bool>true</bool>
-          </property>
-          <property name="dragDropOverwriteMode">
-           <bool>true</bool>
-          </property>
-          <property name="dragDropMode">
-           <enum>QAbstractItemView::DragDrop</enum>
-          </property>
-          <property name="alternatingRowColors">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="2">
-         <widget class="QPushButton" name="nextButton4">
+        <item row="2" column="2">
+         <widget class="QPushButton" name="relateButton4">
           <property name="text">
-           <string>Next</string>
+           <string>Auto relate</string>
           </property>
          </widget>
         </item>
@@ -970,7 +1010,23 @@
            </widget>
           </item>
           <item row="1" column="0">
-           <widget class="QTableView" name="spellDbcView"/>
+           <widget class="QTableView" name="spellDbcView">
+            <property name="editTriggers">
+             <set>QAbstractItemView::AllEditTriggers</set>
+            </property>
+            <property name="showDropIndicator" stdset="0">
+             <bool>false</bool>
+            </property>
+            <property name="alternatingRowColors">
+             <bool>true</bool>
+            </property>
+            <property name="selectionMode">
+             <enum>QAbstractItemView::SingleSelection</enum>
+            </property>
+            <property name="selectionBehavior">
+             <enum>QAbstractItemView::SelectRows</enum>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>

@@ -83,31 +83,31 @@ struct SpellEntry
     float      Speed;                                           // 37
     quint32    ModalNextSpell;                                  // 38 not used
     quint32    StackAmount;                                     // 39
-    uarray2    Totem;                                           // 40-41
-    iarray8    Reagent;                                         // 42-49
-    uarray8    ReagentCount;                                    // 50-57
+    quint32    Totem[2];                                        // 40-41
+    qint32     Reagent[8];                                      // 42-49
+    quint32    ReagentCount[8];                                 // 50-57
     qint32     EquippedItemClass;                               // 58 (value)
     qint32     EquippedItemSubClassMask;                        // 59 (mask)
     qint32     EquippedItemInventoryTypeMask;                   // 60 (mask)
-    uarray3    Effect;                                          // 61-63
-    uarray3    EffectDieSides;                                  // 64-66
-    uarray3    EffectBaseDice;                                  // 67-69
-    farray3    EffectDicePerLevel;                              // 70-72
-    farray3    EffectRealPointsPerLevel;                        // 73-75
-    iarray3    EffectBasePoints;                                // 76-78 (don't must be used in spell/auras explicitly, must be used cached Spell::m_currentBasePoints)
-    uarray3    EffectMechanic;                                  // 79-81
-    uarray3    EffectImplicitTargetA;                           // 82-84
-    uarray3    EffectImplicitTargetB;                           // 85-87
-    uarray3    EffectRadiusIndex;                               // 88-90 - spellradius.dbc
-    uarray3    EffectApplyAuraName;                             // 91-93
-    uarray3    EffectAmplitude;                                 // 94-96
-    farray3    EffectMultipleValue;                             // 97-99
-    uarray3    EffectChainTarget;                               // 100-102
-    uarray3    EffectItemType;                                  // 103-105
-    iarray3    EffectMiscValue;                                 // 106-108
-    uarray3    EffectTriggerSpell;                              // 109-111
-    farray3    EffectPointsPerComboPoint;                       // 112-114
-    uarray2    SpellVisual;                                     // 115-116
+    quint32    Effect[3];                                       // 61-63
+    quint32    EffectDieSides[3];                               // 64-66
+    quint32    EffectBaseDice[3];                               // 67-69
+    float      EffectDicePerLevel[3];                           // 70-72
+    float      EffectRealPointsPerLevel[3];                     // 73-75
+    qint32     EffectBasePoints[3];                             // 76-78 (don't must be used in spell/auras explicitly, must be used cached Spell::m_currentBasePoints)
+    quint32    EffectMechanic[3];                               // 79-81
+    quint32    EffectImplicitTargetA[3];                        // 82-84
+    quint32    EffectImplicitTargetB[3];                        // 85-87
+    quint32    EffectRadiusIndex[3];                            // 88-90 - spellradius.dbc
+    quint32    EffectApplyAuraName[3];                          // 91-93
+    quint32    EffectAmplitude[3];                              // 94-96
+    float      EffectMultipleValue[3];                          // 97-99
+    quint32    EffectChainTarget[3];                            // 100-102
+    quint32    EffectItemType[3];                               // 103-105
+    qint32     EffectMiscValue[3];                              // 106-108
+    quint32    EffectTriggerSpell[3];                           // 109-111
+    float      EffectPointsPerComboPoint[3];                    // 112-114
+    quint32    SpellVisual[2];                                  // 115-116
     quint32    SpellIconId;                                     // 117
     quint32    ActiveIconId;                                    // 118
     quint32    SpellPriority;                                   // 119
@@ -129,7 +129,7 @@ struct SpellEntry
     quint32    DamageClass;                                     // 164 defenseType
     quint32    PreventionType;                                  // 165
     qint32     StanceBarOrder;                                  // 166 not used
-    farray3    DamageMultiplier;                                // 167-169
+    float      DamageMultiplier[3];                             // 167-169
     quint32    MinFactionId;                                    // 170 not used, and 0 in 2.4.2
     quint32    MinReputation;                                   // 171 not used, and 0 in 2.4.2
     quint32    RequiredAuraVision;                              // 172 not used

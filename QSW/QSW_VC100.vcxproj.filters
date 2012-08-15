@@ -165,6 +165,9 @@
     <ClInclude Include="GeneratedFiles\ui_SWUpdateUI.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
+    <ClInclude Include="SWObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Icon.rc">
@@ -177,9 +180,6 @@
     </CustomBuildStep>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="SWObject.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
     <CustomBuild Include="SWSearch.h">
       <Filter>Header Files</Filter>
     </CustomBuild>

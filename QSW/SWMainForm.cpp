@@ -2,9 +2,11 @@
 #include "SWAboutForm.h"
 #include "SWUpdateForm.h"
 #include "SWModels.h"
+#include "SWSearch.h"
 
 #include <QtCore/QtConcurrentRun>
 #include <QtCore/QTime>
+#include <QtGui/QStandardItemModel>
 
 #include <QtGui/QMessageBox>
 
@@ -30,6 +32,7 @@ SWMainForm::SWMainForm(QWidget* parent)
     mainToolBar->addWidget(m_modeButton);
     mainToolBar->addSeparator();
     m_regExp = mainToolBar->addAction(QIcon(":/SpellWork/Recources/regExp.png"), "<font color=red>Off</font>");
+    m_regExp->setCheckable(true);
     mainToolBar->addSeparator();
     m_about = mainToolBar->addAction(QIcon(":/SpellWork/Recources/about.png"), "About");
     mainToolBar->addSeparator();
@@ -123,7 +126,7 @@ void SWMainForm::initializeCompleter()
 {
     QStringList names;
 
-    for (quint32 i = 0; i < sSpellStore.GetNumRows(); i++)
+    for (quint32 i = 0; i < sSpellStore.GetNumRows(); ++i)
     {
         SpellEntry const* spellInfo = sSpellStore.LookupEntry(i);
         if (spellInfo)
@@ -140,10 +143,13 @@ void SWMainForm::initializeCompleter()
 }
 
 void SWMainForm::createModeButton()
-{   
+{
     QAction* actionShow = new QAction(QIcon(":/SpellWork/Recources/show.png"), "Show", this);
     QAction* actionCompare = new QAction(QIcon(":/SpellWork/Recources/compare.png"), "Compare", this);
     QAction* actionDatabaase = new QAction(QIcon(":/SpellWork/Recources/database.png"), "Database", this);
+
+    // DISABLED
+    actionDatabaase->setEnabled(false);
 
     connect(actionShow, SIGNAL(triggered()), this, SLOT(slotModeShow()));
     connect(actionCompare, SIGNAL(triggered()), this, SLOT(slotModeCompare()));
@@ -167,7 +173,7 @@ void SWMainForm::detectLocale()
         return;
 
     m_sw->setMetaEnum("LocalesDBC");
-    for (quint8 i = 0; i < m_sw->getMetaEnum().keyCount(); i++)
+    for (quint8 i = 0; i < m_sw->getMetaEnum().keyCount(); ++i)
     {
         if (!QString::fromUtf8(spellInfo->SpellName[i]).isEmpty())
         {
@@ -251,7 +257,16 @@ void SWMainForm::slotSpellTable()
     sqlModel->setEditStrategy(QSqlTableModel::OnFieldChange);
     sqlModel->select();
 
+    spellDbcView->setItemDelegate(new SpellDelegate(this));
     spellDbcView->setModel(sqlModel);
+
+    for (quint32 i = 0; i < sqlModel->columnCount(); ++i)
+        spellDbcView->hideColumn(i);
+
+    RelationList relationList = ((RelationModel*)fieldsView->model())->getRelations();
+    for (RelationList::iterator itr = relationList.begin(); itr != relationList.end(); ++itr)
+        if (!(*itr)->dbcField.isEmpty())
+            spellDbcView->showColumn(sqlModel->fieldIndex((*itr)->sqlField));
 
     stackedWidget->setCurrentIndex(4);
 }
@@ -263,7 +278,7 @@ void SWMainForm::slotConnectToDatabase()
     db.setUserName(username->text());
     db.setPassword(password->text());
     db.setDatabaseName(database->text());
-    
+
     if (!db.open())
     {
         QMessageBox::warning(this, "MySQL Error!", db.lastError().text());
@@ -273,12 +288,23 @@ void SWMainForm::slotConnectToDatabase()
     QSqlQuery result(QSqlDatabase::database("DB"));
     result.exec("SHOW FULL FIELDS FROM `spell_dbc`");
 
-//     while (result.next())
-//     {
-//         sqlModel->append(result.value(0).toString());
-//     }
-// 
-//     sqlFieldsView->setModel(sqlModel);
+    RelationModel* model = new RelationModel(fieldsView);
+    connect(relateButton4, SIGNAL(clicked()), this, SLOT(slotAutoRelate()));
+    connect(resetButton4, SIGNAL(clicked()), this, SLOT(slotResetRelate()));
+
+    while (result.next())
+    {
+        RelationItem* item = new RelationItem();
+        item->sqlField = result.value(0).toString();
+        model->appendRelation(item);
+    }
+
+    model->appendDbcField("");
+    for (quint32 i = 1; i < adBox1->count(); ++i)
+        model->appendDbcField(adBox1->itemText(i));
+
+    fieldsView->setItemDelegate(new RelationDelegate);
+    fieldsView->setModel(model);
 
     stackedWidget->setCurrentIndex(3);
 }
@@ -286,64 +312,92 @@ void SWMainForm::slotConnectToDatabase()
 void SWMainForm::loadComboBoxes()
 {
     comboBox->clear();
-    comboBox->insertItem(-1, "SpellFamilyName");
+    comboBox->setModel(new QStandardItemModel);
+    comboBox->insertItem(0, "SpellFamilyName", 0);
     m_sw->setMetaEnum("SpellFamilyNames");
-    for (quint16 i = 0; i < m_sw->getMetaEnum().keyCount(); i++)
-        comboBox->insertItem(i, QString("(%0) %1")
+    for (quint16 i = 0; i < m_sw->getMetaEnum().keyCount(); ++i)
+        comboBox->insertItem(i + 1, QString("(%0) %1")
             .arg(m_sw->getMetaEnum().value(i), 3, 10, QChar('0'))
-            .arg(m_sw->getMetaEnum().valueToKey(m_sw->getMetaEnum().value(i))));
+            .arg(m_sw->getMetaEnum().valueToKey(m_sw->getMetaEnum().value(i))), m_sw->getMetaEnum().value(i));
 
     comboBox_2->clear();
-    comboBox_2->insertItem(-1, "Aura");
+    comboBox_2->setModel(new QStandardItemModel);
+    comboBox_2->insertItem(0, "Aura", 0);
     m_sw->setMetaEnum("AuraType");
-    for (quint16 i = 0; i < m_sw->getMetaEnum().keyCount(); i++)
-        comboBox_2->insertItem(i, QString("(%0) %1")
+    for (quint16 i = 0; i < m_sw->getMetaEnum().keyCount(); ++i)
+    {
+        comboBox_2->insertItem(i + 1, QString("(%0) %1")
             .arg(m_sw->getMetaEnum().value(i), 3, 10, QChar('0'))
-            .arg(m_sw->getMetaEnum().valueToKey(m_sw->getMetaEnum().value(i))));
+            .arg(m_sw->getMetaEnum().valueToKey(m_sw->getMetaEnum().value(i))), m_sw->getMetaEnum().value(i));
+    }
 
     comboBox_3->clear();
-    comboBox_3->insertItem(-1, "Effect");
+    comboBox_3->setModel(new QStandardItemModel);
+    comboBox_3->insertItem(0, "Effect", 0);
     m_sw->setMetaEnum("Effects");
-    for (quint16 i = 0; i < m_sw->getMetaEnum().keyCount(); i++)
-        comboBox_3->insertItem(i, QString("(%0) %1")
+    for (quint16 i = 0; i < m_sw->getMetaEnum().keyCount(); ++i)
+        comboBox_3->insertItem(i + 1, QString("(%0) %1")
             .arg(m_sw->getMetaEnum().value(i), 3, 10, QChar('0'))
-            .arg(m_sw->getMetaEnum().valueToKey(m_sw->getMetaEnum().value(i))));
+            .arg(m_sw->getMetaEnum().valueToKey(m_sw->getMetaEnum().value(i))), m_sw->getMetaEnum().value(i));
 
     comboBox_4->clear();
+    comboBox_4->setModel(new QStandardItemModel);
     m_sw->setMetaEnum("Targets");
-    comboBox_4->insertItem(-1, "Target A");
-    for (quint16 i = 0; i < m_sw->getMetaEnum().keyCount(); i++)
-        comboBox_4->insertItem(i, QString("(%0) %1")
+    comboBox_4->insertItem(0, "Target A", 0);
+    for (quint16 i = 0; i < m_sw->getMetaEnum().keyCount(); ++i)
+        comboBox_4->insertItem(i + 1, QString("(%0) %1")
             .arg(m_sw->getMetaEnum().value(i), 3, 10, QChar('0'))
-            .arg(m_sw->getMetaEnum().key(i)));
+            .arg(m_sw->getMetaEnum().key(i)), m_sw->getMetaEnum().value(i));
 
     comboBox_5->clear();
-    comboBox_5->insertItem(-1, "Target B");
-    for (quint16 i = 0; i < m_sw->getMetaEnum().keyCount(); i++)
-        comboBox_5->insertItem(i, QString("(%0) %1")
+    comboBox_5->setModel(new QStandardItemModel);
+    comboBox_5->insertItem(0, "Target B", 0);
+    for (quint16 i = 0; i < m_sw->getMetaEnum().keyCount(); ++i)
+        comboBox_5->insertItem(i + 1, QString("(%0) %1")
             .arg(m_sw->getMetaEnum().value(i), 3, 10, QChar('0'))
-            .arg(m_sw->getMetaEnum().key(i)));
+            .arg(m_sw->getMetaEnum().key(i)), m_sw->getMetaEnum().value(i));
 
     adBox1->clear();
     adBox2->clear();
-    for (quint16 i = 0; i < MAX_STRUCT; i++)
+    MetaSpell metaSpell;
+    quint32 offset = metaSpell.metaObject()->methodOffset();
+    quint32 count = metaSpell.metaObject()->methodCount();
+    QStandardItemModel* model = new QStandardItemModel();
+    model->setItem(0, new QStandardItem("None"));
+    for (quint16 i = offset; i < count; ++i)
     {
-        adBox1->insertItem(i, QString("%0").arg(SpellStruct[i]));
-        adBox2->insertItem(i, QString("%0").arg(SpellStruct[i]));
+        QString signature = metaSpell.metaObject()->method(i).signature();
+        QRegExp rx("(\\D.*)(\\(.*\\))");
+        if (rx.indexIn(signature) != -1)
+        {
+            QStandardItem* item = new QStandardItem(rx.cap(1));
+            item->setData(signature, 33);
+
+            QVariant arraySize = metaSpell.property(rx.cap(1).toAscii().data());
+            if (arraySize.isValid())
+                item->setData(arraySize.toUInt(), 34);
+            else
+                item->setData(0, 34);
+
+            model->setItem(i - offset + 1, item);
+        }
     }
+
+    adBox1->setModel(model);
+    adBox2->setModel(model);
 }
 
 void SWMainForm::slotRegExp()
 {
-    if (!m_sw->isRegExp())
+    if (isRegExp())
     {
-        m_sw->setRegExp(true);
+        m_regExp->setChecked(true);
         m_regExp->setIcon(QIcon(":/SpellWork/Recources/regExp.png"));
         m_regExp->setText("<font color=green>On</font>");
     }
     else
     {
-        m_sw->setRegExp(false);
+        m_regExp->setChecked(false);
         m_regExp->setIcon(QIcon(":/SpellWork/Recources/regExp.png"));
         m_regExp->setText("<font color=red>Off</font>");
     }
@@ -411,6 +465,16 @@ void SWMainForm::slotSearchFromList(const QModelIndex &index)
         m_sw->showInfo(spellInfo);
 }
 
+void SWMainForm::slotResetRelate()
+{
+    ((RelationModel*)fieldsView->model())->resetRelate();
+}
+
+void SWMainForm::slotAutoRelate()
+{
+    ((RelationModel*)fieldsView->model())->autoRelate();
+}
+
 bool SWMainForm::event(QEvent* ev)
 {
     switch (ev->type())
@@ -444,7 +508,6 @@ bool SWMainForm::event(QEvent* ev)
         default:
             break;
     }
-    
 
     return QWidget::event(ev);
 }

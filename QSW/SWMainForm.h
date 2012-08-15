@@ -29,6 +29,8 @@ class SWMainForm : public QMainWindow, public Ui::SWMainUI
         SWMainForm(QWidget* parent = 0);
         ~SWMainForm();
 
+        bool isRegExp() const { return m_regExp->isChecked(); }
+
         QWebView* getBrowser(quint8 num) const
         {
             switch (num)
@@ -61,6 +63,10 @@ class SWMainForm : public QMainWindow, public Ui::SWMainUI
 
         void slotConnectToDatabase();
         void slotSpellTable();
+        void slotAutoRelate();
+        void slotResetRelate();
+
+        //void slotCreateSqlite();
 
         bool event(QEvent* ev);
 
@@ -1104,6 +1110,5 @@ public:
     Q_ENUMS(SpellFamilyNames)
     Q_ENUMS(Powers)
 };
-
 
 #endif
