@@ -53,9 +53,6 @@ SWMainForm::SWMainForm(QWidget* parent)
     connect(selectedAction, SIGNAL(triggered()), this, SLOT(slotNextRow()));
     SpellList->addAction(selectedAction);
 
-    // Load after Widgets creating
-    loadSettings();
-
     // List search connection
     connect(SpellList, SIGNAL(clicked(QModelIndex)), this, SLOT(slotSearchFromList(QModelIndex)));
 
@@ -93,6 +90,9 @@ SWMainForm::SWMainForm(QWidget* parent)
     connect(webView3, SIGNAL(linkClicked(QUrl)), this, SLOT(slotLinkClicked(QUrl)));
 
     webView1->setHtml(QString("Load time: %0 ms").arg(m_time.elapsed()));
+
+    // Load settings at end
+    loadSettings();
 }
 
 SWMainForm::~SWMainForm()
@@ -112,12 +112,26 @@ void SWMainForm::loadSettings()
     findLine_e1->setText(m_settings->value("Search/IdOrName", "").toString());
     findLine_e2->setText(m_settings->value("Search/Description", "").toString());
     findLine_e3->setText(m_settings->value("Search/IconId", "").toString());
+    comboBox->setCurrentIndex(m_settings->value("Search/SpellFamilyIndex", 0).toInt());
+    comboBox_2->setCurrentIndex(m_settings->value("Search/EffectIndex", 0).toInt());
+    comboBox_3->setCurrentIndex(m_settings->value("Search/AuraIndex", 0).toInt());
+    comboBox_4->setCurrentIndex(m_settings->value("Search/TargetAIndex", 0).toInt());
+    comboBox_5->setCurrentIndex(m_settings->value("Search/TargetBIndex", 0).toInt());
 
     // Database
     hostname->setText(m_settings->value("Database/Hostname", "localhost").toString());
     database->setText(m_settings->value("Database/Database", "").toString());
     username->setText(m_settings->value("Database/Username", "root").toString());
     password->setText(m_settings->value("Database/Password", "").toString());
+
+    if (!findLine_e1->text().isEmpty())
+        slotButtonSearch();
+    else
+    {
+        if (comboBox->currentIndex() || comboBox_2->currentIndex() || comboBox_3->currentIndex() ||
+            comboBox_4->currentIndex() || comboBox_5->currentIndex())
+            slotFilterSearch();
+    }
 }
 
 void SWMainForm::saveSettings()
@@ -129,6 +143,11 @@ void SWMainForm::saveSettings()
     m_settings->setValue("Search/IdOrName", findLine_e1->text());
     m_settings->setValue("Search/Description", findLine_e2->text());
     m_settings->setValue("Search/IconId", findLine_e3->text());
+    m_settings->setValue("Search/SpellFamilyIndex", comboBox->currentIndex());
+    m_settings->setValue("Search/EffectIndex", comboBox_2->currentIndex());
+    m_settings->setValue("Search/AuraIndex", comboBox_3->currentIndex());
+    m_settings->setValue("Search/TargetAIndex", comboBox_4->currentIndex());
+    m_settings->setValue("Search/TargetBIndex", comboBox_5->currentIndex());
 
     // Database
     m_settings->setValue("Database/Hostname", hostname->text());
