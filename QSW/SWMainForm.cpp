@@ -126,12 +126,6 @@ void SWMainForm::loadSettings()
 
     if (!findLine_e1->text().isEmpty())
         slotButtonSearch();
-    else
-    {
-        if (comboBox->currentIndex() || comboBox_2->currentIndex() || comboBox_3->currentIndex() ||
-            comboBox_4->currentIndex() || comboBox_5->currentIndex())
-            slotFilterSearch();
-    }
 }
 
 void SWMainForm::saveSettings()
