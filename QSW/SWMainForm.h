@@ -1,6 +1,8 @@
 #ifndef SWFORM_H
 #define SWFORM_H
 
+#include <QtCore/QSettings>
+
 #include <QtGui/QTextBrowser>
 #include <QtGui/QMainWindow>
 #include <QtGui/QToolButton>
@@ -29,7 +31,11 @@ class SWMainForm : public QMainWindow, public Ui::SWMainUI
         SWMainForm(QWidget* parent = 0);
         ~SWMainForm();
 
+        void saveSettings();
+        void loadSettings();
+
         bool isRegExp() const { return m_regExp->isChecked(); }
+        void setRegExp(bool enable) { m_regExp->setChecked(enable); }
 
         QWebView* getBrowser(quint8 num) const
         {
@@ -66,8 +72,6 @@ class SWMainForm : public QMainWindow, public Ui::SWMainUI
         void slotAutoRelate();
         void slotResetRelate();
 
-        //void slotCreateSqlite();
-
         bool event(QEvent* ev);
 
     private:
@@ -76,6 +80,7 @@ class SWMainForm : public QMainWindow, public Ui::SWMainUI
         void createModeButton();
         void initializeCompleter();
 
+        QSettings* m_settings;
         SpellListSortedModel* m_sortedModel;
         Ui::SWMainUI m_ui;
         SWObject* m_sw;

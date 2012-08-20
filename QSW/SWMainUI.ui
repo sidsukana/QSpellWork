@@ -721,79 +721,7 @@
            </size>
           </property>
           <layout class="QGridLayout" name="gridLayout_7">
-           <item row="2" column="1" colspan="2">
-            <widget class="QLineEdit" name="password">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>30</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>16</pointsize>
-              </font>
-             </property>
-             <property name="text">
-              <string>7292308</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_4">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>30</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>16</pointsize>
-              </font>
-             </property>
-             <property name="text">
-              <string>Password:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1" colspan="2">
-            <widget class="QLineEdit" name="database">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>30</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>16</pointsize>
-              </font>
-             </property>
-             <property name="text">
-              <string>anathema_world</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_3">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>30</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>16</pointsize>
-              </font>
-             </property>
-             <property name="text">
-              <string>Username:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1" colspan="2">
+           <item row="0" column="1">
             <widget class="QLineEdit" name="hostname">
              <property name="minimumSize">
               <size>
@@ -807,11 +735,11 @@
               </font>
              </property>
              <property name="text">
-              <string>localhost</string>
+              <string/>
              </property>
             </widget>
            </item>
-           <item row="1" column="1" colspan="2">
+           <item row="1" column="1">
             <widget class="QLineEdit" name="username">
              <property name="minimumSize">
               <size>
@@ -824,19 +752,28 @@
                <pointsize>16</pointsize>
               </font>
              </property>
-             <property name="text">
-              <string>root</string>
-             </property>
             </widget>
            </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="label_5">
+           <item row="2" column="1">
+            <widget class="QLineEdit" name="password">
              <property name="minimumSize">
               <size>
                <width>0</width>
                <height>30</height>
               </size>
              </property>
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="echoMode">
+              <enum>QLineEdit::Password</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_5">
              <property name="font">
               <font>
                <pointsize>16</pointsize>
@@ -847,8 +784,44 @@
              </property>
             </widget>
            </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_4">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Password:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_3">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Username:</string>
+             </property>
+            </widget>
+           </item>
            <item row="0" column="0">
             <widget class="QLabel" name="label_2">
+             <property name="font">
+              <font>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Hostname:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QLineEdit" name="database">
              <property name="minimumSize">
               <size>
                <width>0</width>
@@ -858,22 +831,7 @@
              <property name="font">
               <font>
                <pointsize>16</pointsize>
-               <weight>50</weight>
-               <bold>false</bold>
-               <stylestrategy>PreferDefault</stylestrategy>
               </font>
-             </property>
-             <property name="text">
-              <string>Hostname:</string>
-             </property>
-             <property name="textFormat">
-              <enum>Qt::AutoText</enum>
-             </property>
-             <property name="scaledContents">
-              <bool>false</bool>
-             </property>
-             <property name="buddy">
-              <cstring></cstring>
              </property>
             </widget>
            </item>
@@ -890,7 +848,7 @@
              </property>
             </widget>
            </item>
-           <item row="4" column="1" colspan="2">
+           <item row="4" column="1">
             <widget class="QPushButton" name="nextButton3">
              <property name="minimumSize">
               <size>

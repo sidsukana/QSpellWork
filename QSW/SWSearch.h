@@ -18,13 +18,13 @@ class SWSearch
 
     private:
         SWObject* m_sw;
-        SWMainForm*   m_form;
+        SWMainForm* m_form;
 };
 
 class MetaSpell : public QObject
 {
     Q_OBJECT
-    
+
     public:
         MetaSpell() : m_spellInfo(NULL) {}
         MetaSpell(SpellEntry const* spellInfo) : m_spellInfo(spellInfo) {}
@@ -61,21 +61,47 @@ class MetaSpell : public QObject
         Q_INVOKABLE QVariant BaseLevel() { return m_spellInfo->BaseLevel; }
         Q_INVOKABLE QVariant SpellLevel() { return m_spellInfo->SpellLevel; }
         Q_INVOKABLE QVariant DurationIndex() { return m_spellInfo->DurationIndex; }
-        Q_INVOKABLE QVariant  PowerType() { return m_spellInfo->PowerType; }
+        Q_INVOKABLE QVariant PowerType() { return m_spellInfo->PowerType; }
         Q_INVOKABLE QVariant ManaCost() { return m_spellInfo->ManaCost; }
         Q_INVOKABLE QVariant ManaCostPerlevel() { return m_spellInfo->ManaCostPerlevel; }
         Q_INVOKABLE QVariant ManaPerSecond() { return m_spellInfo->ManaPerSecond; }
         Q_INVOKABLE QVariant ManaPerSecondPerLevel() { return m_spellInfo->ManaPerSecondPerLevel; }
         Q_INVOKABLE QVariant RangeIndex() { return m_spellInfo->RangeIndex; }
-        Q_INVOKABLE QVariant   Speed() { return m_spellInfo->Speed; }
+        Q_INVOKABLE QVariant Speed() { return m_spellInfo->Speed; }
         Q_INVOKABLE QVariant ModalNextSpell() { return m_spellInfo->ModalNextSpell; }
         Q_INVOKABLE QVariant StackAmount() { return m_spellInfo->StackAmount; }
-        Q_INVOKABLE QVariant  EquippedItemClass() { return m_spellInfo->EquippedItemClass; }
-        Q_INVOKABLE QVariant  EquippedItemSubClassMask() { return m_spellInfo->EquippedItemSubClassMask; }
-        Q_INVOKABLE QVariant  EquippedItemInventoryTypeMask() { return m_spellInfo->EquippedItemInventoryTypeMask; }
+        Q_INVOKABLE QVariant Totem(quint8 index) { return m_spellInfo->Totem[index]; }
+        Q_INVOKABLE QVariant Reagent(quint8 index) { return m_spellInfo->Reagent[index]; }
+        Q_INVOKABLE QVariant ReagentCount(quint8 index) { return m_spellInfo->ReagentCount[index]; }
+        Q_INVOKABLE QVariant EquippedItemClass() { return m_spellInfo->EquippedItemClass; }
+        Q_INVOKABLE QVariant EquippedItemSubClassMask() { return m_spellInfo->EquippedItemSubClassMask; }
+        Q_INVOKABLE QVariant EquippedItemInventoryTypeMask() { return m_spellInfo->EquippedItemInventoryTypeMask; }
+        Q_INVOKABLE QVariant Effect(quint8 index) { return m_spellInfo->Effect[index]; }
+        Q_INVOKABLE QVariant EffectDieSides(quint8 index) { return m_spellInfo->EffectDieSides[index]; }
+        Q_INVOKABLE QVariant EffectBaseDice(quint8 index) { return m_spellInfo->EffectBaseDice[index]; }
+        Q_INVOKABLE QVariant EffectDicePerLevel(quint8 index) { return m_spellInfo->EffectDicePerLevel[index]; }
+        Q_INVOKABLE QVariant EffectRealPointsPerLevel(quint8 index) { return m_spellInfo->EffectRealPointsPerLevel[index]; }
+        Q_INVOKABLE QVariant EffectBasePoints(quint8 index) { return m_spellInfo->EffectBasePoints[index]; }
+        Q_INVOKABLE QVariant EffectMechanic(quint8 index) { return m_spellInfo->EffectMechanic[index]; }
+        Q_INVOKABLE QVariant EffectImplicitTargetA(quint8 index) { return m_spellInfo->EffectImplicitTargetA[index]; }
+        Q_INVOKABLE QVariant EffectImplicitTargetB(quint8 index) { return m_spellInfo->EffectImplicitTargetB[index]; }
+        Q_INVOKABLE QVariant EffectRadiusIndex(quint8 index) { return m_spellInfo->EffectRadiusIndex[index]; }
+        Q_INVOKABLE QVariant EffectApplyAuraName(quint8 index) { return m_spellInfo->EffectApplyAuraName[index]; }
+        Q_INVOKABLE QVariant EffectAmplitude(quint8 index) { return m_spellInfo->EffectAmplitude[index]; }
+        Q_INVOKABLE QVariant EffectMultipleValue(quint8 index) { return m_spellInfo->EffectMultipleValue[index]; }
+        Q_INVOKABLE QVariant EffectChainTarget(quint8 index) { return m_spellInfo->EffectChainTarget[index]; }
+        Q_INVOKABLE QVariant EffectItemType(quint8 index) { return m_spellInfo->EffectItemType[index]; }
+        Q_INVOKABLE QVariant EffectMiscValue(quint8 index) { return m_spellInfo->EffectMiscValue[index]; }
+        Q_INVOKABLE QVariant EffectTriggerSpell(quint8 index) { return m_spellInfo->EffectTriggerSpell[index]; }
+        Q_INVOKABLE QVariant EffectPointsPerComboPoint(quint8 index) { return m_spellInfo->EffectPointsPerComboPoint[index]; }
+        Q_INVOKABLE QVariant SpellVisual(quint8 index) { return m_spellInfo->SpellVisual[index]; }
         Q_INVOKABLE QVariant SpellIconId() { return m_spellInfo->SpellIconId; }
         Q_INVOKABLE QVariant ActiveIconId() { return m_spellInfo->ActiveIconId; }
         Q_INVOKABLE QVariant SpellPriority() { return m_spellInfo->SpellPriority; }
+        Q_INVOKABLE QVariant SpellName() { return QString::fromUtf8(m_spellInfo->SpellName[Locale]); }
+        Q_INVOKABLE QVariant Rank() { return QString::fromUtf8(m_spellInfo->Rank[Locale]); }
+        Q_INVOKABLE QVariant Description() { return QString::fromUtf8(m_spellInfo->Description[Locale]); }
+        Q_INVOKABLE QVariant ToolTip() { return QString::fromUtf8(m_spellInfo->ToolTip[Locale]); }
         Q_INVOKABLE QVariant SpellNameFlag() { return m_spellInfo->SpellNameFlag; }
         Q_INVOKABLE QVariant RankFlags() { return m_spellInfo->RankFlags; }
         Q_INVOKABLE QVariant DescriptionFlags() { return m_spellInfo->DescriptionFlags; }
@@ -85,43 +111,15 @@ class MetaSpell : public QObject
         Q_INVOKABLE QVariant StartRecoveryTime() { return m_spellInfo->StartRecoveryTime; }
         Q_INVOKABLE QVariant MaxTargetLevel() { return m_spellInfo->MaxTargetLevel; }
         Q_INVOKABLE QVariant SpellFamilyName() { return m_spellInfo->SpellFamilyName; }
-        Q_INVOKABLE quint64 SpellFamilyFlags() { return m_spellInfo->SpellFamilyFlags; }
+        Q_INVOKABLE quint64  SpellFamilyFlags() { return m_spellInfo->SpellFamilyFlags; }
         Q_INVOKABLE QVariant MaxAffectedTargets() { return m_spellInfo->MaxAffectedTargets; }
         Q_INVOKABLE QVariant DamageClass() { return m_spellInfo->DamageClass; }
         Q_INVOKABLE QVariant PreventionType() { return m_spellInfo->PreventionType; }
-        Q_INVOKABLE QVariant  StanceBarOrder() { return m_spellInfo->StanceBarOrder; }
+        Q_INVOKABLE QVariant StanceBarOrder() { return m_spellInfo->StanceBarOrder; }
+        Q_INVOKABLE QVariant DamageMultiplier(quint8 index) { return m_spellInfo->DamageMultiplier[index]; }
         Q_INVOKABLE QVariant MinFactionId() { return m_spellInfo->MinFactionId; }
         Q_INVOKABLE QVariant MinReputation() { return m_spellInfo->MinReputation; }
         Q_INVOKABLE QVariant RequiredAuraVision() { return m_spellInfo->RequiredAuraVision; }
-
-        Q_INVOKABLE QVariant SpellName() { return QString::fromUtf8(m_spellInfo->SpellName[Locale]); }
-        Q_INVOKABLE QVariant Rank() { return QString::fromUtf8(m_spellInfo->Rank[Locale]); }
-        Q_INVOKABLE QVariant Description() { return QString::fromUtf8(m_spellInfo->Description[Locale]); }
-        Q_INVOKABLE QVariant ToolTip() { return QString::fromUtf8(m_spellInfo->ToolTip[Locale]); }
-
-        Q_INVOKABLE QVariant Totem(quint8 index) { return m_spellInfo->Totem[index]; }
-        Q_INVOKABLE QVariant  Reagent(quint8 index) { return m_spellInfo->Reagent[index]; }
-        Q_INVOKABLE QVariant ReagentCount(quint8 index) { return m_spellInfo->ReagentCount[index]; }
-        Q_INVOKABLE QVariant Effect(quint8 index) { return m_spellInfo->Effect[index]; }
-        Q_INVOKABLE QVariant EffectDieSides(quint8 index) { return m_spellInfo->EffectDieSides[index]; }
-        Q_INVOKABLE QVariant EffectBaseDice(quint8 index) { return m_spellInfo->EffectBaseDice[index]; }
-        Q_INVOKABLE QVariant   EffectDicePerLevel(quint8 index) { return m_spellInfo->EffectDicePerLevel[index]; }
-        Q_INVOKABLE QVariant   EffectRealPointsPerLevel(quint8 index) { return m_spellInfo->EffectRealPointsPerLevel[index]; }
-        Q_INVOKABLE QVariant  EffectBasePoints(quint8 index) { return m_spellInfo->EffectBasePoints[index]; }
-        Q_INVOKABLE QVariant EffectMechanic(quint8 index) { return m_spellInfo->EffectMechanic[index]; }
-        Q_INVOKABLE QVariant EffectImplicitTargetA(quint8 index) { return m_spellInfo->EffectImplicitTargetA[index]; }
-        Q_INVOKABLE QVariant EffectImplicitTargetB(quint8 index) { return m_spellInfo->EffectImplicitTargetB[index]; }
-        Q_INVOKABLE QVariant EffectRadiusIndex(quint8 index) { return m_spellInfo->EffectRadiusIndex[index]; }
-        Q_INVOKABLE QVariant EffectApplyAuraName(quint8 index) { return m_spellInfo->EffectApplyAuraName[index]; }
-        Q_INVOKABLE QVariant EffectAmplitude(quint8 index) { return m_spellInfo->EffectAmplitude[index]; }
-        Q_INVOKABLE QVariant   EffectMultipleValue(quint8 index) { return m_spellInfo->EffectMultipleValue[index]; }
-        Q_INVOKABLE QVariant EffectChainTarget(quint8 index) { return m_spellInfo->EffectChainTarget[index]; }
-        Q_INVOKABLE QVariant EffectItemType(quint8 index) { return m_spellInfo->EffectItemType[index]; }
-        Q_INVOKABLE QVariant  EffectMiscValue(quint8 index) { return m_spellInfo->EffectMiscValue[index]; }
-        Q_INVOKABLE QVariant EffectTriggerSpell(quint8 index) { return m_spellInfo->EffectTriggerSpell[index]; }
-        Q_INVOKABLE QVariant   EffectPointsPerComboPoint(quint8 index) { return m_spellInfo->EffectPointsPerComboPoint[index]; }
-        Q_INVOKABLE QVariant SpellVisual(quint8 index) { return m_spellInfo->SpellVisual[index]; }
-        Q_INVOKABLE QVariant   DamageMultiplier(quint8 index) { return m_spellInfo->DamageMultiplier[index]; }
 
         quint8 Totem() { return 2; }
         quint8 Reagent() { return 8; }

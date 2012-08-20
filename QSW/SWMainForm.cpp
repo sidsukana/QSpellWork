@@ -27,6 +27,7 @@ SWMainForm::SWMainForm(QWidget* parent)
     loadComboBoxes();
     detectLocale();
     createModeButton();
+    initializeCompleter();
 
     mainToolBar->addSeparator();
     mainToolBar->addWidget(m_modeButton);
@@ -42,8 +43,6 @@ SWMainForm::SWMainForm(QWidget* parent)
     webView2->pageAction(QWebPage::Copy)->setShortcut(QKeySequence::Copy);
     webView3->pageAction(QWebPage::Copy)->setShortcut(QKeySequence::Copy);
 
-    initializeCompleter();
-
     QAction* selectedAction = new QAction(this);
     selectedAction->setShortcut(QKeySequence::MoveToPreviousLine);
     connect(selectedAction, SIGNAL(triggered()), this, SLOT(slotPrevRow()));
@@ -53,6 +52,9 @@ SWMainForm::SWMainForm(QWidget* parent)
     selectedAction->setShortcut(QKeySequence::MoveToNextLine);
     connect(selectedAction, SIGNAL(triggered()), this, SLOT(slotNextRow()));
     SpellList->addAction(selectedAction);
+
+    // Load after Widgets creating
+    loadSettings();
 
     // List search connection
     connect(SpellList, SIGNAL(clicked(QModelIndex)), this, SLOT(slotSearchFromList(QModelIndex)));
@@ -95,6 +97,44 @@ SWMainForm::SWMainForm(QWidget* parent)
 
 SWMainForm::~SWMainForm()
 {
+    saveSettings();
+}
+
+void SWMainForm::loadSettings()
+{
+    m_settings = new QSettings("QSW.ini", QSettings::IniFormat, this);
+    m_settings->sync();
+
+    // Global
+    setRegExp(m_settings->value("Global/RegExp", false).toBool());
+
+    // Search and filters
+    findLine_e1->setText(m_settings->value("Search/IdOrName", "").toString());
+    findLine_e2->setText(m_settings->value("Search/Description", "").toString());
+    findLine_e3->setText(m_settings->value("Search/IconId", "").toString());
+
+    // Database
+    hostname->setText(m_settings->value("Database/Hostname", "localhost").toString());
+    database->setText(m_settings->value("Database/Database", "").toString());
+    username->setText(m_settings->value("Database/Username", "root").toString());
+    password->setText(m_settings->value("Database/Password", "").toString());
+}
+
+void SWMainForm::saveSettings()
+{
+    // Global
+    m_settings->setValue("Global/RegExp", isRegExp());
+
+    // Search and filters
+    m_settings->setValue("Search/IdOrName", findLine_e1->text());
+    m_settings->setValue("Search/Description", findLine_e2->text());
+    m_settings->setValue("Search/IconId", findLine_e3->text());
+
+    // Database
+    m_settings->setValue("Database/Hostname", hostname->text());
+    m_settings->setValue("Database/Database", database->text());
+    m_settings->setValue("Database/Username", username->text());
+    m_settings->setValue("Database/Password", password->text());
 }
 
 void SWMainForm::slotUpdate()
@@ -147,9 +187,6 @@ void SWMainForm::createModeButton()
     QAction* actionShow = new QAction(QIcon(":/SpellWork/Recources/show.png"), "Show", this);
     QAction* actionCompare = new QAction(QIcon(":/SpellWork/Recources/compare.png"), "Compare", this);
     QAction* actionDatabaase = new QAction(QIcon(":/SpellWork/Recources/database.png"), "Database", this);
-
-    // DISABLED
-    actionDatabaase->setEnabled(false);
 
     connect(actionShow, SIGNAL(triggered()), this, SLOT(slotModeShow()));
     connect(actionCompare, SIGNAL(triggered()), this, SLOT(slotModeCompare()));
@@ -233,16 +270,19 @@ void SWMainForm::slotLinkClicked(const QUrl &url)
 
 void SWMainForm::slotModeShow()
 {
+    m_modeButton->setIcon(m_modeButton->actions().at(0)->icon());
     stackedWidget->setCurrentIndex(0);
 }
 
 void SWMainForm::slotModeCompare()
 {
+    m_modeButton->setIcon(m_modeButton->actions().at(1)->icon());
     stackedWidget->setCurrentIndex(1);
 }
 
 void SWMainForm::slotModeDatabase()
 {
+    m_modeButton->setIcon(m_modeButton->actions().at(2)->icon());
     stackedWidget->setCurrentIndex(2);
 
     connect(nextButton3, SIGNAL(clicked()), this, SLOT(slotConnectToDatabase()));

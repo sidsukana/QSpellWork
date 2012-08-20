@@ -6,7 +6,6 @@
 
 #include <QtCore/QMetaEnum>
 
-
 SpellListSortedModel::SpellListSortedModel(QObject *parent)
     : QSortFilterProxyModel(parent)
 {
@@ -149,18 +148,23 @@ QWidget *SpellDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem
     RelationList relationList = ((RelationModel*)m_form->fieldsView->model())->getRelations();
     if (RelationItem* item = relationList.at(index.column()))
     {
+        QStringList keys;
+        QMetaEnum metaEnum;
+
         if (item->dbcField == "Effect")
+            metaEnum = Enums::staticMetaObject.enumerator(Enums::staticMetaObject.indexOfEnumerator("Effects"));
+        else if (item->dbcField == "EffectApplyAuraName")
+            metaEnum = Enums::staticMetaObject.enumerator(Enums::staticMetaObject.indexOfEnumerator("AuraType"));
+
+        if (metaEnum.isValid())
         {
-            QStringList effectKeys;
-            Enums enums;
-            QMetaEnum metaEnum = enums.metaObject()->enumerator(enums.metaObject()->indexOfEnumerator("Effects"));
             quint32 count = metaEnum.keyCount();
             for (quint32 i = 0; i < count; ++i)
-                effectKeys << metaEnum.key(i);
+                keys << metaEnum.key(i);
 
             QFontComboBox* box = new QFontComboBox(parent);
             box->clear();
-            box->addItems(effectKeys);
+            box->addItems(keys);
             return box;
         }
     }
@@ -193,18 +197,23 @@ void SpellDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, con
         RelationList relationList = ((RelationModel*)m_form->fieldsView->model())->getRelations();
         if (RelationItem* item = relationList.at(index.column()))
         {
-            if (item->dbcField == "Effect")
+            QFontComboBox* box = qobject_cast<QFontComboBox*>(editor);
+            if (!box->currentText().toInt())
             {
-                QFontComboBox* box = qobject_cast<QFontComboBox*>(editor);
-                if (!box->currentText().toInt())
-                {
-                    Enums enums;
-                    QMetaEnum metaEnum = enums.metaObject()->enumerator(enums.metaObject()->indexOfEnumerator("Effects"));
+                QMetaEnum metaEnum;
+
+                if (item->dbcField == "Effect")
+                    metaEnum = Enums::staticMetaObject.enumerator(Enums::staticMetaObject.indexOfEnumerator("Effects"));
+                else if (item->dbcField == "EffectApplyAuraName")
+                    metaEnum = Enums::staticMetaObject.enumerator(Enums::staticMetaObject.indexOfEnumerator("AuraType"));
+
+                if (metaEnum.isValid())
                     model->setData(index, metaEnum.keyToValue(qPrintable(box->currentText())));
-                }
                 else
                     model->setData(index, box->currentText().toInt());
             }
+            else
+                model->setData(index, box->currentText().toInt());
 
             return;
         }
@@ -321,7 +330,7 @@ Qt::ItemFlags RelationModel::flags(const QModelIndex &index) const
             return QAbstractTableModel::flags(index) | Qt::ItemIsEditable;
         default: return QAbstractTableModel::flags(index);
     }
-    
+
     return QAbstractTableModel::flags(index);
 }
 
