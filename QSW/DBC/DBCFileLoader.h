@@ -80,7 +80,7 @@ class DBCFileLoader
 
         quint32 recordSize;
         quint32 recordCount;
-        quint32 fieldCount;
+        quint32  fieldCount;
         quint32 stringSize;
         quint32* fieldsOffset;
         char* data;

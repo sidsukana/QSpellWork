@@ -184,7 +184,7 @@ void SWSearch::search()
                 m_sw->setMetaEnum("SpellFamilyNames");
                 if (m_form->comboBox->currentIndex() > 0)
                 {
-                    qint16 familyId = m_form->comboBox->itemData(m_form->comboBox->currentIndex()).toInt();
+                    quint16 familyId = m_form->comboBox->itemData(m_form->comboBox->currentIndex()).toInt();
                     if (m_spellInfo->SpellFamilyName == familyId)
                         family = true;
                 }
@@ -194,7 +194,7 @@ void SWSearch::search()
                 m_sw->setMetaEnum("AuraType");
                 if (m_form->comboBox_2->currentIndex() > 0)
                 {
-                    qint16 auraId = m_form->comboBox_2->itemData(m_form->comboBox_2->currentIndex()).toInt();
+                    quint16 auraId = m_form->comboBox_2->itemData(m_form->comboBox_2->currentIndex()).toInt();
                     for (quint8 i = EFFECT_INDEX_0; i < MAX_EFFECT_INDEX; ++i)
                     {
                         if (m_spellInfo->EffectApplyAuraName[i] == auraId)
@@ -210,7 +210,7 @@ void SWSearch::search()
                 m_sw->setMetaEnum("Effects");
                 if (m_form->comboBox_3->currentIndex() > 0)
                 {
-                    qint16 effectId = m_form->comboBox_3->itemData(m_form->comboBox_3->currentIndex()).toInt();
+                    quint16 effectId = m_form->comboBox_3->itemData(m_form->comboBox_3->currentIndex()).toInt();
                     for (quint8 i = EFFECT_INDEX_0; i < MAX_EFFECT_INDEX; ++i)
                     {
                         if (m_spellInfo->Effect[i] == effectId)
@@ -226,7 +226,7 @@ void SWSearch::search()
                 m_sw->setMetaEnum("Targets");
                 if (m_form->comboBox_4->currentIndex() > 0)
                 {
-                    qint16 targetId = m_form->comboBox_4->itemData(m_form->comboBox_4->currentIndex()).toInt();
+                    quint16 targetId = m_form->comboBox_4->itemData(m_form->comboBox_4->currentIndex()).toInt();
                     for (quint8 i = EFFECT_INDEX_0; i < MAX_EFFECT_INDEX; ++i)
                     {
                         if (m_spellInfo->EffectImplicitTargetA[i] == targetId)
@@ -241,7 +241,7 @@ void SWSearch::search()
 
                 if (m_form->comboBox_5->currentIndex() > 0)
                 {
-                    qint16 targetId = m_form->comboBox_5->itemData(m_form->comboBox_5->currentIndex()).toInt();
+                    quint16 targetId = m_form->comboBox_5->itemData(m_form->comboBox_5->currentIndex()).toInt();
                     for (quint8 i = EFFECT_INDEX_0; i < MAX_EFFECT_INDEX; ++i)
                     {
                         if (m_spellInfo->EffectImplicitTargetB[i] == targetId)
@@ -365,7 +365,7 @@ void SWSearch::search()
             for (quint32 i = 0; i < sSpellStore.GetNumRows(); ++i)
             {
                 SpellEntry const* m_spellInfo = sSpellStore.LookupEntry(i);
-                if (m_spellInfo && m_spellInfo->SpellIconId == m_form->findLine_e2->text().toInt())
+                if (m_spellInfo && m_spellInfo->SpellIconId == m_form->findLine_e2->text().toUInt())
                 {
                     QString sRank(QString::fromUtf8(m_spellInfo->Rank[Locale]));
                     QString sFullName(QString::fromUtf8(m_spellInfo->SpellName[Locale]));

@@ -74,7 +74,7 @@ quint32 DBCFileLoader::GetFormatRecordSize(const QString format, qint32* index_p
 {
     quint32 recordsize = 0;
     qint32 i = -1;
-    for (quint32 x = 0; x < format.length(); ++x)
+    for (qint32 x = 0; x < format.length(); ++x)
     {
         switch (format[x].toAscii())
         {
@@ -110,7 +110,7 @@ char* DBCFileLoader::AutoProduceData(const QString format, quint32& records, cha
 {
     typedef char* ptr;
 
-    if (format.length() != fieldCount)
+    if (format.length() != int(fieldCount))
         return NULL;
 
     // Get struct size and index pos
@@ -181,7 +181,7 @@ char* DBCFileLoader::AutoProduceData(const QString format, quint32& records, cha
 
 char* DBCFileLoader::AutoProduceStrings(const QString format, char* dataTable)
 {
-    if (format.length() != fieldCount)
+    if (format.length() != int(fieldCount))
         return NULL;
 
     char* stringPool = new char[stringSize];

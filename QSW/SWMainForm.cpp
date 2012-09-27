@@ -153,6 +153,7 @@ void SWMainForm::saveSettings()
 void SWMainForm::slotUpdate()
 {
     SWUpdateForm* updateForm = new SWUpdateForm();
+    connect(updateForm, SIGNAL(destroyed()), updateForm, SLOT(deleteLater()));
 }
 
 void SWMainForm::slotPrevRow()
@@ -313,7 +314,7 @@ void SWMainForm::slotSpellTable()
     spellDbcView->setItemDelegate(new SpellDelegate(this));
     spellDbcView->setModel(sqlModel);
 
-    for (quint32 i = 0; i < sqlModel->columnCount(); ++i)
+    for (qint32 i = 0; i < sqlModel->columnCount(); ++i)
         spellDbcView->hideColumn(i);
 
     RelationList relationList = ((RelationModel*)fieldsView->model())->getRelations();
@@ -353,7 +354,7 @@ void SWMainForm::slotConnectToDatabase()
     }
 
     model->appendDbcField("");
-    for (quint32 i = 1; i < adBox1->count(); ++i)
+    for (qint32 i = 1; i < adBox1->count(); ++i)
         model->appendDbcField(adBox1->itemText(i));
 
     fieldsView->setItemDelegate(new RelationDelegate);
@@ -477,7 +478,8 @@ void SWMainForm::slotRegExp()
 
 void SWMainForm::slotAbout()
 {
-    new SWAboutForm;
+    SWAboutForm* aboutForm = new SWAboutForm(this);
+    connect(aboutForm, SIGNAL(destroyed()), aboutForm, SLOT(deleteLater()));
 }
 
 void SWMainForm::slotButtonSearch()

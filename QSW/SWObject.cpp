@@ -984,8 +984,6 @@ void SWObject::showInfo(SpellEntry const* spellInfo, quint8 num)
 
 void SWObject::appendRangeInfo(SpellEntry const* spellInfo, quint8 num)
 {
-    QWebView* browser = m_form->getBrowser(num);
-
     SpellRangeEntry const* range = sSpellRangeStore.LookupEntry(spellInfo->RangeIndex);
     if (range)
     {
@@ -1001,8 +999,6 @@ void SWObject::appendRangeInfo(SpellEntry const* spellInfo, quint8 num)
 
 void SWObject::appendProcInfo(SpellEntry const* spellInfo, quint8 num)
 {
-    QWebView* browser = m_form->getBrowser(num);
-
     quint8 i = 0;
     quint64 proc = spellInfo->ProcFlags;
 
@@ -1019,8 +1015,6 @@ void SWObject::appendProcInfo(SpellEntry const* spellInfo, quint8 num)
 
 void SWObject::appendSpellEffectInfo(SpellEntry const* spellInfo, quint8 num)
 {
-    QWebView* browser = m_form->getBrowser(num);
-
     html.append("<div class='b-box-title'>Effects</div>"
                 "<div class='b-box-body'>"
                 "<div class='b-box'>");
@@ -1157,8 +1151,6 @@ void SWObject::appendSpellEffectInfo(SpellEntry const* spellInfo, quint8 num)
 
 void SWObject::appendTriggerInfo(SpellEntry const* spellInfo, quint8 index, quint8 num)
 {
-    QWebView* browser = m_form->getBrowser(num);
-
     quint32 trigger = spellInfo->EffectTriggerSpell[index];
     if (trigger != 0)
     {
@@ -1205,8 +1197,6 @@ void SWObject::appendTriggerInfo(SpellEntry const* spellInfo, quint8 index, quin
 
 void SWObject::appendRadiusInfo(SpellEntry const* spellInfo, quint8 index, quint8 num)
 {
-    QWebView* browser = m_form->getBrowser(num);
-
     quint16 rIndex = spellInfo->EffectRadiusIndex[index];
     if (rIndex != 0)
     {
@@ -1224,8 +1214,6 @@ void SWObject::appendRadiusInfo(SpellEntry const* spellInfo, quint8 index, quint
 
 void SWObject::appendAuraInfo(SpellEntry const* spellInfo, quint8 index, quint8 num)
 {
-    QWebView* browser = m_form->getBrowser(num);
-
     setMetaEnum("AuraType");
     QString sAura(m_metaEnum.valueToKey(spellInfo->EffectApplyAuraName[index]));
     quint32 misc = spellInfo->EffectMiscValue[index];
@@ -1503,14 +1491,14 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
             return str;
         }
         break;
+        default:
+        break;
     }
     return str;
 }
 
 void SWObject::appendSkillInfo(SpellEntry const* spellInfo, quint8 num)
 {
-    QWebView* browser = m_form->getBrowser(num);
-
     for (quint32 i = 0; i < sSkillLineAbilityStore.GetNumRows(); ++i)
     {
         SkillLineAbilityEntry const* skillInfo = sSkillLineAbilityStore.LookupEntry(i);
@@ -1537,8 +1525,6 @@ void SWObject::appendSkillInfo(SpellEntry const* spellInfo, quint8 num)
 
 void SWObject::appendCastTimeInfo(SpellEntry const* spellInfo, quint8 num)
 {
-    QWebView* browser = m_form->getBrowser(num);
-
     SpellCastTimesEntry const* castInfo = sSpellCastTimesStore.LookupEntry(spellInfo->CastingTimeIndex);
     if (castInfo)
     {
@@ -1550,8 +1536,6 @@ void SWObject::appendCastTimeInfo(SpellEntry const* spellInfo, quint8 num)
 
 void SWObject::appendDurationInfo(SpellEntry const* spellInfo, quint8 num)
 {
-    QWebView* browser = m_form->getBrowser(num);
-
     SpellDurationEntry const* durationInfo = sSpellDurationStore.LookupEntry(spellInfo->DurationIndex);
     if (durationInfo)
     {
@@ -1572,7 +1556,7 @@ void SWObject::compare()
     html.clear();
     html2.clear();
 
-    QRegExp rx("(<[A-Za-z_0-9]*>)+([A-Za-z_0-9-!\"#$%&'()*+,./:;=?@[\\\]_`{|}~\\s]*)+(</[A-Za-z_0-9]*>)");
+    QRegExp rx("(<[A-Za-z_0-9]*>)+([A-Za-z_0-9-!\"#$%&'()*+,./:;=?@[\\]_`{|}~\\s]*)+(</[A-Za-z_0-9]*>)");
 
     for (QStringList::iterator itr1 = list1.begin(); itr1 != list1.end(); ++itr1)
     {

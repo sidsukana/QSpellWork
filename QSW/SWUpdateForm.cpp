@@ -74,7 +74,7 @@ void SWUpdateForm::checkForUpdates()
 
     QDomNodeList updateNodes = softwareNodes.at(0).toElement().childNodes();
 
-    for (quint32 upd = 0; upd < updateNodes.count(); ++upd)
+    for (qint32 upd = 0; upd < updateNodes.count(); ++upd)
     {
         QDomElement update = updateNodes.at(upd).toElement();
         if (update.attribute("build").toUInt() > newBuild)
@@ -82,7 +82,7 @@ void SWUpdateForm::checkForUpdates()
             newBuild = update.attribute("build").toUInt();
 
             QDomNodeList descriptionNodes = update.childNodes();
-            for (quint32 desc = 0; desc < descriptionNodes.count(); ++desc)
+            for (qint32 desc = 0; desc < descriptionNodes.count(); ++desc)
             {
                 QDomElement description = descriptionNodes.at(desc).toElement();
                 if (description.tagName() == "Description")
@@ -95,7 +95,7 @@ void SWUpdateForm::checkForUpdates()
                 if (upd == updateNodes.count() - 1 && description.tagName() == "Files")
                 {
                     QDomNodeList fileNodes = description.childNodes();
-                    for (quint32 f = 0; f < fileNodes.count(); ++f)
+                    for (qint32 f = 0; f < fileNodes.count(); ++f)
                     {
                         QDomElement file = fileNodes.at(f).toElement();
 
@@ -196,7 +196,7 @@ bool SWUpdateForm::event(QEvent* ev)
         {
             Event* m_ev = (Event*)ev;
 
-            for (quint32 i = 0; i < m_ev->getCount(); ++i)
+            for (qint32 i = 0; i < m_ev->getCount(); ++i)
                 textEdit->append(m_ev->getValue(i).toString());
 
             return true;
@@ -206,7 +206,7 @@ bool SWUpdateForm::event(QEvent* ev)
         {
             Event* m_ev = (Event*)ev;
 
-            for (quint32 i = 0; i < m_ev->getCount(); ++i)
+            for (qint32 i = 0; i < m_ev->getCount(); ++i)
             {
                 switch (m_ev->getValue(i).toUInt())
                 {
@@ -229,6 +229,8 @@ bool SWUpdateForm::event(QEvent* ev)
                 }
             }
         }
+        break;
+        default:
         break;
     }
 
