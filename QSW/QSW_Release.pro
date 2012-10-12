@@ -6,7 +6,7 @@
 # Remove it when you are finished editing this file.
 message("You are running qmake on a generated .pro file. This may not work!")
 
-QT += webkit core gui network
+QT += webkit core gui network xml sql
 TEMPLATE = app
 TARGET = QSW
 DESTDIR = ../Release
@@ -26,14 +26,14 @@ OTHER_FILES += \
     Icon.rc
 
 HEADERS += \
-    TObject.h \
+    Alphanum.h \
+    SWAboutForm.h \
+    SWUpdateForm.h \
+    SWMainForm.h \
     SWSearch.h \
     SWObject.h \
-    SWForm.h \
     SWEvent.h \
     SWDefines.h \
-    Alphanum.h \
-    AboutForm.h \
     DBC/DBCStructure.h \
     DBC/DBCStores.h \
     DBC/DBCStore.h \
@@ -44,21 +44,21 @@ HEADERS += \
     Includes/ByteConverter.h
 
 SOURCES += \
-    TObject.cpp \
-    SWSearch.cpp \
-    SWObject.cpp \
-    SWForm.cpp \
-    SWEvent.cpp \
-    SWDefines.cpp \
     Main.cpp \
     Alphanum.cpp \
-    AboutForm.cpp \
+    SWAboutForm.cpp \
+    SWSearch.cpp \
+    SWObject.cpp \
+    SWMainForm.cpp \
+    SWDefines.cpp \
+    SWUpdateForm.cpp \
     DBC/DBCStores.cpp \
     DBC/DBCFileLoader.cpp
 
 FORMS += \
-    SWFormUI.ui \
-    AboutFormUI.ui
+    SWMainUI.ui \
+    SWAboutUI.ui \
+    SWUpdateUI.ui
 
 RESOURCES += \
     SpellWork.qrc
