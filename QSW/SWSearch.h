@@ -111,7 +111,7 @@ class MetaSpell : public QObject
         Q_INVOKABLE QVariant StartRecoveryTime() { return m_spellInfo->StartRecoveryTime; }
         Q_INVOKABLE QVariant MaxTargetLevel() { return m_spellInfo->MaxTargetLevel; }
         Q_INVOKABLE QVariant SpellFamilyName() { return m_spellInfo->SpellFamilyName; }
-        Q_INVOKABLE quint64  SpellFamilyFlags() { return m_spellInfo->SpellFamilyFlags; }
+        Q_INVOKABLE QVariant SpellFamilyFlags() { return m_spellInfo->SpellFamilyFlags; }
         Q_INVOKABLE QVariant MaxAffectedTargets() { return m_spellInfo->MaxAffectedTargets; }
         Q_INVOKABLE QVariant DamageClass() { return m_spellInfo->DamageClass; }
         Q_INVOKABLE QVariant PreventionType() { return m_spellInfo->PreventionType; }
