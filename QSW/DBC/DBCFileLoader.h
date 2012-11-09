@@ -73,9 +73,9 @@ class DBCFileLoader
         quint32 GetOffset(size_t id) const { return ((fieldsOffset != NULL && id < fieldCount) ? fieldsOffset[id] : 0); }
 
         bool IsLoaded() { return (data != NULL); }
-        char* AutoProduceData(const QString fmt, quint32& count, char**& indexTable);
-        char* AutoProduceStrings(const QString fmt, char* dataTable);
-        static quint32 GetFormatRecordSize(const QString format, qint32* index_pos = NULL);
+        char* AutoProduceData(const char* format, quint32& count, char**& indexTable);
+        char* AutoProduceStrings(const char* format, char* dataTable);
+        static quint32 GetFormatRecordSize(const char* format, qint32* index_pos = NULL);
     private:
 
         quint32 recordSize;

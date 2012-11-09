@@ -11,12 +11,12 @@ class DBCStorage
 {
     typedef std::list<char*> StringPoolList;
     public:
-        explicit DBCStorage(const QString f) : nCount(0), fieldCount(0), fmt(f), indexTable(NULL), m_dataTable(NULL) {}
+        explicit DBCStorage(const char* f) : nCount(0), fieldCount(0), fmt(f), indexTable(NULL), m_dataTable(NULL) {}
         ~DBCStorage() { Clear(); }
 
         T const* LookupEntry(quint32 id) const { return (id >= nCount) ? NULL : indexTable[id]; }
         quint32  GetNumRows() const { return nCount; }
-        const QString GetFormat() const { return fmt; }
+        const char* GetFormat() const { return fmt; }
         quint32 GetFieldCount() const { return fieldCount; }
 
         bool Load(const QString fn)
@@ -81,7 +81,7 @@ class DBCStorage
     private:
         quint32 nCount;
         quint32 fieldCount;
-        const QString fmt;
+        const char* fmt;
         T** indexTable;
         T* m_dataTable;
         StringPoolList m_stringPoolList;
