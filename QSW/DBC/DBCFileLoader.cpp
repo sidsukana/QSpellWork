@@ -70,13 +70,13 @@ DBCFileLoader::Record DBCFileLoader::getRecord(size_t id)
     return Record(*this, data + id * recordSize);
 }
 
-quint32 DBCFileLoader::GetFormatRecordSize(const QString format, qint32* index_pos)
+quint32 DBCFileLoader::GetFormatRecordSize(const char* format, qint32* index_pos)
 {
     quint32 recordsize = 0;
     qint32 i = -1;
-    for (quint32 x = 0; x < format.length(); ++x)
+    for (quint32 x = 0; x < strlen(format); ++x)
     {
-        switch (format[x].toAscii())
+        switch (format[x])
         {
             case FT_FLOAT:
                 recordsize += sizeof(float);
@@ -106,11 +106,11 @@ quint32 DBCFileLoader::GetFormatRecordSize(const QString format, qint32* index_p
     return recordsize;
 }
 
-char* DBCFileLoader::AutoProduceData(const QString format, quint32& records, char**& indexTable)
+char* DBCFileLoader::AutoProduceData(const char* format, quint32& records, char**& indexTable)
 {
     typedef char* ptr;
 
-    if (format.length() != fieldCount)
+    if (strlen(format) != fieldCount)
         return NULL;
 
     // Get struct size and index pos
@@ -152,7 +152,7 @@ char* DBCFileLoader::AutoProduceData(const QString format, quint32& records, cha
 
         for (quint32 x = 0; x < fieldCount; x++)
         {
-            switch (format[x].toAscii())
+            switch (format[x])
             {
                 case FT_FLOAT:
                     *((float*)(&dataTable[offset])) = getRecord(y).getFloat(x);
@@ -179,9 +179,9 @@ char* DBCFileLoader::AutoProduceData(const QString format, quint32& records, cha
     return dataTable;
 }
 
-char* DBCFileLoader::AutoProduceStrings(const QString format, char* dataTable)
+char* DBCFileLoader::AutoProduceStrings(const char* format, char* dataTable)
 {
-    if (format.length() != fieldCount)
+    if (strlen(format) != fieldCount)
         return NULL;
 
     char* stringPool = new char[stringSize];
@@ -193,7 +193,7 @@ char* DBCFileLoader::AutoProduceStrings(const QString format, char* dataTable)
     {
         for (quint32 x = 0; x < fieldCount; x++)
         {
-            switch (format[x].toAscii())
+            switch (format[x])
             {
                 case FT_FLOAT:
                     offset += sizeof(float);
