@@ -4,7 +4,7 @@ quint8 Locale = 0;
 
 QString QSW_VERSION("4.1");
 QString CLIENT_VERSION("4.3.4");
-QString QSW_BUILD("12");
+QString QSW_BUILD("13");
 QString CLIENT_BUILD("15595");
 
 QString SpellStruct[] =

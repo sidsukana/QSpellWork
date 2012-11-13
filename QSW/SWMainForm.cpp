@@ -120,7 +120,7 @@ void SWMainForm::slotNextRow()
 
 void SWMainForm::initializeCompleter()
 {
-    QStringList names;
+    QSet<QString> names;
 
     for (quint32 i = 0; i < sSpellStore.GetNumRows(); i++)
     {
@@ -128,12 +128,12 @@ void SWMainForm::initializeCompleter()
         if (spellInfo)
         {
             QString sName = QString::fromUtf8(spellInfo->SpellName);
-            if (!names.contains(sName, Qt::CaseInsensitive))
+            if (names.find(sName) == names.end())
                 names << sName;
         }
     }
 
-    QCompleter* completer = new QCompleter(names, this);
+    QCompleter* completer = new QCompleter(names.toList(), this);
     completer->setCaseSensitivity(Qt::CaseInsensitive);
     findLine_e1->setCompleter(completer);
 }

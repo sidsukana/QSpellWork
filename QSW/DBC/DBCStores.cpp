@@ -58,7 +58,7 @@ inline void LoadDBC(StoreProblemList& errlist, DBCStorage<T>& storage, const QSt
         if (file.open(QIODevice::ReadOnly))
         {
             char buf[100];
-            sprintf(buf, " (exist, but have %d fields instead) Wrong client version DBC file?", storage.GetFieldCount(), storage.GetFormat().length());
+            sprintf(buf, " (exist, but have %u fields instead %i) Wrong client version DBC file?", storage.GetFieldCount(), strlen(storage.GetFormat()));
             errlist.push_back(dbc_filename + QString(buf));
             file.close();
         }

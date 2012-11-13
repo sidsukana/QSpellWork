@@ -1,30 +1,30 @@
 #ifndef DBCSFRM_H
 #define DBCSFRM_H
 
-const QString SkillLinefmt("nissisi");
-const QString SkillLineAbilityfmt("niiiiiiiiiiiii");
-const QString SpellCastTimefmt("nifi");
-const QString SpellDurationfmt("niii");
-const QString SpellEntryfmt("niiiiiiiiixxiiiifiiiissssiiiiixiiiiiiixiiiiiiiix");
-const QString SpellRadiusfmt("nfxf");
-const QString SpellRangefmt("nffffiss");
-const QString SpellIconfmt("ns");
-const QString SpellAuraOptionsfmt("diiii");
-const QString SpellAuraRestrictionsfmt("diiiiiiii");
-const QString SpellCastingRequirementsfmt("diiiiii");
-const QString SpellCategoriesfmt("diiiiii");
-const QString SpellClassOptionsfmt("diiiiis");
-const QString SpellCooldownsfmt("diii");
-const QString SpellEquippedItemsfmt("diii");
-const QString SpellInterruptsfmt("dixixi");
-const QString SpellLevelsfmt("diii");
-const QString SpellPowerfmt("diiiiix");
-const QString SpellReagentsfmt("diiiiiiiiiiiiiiii");
-const QString SpellScalingfmt("diiiiffffffffffi");
-const QString SpellShapeshiftfmt("diiiii");
-const QString SpellTargetRestrictionsfmt("dfiiii");
-const QString SpellTotemsfmt("diiii");
-const QString SpellEffectEntryfmt("difiiiffiiiiiifiifiiiiiiiix");
+const char* SkillLinefmt = "nissisi";
+const char* SkillLineAbilityfmt = "niiiiiiiiiiiii";
+const char* SpellCastTimefmt = "nifi";
+const char* SpellDurationfmt = "niii";
+const char* SpellEntryfmt = "niiiiiiiiixxiiiifiiiissssiiiiixiiiiiiixiiiiiiiix";
+const char* SpellRadiusfmt = "nfxf";
+const char* SpellRangefmt = "nffffiss";
+const char* SpellIconfmt = "ns";
+const char* SpellAuraOptionsfmt = "diiii";
+const char* SpellAuraRestrictionsfmt = "diiiiiiii";
+const char* SpellCastingRequirementsfmt = "diiiiii";
+const char* SpellCategoriesfmt = "diiiiii";
+const char* SpellClassOptionsfmt = "diiiiis";
+const char* SpellCooldownsfmt = "diii";
+const char* SpellEquippedItemsfmt = "diii";
+const char* SpellInterruptsfmt = "dixixi";
+const char* SpellLevelsfmt = "diii";
+const char* SpellPowerfmt = "diiiiix";
+const char* SpellReagentsfmt = "diiiiiiiiiiiiiiii";
+const char* SpellScalingfmt = "diiiiffffffffffi";
+const char* SpellShapeshiftfmt = "diiiii";
+const char* SpellTargetRestrictionsfmt = "dfiiii";
+const char* SpellTotemsfmt = "diiii";
+const char* SpellEffectEntryfmt = "difiiiffiiiiiifiifiiiiiiiix";
 
 
 #endif
