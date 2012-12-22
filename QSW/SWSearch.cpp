@@ -23,7 +23,7 @@ bool SWSearch::hasValue(int index, QString value, SpellEntry const* spellInfo)
 
     value.remove(QChar(32));
 
-    switch (value.at(0).toAscii())
+    switch (value.at(0).toLatin1())
     {
         case '=':
         {

@@ -587,7 +587,7 @@ QString SWObject::getDescription(QString str, SpellEntry const* spellInfo)
         if (rx.indexIn(str) != -1)
         {
             QChar symbol = rx.cap(5)[0].toLower();
-            switch (symbol.toAscii())
+            switch (symbol.toLatin1())
             {
                 case 'u': RegExpU(spellInfo, rx, str); break;
                 case 'h': RegExpH(spellInfo, rx, str); break;

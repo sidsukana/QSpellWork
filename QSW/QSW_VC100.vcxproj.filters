@@ -100,18 +100,6 @@
     <ClCompile Include="GeneratedFiles\Template\moc_SWMainForm.cpp">
       <Filter>Generated Files\Template</Filter>
     </ClCompile>
-    <ClCompile Include="SWUpdateForm.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_SWUpdateForm.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_SWUpdateForm.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Template\moc_SWUpdateForm.cpp">
-      <Filter>Generated Files\Template</Filter>
-    </ClCompile>
     <ClCompile Include="SWModels.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -162,9 +150,6 @@
     <ClInclude Include="GeneratedFiles\ui_SWMainUI.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
-    <ClInclude Include="GeneratedFiles\ui_SWUpdateUI.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
     <ClInclude Include="SWObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -200,12 +185,6 @@
     </CustomBuild>
     <CustomBuild Include="SWMainUI.ui">
       <Filter>Form Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="SWUpdateUI.ui">
-      <Filter>Form Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="SWUpdateForm.h">
-      <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="SWModels.h">
       <Filter>Header Files</Filter>

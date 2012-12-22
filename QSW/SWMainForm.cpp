@@ -1,14 +1,13 @@
 #include "SWMainForm.h"
 #include "SWAboutForm.h"
-#include "SWUpdateForm.h"
 #include "SWModels.h"
 #include "SWSearch.h"
 
-#include <QtCore/QtConcurrentRun>
+#include <QtConcurrent/QtConcurrentRun>
 #include <QtCore/QTime>
 #include <QtGui/QStandardItemModel>
 
-#include <QtGui/QMessageBox>
+#include <QtWidgets/QMessageBox>
 
 SWMainForm::SWMainForm(QWidget* parent)
     : QMainWindow(parent)
@@ -36,8 +35,6 @@ SWMainForm::SWMainForm(QWidget* parent)
     m_regExp->setCheckable(true);
     mainToolBar->addSeparator();
     m_about = mainToolBar->addAction(QIcon(":/SpellWork/Recources/about.png"), "About");
-    mainToolBar->addSeparator();
-    m_update = mainToolBar->addAction(QIcon(":/SpellWork/Recources/update.png"), "Update");
 
     webView1->pageAction(QWebPage::Copy)->setShortcut(QKeySequence::Copy);
     webView2->pageAction(QWebPage::Copy)->setShortcut(QKeySequence::Copy);
@@ -60,9 +57,6 @@ SWMainForm::SWMainForm(QWidget* parent)
     connect(findLine_e1, SIGNAL(returnPressed()), this, SLOT(slotButtonSearch()));
     connect(findLine_e2, SIGNAL(returnPressed()), this, SLOT(slotButtonSearch()));
     connect(findLine_e3, SIGNAL(returnPressed()), this, SLOT(slotButtonSearch()));
-
-    // Update connect
-    connect(m_update, SIGNAL(triggered()), this, SLOT(slotUpdate()));
 
     // Menu connections
     connect(m_about, SIGNAL(triggered()), this, SLOT(slotAbout()));
@@ -148,12 +142,6 @@ void SWMainForm::saveSettings()
     m_settings->setValue("Database/Database", database->text());
     m_settings->setValue("Database/Username", username->text());
     m_settings->setValue("Database/Password", password->text());
-}
-
-void SWMainForm::slotUpdate()
-{
-    SWUpdateForm* updateForm = new SWUpdateForm();
-    connect(updateForm, SIGNAL(destroyed()), updateForm, SLOT(deleteLater()));
 }
 
 void SWMainForm::slotPrevRow()
@@ -420,14 +408,14 @@ void SWMainForm::loadComboBoxes()
     model->setItem(0, new QStandardItem("None"));
     for (quint16 i = offset; i < count; ++i)
     {
-        QString signature = metaSpell.metaObject()->method(i).signature();
+        QString signature = metaSpell.metaObject()->method(i).methodSignature().data();
         QRegExp rx("(\\D.*)(\\(.*\\))");
         if (rx.indexIn(signature) != -1)
         {
             QStandardItem* item = new QStandardItem(rx.cap(1));
             item->setData(signature, 33);
 
-            QVariant arraySize = metaSpell.property(rx.cap(1).toAscii().data());
+            QVariant arraySize = metaSpell.property(rx.cap(1).toLatin1().data());
             if (arraySize.isValid())
                 item->setData(arraySize.toUInt(), 34);
             else

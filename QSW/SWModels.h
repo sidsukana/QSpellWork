@@ -3,8 +3,8 @@
 
 #include <QtCore/QStringList>
 #include <QtCore/QAbstractTableModel>
-#include <QtGui/QSortFilterProxyModel>
-#include <QtGui/QItemDelegate>
+#include <QtCore/QSortFilterProxyModel>
+#include <QtWidgets/QItemDelegate>
 
 #include "SWMainForm.h"
 

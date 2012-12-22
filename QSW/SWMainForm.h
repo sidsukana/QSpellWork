@@ -3,14 +3,14 @@
 
 #include <QtCore/QSettings>
 
-#include <QtGui/QTextBrowser>
-#include <QtGui/QMainWindow>
-#include <QtGui/QToolButton>
-#include <QtGui/QCompleter>
+#include <QtWidgets/QTextBrowser>
+#include <QtWidgets/QMainWindow>
+#include <QtWidgets/QToolButton>
+#include <QtWidgets/QCompleter>
 #include <QtGui/QIcon>
 
-#include <QtWebKit/QWebView>
-#include <QtWebKit/QWebFrame>
+#include <QtWebKitWidgets/QWebView>
+#include <QtWebKitWidgets/QWebFrame>
 
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
@@ -52,7 +52,6 @@ class SWMainForm : public QMainWindow, public Ui::SWMainUI
         void signalSearch(quint8 type);
 
     private slots:
-        void slotUpdate();
         void slotAbout();
         void slotFilterSearch();
         void slotButtonSearch();
