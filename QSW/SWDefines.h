@@ -12,7 +12,6 @@ extern QString CLIENT_BUILD;
 extern quint8  Locale;
 extern QString ProcFlagDesc[];
 
-#define MAX_STRUCT 91
 #define MAX_PROC 32 
 #define MAX_SPELL_REAGENTS 8
 #define MAX_SPELL_TOTEMS 2

@@ -3,7 +3,6 @@
 
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
-#include <QtXml/QDomDocument>
 
 SWObject::SWObject(SWMainForm* form)
     : m_form(form), m_regExp(false), m_type(0)
