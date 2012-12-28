@@ -1,14 +1,22 @@
 #ifndef SWFORM_H
 #define SWFORM_H
 
-#include <QtGui/QTextBrowser>
+#include <QtCore/QSettings>
 
-#include <QtGui/QMainWindow>
-#include <QtGui/QToolButton>
-#include <QtGui/QCompleter>
+#include <QtWidgets/QTextBrowser>
+#include <QtWidgets/QMainWindow>
+#include <QtWidgets/QToolButton>
+#include <QtWidgets/QCompleter>
 #include <QtGui/QIcon>
-#include <QtWebKit/QWebView>
-#include <QtWebKit/QWebFrame>
+
+#include <QtWebKitWidgets/QWebView>
+#include <QtWebKitWidgets/QWebFrame>
+
+#include <QtSql/QSqlDatabase>
+#include <QtSql/QSqlQuery>
+#include <QtSql/QSqlError>
+#include <QtSql/QSqlTableModel>
+
 #include "SWObject.h"
 #include "ui_SWMainUI.h"
 
@@ -23,24 +31,45 @@ class SWMainForm : public QMainWindow, public Ui::SWMainUI
         SWMainForm(QWidget* parent = 0);
         ~SWMainForm();
 
-        QWebView* getBrowser(quint8 num) { return(num == 0 ? webView : webView_2); }
+        void saveSettings();
+        void loadSettings();
+
+        bool isRegExp() const { return m_regExp->isChecked(); }
+        void setRegExp(bool enable) { m_regExp->setChecked(enable); }
+
+        QWebView* getBrowser(quint8 num) const
+        {
+            switch (num)
+            {
+                case 1: return webView1;
+                case 2: return webView2;
+                case 3: return webView3;
+                default: return webView1;
+            }
+        }
 
     signals:
         void signalSearch(quint8 type);
 
     private slots:
-        void slotUpdate();
         void slotAbout();
         void slotFilterSearch();
         void slotButtonSearch();
         void slotCompareSearch();
-        void slotSetMode(QAction* ac);
         void slotSearch(quint8 type);
         void slotSearchFromList(const QModelIndex &index);
         void slotLinkClicked(const QUrl &url);
         void slotRegExp();
+        void slotModeDatabase();
+        void slotModeShow();
+        void slotModeCompare();
         void slotPrevRow();
         void slotNextRow();
+        
+        void slotConnectToDatabase();
+        void slotSpellTable();
+        void slotAutoRelate();
+        void slotResetRelate();
 
         bool event(QEvent* ev);
 
@@ -50,6 +79,7 @@ class SWMainForm : public QMainWindow, public Ui::SWMainUI
         void createModeButton();
         void initializeCompleter();
 
+        QSettings* m_settings;
         SpellListSortedModel* m_sortedModel;
         Ui::SWMainUI m_ui;
         SWObject* m_sw;
@@ -943,7 +973,8 @@ public:
         KEY         = 13,
         PERMANENT   = 14,
         MISC        = 15,
-        GLYPH       = 16
+        GLYPH       = 16,
+        MAX
     };
 
     enum ItemSubClassWeaponMask
