@@ -64,20 +64,17 @@
     <ClCompile Include="DBC\DBCFileLoader.cpp">
       <Filter>Header Files\DBC</Filter>
     </ClCompile>
+    <ClCompile Include="DBC\DBCStructure.cpp">
+      <Filter>Header Files\DBC</Filter>
+    </ClCompile>
     <ClCompile Include="DBC\DBCStores.cpp">
       <Filter>Header Files\DBC</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\qrc_SpellWork.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_SWObject.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_SWSearch.cpp">
       <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_SWObject.cpp">
-      <Filter>Generated Files\Debug</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_SWSearch.cpp">
       <Filter>Generated Files\Debug</Filter>
@@ -106,20 +103,17 @@
     <ClCompile Include="GeneratedFiles\Template\moc_SWMainForm.cpp">
       <Filter>Generated Files\Template</Filter>
     </ClCompile>
-    <ClCompile Include="SWUpdateForm.cpp">
+    <ClCompile Include="SWModels.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_SWUpdateForm.cpp">
+    <ClCompile Include="GeneratedFiles\Debug\moc_SWModels.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_SWUpdateForm.cpp">
+    <ClCompile Include="GeneratedFiles\Release\moc_SWModels.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Template\moc_SWUpdateForm.cpp">
+    <ClCompile Include="GeneratedFiles\Template\moc_SWModels.cpp">
       <Filter>Generated Files\Template</Filter>
-    </ClCompile>
-    <ClCompile Include="DBC\DBCStructure.cpp">
-      <Filter>Header Files\DBC</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -159,8 +153,8 @@
     <ClInclude Include="GeneratedFiles\ui_SWMainUI.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
-    <ClInclude Include="GeneratedFiles\ui_SWUpdateUI.h">
-      <Filter>Generated Files</Filter>
+    <ClInclude Include="SWObject.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -169,14 +163,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuildStep Include="mangos.ico">
-      <Filter>Resource Files</Filter>
-    </CustomBuildStep>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="SWObject.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
     <CustomBuild Include="SWSearch.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
@@ -198,10 +184,7 @@
     <CustomBuild Include="SWMainUI.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="SWUpdateUI.ui">
-      <Filter>Form Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="SWUpdateForm.h">
+    <CustomBuild Include="SWModels.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
