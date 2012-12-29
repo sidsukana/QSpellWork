@@ -1,14 +1,22 @@
 #ifndef SWFORM_H
 #define SWFORM_H
 
-#include <QtGui/QTextBrowser>
+#include <QtCore/QSettings>
 
-#include <QtGui/QMainWindow>
-#include <QtGui/QToolButton>
-#include <QtGui/QCompleter>
+#include <QtWidgets/QTextBrowser>
+#include <QtWidgets/QMainWindow>
+#include <QtWidgets/QToolButton>
+#include <QtWidgets/QCompleter>
 #include <QtGui/QIcon>
-#include <QtWebKit/QWebView>
-#include <QtWebKit/QWebFrame>
+
+#include <QtWebKitWidgets/QWebView>
+#include <QtWebKitWidgets/QWebFrame>
+
+#include <QtSql/QSqlDatabase>
+#include <QtSql/QSqlQuery>
+#include <QtSql/QSqlError>
+#include <QtSql/QSqlTableModel>
+
 #include "SWObject.h"
 #include "ui_SWMainUI.h"
 
@@ -23,24 +31,45 @@ class SWMainForm : public QMainWindow, public Ui::SWMainUI
         SWMainForm(QWidget* parent = 0);
         ~SWMainForm();
 
-        QWebView* getBrowser(quint8 num) { return(num == 0 ? webView : webView_2); }
+        void saveSettings();
+        void loadSettings();
+
+        bool isRegExp() const { return m_regExp->isChecked(); }
+        void setRegExp(bool enable) { m_regExp->setChecked(enable); }
+
+        QWebView* getBrowser(quint8 num) const
+        {
+            switch (num)
+            {
+                case 1: return webView1;
+                case 2: return webView2;
+                case 3: return webView3;
+                default: return webView1;
+            }
+        }
 
     signals:
         void signalSearch(quint8 type);
 
     private slots:
-        void slotUpdate();
         void slotAbout();
         void slotFilterSearch();
         void slotButtonSearch();
         void slotCompareSearch();
-        void slotSetMode(QAction* ac);
         void slotSearch(quint8 type);
         void slotSearchFromList(const QModelIndex &index);
         void slotLinkClicked(const QUrl &url);
         void slotRegExp();
+        void slotModeDatabase();
+        void slotModeShow();
+        void slotModeCompare();
         void slotPrevRow();
         void slotNextRow();
+
+        void slotConnectToDatabase();
+        void slotSpellTable();
+        void slotAutoRelate();
+        void slotResetRelate();
 
         bool event(QEvent* ev);
 
@@ -50,6 +79,7 @@ class SWMainForm : public QMainWindow, public Ui::SWMainUI
         void createModeButton();
         void initializeCompleter();
 
+        QSettings* m_settings;
         SpellListSortedModel* m_sortedModel;
         Ui::SWMainUI m_ui;
         SWObject* m_sw;
@@ -216,8 +246,6 @@ public:
         SPELL_EFFECT_DUAL_WIELD                 = 40,
         SPELL_EFFECT_JUMP                       = 41,
         SPELL_EFFECT_JUMP2                      = 42,
-
-
         SPELL_EFFECT_TELEPORT_UNITS_FACE_CASTER = 43,
         SPELL_EFFECT_SKILL_STEP                 = 44,
         SPELL_EFFECT_ADD_HONOR                  = 45,
@@ -242,8 +270,6 @@ public:
         SPELL_EFFECT_TRIGGER_SPELL              = 64,
         SPELL_EFFECT_APPLY_AREA_AURA_RAID       = 65,
         SPELL_EFFECT_CREATE_MANA_GEM            = 66,
-
-
         SPELL_EFFECT_HEAL_MAX_HEALTH            = 67,
         SPELL_EFFECT_INTERRUPT_CAST             = 68,
         SPELL_EFFECT_DISTRACT                   = 69,
@@ -252,8 +278,6 @@ public:
         SPELL_EFFECT_ADD_FARSIGHT               = 72,
         SPELL_EFFECT_UNTRAIN_TALENTS            = 73,
         SPELL_EFFECT_APPLY_GLYPH                = 74,
-
-
         SPELL_EFFECT_HEAL_MECHANICAL            = 75,
         SPELL_EFFECT_SUMMON_OBJECT_WILD         = 76,
         SPELL_EFFECT_SCRIPT_EFFECT              = 77,
@@ -270,14 +294,9 @@ public:
         SPELL_EFFECT_WMO_REPAIR                 = 88,
         SPELL_EFFECT_WMO_CHANGE                 = 89,
         SPELL_EFFECT_KILL_CREDIT                = 90,
-
-
-
-
         SPELL_EFFECT_THREAT_ALL                 = 91,
         SPELL_EFFECT_ENCHANT_HELD_ITEM          = 92,
         SPELL_EFFECT_BREAK_PLAYER_TARGETING     = 93,
-
         SPELL_EFFECT_SELF_RESURRECT             = 94,
         SPELL_EFFECT_SKINNING                   = 95,
         SPELL_EFFECT_CHARGE                     = 96,
@@ -297,7 +316,6 @@ public:
         SPELL_EFFECT_DESTROY_ALL_TOTEMS         = 110,
         SPELL_EFFECT_DURABILITY_DAMAGE          = 111,
         SPELL_EFFECT_112                        = 112,
-
         SPELL_EFFECT_RESURRECT_NEW              = 113,
         SPELL_EFFECT_ATTACK_ME                  = 114,
         SPELL_EFFECT_DURABILITY_DAMAGE_PCT      = 115,
@@ -308,7 +326,6 @@ public:
         SPELL_EFFECT_TELEPORT_GRAVEYARD         = 120,
         SPELL_EFFECT_NORMALIZED_WEAPON_DMG      = 121,
         SPELL_EFFECT_122                        = 122,
-
         SPELL_EFFECT_SEND_TAXI                  = 123,
         SPELL_EFFECT_PLAYER_PULL                = 124,
         SPELL_EFFECT_MODIFY_THREAT_PERCENT      = 125,
@@ -351,10 +368,6 @@ public:
         SPELL_EFFECT_TALENT_SPEC_SELECT         = 162,
         SPELL_EFFECT_163                        = 163,
         SPELL_EFFECT_CANCEL_AURA                = 164
-
-
-
-
     };
 
     enum TargetFlags
@@ -737,13 +750,10 @@ public:
         SPELL_AURA_TRACK_CREATURES                          = 44,
         SPELL_AURA_TRACK_RESOURCES                          = 45,
         SPELL_AURA_46                                       = 46,
-
         SPELL_AURA_MOD_PARRY_PERCENT                        = 47,
         SPELL_AURA_48                                       = 48,
-
         SPELL_AURA_MOD_DODGE_PERCENT                        = 49,
         SPELL_AURA_MOD_CRITICAL_HEALING_AMOUNT              = 50,
-
         SPELL_AURA_MOD_BLOCK_PERCENT                        = 51,
         SPELL_AURA_MOD_CRIT_PERCENT                         = 52,
         SPELL_AURA_PERIODIC_LEECH                           = 53,
@@ -757,7 +767,6 @@ public:
         SPELL_AURA_MOD_SCALE                                = 61,
         SPELL_AURA_PERIODIC_HEALTH_FUNNEL                   = 62,
         SPELL_AURA_63                                       = 63,
-
         SPELL_AURA_PERIODIC_MANA_LEECH                      = 64,
         SPELL_AURA_MOD_CASTING_SPEED_NOT_STACK              = 65,
         SPELL_AURA_FEIGN_DEATH                              = 66,
@@ -785,7 +794,6 @@ public:
         SPELL_AURA_MOD_HEALTH_REGEN_PERCENT                 = 88,
         SPELL_AURA_PERIODIC_DAMAGE_PERCENT                  = 89,
         SPELL_AURA_90                                       = 90,
-
         SPELL_AURA_MOD_DETECT_RANGE                         = 91,
         SPELL_AURA_PREVENTS_FLEEING                         = 92,
         SPELL_AURA_MOD_UNATTACKABLE                         = 93,
@@ -815,7 +823,6 @@ public:
         SPELL_AURA_MOD_MECHANIC_RESISTANCE                  = 117,
         SPELL_AURA_MOD_HEALING_PCT                          = 118,
         SPELL_AURA_119                                      = 119,
-
         SPELL_AURA_UNTRACKABLE                              = 120,
         SPELL_AURA_EMPATHY                                  = 121,
         SPELL_AURA_MOD_OFFHAND_DAMAGE_PCT                   = 122,
@@ -843,8 +850,6 @@ public:
         SPELL_AURA_SAFE_FALL                                = 144,
         SPELL_AURA_MOD_PET_TALENT_POINTS                    = 145,
         SPELL_AURA_ALLOW_TAME_PET_TYPE                      = 146,
-
-
         SPELL_AURA_MECHANIC_IMMUNITY_MASK                   = 147,
         SPELL_AURA_RETAIN_COMBO_POINTS                      = 148,
         SPELL_AURA_REDUCE_PUSHBACK                          = 149,
@@ -872,7 +877,6 @@ public:
         SPELL_AURA_MOD_SPEED_NOT_STACK                      = 171,
         SPELL_AURA_MOD_MOUNTED_SPEED_NOT_STACK              = 172,
         SPELL_AURA_173                                      = 173,
-
         SPELL_AURA_MOD_SPELL_DAMAGE_OF_STAT_PERCENT         = 174,
         SPELL_AURA_MOD_SPELL_HEALING_OF_STAT_PERCENT        = 175,
         SPELL_AURA_SPIRIT_OF_REDEMPTION                     = 176,
@@ -881,7 +885,6 @@ public:
         SPELL_AURA_MOD_ATTACKER_SPELL_CRIT_CHANCE           = 179,
         SPELL_AURA_MOD_FLAT_SPELL_DAMAGE_VERSUS             = 180,
         SPELL_AURA_181                                      = 181,
-
         SPELL_AURA_MOD_RESISTANCE_OF_STAT_PERCENT           = 182,
         SPELL_AURA_MOD_CRITICAL_THREAT                      = 183,
         SPELL_AURA_MOD_ATTACKER_MELEE_HIT_CHANCE            = 184,
@@ -1074,8 +1077,8 @@ public:
         KEY         = 13,
         PERMANENT   = 14,
         MISC        = 15,
-        GLYPH       = 16
-
+        GLYPH       = 16,
+        MAX
     };
 
     enum ItemSubClassWeaponMask
@@ -1454,7 +1457,6 @@ public:
     Q_ENUMS(PreventionType)
     Q_ENUMS(DamageClass)
     Q_ENUMS(SpellSchoolMask)
-
     Q_ENUMS(Effects)
     Q_ENUMS(TargetFlags)
     Q_ENUMS(CreatureTypeMask)

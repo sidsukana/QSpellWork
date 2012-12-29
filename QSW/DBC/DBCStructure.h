@@ -59,7 +59,7 @@ struct SpellEntry
     quint32    AttributesEx4;                                   // 8
     quint32    AttributesEx5;                                   // 9
     quint32    AttributesEx6;                                   // 10
-    quint32    AttributesExG;                                   // 11
+    quint32    AttributesEx7;                                   // 11
     uarray2    Stances;                                         // 12-13
     uarray2    StancesNot;                                      // 14-15
     quint32    Targets;                                         // 16
