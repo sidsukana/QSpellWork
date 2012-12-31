@@ -4,7 +4,7 @@ quint8 Locale = 0;
 
 QString QSW_VERSION("2.1");
 QString CLIENT_VERSION("2.4.3");
-QString QSW_BUILD("45");
+QString QSW_BUILD("46");
 QString CLIENT_BUILD("8606");
 
 QString ProcFlagDesc[] =
@@ -57,12 +57,6 @@ QString ProcFlagDesc[] =
     "22 Taken off-hand melee attacks",
     // 23 0x00800000
     "23 Successful off-hand melee attacks",
-    "24",
-    "25",
-    "26",
-    "27",
-    "28",
-    "29",
-    "30",
-    "31"
+    // 24 0x01000000
+    "24 Unknown flag 24"
 };
