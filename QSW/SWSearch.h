@@ -87,7 +87,6 @@ class MetaSpell : public QObject
         Q_INVOKABLE QVariant EquippedItemInventoryTypeMask() { return m_spellInfo->EquippedItemInventoryTypeMask; }
         Q_INVOKABLE QVariant Effect(quint8 index) { return m_spellInfo->Effect[index]; }
         Q_INVOKABLE QVariant EffectDieSides(quint8 index) { return m_spellInfo->EffectDieSides[index]; }
-        Q_INVOKABLE QVariant EffectDicePerLevel(quint8 index) { return m_spellInfo->EffectDicePerLevel[index]; }
         Q_INVOKABLE QVariant EffectRealPointsPerLevel(quint8 index) { return m_spellInfo->EffectRealPointsPerLevel[index]; }
         Q_INVOKABLE QVariant EffectBasePoints(quint8 index) { return m_spellInfo->EffectBasePoints[index]; }
         Q_INVOKABLE QVariant EffectMechanic(quint8 index) { return m_spellInfo->EffectMechanic[index]; }
@@ -149,7 +148,6 @@ class MetaSpell : public QObject
         quint8 ReagentCount() { return 8; }
         quint8 Effect() { return 3; }
         quint8 EffectDieSides() { return 3; }
-        quint8 EffectDicePerLevel() { return 3; }
         quint8 EffectRealPointsPerLevel() { return 3; }
         quint8 EffectBasePoints() { return 3; }
         quint8 EffectMechanic() { return 3; }
@@ -184,7 +182,6 @@ class MetaSpell : public QObject
         Q_PROPERTY(quint8 ReagentCount READ ReagentCount)
         Q_PROPERTY(quint8 Effect READ Effect)
         Q_PROPERTY(quint8 EffectDieSides READ EffectDieSides)
-        Q_PROPERTY(quint8 EffectDicePerLevel READ EffectDicePerLevel)
         Q_PROPERTY(quint8 EffectRealPointsPerLevel READ EffectRealPointsPerLevel)
         Q_PROPERTY(quint8 EffectBasePoints READ EffectBasePoints)
         Q_PROPERTY(quint8 EffectMechanic READ EffectMechanic)
