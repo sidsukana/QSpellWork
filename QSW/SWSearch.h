@@ -34,17 +34,20 @@ class MetaSpell : public QObject
         Q_INVOKABLE QVariant Category() { return m_spellInfo->getCategory(); }
         Q_INVOKABLE QVariant Dispel() { return m_spellInfo->getDispel(); }
         Q_INVOKABLE QVariant Mechanic() { return m_spellInfo->getMechanic(); }
-        Q_INVOKABLE QVariant Attributes() { return m_spellInfo->Attributes; }
-        Q_INVOKABLE QVariant AttributesEx() { return m_spellInfo->AttributesEx; }
-        Q_INVOKABLE QVariant AttributesEx2() { return m_spellInfo->AttributesEx2; }
-        Q_INVOKABLE QVariant AttributesEx3() { return m_spellInfo->AttributesEx3; }
-        Q_INVOKABLE QVariant AttributesEx4() { return m_spellInfo->AttributesEx4; }
-        Q_INVOKABLE QVariant AttributesEx5() { return m_spellInfo->AttributesEx5; }
-        Q_INVOKABLE QVariant AttributesEx6() { return m_spellInfo->AttributesEx6; }
-        Q_INVOKABLE QVariant AttributesEx7() { return m_spellInfo->AttributesEx7; }
-        Q_INVOKABLE QVariant AttributesEx8() { return m_spellInfo->AttributesEx8; }
-        Q_INVOKABLE QVariant Stances(quint8 index) { return m_spellInfo->getStances(index); }
-        Q_INVOKABLE QVariant StancesNot(quint8 index) { return m_spellInfo->getStancesNot(index); }
+        Q_INVOKABLE QVariant Attributes() { return m_spellInfo->getAttributes(); }
+        Q_INVOKABLE QVariant AttributesEx1() { return m_spellInfo->getAttributesEx1(); }
+        Q_INVOKABLE QVariant AttributesEx2() { return m_spellInfo->getAttributesEx2(); }
+        Q_INVOKABLE QVariant AttributesEx3() { return m_spellInfo->getAttributesEx3(); }
+        Q_INVOKABLE QVariant AttributesEx4() { return m_spellInfo->getAttributesEx4(); }
+        Q_INVOKABLE QVariant AttributesEx5() { return m_spellInfo->getAttributesEx5(); }
+        Q_INVOKABLE QVariant AttributesEx6() { return m_spellInfo->getAttributesEx6(); }
+        Q_INVOKABLE QVariant AttributesEx7() { return m_spellInfo->getAttributesEx7(); }
+        Q_INVOKABLE QVariant AttributesEx8() { return m_spellInfo->getAttributesEx8(); }
+        Q_INVOKABLE QVariant AttributesEx9() { return m_spellInfo->getAttributesEx9(); }
+        Q_INVOKABLE QVariant AttributesEx10() { return m_spellInfo->getAttributesEx10(); }
+        Q_INVOKABLE QVariant AttributesEx11() { return m_spellInfo->getAttributesEx11(); }
+        Q_INVOKABLE QVariant Stances() { return m_spellInfo->getStances(); }
+        Q_INVOKABLE QVariant StancesNot() { return m_spellInfo->getStancesNot(); }
         Q_INVOKABLE QVariant Targets() { return m_spellInfo->getTargets(); }
         Q_INVOKABLE QVariant TargetCreatureType() { return m_spellInfo->getTargetCreatureType(); }
         Q_INVOKABLE QVariant RequiresSpellFocus() { return m_spellInfo->getRequiresSpellFocus(); }
@@ -57,7 +60,7 @@ class MetaSpell : public QObject
         Q_INVOKABLE QVariant TargetAuraSpell() { return m_spellInfo->getTargetAuraSpell(); }
         Q_INVOKABLE QVariant ExcludeCasterAuraSpell() { return m_spellInfo->getExcludeCasterAuraSpell(); }
         Q_INVOKABLE QVariant ExcludeTargetAuraSpell() { return m_spellInfo->getExcludeTargetAuraSpell(); }
-        Q_INVOKABLE QVariant CastingTimeIndex() { return m_spellInfo->CastingTimeIndex; }
+        Q_INVOKABLE QVariant CastingTimeIndex() { return m_spellInfo->getCastingTimeIndex(); }
         Q_INVOKABLE QVariant RecoveryTime() { return m_spellInfo->getRecoveryTime(); }
         Q_INVOKABLE QVariant CategoryRecoveryTime() { return m_spellInfo->getCategoryRecoveryTime(); }
         Q_INVOKABLE QVariant InterruptFlags() { return m_spellInfo->getInterruptFlags(); }
@@ -69,13 +72,13 @@ class MetaSpell : public QObject
         Q_INVOKABLE QVariant MaxLevel() { return m_spellInfo->getMaxLevel(); }
         Q_INVOKABLE QVariant BaseLevel() { return m_spellInfo->getBaseLevel(); }
         Q_INVOKABLE QVariant SpellLevel() { return m_spellInfo->getSpellLevel(); }
-        Q_INVOKABLE QVariant DurationIndex() { return m_spellInfo->DurationIndex; }
-        Q_INVOKABLE QVariant PowerType() { return m_spellInfo->PowerType; }
+        Q_INVOKABLE QVariant DurationIndex() { return m_spellInfo->getDurationIndex(); }
+        Q_INVOKABLE QVariant PowerType() { return m_spellInfo->getPowerType(); }
         Q_INVOKABLE QVariant ManaCost() { return m_spellInfo->getManaCost(); }
         Q_INVOKABLE QVariant ManaCostPerlevel() { return m_spellInfo->getManaCostPerLevel(); }
         Q_INVOKABLE QVariant ManaPerSecond() { return m_spellInfo->getManaPerSecond(); }
-        Q_INVOKABLE QVariant RangeIndex() { return m_spellInfo->RangeIndex; }
-        Q_INVOKABLE QVariant Speed() { return m_spellInfo->Speed; }
+        Q_INVOKABLE QVariant RangeIndex() { return m_spellInfo->getRangeIndex(); }
+        Q_INVOKABLE QVariant Speed() { return m_spellInfo->getSpeed(); }
         Q_INVOKABLE QVariant ModalNextSpell() { return m_spellInfo->getModalNextSpell(); }
         Q_INVOKABLE QVariant StackAmount() { return m_spellInfo->getStackAmount(); }
         Q_INVOKABLE QVariant Totem(quint8 index) { return m_spellInfo->getTotem(index); }
@@ -102,9 +105,9 @@ class MetaSpell : public QObject
         Q_INVOKABLE QVariant EffectTriggerSpell(quint8 index) { return m_spellInfo->getEffectTriggerSpell(index); }
         Q_INVOKABLE QVariant EffectPointsPerComboPoint(quint8 index) { return m_spellInfo->getEffectPointsPerComboPoint(index); }
         Q_INVOKABLE QVariant EffectValueMultiplier(quint8 index) { return m_spellInfo->getEffectValueMultiplier(index); }
-        Q_INVOKABLE QVariant SpellVisual(quint8 index) { return m_spellInfo->SpellVisual[index]; }
-        Q_INVOKABLE QVariant SpellIconId() { return m_spellInfo->SpellIconId; }
-        Q_INVOKABLE QVariant ActiveIconId() { return m_spellInfo->ActiveIconId; }
+        Q_INVOKABLE QVariant SpellVisual(quint8 index) { return m_spellInfo->getSpellVisual(index); }
+        Q_INVOKABLE QVariant SpellIconId() { return m_spellInfo->getSpellIconId(); }
+        Q_INVOKABLE QVariant SpellBuffIconId() { return m_spellInfo->getSpellBuffIconId(); }
         Q_INVOKABLE QVariant SpellName() { return QString::fromUtf8(m_spellInfo->SpellName); }
         Q_INVOKABLE QVariant Rank() { return QString::fromUtf8(m_spellInfo->Rank); }
         Q_INVOKABLE QVariant Description() { return QString::fromUtf8(m_spellInfo->Description); }
@@ -127,15 +130,11 @@ class MetaSpell : public QObject
         Q_INVOKABLE QVariant MinReputation() { return m_spellInfo->getMinReputation(); }
         Q_INVOKABLE QVariant RequiredAuraVision() { return m_spellInfo->getRequiredAuraVision(); }
         Q_INVOKABLE QVariant AreaGroupId() { return m_spellInfo->getAreaGroupId(); }
-        Q_INVOKABLE QVariant SchoolMask() { return m_spellInfo->SchoolMask; }
+        Q_INVOKABLE QVariant SchoolMask() { return m_spellInfo->getSchoolMask(); }
         Q_INVOKABLE QVariant RuneCostId() { return m_spellInfo->RuneCostId; }
         Q_INVOKABLE QVariant SpellMissileId() { return m_spellInfo->SpellMissileId; }
-        Q_INVOKABLE QVariant PowerDisplayId() { return m_spellInfo->getPowerDisplayId(); }
         Q_INVOKABLE QVariant SpellDescriptionVariableId() { return m_spellInfo->SpellDescriptionVariableId; }
-        Q_INVOKABLE QVariant SpellDifficultyId() { return m_spellInfo->SpellDifficultyId; }
 
-        quint8 Stances() { return 2; }
-        quint8 StancesNot() { return 2; }
         quint8 Totem() { return 2; }
         quint8 TotemCategory() { return 2; }
         quint8 Reagent() { return 8; }
@@ -167,8 +166,6 @@ class MetaSpell : public QObject
     private:
         SpellEntry const* m_spellInfo;
 
-        Q_PROPERTY(quint8 Stances READ Stances)
-        Q_PROPERTY(quint8 StancesNot READ StancesNot)
         Q_PROPERTY(quint8 Totem READ Totem)
         Q_PROPERTY(quint8 TotemCategory READ TotemCategory)
         Q_PROPERTY(quint8 Reagent READ Reagent)

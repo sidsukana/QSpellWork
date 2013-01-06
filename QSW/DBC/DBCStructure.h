@@ -24,6 +24,7 @@ struct SkillLineEntry
     quint32    SpellIcon;                                       // 4
     char*      AlternateVerb;                                   // 5
     quint32    CanLink;                                         // 6
+    // quint32    Unk7                                          // 7
 };
 
 struct SkillLineAbilityEntry
@@ -33,41 +34,45 @@ struct SkillLineAbilityEntry
     quint32    SpellId;                                         // 2
     quint32    RaceMask;                                        // 3
     quint32    ClassMask;                                       // 4
-    quint32    RacemaskNot;                                     // 5 unknown
-    quint32    ClassMaskNot;                                    // 6 unknown
-    quint32    ReqSkillValue;                                   // 7 for trade skill.not for training.
-    quint32    ForwardSpellId;                                  // 8
-    quint32    LearnOnGetSkill;                                 // 9 can be 1 or 2 for spells learned on get skill
-    quint32    MaxValue;                                        // 10
-    quint32    MinValue;                                        // 11
-    quint32    CharPoints[2];                                   // 12-13
+    quint32    ReqSkillValue;                                   // 5 for trade skill.not for training.
+    quint32    ForwardSpellId;                                  // 6
+    quint32    LearnOnGetSkill;                                 // 7 can be 1 or 2 for spells learned on get skill
+    quint32    MaxValue;                                        // 8
+    quint32    MinValue;                                        // 9
+    quint32    CharPoints;                                      // 10
+    // quint32    Unk11;                                        // 11
+    // quint32    Unk12;                                        // 12
 };
 
 struct SpellAuraOptionsEntry
 {
     // quint32    Id;                                           // 0       m_ID
-    quint32    StackAmount;                                  // 1       m_cumulativeAura
-    quint32    ProcChance;                                   // 2       m_procChance
-    quint32    ProcCharges;                                  // 3       m_procCharges
-    quint32    ProcFlags;                                    // 4       m_procTypeMask
+    quint32    SpellId;                                         // 1      m_spellId
+    // quint32    Unk2;                                         // 2       flags ?
+    quint32    StackAmount;                                     // 3       m_cumulativeAura
+    quint32    ProcChance;                                      // 4       m_procChance
+    quint32    ProcCharges;                                     // 5       m_procCharges
+    quint32    ProcFlags;                                       // 6       m_procTypeMask
 };
 
 struct SpellAuraRestrictionsEntry
 {
-    // quint32    Id;                                           // 0       m_ID
-    quint32    CasterAuraState;                              // 1       m_casterAuraState
-    quint32    TargetAuraState;                              // 2       m_targetAuraState
-    quint32    CasterAuraStateNot;                           // 3       m_excludeCasterAuraState
-    quint32    TargetAuraStateNot;                           // 4       m_excludeTargetAuraState
-    quint32    CasterAuraSpell;                              // 5       m_casterAuraSpell
-    quint32    TargetAuraSpell;                              // 6       m_targetAuraSpell
-    quint32    ExcludeCasterAuraSpell;                       // 7       m_excludeCasterAuraSpell
-    quint32    ExcludeTargetAuraSpell;                       // 8       m_excludeTargetAuraSpell
+    // quint32    Id;                                        // 0       m_ID
+    quint32    SpellId;                                      // 1       m_spellId
+    // quint32    Unk2;                                      // 2       flags ?
+    quint32    CasterAuraState;                              // 3       m_casterAuraState
+    quint32    TargetAuraState;                              // 4       m_targetAuraState
+    quint32    CasterAuraStateNot;                           // 5       m_excludeCasterAuraState
+    quint32    TargetAuraStateNot;                           // 6       m_excludeTargetAuraState
+    quint32    CasterAuraSpell;                              // 7       m_casterAuraSpell
+    quint32    TargetAuraSpell;                              // 8       m_targetAuraSpell
+    quint32    ExcludeCasterAuraSpell;                       // 9       m_excludeCasterAuraSpell
+    quint32    ExcludeTargetAuraSpell;                       // 10       m_excludeTargetAuraSpell
 };
 
 struct SpellCastingRequirementsEntry
 {
-    // quint32    Id;                                           // 0       m_ID
+    // quint32    Id;                                        // 0       m_ID
     quint32    FacingCasterFlags;                            // 1       m_facingCasterFlags
     quint32    MinFactionId;                                 // 2       m_minFactionID not used
     quint32    MinReputation;                                // 3       m_minReputation not used
@@ -78,208 +83,240 @@ struct SpellCastingRequirementsEntry
 
 struct SpellCategoriesEntry
 {
-    // quint32    Id;                                           // 0       m_ID
-    quint32    Category;                                     // 1       m_category
-    quint32    DamageClass;                                     // 2       m_defenseType
-    quint32    Dispel;                                       // 3       m_dispelType
-    quint32    Mechanic;                                     // 4       m_mechanic
-    quint32    PreventionType;                               // 5       m_preventionType
-    quint32    StartRecoveryCategory;                        // 6       m_startRecoveryCategory
+    // quint32    Id;                                        // 0       m_ID
+    quint32    SpellId;                                      // 1       m_spellId
+    // quint32    Unk2;                                      // 2       flags ?
+    quint32    Category;                                     // 3       m_category
+    quint32    DamageClass;                                  // 4       m_defenseType
+    quint32    Dispel;                                       // 5       m_dispelType
+    quint32    Mechanic;                                     // 6       m_mechanic
+    quint32    PreventionType;                               // 7       m_preventionType
+    quint32    StartRecoveryCategory;                        // 8       m_startRecoveryCategory
+    // quint32    Unk9;                                      // 9       unk9 ?
 };
 
 struct SpellClassOptionsEntry
 {
-    // quint32    Id;                                          // 1        m_ID
-    quint32    ModalNextSpell;                              // 2        m_modalNextSpell not used
-    quint32    SpellFamilyFlags[3];                         // 3-5      m_spellClassMask NOTE: size is 12 bytes!!!
-    quint32    SpellFamilyName;                             // 6        m_spellClassSet
-    char*      Description;                                 // 7
+    // quint32    Id;                                        // 0        m_ID
+    quint32    ModalNextSpell;                               // 1        m_modalNextSpell not used
+    quint32    SpellFamilyFlags[3];                          // 2-4      m_spellClassMask NOTE: size is 12 bytes!!!
+    // quint32 Unk5                                          // 5
+    quint32    SpellFamilyName;                              // 6        m_spellClassSet
 };
 
 struct SpellCooldownsEntry
 {
-    // quint32    Id;                                           // 0       m_ID
-    quint32    CategoryRecoveryTime;                         // 1       m_categoryRecoveryTime
-    quint32    RecoveryTime;                                 // 2       m_recoveryTime
-    quint32    StartRecoveryTime;                            // 3       m_startRecoveryTime
+    // quint32    Id;                                        // 0       m_ID
+    quint32    SpellId;                                      // 1       m_spellId
+    // quint32    Unk2;                                      // 2       flags ?
+    quint32    CategoryRecoveryTime;                         // 3       m_categoryRecoveryTime
+    quint32    RecoveryTime;                                 // 4       m_recoveryTime
+    quint32    StartRecoveryTime;                            // 5       m_startRecoveryTime
 };
 
 struct SpellEffectEntry
 {
-    //quint32    Id;                                         // 0        m_ID
-    quint32    Effect;                                       // 1        m_effect
-    float      EffectValueMultiplier;                        // 2        m_effectAmplitude
-    quint32    EffectApplyAuraName;                          // 3        m_effectAura
-    quint32    EffectAmplitude;                              // 4        m_effectAuraPeriod
-    qint32     EffectBasePoints;                             // 5        m_effectBasePoints (don't must be used in spell/auras explicitly, must be used cached Spell::m_currentBasePoints)
-    float      EffectBonusCoefficient;                       // 6        m_effectBonusCoefficient
-    float      EffectDamageMultiplier;                       // 7        m_effectChainAmplitude
-    quint32    EffectChainTarget;                            // 8        m_effectChainTargets
-    qint32     EffectDieSides;                               // 9        m_effectDieSides
-    quint32    EffectItemType;                               // 10       m_effectItemType
-    quint32    EffectMechanic;                               // 11       m_effectMechanic
-    qint32     EffectMiscValue;                              // 12       m_effectMiscValue
-    qint32     EffectMiscValueB;                             // 13       m_effectMiscValueB
-    float      EffectPointsPerComboPoint;                    // 14       m_effectPointsPerCombo
-    quint32    EffectRadiusIndex;                            // 15       m_effectRadiusIndex - spellradius.dbc
-    quint32    EffectRadiusMaxIndex;                         // 16       4.0.0
-    float      EffectRealPointsPerLevel;                     // 17       m_effectRealPointsPerLevel
-    quint32    EffectSpellClassMask[3];                      // 18       m_effectSpellClassMask, effect 0
-    quint32    EffectTriggerSpell;                           // 19       m_effectTriggerSpell
-    quint32    EffectImplicitTargetA;                        // 20       m_implicitTargetA
-    quint32    EffectImplicitTargetB;                        // 21       m_implicitTargetB
-    quint32    EffectSpellId;                                // 22       new 4.0.0
-    quint32    EffectIndex;                                  // 23       new 4.0.0
-    //quint32    unk;                                        // 24 - 4.2.0
+    // quint32    Id;                                        // 0        m_ID
+    // quint32    Unk1;                                      // 1        flags ?
+    quint32    Effect;                                       // 2        m_effect
+    float      EffectValueMultiplier;                        // 3        m_effectAmplitude
+    quint32    EffectApplyAuraName;                          // 4        m_effectAura
+    quint32    EffectAmplitude;                              // 5        m_effectAuraPeriod
+    qint32     EffectBasePoints;                             // 6        m_effectBasePoints (don't must be used in spell/auras explicitly, must be used cached Spell::m_currentBasePoints)
+    float      EffectBonusCoefficient;                       // 7        m_effectBonusCoefficient
+    float      EffectDamageMultiplier;                       // 8        m_effectChainAmplitude
+    quint32    EffectChainTarget;                            // 9        m_effectChainTargets
+    qint32     EffectDieSides;                               // 10        m_effectDieSides
+    quint32    EffectItemType;                               // 11       m_effectItemType
+    quint32    EffectMechanic;                               // 12       m_effectMechanic
+    qint32     EffectMiscValue;                              // 13       m_effectMiscValue
+    qint32     EffectMiscValueB;                             // 14       m_effectMiscValueB
+    float      EffectPointsPerComboPoint;                    // 15       m_effectPointsPerCombo
+    quint32    EffectRadiusIndex;                            // 16       m_effectRadiusIndex - spellradius.dbc
+    quint32    EffectRadiusMaxIndex;                         // 17       4.0.0
+    float      EffectRealPointsPerLevel;                     // 18       m_effectRealPointsPerLevel
+    quint32    EffectSpellClassMask[3];                      // 19-21       m_effectSpellClassMask, effect 0
+    // quint32    Unk22                                      // 22
+    quint32    EffectTriggerSpell;                           // 23       m_effectTriggerSpell
+    // quint32    Unk24                                      // 24
+    quint32    EffectImplicitTargetA;                        // 25       m_implicitTargetA
+    quint32    EffectImplicitTargetB;                        // 26       m_implicitTargetB
+    quint32    EffectSpellId;                                // 27       new 4.0.0
+    quint32    EffectIndex;                                  // 27       new 4.0.0
+    //quint32    unk;                                        // 29 - 4.2.0
 };
 
 struct SpellEffect
 {
     SpellEffect()
     {
-        effects[0] = NULL;
-        effects[1] = NULL;
-        effects[2] = NULL;
+        for (quint8 i = 0; i < 20; ++i)
+            effects[i] = NULL;
     }
-    SpellEffectEntry const* effects[3];
+    SpellEffectEntry const* effects[20];
 };
 
 typedef std::map<quint32, SpellEffect> SpellEffectMap;
 
 struct SpellEquippedItemsEntry
 {
-    // quint32    Id;                                           // 0       m_ID
-    qint32     EquippedItemClass;                            // 1       m_equippedItemClass (value)
-    qint32     EquippedItemInventoryTypeMask;                // 2       m_equippedItemInvTypes (mask)
-    qint32     EquippedItemSubClassMask;                     // 3       m_equippedItemSubclass (mask)
+    // quint32    Id;                                        // 0       m_ID
+    quint32    SpellId;                                      // 1       m_spellId
+    // quint32    Unk2;                                      // 2       flags ?
+    qint32     EquippedItemClass;                            // 3       m_equippedItemClass (value)
+    qint32     EquippedItemInventoryTypeMask;                // 4       m_equippedItemInvTypes (mask)
+    qint32     EquippedItemSubClassMask;                     // 5       m_equippedItemSubclass (mask)
 };
 
 struct SpellInterruptsEntry
 {
-    // quint32    Id;                                           // 0        m_ID
-    quint32    AuraInterruptFlags;                           // 1       m_auraInterruptFlags
-    // quint32    Unk1;                                          // 2       4.0.0
-    quint32    ChannelInterruptFlags;                        // 3       m_channelInterruptFlags
-    // quint32    Unk2;                                          // 4       4.0.0
+    // quint32    Id;                                        // 0       m_ID
+    quint32    SpellId;                                      // 1       m_spellId
+    // quint32    Unk2;                                      // 2       flags ?
+    quint32    AuraInterruptFlags;                           // 3       m_auraInterruptFlags
+    quint32    ChannelInterruptFlags;                        // 4       m_channelInterruptFlags
     quint32    InterruptFlags;                               // 5       m_interruptFlags
+    // quint32    Unk6;                                      // 6       Unk6 ?
+    // quint32    Unk7;                                      // 7       Unk7 ?
 };
 
 struct SpellLevelsEntry
 {
-    // quint32    Id;                                           // 0        m_ID
-    quint32    BaseLevel;                                    // 41       m_baseLevel
-    quint32    MaxLevel;                                     // 40       m_maxLevel
-    quint32    SpellLevel;                                   // 42       m_spellLevel
+    // quint32    Id;                                        // 0       m_ID
+    quint32    SpellId;                                      // 1       m_spellId
+    // quint32    Unk2;                                      // 2       flags ?
+    quint32    BaseLevel;                                    // 3       m_baseLevel
+    quint32    MaxLevel;                                     // 4       m_maxLevel
+    quint32    SpellLevel;                                   // 5       m_spellLevel
 };
 
 struct SpellPowerEntry
 {
-    // quint32    Id;                                           // 0        m_ID
-    quint32    ManaCost;                                     // 1       m_manaCost
-    quint32    ManaCostPerlevel;                             // 2       m_manaCostPerLevel
-    quint32    ManaCostPercentage;                           // 3      m_manaCostPct
-    quint32    ManaPerSecond;                                // 4       m_manaPerSecond
-    quint32    PowerDisplayId;                               // 5      m_powerDisplayID - id from PowerDisplay.dbc, new in 3.1
-    // quint32    Unk1;                                         // 6        4.0.0
+    // quint32    Id;                                        // 0       m_ID
+    quint32    SpellId;                                      // 1       m_spellId
+    // quint32    Unk2;                                      // 2       flags ?
+    qint32     PowerType;                                    // 3       m_powerType ?
+    quint32    ManaCost;                                     // 4       m_manaCost
+    quint32    ManaCostPerlevel;                             // 5       m_manaCostPerLevel
+    quint32    ManaCostPercentage;                           // 6       m_manaCostPct
+    quint32    ManaPerSecond;                                // 7       m_manaPerSecond
+    quint32    PowerDisplayId;                               // 8       m_powerDisplayID - id from PowerDisplay.dbc, new in 3.1
+    // quint32    Unk9;                                      // 9       4.0.0
+    // quint32    Unk10;                                     // 10      4.0.0
+    // quint32    Unk11;                                     // 11      4.0.0
+    // quint32    Unk12;                                     // 12      4.0.0
 };
 
 struct SpellReagentsEntry
 {
-    // quint32    Id;                          // 0        m_ID
-    qint32     Reagent[MAX_SPELL_REAGENTS];                     // 1-9    m_reagent
-    quint32    ReagentCount[MAX_SPELL_REAGENTS];                // 10-17    m_reagentCount
+    // quint32    Id;                                        // 0        m_ID
+    quint32    Reagent[MAX_SPELL_REAGENTS];                  // 1-9    m_reagent
+    quint32    ReagentCount[MAX_SPELL_REAGENTS];             // 10-17    m_reagentCount
+    // quint32 Unk18                                         // 18
+    // quint32 Unk19                                         // 19
 };
 
 struct SpellScalingEntry
 {
-    // quint32    Id;                                           // 0        m_ID
+    // quint32    Id;                                        // 0        m_ID
     quint32    CastTimeMin;                                  // 1
     quint32    CastTimeMax;                                  // 2
     quint32    CastScalingMaxLevel;                          // 3
     quint32    PlayerClass;                                  // 4        (index * 100) + charLevel => gtSpellScaling.dbc
-    float      Coeff1[MAX_EFFECT_INDEX];                                    // 5-7
-    float      Coeff2[MAX_EFFECT_INDEX];                                    // 8-10
-    float      Coeff3[MAX_EFFECT_INDEX];                                    // 11-13
-    float      UnkMult;                                      // 14        some coefficient, mostly 1.0f
-    quint32    UnkLevel;                                     // 15        some level
+    float      Coeff1[MAX_EFFECT_INDEX];                     // 5-7
+    float      Coeff2[MAX_EFFECT_INDEX];                     // 8-10
+    float      Coeff3[MAX_EFFECT_INDEX];                     // 11-13
+    float      CoefBase;                                     // 14        some coefficient, mostly 1.0f
+    quint32    CoefLevelBase;                                // 15        some level
 };
 
 struct SpellShapeshiftEntry
 {
-    // quint32     Id;                                           // 0        m_ID
-    quint32     Stances[2];                                      // 13       m_shapeshiftMask
-    quint32     StancesNot[2];                                   // 15       m_shapeshiftExclude
-    quint32     StanceBarOrder;                            // 155      m_stanceBarOrder not used
+    // quint32     Id;                                        // 0        m_ID
+    quint32     Stances;                                      // 1        m_shapeshiftMask
+    // quint32     Unk2;                                      // 2        m_shapeshiftMask
+    quint32     StancesNot;                                   // 3        m_shapeshiftExclude
+    // quint32     Unk4;                                      // 4        m_shapeshiftExclude
+    quint32     StanceBarOrder;                               // 5        m_stanceBarOrder not used
 };
 
 struct SpellTargetRestrictionsEntry
 {
-    // quint32    Id;                                           // 0        m_ID
-    float      MaxTargetRadius;                              // 1 - m_maxTargetRadius
-    quint32    MaxAffectedTargets;                           // 2        m_maxTargets
-    quint32    MaxTargetLevel;                               // 3        m_maxTargetLevel
-    quint32    TargetCreatureType;                           // 4        m_targetCreatureType
-    quint32    Targets;                                      // 5        m_targets
+    // quint32    Id;                                         // 0        m_ID
+    quint32    SpellId;                                       // 1
+    // quint32    Unk2;                                       // 2        flags ?
+    float      MaxTargetRadius;                               // 3        m_maxTargetRadius
+    // float      Unk4;                                       // 4        Unk4
+    quint32    MaxAffectedTargets;                            // 5        m_maxTargets
+    quint32    MaxTargetLevel;                                // 6        m_maxTargetLevel
+    quint32    TargetCreatureType;                            // 7        m_targetCreatureType
+    quint32    Targets;                                       // 8        m_targets
 };
 
 struct SpellTotemsEntry
 {
-    // quint32    Id;                                        // 0        m_ID
-    quint32    TotemCategory[MAX_SPELL_TOTEM_CATEGORIES];                               // 162-163  m_requiredTotemCategoryID
-    quint32    Totem[MAX_SPELL_TOTEMS];                                       // 52-53    m_totem
+    // quint32    Id;                                         // 0        m_ID
+    quint32    TotemCategory[MAX_SPELL_TOTEM_CATEGORIES];     // 1-2      m_requiredTotemCategoryID
+    quint32    Totem[MAX_SPELL_TOTEMS];                       // 3-4      m_totem
+};
+
+struct SpellMiscEntry
+{
+    // quint32 Id,                                              // 0 - Misc id
+    quint32 SpellId;                                            // 1 - Spell id
+    // quint32 Unk2,                                            // 2 - flags?
+    quint32 Attributes;                                         // 3 - Attributes
+    quint32 AttributesEx1;                                      // 4 - Attributes
+    quint32 AttributesEx2;                                      // 5 - Attributes
+    quint32 AttributesEx3;                                      // 6 - Attributes
+    quint32 AttributesEx4;                                      // 7 - Attributes
+    quint32 AttributesEx5;                                      // 8 - Attributes
+    quint32 AttributesEx6;                                      // 9 - Attributes
+    quint32 AttributesEx7;                                      // 10 - Attributes
+    quint32 AttributesEx8;                                      // 11 - Attributes
+    quint32 AttributesEx9;                                      // 12 - Attributes
+    quint32 AttributesEx10;                                     // 13 - Attributes
+    quint32 AttributesEx11;                                     // 14 - Attributes
+    quint32 CastTimeIndex;                                      // 15 - Attributes
+    quint32 DurationIndex;                                      // 16 - Attributes
+    quint32 RangeIndex;                                         // 17 - Attributes
+    float   Speed;                                              // 18 - Attributes
+    quint32 SpellVisual[2];                                     // 19-20 - Attributes
+    quint32 SpellIconId;                                        // 21 - Attributes
+    quint32 SpellBuffIconId;                                    // 22 - Attributes
+    quint32 SchoolMask;                                         // 23 - SchoolMask
 };
 
 struct SpellEntry
 {
     quint32     Id;                                           // 0        m_ID
-    quint32     Attributes;                                   // 1        m_attribute
-    quint32     AttributesEx;                                 // 2        m_attributesEx
-    quint32     AttributesEx2;                                // 3        m_attributesExB
-    quint32     AttributesEx3;                                // 4        m_attributesExC
-    quint32     AttributesEx4;                                // 5        m_attributesExD
-    quint32     AttributesEx5;                                // 6        m_attributesExE
-    quint32     AttributesEx6;                                // 7        m_attributesExF
-    quint32     AttributesEx7;                                // 8       3.2.0 (0x20 - totems, 0x4 - paladin auras, etc...)
-    quint32     AttributesEx8;                                // 9        m_attributesExH
-    // quint32     unk_400_1;                                 // 10       4.0.0
-    // quint32     unk_420;                                   // 11 - 4.2.0
-    quint32     CastingTimeIndex;                             // 12 - m_castingTimeIndex
-    quint32     DurationIndex;                                // 13 - m_durationIndex
-    quint32     PowerType;                                    // 14 - m_powerType
-    quint32     RangeIndex;                                   // 15 - m_rangeIndex
-    float       Speed;                                        // 16 - m_speed
-    quint32     SpellVisual[2];                               // 17 - m_spellVisualID, 18 - m_spellVisualID1
-    quint32     SpellIconId;                                  // 19 - m_spellIconID
-    quint32     ActiveIconId;                                 // 20 - m_activeIconID
-    char*       SpellName;                                    // 21 - m_name_lang
-    char*       Rank;                                         // 22 - m_nameSubtext_lang
-    char*       Description;                                  // 23 - m_description_lang not used
-    char*       ToolTip;                                      // 24 - m_auraDescription_lang not used
-    quint32     SchoolMask;                                   // 25 - m_schoolMask
-    quint32     RuneCostId;                                   // 26 - m_runeCostID
-    quint32     SpellMissileId;                               // 27 - m_spellMissileID not used
-    quint32     SpellDescriptionVariableId;                   // 28 - m_spellDescriptionVariableID, 3.2.0
-    quint32     SpellDifficultyId;                            // 29 - m_spellDifficultyID - id from SpellDifficulty.dbc
-    // float       unk_f1;                                    // 30 - 4.0.1
-    quint32     SpellScalingId;                               // 31 - SpellScaling.dbc
-    quint32     SpellAuraOptionsId;                           // 32 - SpellAuraOptions.dbc
-    quint32     SpellAuraRestrictionsId;                      // 33 - SpellAuraRestrictions.dbc
-    quint32     SpellCastingRequirementsId;                   // 34 - SpellCastingRequirements.dbc
-    quint32     SpellCategoriesId;                            // 35 - SpellCategories.dbc
-    quint32     SpellClassOptionsId;                          // 36 - SpellClassOptions.dbc
-    quint32     SpellCooldownsId;                             // 37 - SpellCooldowns.dbc
-    // quint32     UnkIndex7;                                 // 38 - all zeros...
-    quint32     SpellEquippedItemsId;                         // 39 - SpellEquippedItems.dbc
-    quint32     SpellInterruptsId;                            // 40 - SpellInterrupts.dbc
-    quint32     SpellLevelsId;                                // 41 - SpellLevels.dbc
-    quint32     SpellPowerId;                                 // 42 - SpellPower.dbc
-    quint32     SpellReagentsId;                              // 43 - SpellReagents.dbc
-    quint32     SpellShapeshiftId;                            // 44 - SpellShapeshift.dbc
-    quint32     SpellTargetRestrictionsId;                    // 45 - SpellTargetRestrictions.dbc
-    quint32     SpellTotemsId;                                // 46 - SpellTotems.dbc
-    // quint32     ResearchProject;                           // 47 - ResearchProject.dbc
+    char*       SpellName;                                    // 1 - m_name_lang
+    char*       Rank;                                         // 2 - m_nameSubtext_lang
+    char*       Description;                                  // 3 - m_description_lang not used
+    char*       ToolTip;                                      // 4 - m_auraDescription_lang not used
+    quint32     RuneCostId;                                   // 5 - m_runeCostID
+    quint32     SpellMissileId;                               // 6 - m_spellMissileID not used
+    quint32     SpellDescriptionVariableId;                   // 7 - m_spellDescriptionVariableID, 3.2.0
+    // float       unk_f1;                                    // 8 - 4.0.1
+    quint32     SpellScalingId;                               // 9 - SpellScaling.dbc
+    quint32     SpellAuraOptionsId;                           // 10 - SpellAuraOptions.dbc
+    quint32     SpellAuraRestrictionsId;                      // 11 - SpellAuraRestrictions.dbc
+    quint32     SpellCastingRequirementsId;                   // 12 - SpellCastingRequirements.dbc
+    quint32     SpellCategoriesId;                            // 13 - SpellCategories.dbc
+    quint32     SpellClassOptionsId;                          // 14 - SpellClassOptions.dbc
+    quint32     SpellCooldownsId;                             // 15 - SpellCooldowns.dbc
+    quint32     SpellEquippedItemsId;                         // 16 - SpellEquippedItems.dbc
+    quint32     SpellInterruptsId;                            // 17 - SpellInterrupts.dbc
+    quint32     SpellLevelsId;                                // 18 - SpellLevels.dbc
+    quint32     SpellPowerId;                                 // 19 - SpellPower.dbc
+    quint32     SpellReagentsId;                              // 20 - SpellReagents.dbc
+    quint32     SpellShapeshiftId;                            // 21 - SpellShapeshift.dbc
+    quint32     SpellTargetRestrictionsId;                    // 22 - SpellTargetRestrictions.dbc
+    quint32     SpellTotemsId;                                // 23 - SpellTotems.dbc
+    quint32     SpellMiscId;                                  // 24 - S.dbc
 
     // struct access functions
+    SpellMiscEntry const* getSpellMisc() const;
     SpellAuraOptionsEntry const* getSpellAuraOptions() const;
     SpellAuraRestrictionsEntry const* getSpellAuraRestrictions() const;
     SpellCastingRequirementsEntry const* getSpellCastingRequirements() const;
@@ -296,6 +333,29 @@ struct SpellEntry
     SpellShapeshiftEntry const* getSpellShapeshift() const;
     SpellTargetRestrictionsEntry const* getSpellTargetRestrictions() const;
     SpellTotemsEntry const* getSpellTotems() const;
+
+    // SpellMisc methods
+    quint32 getAttributes() const;
+    quint32 getAttributesEx1() const;
+    quint32 getAttributesEx2() const;
+    quint32 getAttributesEx3() const;
+    quint32 getAttributesEx4() const;
+    quint32 getAttributesEx5() const;
+    quint32 getAttributesEx6() const;
+    quint32 getAttributesEx7() const;
+    quint32 getAttributesEx8() const;
+    quint32 getAttributesEx9() const;
+    quint32 getAttributesEx10() const;
+    quint32 getAttributesEx11() const;
+    quint32 getCastingTimeIndex() const;
+    quint32 getDurationIndex() const;
+    quint32 getRangeIndex() const;
+    float   getSpeed() const;
+    quint32 getSpellVisual(quint8 index) const;
+    quint32 getSpellIconId() const;
+    quint32 getSpellBuffIconId() const;
+    quint32 getSchoolMask() const;
+    qint32  getPowerType() const;
 
     // SpellAuraOptions methods
     quint32 getStackAmount() const;
@@ -373,8 +433,8 @@ struct SpellEntry
     quint32 getTotemCategory(quint8 index) const;
 
     // SpellShapeshift methods
-    quint32 getStances(quint8 index) const;
-    quint32 getStancesNot(quint8 index) const;
+    quint32 getStances() const;
+    quint32 getStancesNot() const;
     quint32 getStanceBarOrder() const;
 
     // SpellTargetRestrictions methods

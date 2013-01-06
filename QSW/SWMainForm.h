@@ -75,7 +75,6 @@ class SWMainForm : public QMainWindow, public Ui::SWMainUI
 
     private:
         void loadComboBoxes();
-        //void detectLocale();
         void createModeButton();
         void initializeCompleter();
 
@@ -94,20 +93,6 @@ class Enums : public QObject
     Q_OBJECT
 public:
 
-    enum LocalesDBC
-    {
-        enUS,
-        koKR,
-        frFR,
-        deDE,
-        zhCN,
-        zhTW,
-        esES,
-        esMX,
-        ruRU
-
-    };
-
     enum Mechanic
     {
         MECHANIC_NONE               = 0,
@@ -117,7 +102,6 @@ public:
         MECHANIC_DISTRACT           = 4,
         MECHANIC_FEAR               = 5,
         MECHANIC_GRIP               = 6,
-
         MECHANIC_ROOT               = 7,
         MECHANIC_PACIFY             = 8,
         MECHANIC_SILENCE            = 9,
@@ -134,7 +118,6 @@ public:
         MECHANIC_SHACKLE            = 20,
         MECHANIC_MOUNT              = 21,
         MECHANIC_INFECTED           = 22,
-
         MECHANIC_TURN               = 23,
         MECHANIC_HORROR             = 24,
         MECHANIC_INVULNERABILITY    = 25,
@@ -143,7 +126,8 @@ public:
         MECHANIC_DISCOVERY          = 28,
         MECHANIC_IMMUNE_SHIELD      = 29,
         MECHANIC_SAPPED             = 30,
-        MECHANIC_ENRAGED            = 31
+        MECHANIC_ENRAGED            = 31,
+        MECHANIC_32                 = 32
     };
 
     enum PreventionType
@@ -372,11 +356,34 @@ public:
         SPELL_EFFECT_171                        = 171,
         SPELL_EFFECT_172                        = 172,
         SPELL_EFFECT_173                        = 173,
-        SPELL_EFFECT_174                        = 174
-
-
-
-
+        SPELL_EFFECT_174                        = 174,
+        SPELL_EFFECT_175                        = 175,
+        SPELL_EFFECT_176                        = 176,
+        SPELL_EFFECT_177                        = 177,
+        SPELL_EFFECT_178                        = 178,
+        SPELL_EFFECT_179                        = 179,
+        SPELL_EFFECT_180                        = 180,
+        SPELL_EFFECT_181                        = 181,
+        SPELL_EFFECT_182                        = 182,
+        SPELL_EFFECT_183                        = 183,
+        SPELL_EFFECT_184                        = 184,
+        SPELL_EFFECT_185                        = 185,
+        SPELL_EFFECT_186                        = 186,
+        SPELL_EFFECT_187                        = 187,
+        SPELL_EFFECT_188                        = 188,
+        SPELL_EFFECT_189                        = 189,
+        SPELL_EFFECT_190                        = 190,
+        SPELL_EFFECT_191                        = 191,
+        SPELL_EFFECT_192                        = 192,
+        SPELL_EFFECT_193                        = 193,
+        SPELL_EFFECT_194                        = 194,
+        SPELL_EFFECT_195                        = 195,
+        SPELL_EFFECT_196                        = 196,
+        SPELL_EFFECT_197                        = 197,
+        SPELL_EFFECT_198                        = 198,
+        SPELL_EFFECT_199                        = 199,
+        SPELL_EFFECT_200                        = 200,
+        SPELL_EFFECT_201                        = 201
     };
 
     enum TargetFlags
@@ -458,7 +465,7 @@ public:
         SPELL_ATTR_CANT_CANCEL                      = 1 << 0x1F
     };
 
-    enum AttributesEx
+    enum AttributesEx1
     {
         SPELL_ATTR_EX_UNK0                          = 1 << 0x00,
         SPELL_ATTR_EX_DRAIN_ALL_POWER               = 1 << 0x01,
@@ -744,6 +751,114 @@ public:
         SPELL_ATTR_EX8_UNK29                      = 1 << 0x1D,
         SPELL_ATTR_EX8_UNK30                      = 1 << 0x1E,
         SPELL_ATTR_EX8_UNK31                      = 1 << 0x1F
+    };
+
+    enum AttributesEx9
+    {
+        SPELL_ATTR_EX9_UNK0                       = 1 << 0x00,
+        SPELL_ATTR_EX9_UNK1                       = 1 << 0x01,
+        SPELL_ATTR_EX9_UNK2                       = 1 << 0x02,
+        SPELL_ATTR_EX9_UNK3                       = 1 << 0x03,
+        SPELL_ATTR_EX9_UNK4                       = 1 << 0x04,
+        SPELL_ATTR_EX9_UNK5                       = 1 << 0x05,
+        SPELL_ATTR_EX9_UNK6                       = 1 << 0x06,
+        SPELL_ATTR_EX9_UNK7                       = 1 << 0x07,
+        SPELL_ATTR_EX9_UNK8                       = 1 << 0x08,
+        SPELL_ATTR_EX9_UNK9                       = 1 << 0x09,
+        SPELL_ATTR_EX9_UNK10                      = 1 << 0x0A,
+        SPELL_ATTR_EX9_UNK11                      = 1 << 0x0B,
+        SPELL_ATTR_EX9_UNK12                      = 1 << 0x0C,
+        SPELL_ATTR_EX9_UNK13                      = 1 << 0x0D,
+        SPELL_ATTR_EX9_UNK14                      = 1 << 0x0E,
+        SPELL_ATTR_EX9_UNK15                      = 1 << 0x0F,
+        SPELL_ATTR_EX9_UNK16                      = 1 << 0x10,
+        SPELL_ATTR_EX9_UNK17                      = 1 << 0x11,
+        SPELL_ATTR_EX9_UNK18                      = 1 << 0x12,
+        SPELL_ATTR_EX9_UNK19                      = 1 << 0x13,
+        SPELL_ATTR_EX9_UNK20                      = 1 << 0x14,
+        SPELL_ATTR_EX9_UNK21                      = 1 << 0x15,
+        SPELL_ATTR_EX9_UNK22                      = 1 << 0x16,
+        SPELL_ATTR_EX9_UNK23                      = 1 << 0x17,
+        SPELL_ATTR_EX9_UNK24                      = 1 << 0x18,
+        SPELL_ATTR_EX9_UNK25                      = 1 << 0x19,
+        SPELL_ATTR_EX9_UNK26                      = 1 << 0x1A,
+        SPELL_ATTR_EX9_UNK27                      = 1 << 0x1B,
+        SPELL_ATTR_EX9_UNK28                      = 1 << 0x1C,
+        SPELL_ATTR_EX9_UNK29                      = 1 << 0x1D,
+        SPELL_ATTR_EX9_UNK30                      = 1 << 0x1E,
+        SPELL_ATTR_EX9_UNK31                      = 1 << 0x1F
+    };
+
+    enum AttributesEx10
+    {
+        SPELL_ATTR_EX10_UNK0                       = 1 << 0x00,
+        SPELL_ATTR_EX10_UNK1                       = 1 << 0x01,
+        SPELL_ATTR_EX10_UNK2                       = 1 << 0x02,
+        SPELL_ATTR_EX10_UNK3                       = 1 << 0x03,
+        SPELL_ATTR_EX10_UNK4                       = 1 << 0x04,
+        SPELL_ATTR_EX10_UNK5                       = 1 << 0x05,
+        SPELL_ATTR_EX10_UNK6                       = 1 << 0x06,
+        SPELL_ATTR_EX10_UNK7                       = 1 << 0x07,
+        SPELL_ATTR_EX10_UNK8                       = 1 << 0x08,
+        SPELL_ATTR_EX10_UNK9                       = 1 << 0x09,
+        SPELL_ATTR_EX10_UNK10                      = 1 << 0x0A,
+        SPELL_ATTR_EX10_UNK11                      = 1 << 0x0B,
+        SPELL_ATTR_EX10_UNK12                      = 1 << 0x0C,
+        SPELL_ATTR_EX10_UNK13                      = 1 << 0x0D,
+        SPELL_ATTR_EX10_UNK14                      = 1 << 0x0E,
+        SPELL_ATTR_EX10_UNK15                      = 1 << 0x0F,
+        SPELL_ATTR_EX10_UNK16                      = 1 << 0x10,
+        SPELL_ATTR_EX10_UNK17                      = 1 << 0x11,
+        SPELL_ATTR_EX10_UNK18                      = 1 << 0x12,
+        SPELL_ATTR_EX10_UNK19                      = 1 << 0x13,
+        SPELL_ATTR_EX10_UNK20                      = 1 << 0x14,
+        SPELL_ATTR_EX10_UNK21                      = 1 << 0x15,
+        SPELL_ATTR_EX10_UNK22                      = 1 << 0x16,
+        SPELL_ATTR_EX10_UNK23                      = 1 << 0x17,
+        SPELL_ATTR_EX10_UNK24                      = 1 << 0x18,
+        SPELL_ATTR_EX10_UNK25                      = 1 << 0x19,
+        SPELL_ATTR_EX10_UNK26                      = 1 << 0x1A,
+        SPELL_ATTR_EX10_UNK27                      = 1 << 0x1B,
+        SPELL_ATTR_EX10_UNK28                      = 1 << 0x1C,
+        SPELL_ATTR_EX10_UNK29                      = 1 << 0x1D,
+        SPELL_ATTR_EX10_UNK30                      = 1 << 0x1E,
+        SPELL_ATTR_EX10_UNK31                      = 1 << 0x1F
+    };
+
+    enum AttributesEx11
+    {
+        SPELL_ATTR_EX11_UNK0                       = 1 << 0x00,
+        SPELL_ATTR_EX11_UNK1                       = 1 << 0x01,
+        SPELL_ATTR_EX11_UNK2                       = 1 << 0x02,
+        SPELL_ATTR_EX11_UNK3                       = 1 << 0x03,
+        SPELL_ATTR_EX11_UNK4                       = 1 << 0x04,
+        SPELL_ATTR_EX11_UNK5                       = 1 << 0x05,
+        SPELL_ATTR_EX11_UNK6                       = 1 << 0x06,
+        SPELL_ATTR_EX11_UNK7                       = 1 << 0x07,
+        SPELL_ATTR_EX11_UNK8                       = 1 << 0x08,
+        SPELL_ATTR_EX11_UNK9                       = 1 << 0x09,
+        SPELL_ATTR_EX11_UNK10                      = 1 << 0x0A,
+        SPELL_ATTR_EX11_UNK11                      = 1 << 0x0B,
+        SPELL_ATTR_EX11_UNK12                      = 1 << 0x0C,
+        SPELL_ATTR_EX11_UNK13                      = 1 << 0x0D,
+        SPELL_ATTR_EX11_UNK14                      = 1 << 0x0E,
+        SPELL_ATTR_EX11_UNK15                      = 1 << 0x0F,
+        SPELL_ATTR_EX11_UNK16                      = 1 << 0x10,
+        SPELL_ATTR_EX11_UNK17                      = 1 << 0x11,
+        SPELL_ATTR_EX11_UNK18                      = 1 << 0x12,
+        SPELL_ATTR_EX11_UNK19                      = 1 << 0x13,
+        SPELL_ATTR_EX11_UNK20                      = 1 << 0x14,
+        SPELL_ATTR_EX11_UNK21                      = 1 << 0x15,
+        SPELL_ATTR_EX11_UNK22                      = 1 << 0x16,
+        SPELL_ATTR_EX11_UNK23                      = 1 << 0x17,
+        SPELL_ATTR_EX11_UNK24                      = 1 << 0x18,
+        SPELL_ATTR_EX11_UNK25                      = 1 << 0x19,
+        SPELL_ATTR_EX11_UNK26                      = 1 << 0x1A,
+        SPELL_ATTR_EX11_UNK27                      = 1 << 0x1B,
+        SPELL_ATTR_EX11_UNK28                      = 1 << 0x1C,
+        SPELL_ATTR_EX11_UNK29                      = 1 << 0x1D,
+        SPELL_ATTR_EX11_UNK30                      = 1 << 0x1E,
+        SPELL_ATTR_EX11_UNK31                      = 1 << 0x1F
     };
 
     enum AuraType
@@ -1101,7 +1216,66 @@ public:
         SPELL_AURA_350                                      = 350,
         SPELL_AURA_351                                      = 351,
         SPELL_AURA_352                                      = 352,
-        SPELL_AURA_MOD_CAMOUFLAGE                           = 353
+        SPELL_AURA_MOD_CAMOUFLAGE                           = 353,
+        SPELL_AURA_354                                      = 354,
+        SPELL_AURA_355                                      = 355,
+        SPELL_AURA_356                                      = 356,
+        SPELL_AURA_357                                      = 357,
+        SPELL_AURA_358                                      = 358,
+        SPELL_AURA_359                                      = 359,
+        SPELL_AURA_360                                      = 360,
+        SPELL_AURA_361                                      = 361,
+        SPELL_AURA_362                                      = 362,
+        SPELL_AURA_363                                      = 363,
+        SPELL_AURA_364                                      = 364,
+        SPELL_AURA_365                                      = 365,
+        SPELL_AURA_366                                      = 366,
+        SPELL_AURA_367                                      = 367,
+        SPELL_AURA_368                                      = 368,
+        SPELL_AURA_369                                      = 369,
+        SPELL_AURA_370                                      = 370,
+        SPELL_AURA_371                                      = 371,
+        SPELL_AURA_372                                      = 372,
+        SPELL_AURA_373                                      = 373,
+        SPELL_AURA_374                                      = 374,
+        SPELL_AURA_375                                      = 375,
+        SPELL_AURA_376                                      = 376,
+        SPELL_AURA_377                                      = 377,
+        SPELL_AURA_378                                      = 378,
+        SPELL_AURA_379                                      = 379,
+        SPELL_AURA_380                                      = 380,
+        SPELL_AURA_381                                      = 381,
+        SPELL_AURA_382                                      = 382,
+        SPELL_AURA_383                                      = 383,
+        SPELL_AURA_384                                      = 384,
+        SPELL_AURA_385                                      = 385,
+        SPELL_AURA_386                                      = 386,
+        SPELL_AURA_387                                      = 387,
+        SPELL_AURA_388                                      = 388,
+        SPELL_AURA_389                                      = 389,
+        SPELL_AURA_390                                      = 390,
+        SPELL_AURA_391                                      = 391,
+        SPELL_AURA_392                                      = 392,
+        SPELL_AURA_393                                      = 393,
+        SPELL_AURA_394                                      = 394,
+        SPELL_AURA_395                                      = 395,
+        SPELL_AURA_396                                      = 396,
+        SPELL_AURA_397                                      = 397,
+        SPELL_AURA_398                                      = 398,
+        SPELL_AURA_399                                      = 399,
+        SPELL_AURA_400                                      = 400,
+        SPELL_AURA_401                                      = 401,
+        SPELL_AURA_402                                      = 402,
+        SPELL_AURA_403                                      = 403,
+        SPELL_AURA_404                                      = 404,
+        SPELL_AURA_405                                      = 405,
+        SPELL_AURA_406                                      = 406,
+        SPELL_AURA_407                                      = 407,
+        SPELL_AURA_408                                      = 408,
+        SPELL_AURA_409                                      = 409,
+        SPELL_AURA_410                                      = 410,
+        SPELL_AURA_411                                      = 411,
+        SPELL_AURA_412                                      = 412
     };
 
     enum ShapeshiftFormMask
@@ -1161,7 +1335,6 @@ public:
         MISC        = 15,
         GLYPH       = 16,
         MAX
-
     };
 
     enum ItemSubClassWeaponMask
@@ -1318,7 +1491,6 @@ public:
         AURA_STATE_UNKNOWN21                = 21,
         AURA_STATE_UNKNOWN22                = 22,
         AURA_STATE_HEALTH_ABOVE_75_PERCENT  = 23
-
     };
 
     enum Targets
@@ -1432,7 +1604,36 @@ public:
         TARGET_DEST_CHANNEL_CASTER              = 106,
         TARGET_UNK_AREA_UNK_DST_107             = 107,
         TARGET_GAMEOBJECT_AREA_PATH             = 108,
-        TARGET_DEST_UNK_110                     = 110
+        TARGET_DEST_UNK_110                     = 110,
+        TARGET_111                              = 111,
+        TARGET_112                              = 112,
+        TARGET_113                              = 113,
+        TARGET_114                              = 114,
+        TARGET_115                              = 115,
+        TARGET_116                              = 116,
+        TARGET_117                              = 117,
+        TARGET_118                              = 118,
+        TARGET_119                              = 119,
+        TARGET_120                              = 120,
+        TARGET_121                              = 121,
+        TARGET_122                              = 122,
+        TARGET_123                              = 123,
+        TARGET_124                              = 124,
+        TARGET_125                              = 125,
+        TARGET_126                              = 126,
+        TARGET_127                              = 127,
+        TARGET_128                              = 128,
+        TARGET_129                              = 129,
+        TARGET_130                              = 130,
+        TARGET_131                              = 131,
+        TARGET_132                              = 132,
+        TARGET_133                              = 133,
+        TARGET_134                              = 134,
+        TARGET_135                              = 135,
+        TARGET_136                              = 136,
+        TARGET_137                              = 137,
+        TARGET_138                              = 138,
+        TARGET_139                              = 139
     };
 
     enum UnitMods
@@ -1519,38 +1720,54 @@ public:
         SPELLFAMILY_HUNTER      = 9,
         SPELLFAMILY_PALADIN     = 10,
         SPELLFAMILY_SHAMAN      = 11,
-        SPELLFAMILY_UNK2        = 12,
+        SPELLFAMILY_UNK12       = 12,
         SPELLFAMILY_POTION      = 13,
         // unused               = 14,
         SPELLFAMILY_DEATHKNIGHT = 15,
-
         // unused               = 16,
-        SPELLFAMILY_PET         = 17
+        SPELLFAMILY_PET         = 17,
+        SPELLFAMILY_UNK50       = 50,
+        SPELLFAMILY_UNK52       = 52,
+        SPELLFAMILY_MONK        = 53,
+        SPELLFAMILY_UNK54       = 54,
+        SPELLFAMILY_UNK56       = 56,
+        SPELLFAMILY_UNK57       = 57,
+        SPELLFAMILY_UNK66       = 66,
+        SPELLFAMILY_UNK71       = 71,
+        SPELLFAMILY_UNK78       = 78,
+        SPELLFAMILY_UNK91       = 91
     };
 
     enum Powers
     {
-        POWER_MANA          = 0,
-        POWER_RAGE          = 1,
-        POWER_FOCUS         = 2,
-        POWER_ENERGY        = 3,
-        POWER_HAPPINESS     = 4,
-        POWER_RUNE          = 5,
-        POWER_RUNIC_POWER   = 6,
-        POWER_HEALTH        = -2,
+        SPELL_POWER_MANA            = 0,
+        SPELL_POWER_RAGE            = 1,
+        SPELL_POWER_FOCUS           = 2,
+        SPELL_POWER_ENERGY          = 3,
+        SPELL_POWER_HAPPINESS       = 4,
+        SPELL_POWER_RUNES           = 5,
+        SPELL_POWER_RUNIC_POWER     = 6,
+        SPELL_POWER_SOUL_SHARDS     = 7,
+        SPELL_POWER_ECLIPSE         = 8,
+        SPELL_POWER_HOLY_POWER      = 9,
+        SPELL_POWER_ALTERNATE_POWER = 10,
+        SPELL_POWER_DARK_FORCE      = 11,
+        SPELL_POWER_CHI             = 12,
+        SPELL_POWER_SHADOW_ORBS     = 13,
+        SPELL_POWER_BURNING_EMBERS  = 14,
+        SPELL_POWER_DEMONIC_FURY    = 15,
+        SPELL_POWER_HEALTH          = -2,
     };
 
-    Q_ENUMS(LocalesDBC)
     Q_ENUMS(Mechanic)
     Q_ENUMS(PreventionType)
     Q_ENUMS(DamageClass)
     Q_ENUMS(SpellSchoolMask)
-
     Q_ENUMS(Effects)
     Q_ENUMS(TargetFlags)
     Q_ENUMS(CreatureTypeMask)
     Q_ENUMS(Attributes)
-    Q_ENUMS(AttributesEx)
+    Q_ENUMS(AttributesEx1)
     Q_ENUMS(AttributesEx2)
     Q_ENUMS(AttributesEx3)
     Q_ENUMS(AttributesEx4)
@@ -1558,6 +1775,9 @@ public:
     Q_ENUMS(AttributesEx6)
     Q_ENUMS(AttributesEx7)
     Q_ENUMS(AttributesEx8)
+    Q_ENUMS(AttributesEx9)
+    Q_ENUMS(AttributesEx10)
+    Q_ENUMS(AttributesEx11)
     Q_ENUMS(AuraType)
     Q_ENUMS(ShapeshiftFormMask)
     Q_ENUMS(ItemClass)

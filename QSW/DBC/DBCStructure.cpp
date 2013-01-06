@@ -81,6 +81,141 @@ SpellTotemsEntry const* SpellEntry::getSpellTotems() const
     return SpellTotemsId ? sSpellTotemsStore.LookupEntry(SpellTotemsId) : NULL;
 }
 
+SpellMiscEntry const* SpellEntry::getSpellMisc() const
+{
+    return SpellMiscId ? sSpellMiscStore.LookupEntry(SpellMiscId) : NULL;
+}
+
+/**
+    SpellMisc methods
+*/
+
+quint32 SpellEntry::getAttributes() const
+{
+    SpellMiscEntry const* misc = getSpellMisc();
+    return misc ? misc->Attributes : 0;
+}
+
+quint32 SpellEntry::getAttributesEx1() const
+{
+    SpellMiscEntry const* misc = getSpellMisc();
+    return misc ? misc->AttributesEx1 : 0;
+}
+
+quint32 SpellEntry::getAttributesEx2() const
+{
+    SpellMiscEntry const* misc = getSpellMisc();
+    return misc ? misc->AttributesEx2 : 0;
+}
+
+quint32 SpellEntry::getAttributesEx3() const
+{
+    SpellMiscEntry const* misc = getSpellMisc();
+    return misc ? misc->AttributesEx3 : 0;
+}
+
+quint32 SpellEntry::getAttributesEx4() const
+{
+    SpellMiscEntry const* misc = getSpellMisc();
+    return misc ? misc->AttributesEx4 : 0;
+}
+
+quint32 SpellEntry::getAttributesEx5() const
+{
+    SpellMiscEntry const* misc = getSpellMisc();
+    return misc ? misc->AttributesEx5 : 0;
+}
+
+quint32 SpellEntry::getAttributesEx6() const
+{
+    SpellMiscEntry const* misc = getSpellMisc();
+    return misc ? misc->AttributesEx6 : 0;
+}
+
+quint32 SpellEntry::getAttributesEx7() const
+{
+    SpellMiscEntry const* misc = getSpellMisc();
+    return misc ? misc->AttributesEx7 : 0;
+}
+
+quint32 SpellEntry::getAttributesEx8() const
+{
+    SpellMiscEntry const* misc = getSpellMisc();
+    return misc ? misc->AttributesEx8 : 0;
+}
+
+quint32 SpellEntry::getAttributesEx9() const
+{
+    SpellMiscEntry const* misc = getSpellMisc();
+    return misc ? misc->AttributesEx9 : 0;
+}
+
+quint32 SpellEntry::getAttributesEx10() const
+{
+    SpellMiscEntry const* misc = getSpellMisc();
+    return misc ? misc->AttributesEx10 : 0;
+}
+
+quint32 SpellEntry::getAttributesEx11() const
+{
+    SpellMiscEntry const* misc = getSpellMisc();
+    return misc ? misc->AttributesEx11 : 0;
+}
+
+quint32 SpellEntry::getCastingTimeIndex() const
+{
+    SpellMiscEntry const* misc = getSpellMisc();
+    return misc ? misc->CastTimeIndex : 0;
+}
+
+quint32 SpellEntry::getDurationIndex() const
+{
+    SpellMiscEntry const* misc = getSpellMisc();
+    return misc ? misc->DurationIndex : 0;
+}
+
+quint32 SpellEntry::getRangeIndex() const
+{
+    SpellMiscEntry const* misc = getSpellMisc();
+    return misc ? misc->RangeIndex : 0;
+}
+
+float SpellEntry::getSpeed() const
+{
+    SpellMiscEntry const* misc = getSpellMisc();
+    return misc ? misc->Speed : 0;
+}
+
+quint32 SpellEntry::getSpellVisual(quint8 index) const
+{
+    SpellMiscEntry const* misc = getSpellMisc();
+    return misc ? misc->SpellVisual[index] : 0;
+}
+
+quint32 SpellEntry::getSpellIconId() const
+{
+    SpellMiscEntry const* misc = getSpellMisc();
+    return misc ? misc->SpellIconId : 0;
+}
+
+quint32 SpellEntry::getSpellBuffIconId() const
+{
+    SpellMiscEntry const* misc = getSpellMisc();
+    return misc ? misc->SpellBuffIconId : 0;
+}
+
+quint32 SpellEntry::getSchoolMask() const
+{
+    SpellMiscEntry const* misc = getSpellMisc();
+    return misc ? misc->SchoolMask : 0;
+}
+
+qint32 SpellEntry::getPowerType() const
+{
+    SpellPowerEntry const* power = getSpellPower();
+    return power ? power->PowerType : 0;
+}
+
 /**
     SpellAuraOptions methods
  */
@@ -389,16 +524,16 @@ quint32 SpellEntry::getPowerDisplayId() const
     SpellShapeshift methods
  */
 
-quint32 SpellEntry::getStances(quint8 index) const
+quint32 SpellEntry::getStances() const
 {
     SpellShapeshiftEntry const* ss = getSpellShapeshift();
-    return ss ? ss->Stances[index] : 0;
+    return ss ? ss->Stances : 0;
 }
 
-quint32 SpellEntry::getStancesNot(quint8 index) const
+quint32 SpellEntry::getStancesNot() const
 {
     SpellShapeshiftEntry const* ss = getSpellShapeshift();
-    return ss ? ss->StancesNot[index] : 0;
+    return ss ? ss->StancesNot : 0;
 }
 
 quint32 SpellEntry::getStanceBarOrder() const

@@ -24,7 +24,7 @@ DBCStorage <SpellScalingEntry> sSpellScalingStore(SpellScalingfmt);
 DBCStorage <SpellShapeshiftEntry> sSpellShapeshiftStore(SpellShapeshiftfmt);
 DBCStorage <SpellTargetRestrictionsEntry> sSpellTargetRestrictionsStore(SpellTargetRestrictionsfmt);
 DBCStorage <SpellTotemsEntry> sSpellTotemsStore(SpellTotemsfmt);
-
+DBCStorage <SpellMiscEntry> sSpellMiscStore(SpellMiscfmt);
 DBCStorage <SkillLineEntry> sSkillLineStore(SkillLinefmt);
 DBCStorage <SkillLineAbilityEntry> sSkillLineAbilityStore(SkillLineAbilityfmt);
 DBCStorage <SpellEntry> sSpellStore(SpellEntryfmt);
@@ -97,6 +97,7 @@ void LoadDBCStores()
     LoadDBC(bad_dbc_files, sSpellTargetRestrictionsStore, dbcPath, "SpellTargetRestrictions.dbc");
     LoadDBC(bad_dbc_files, sSpellTotemsStore,         dbcPath, "SpellTotems.dbc");
     LoadDBC(bad_dbc_files, sSpellEffectStore,         dbcPath, "SpellEffect.dbc");
+    LoadDBC(bad_dbc_files, sSpellMiscStore,           dbcPath, "SpellMisc.dbc");
 
     for(quint32 i = 1; i < sSpellEffectStore.GetNumRows(); ++i)
     {
