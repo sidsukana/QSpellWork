@@ -24,7 +24,6 @@ SWMainForm::SWMainForm(QWidget* parent)
     SpellList->setModel(m_sortedModel);
 
     loadComboBoxes();
-    //detectLocale();
     createModeButton();
     initializeCompleter();
 
@@ -205,29 +204,6 @@ void SWMainForm::createModeButton()
 
     connect(m_modeButton, SIGNAL(triggered(QAction*)), this, SLOT(slotSetMode(QAction*)));
 }
-
-/*void SWMainForm::detectLocale()
-{
-    SpellEntry const* spellInfo = sSpellStore.LookupEntry(1);
-
-    if (!spellInfo)
-        return;
-
-    m_sw->setMetaEnum("LocalesDBC");
-    for (quint8 i = 0; i < m_sw->getMetaEnum().keyCount(); ++i)
-    {
-        if (!QString::fromUtf8(spellInfo->SpellName[i]).isEmpty())
-        {
-            Locale = i;
-            QLabel* label = new QLabel;
-            label->setText(QString("%0<b>DBC Locale: <font color=green>%1 </font><b>")
-                .arg(QChar(QChar::Nbsp), 2, QChar(QChar::Nbsp))
-                .arg(m_sw->getMetaEnum().valueToKey(m_sw->getMetaEnum().value(i))));
-            mainToolBar->addWidget(label);
-            break;
-        }
-    }
-}*/
 
 void SWMainForm::slotLinkClicked(const QUrl &url)
 {

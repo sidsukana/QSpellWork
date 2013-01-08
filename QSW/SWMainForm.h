@@ -75,7 +75,6 @@ class SWMainForm : public QMainWindow, public Ui::SWMainUI
 
     private:
         void loadComboBoxes();
-        //void detectLocale();
         void createModeButton();
         void initializeCompleter();
 
@@ -94,20 +93,6 @@ class Enums : public QObject
     Q_OBJECT
 public:
 
-    enum LocalesDBC
-    {
-        enUS,
-        koKR,
-        frFR,
-        deDE,
-        zhCN,
-        zhTW,
-        esES,
-        esMX,
-        ruRU
-
-    };
-
     enum Mechanic
     {
         MECHANIC_NONE               = 0,
@@ -117,7 +102,6 @@ public:
         MECHANIC_DISTRACT           = 4,
         MECHANIC_FEAR               = 5,
         MECHANIC_GRIP               = 6,
-
         MECHANIC_ROOT               = 7,
         MECHANIC_PACIFY             = 8,
         MECHANIC_SILENCE            = 9,
@@ -134,7 +118,6 @@ public:
         MECHANIC_SHACKLE            = 20,
         MECHANIC_MOUNT              = 21,
         MECHANIC_INFECTED           = 22,
-
         MECHANIC_TURN               = 23,
         MECHANIC_HORROR             = 24,
         MECHANIC_INVULNERABILITY    = 25,
@@ -372,11 +355,15 @@ public:
         SPELL_EFFECT_171                        = 171,
         SPELL_EFFECT_172                        = 172,
         SPELL_EFFECT_173                        = 173,
-        SPELL_EFFECT_174                        = 174
-
-
-
-
+        SPELL_EFFECT_174                        = 174,
+        SPELL_EFFECT_175                        = 175,
+        SPELL_EFFECT_176                        = 176,
+        SPELL_EFFECT_177                        = 177,
+        SPELL_EFFECT_178                        = 178,
+        SPELL_EFFECT_179                        = 179,
+        SPELL_EFFECT_180                        = 180,
+        SPELL_EFFECT_181                        = 181,
+        SPELL_EFFECT_182                        = 182
     };
 
     enum TargetFlags
@@ -1101,7 +1088,24 @@ public:
         SPELL_AURA_350                                      = 350,
         SPELL_AURA_351                                      = 351,
         SPELL_AURA_352                                      = 352,
-        SPELL_AURA_MOD_CAMOUFLAGE                           = 353
+        SPELL_AURA_MOD_CAMOUFLAGE                           = 353,
+        SPELL_AURA_354                                      = 354,
+        SPELL_AURA_355                                      = 355,
+        SPELL_AURA_356                                      = 356,
+        SPELL_AURA_357                                      = 357,
+        SPELL_AURA_358                                      = 358,
+        SPELL_AURA_359                                      = 359,
+        SPELL_AURA_360                                      = 360,
+        SPELL_AURA_361                                      = 361,
+        SPELL_AURA_362                                      = 362,
+        SPELL_AURA_363                                      = 363,
+        SPELL_AURA_364                                      = 364,
+        SPELL_AURA_365                                      = 365,
+        SPELL_AURA_366                                      = 366,
+        SPELL_AURA_367                                      = 367,
+        SPELL_AURA_368                                      = 368,
+        SPELL_AURA_369                                      = 369,
+        SPELL_AURA_370                                      = 370
     };
 
     enum ShapeshiftFormMask
@@ -1523,29 +1527,30 @@ public:
         SPELLFAMILY_POTION      = 13,
         // unused               = 14,
         SPELLFAMILY_DEATHKNIGHT = 15,
-
         // unused               = 16,
         SPELLFAMILY_PET         = 17
     };
 
     enum Powers
     {
-        POWER_MANA          = 0,
-        POWER_RAGE          = 1,
-        POWER_FOCUS         = 2,
-        POWER_ENERGY        = 3,
-        POWER_HAPPINESS     = 4,
-        POWER_RUNE          = 5,
-        POWER_RUNIC_POWER   = 6,
-        POWER_HEALTH        = -2,
+        SPELL_POWER_MANA            = 0,
+        SPELL_POWER_RAGE            = 1,
+        SPELL_POWER_FOCUS           = 2,
+        SPELL_POWER_ENERGY          = 3,
+        SPELL_POWER_HAPPINESS       = 4,
+        SPELL_POWER_RUNE            = 5,
+        SPELL_POWER_RUNIC_POWER     = 6,
+        SPELL_POWER_SOUL_SHARDS     = 7,
+        SPELL_POWER_ECLIPSE         = 8,
+        SPELL_POWER_HOLY_POWER      = 9,
+        SPELL_POWER_ALTERNATE_POWER = 10,
+        SPELL_POWER_HEALTH          = -2,
     };
 
-    Q_ENUMS(LocalesDBC)
     Q_ENUMS(Mechanic)
     Q_ENUMS(PreventionType)
     Q_ENUMS(DamageClass)
     Q_ENUMS(SpellSchoolMask)
-
     Q_ENUMS(Effects)
     Q_ENUMS(TargetFlags)
     Q_ENUMS(CreatureTypeMask)
