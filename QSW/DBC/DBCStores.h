@@ -5,6 +5,7 @@
 #include "DBCStructure.h"
 
 SpellEffectEntry const* GetSpellEffectEntry(quint32 spellId, quint8 effect);
+quint8 getEffectsCount(quint32 spellId);
 
 extern DBCStorage <SkillLineEntry>               sSkillLineStore;
 extern DBCStorage <SkillLineAbilityEntry>        sSkillLineAbilityStore;

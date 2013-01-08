@@ -1116,7 +1116,8 @@ void SWObject::appendSpellEffectInfo(SpellEntry const* spellInfo, quint8 num)
                 "<div class='b-box-body'>"
                 "<div class='b-box'>");
 
-    for (quint8 eff = EFFECT_INDEX_0; eff < MAX_EFFECT_INDEX; ++eff)
+    quint8 effectsCount = getEffectsCount(spellInfo->Id);
+    for (quint8 eff = 0; eff < effectsCount; ++eff)
     {
         if (!spellInfo->getEffect(eff))
         {

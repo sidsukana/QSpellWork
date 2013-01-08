@@ -150,10 +150,12 @@ struct SpellEffect
 {
     SpellEffect()
     {
-        for (quint8 i = 0; i < 20; ++i)
+        count = 0;
+        for (quint8 i = 0; i < 21; ++i)
             effects[i] = NULL;
     }
-    SpellEffectEntry const* effects[20];
+    SpellEffectEntry const* effects[21];
+    quint8 count;
 };
 
 typedef std::map<quint32, SpellEffect> SpellEffectMap;

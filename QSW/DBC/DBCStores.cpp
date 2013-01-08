@@ -102,7 +102,10 @@ void LoadDBCStores()
     for(quint32 i = 1; i < sSpellEffectStore.GetNumRows(); ++i)
     {
         if(SpellEffectEntry const *spellEffect = sSpellEffectStore.LookupEntry(i))
+        {
             sSpellEffectMap[spellEffect->EffectSpellId].effects[spellEffect->EffectIndex] = spellEffect;
+            sSpellEffectMap[spellEffect->EffectSpellId].count++;
+        }
     }
 }
 
@@ -113,4 +116,13 @@ SpellEffectEntry const* GetSpellEffectEntry(quint32 spellId, quint8 effect)
         return NULL;
 
     return itr->second.effects[effect];
+}
+
+quint8 getEffectsCount(quint32 spellId)
+{
+    SpellEffectMap::const_iterator itr = sSpellEffectMap.find(spellId);
+    if(itr == sSpellEffectMap.end())
+        return 0;
+
+    return itr->second.count;
 }
