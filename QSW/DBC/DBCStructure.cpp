@@ -53,7 +53,7 @@ SpellLevelsEntry const* SpellEntry::getSpellLevels() const
 
 SpellPowerEntry const* SpellEntry::getSpellPower() const
 {
-    return SpellPowerId ? sSpellPowerStore.LookupEntry(SpellPowerId) : NULL;
+    return Id ? sSpellPowerStore.LookupEntry(Id) : NULL;
 }
 
 SpellReagentsEntry const* SpellEntry::getSpellReagents() const
@@ -496,7 +496,7 @@ quint32 SpellEntry::getManaCost() const
     return power ? power->ManaCost : 0;
 }
 
-quint32 SpellEntry::getManaCostPercentage() const
+float SpellEntry::getManaCostPercentage() const
 {
     SpellPowerEntry const* power = getSpellPower();
     return power ? power->ManaCostPercentage : 0;

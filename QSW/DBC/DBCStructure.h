@@ -200,10 +200,10 @@ struct SpellPowerEntry
     qint32     PowerType;                                    // 3       m_powerType ?
     quint32    ManaCost;                                     // 4       m_manaCost
     quint32    ManaCostPerlevel;                             // 5       m_manaCostPerLevel
-    quint32    ManaCostPercentage;                           // 6       m_manaCostPct
+    //quint32    Unk6;                                       // 6       unk6
     quint32    ManaPerSecond;                                // 7       m_manaPerSecond
     quint32    PowerDisplayId;                               // 8       m_powerDisplayID - id from PowerDisplay.dbc, new in 3.1
-    // quint32    Unk9;                                      // 9       4.0.0
+    float      ManaCostPercentage;                           // 9       m_manaCostPct
     // quint32    Unk10;                                     // 10      4.0.0
     // quint32    Unk11;                                     // 11      4.0.0
     // quint32    Unk12;                                     // 12      4.0.0
@@ -310,7 +310,7 @@ struct SpellEntry
     quint32     SpellEquippedItemsId;                         // 16 - SpellEquippedItems.dbc
     quint32     SpellInterruptsId;                            // 17 - SpellInterrupts.dbc
     quint32     SpellLevelsId;                                // 18 - SpellLevels.dbc
-    quint32     SpellPowerId;                                 // 19 - SpellPower.dbc
+    //quint32     SpellPowerId;                                 // 19 - SpellPower.dbc
     quint32     SpellReagentsId;                              // 20 - SpellReagents.dbc
     quint32     SpellShapeshiftId;                            // 21 - SpellShapeshift.dbc
     quint32     SpellTargetRestrictionsId;                    // 22 - SpellTargetRestrictions.dbc
@@ -418,7 +418,7 @@ struct SpellEntry
 
     // SpellPower methods
     quint32 getManaCost() const;
-    quint32 getManaCostPercentage() const;
+    float   getManaCostPercentage() const;
     quint32 getManaPerSecond() const;
     quint32 getManaCostPerLevel() const;
     quint32 getPowerDisplayId() const;
