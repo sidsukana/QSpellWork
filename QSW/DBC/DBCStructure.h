@@ -133,6 +133,15 @@ struct SpellEntry
     quint32    MinFactionId;                                    // 170 not used, and 0 in 2.4.2
     quint32    MinReputation;                                   // 171 not used, and 0 in 2.4.2
     quint32    RequiredAuraVision;                              // 172 not used
+    
+    inline quint32 getAmplitude() const
+    {
+        for (quint8 i = EFFECT_INDEX_0; i < MAX_EFFECT_INDEX; ++i)
+            if (EffectAmplitude[i])
+                return EffectAmplitude[i];
+
+        return 0;
+    }
 
     private:
         SpellEntry(SpellEntry const&);

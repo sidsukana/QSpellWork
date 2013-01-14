@@ -528,8 +528,10 @@ void RegExpT(SpellEntry const* spellInfo, QRegExp rx, QString &str)
         SpellEntry const* tSpell = sSpellStore.LookupEntry(rx.cap(4).toInt());
         if (tSpell)
         {
-            str.replace(rx.cap(0), QString("%0")
-                .arg(quint32(tSpell->EffectAmplitude[rx.cap(6).toInt()-1] / 1000)));
+            if (tSpell->EffectAmplitude[rx.cap(6).toInt()-1])
+                str.replace(rx.cap(0), QString("%0").arg(quint32(tSpell->EffectAmplitude[rx.cap(6).toInt()-1] / 1000)));
+            else
+                str.replace(rx.cap(0), QString("%0").arg(quint32(spellInfo->getAmplitude() / 1000)));
         }
     }
     else
@@ -575,6 +577,24 @@ void RegExpX(SpellEntry const* spellInfo, QRegExp rx, QString &str)
     }
 }
 
+void RegExpE(SpellEntry const* spellInfo, QRegExp rx, QString &str)
+{
+    if (!rx.cap(4).isEmpty())
+    {
+        SpellEntry const* tSpell = sSpellStore.LookupEntry(rx.cap(4).toInt());
+        if (tSpell)
+        {
+            str.replace(rx.cap(0), QString("%0")
+                .arg(tSpell->EffectMultipleValue[rx.cap(6).toInt()-1], 0, 'f', 2));
+        }
+    }
+    else
+    {
+        str.replace(rx.cap(0), QString("%0")
+            .arg(spellInfo->EffectMultipleValue[rx.cap(6).toInt()-1], 0, 'f', 2));
+    }
+}
+
 QString SWObject::getDescription(QString str, SpellEntry const* spellInfo)
 {
     if (!m_form->isRegExp())
@@ -602,6 +622,7 @@ QString SWObject::getDescription(QString str, SpellEntry const* spellInfo)
                 case 't': RegExpT(spellInfo, rx, str); break;
                 case 'n': RegExpN(spellInfo, rx, str); break;
                 case 'x': RegExpX(spellInfo, rx, str); break;
+                case 'e': RegExpE(spellInfo, rx, str); break;
                 case 'l': str.replace(rx.cap(0), rx.cap(9)); break;
                 case 'g': str.replace(rx.cap(0), rx.cap(8)); break;
                 case 'z': str.replace(rx.cap(0), QString("[Home]")); break;
