@@ -1,8 +1,7 @@
 #include "SWObject.h"
 #include "SWSearch.h"
 
-#include <QtNetwork/QNetworkReply>
-#include <QtNetwork/QNetworkRequest>
+#include <QtScript/QScriptEngine>
 
 SWObject::SWObject(SWMainForm* form)
     : m_form(form), m_regExp(false), m_type(0)
@@ -528,8 +527,10 @@ void RegExpT(SpellEntry const* spellInfo, QRegExp rx, QString &str)
         SpellEntry const* tSpell = sSpellStore.LookupEntry(rx.cap(4).toInt());
         if (tSpell)
         {
-            str.replace(rx.cap(0), QString("%0")
-                .arg(quint32(tSpell->EffectAmplitude[rx.cap(6).toInt()-1] / 1000)));
+            if (tSpell->EffectAmplitude[rx.cap(6).toInt()-1])
+                str.replace(rx.cap(0), QString("%0").arg(quint32(tSpell->EffectAmplitude[rx.cap(6).toInt()-1] / 1000)));
+            else
+                str.replace(rx.cap(0), QString("%0").arg(quint32(spellInfo->getAmplitude() / 1000)));
         }
     }
     else
@@ -575,12 +576,100 @@ void RegExpX(SpellEntry const* spellInfo, QRegExp rx, QString &str)
     }
 }
 
+void RegExpE(SpellEntry const* spellInfo, QRegExp rx, QString &str)
+{
+    if (!rx.cap(4).isEmpty())
+    {
+        SpellEntry const* tSpell = sSpellStore.LookupEntry(rx.cap(4).toInt());
+        if (tSpell)
+        {
+            str.replace(rx.cap(0), QString("%0")
+                .arg(tSpell->EffectMultipleValue[rx.cap(6).toInt()-1], 0, 'f', 2));
+        }
+    }
+    else
+    {
+        str.replace(rx.cap(0), QString("%0")
+            .arg(spellInfo->EffectMultipleValue[rx.cap(6).toInt()-1], 0, 'f', 2));
+    }
+}
+
 QString SWObject::getDescription(QString str, SpellEntry const* spellInfo)
 {
     if (!m_form->isRegExp())
         return str;
 
-    QRegExp rx("\\$+(([/,*])?([0-9]*);)?([d+\\;)(\\d*)?([1-9]*)([A-z])([1-3]*)(([A-z, ]*)\\:([A-z, ]*)\\;)?");
+    bool locker = false;
+
+    // User values
+    QRegExp rx("\\$+(HND|MWS|mws|MWB|mwb|RWB|rwb|MW|mw|AP|RAP|PL)");
+    while (str.contains(rx))
+    {
+        if (rx.indexIn(str) != -1)
+        {
+            QString value;
+            if (rx.cap(1) == "MWS")
+            {
+                //value = "1";
+            }
+            else if (rx.cap(1) == "mws")
+            {
+                //value = "2";
+            }
+            else if (rx.cap(1) == "MWB")
+            {
+                //value = "3";
+            }
+            else if (rx.cap(1) == "mwb")
+            {
+                //value = "4";
+            }
+            else if (rx.cap(1) == "RWB")
+            {
+                //value = "3";
+            }
+            else if (rx.cap(1) == "rwb")
+            {
+                //value = "4";
+            }
+            else if (rx.cap(1) == "MW")
+            {
+                //value = "5";
+            }
+            else if (rx.cap(1) == "mw")
+            {
+                //value = "6";
+            }
+            else if (rx.cap(1) == "AP")
+            {
+                //value = "7";
+            }
+            else if (rx.cap(1) == "RAP")
+            {
+                //value = "8";
+            }
+            else if (rx.cap(1) == "PL")
+            {
+                //value = "9";
+            }
+            else if (rx.cap(1) == "HND")
+            {
+                //value = "1";
+            }
+            else
+                locker = true;
+
+            if (!locker)
+                str.replace(rx.cap(0), value);
+            else
+            {
+                locker = false;
+                break;
+            }
+        }
+    }
+
+    rx.setPattern("\\$+(([/,*])?([0-9]*);)?([d+\\;)(\\d*)?([1-9]*)([A-z])([1-3]*)(([A-z, ]*)\\:([A-z, ]*)\\;)?");
     while (str.contains(rx))
     {
         if (rx.indexIn(str) != -1)
@@ -602,13 +691,37 @@ QString SWObject::getDescription(QString str, SpellEntry const* spellInfo)
                 case 't': RegExpT(spellInfo, rx, str); break;
                 case 'n': RegExpN(spellInfo, rx, str); break;
                 case 'x': RegExpX(spellInfo, rx, str); break;
+                case 'e': RegExpE(spellInfo, rx, str); break;
                 case 'l': str.replace(rx.cap(0), rx.cap(9)); break;
                 case 'g': str.replace(rx.cap(0), rx.cap(8)); break;
                 case 'z': str.replace(rx.cap(0), QString("[Home]")); break;
-                default: return str;
+                default:
+                    locker = true;
+                    break;
             }
         }
+
+        if (locker)
+            break;
     }
+
+    // Expression
+    rx.setPattern("\\$+\\{([\\d\\D][^{}]*)\\}");
+    while (str.contains(rx))
+    {
+        if (rx.indexIn(str) != -1)
+        {
+            QString expression = rx.cap(1);
+            QScriptEngine engine;
+            QScriptValue result = engine.evaluate(expression);
+            
+            if (!result.isError())
+                str.replace(rx.cap(0), QString::number(result.toNumber(), 'f', 0));
+            else
+                break;
+        }
+    }
+
     return str;
 }
 

@@ -98,7 +98,7 @@ struct SpellEntry
     quint32    EffectBaseDice[MAX_EFFECT_INDEX];                // 71-73
     float      EffectDicePerLevel[MAX_EFFECT_INDEX];            // 74-76
     float      EffectRealPointsPerLevel[MAX_EFFECT_INDEX];      // 77-79
-    float      EffectBasePoints[MAX_EFFECT_INDEX];              // 80-82 (don't must be used in spell/auras explicitly, must be used cached Spell::m_currentBasePoints)
+    qint32     EffectBasePoints[MAX_EFFECT_INDEX];              // 80-82 (don't must be used in spell/auras explicitly, must be used cached Spell::m_currentBasePoints)
     quint32    EffectMechanic[MAX_EFFECT_INDEX];                // 83-85
     quint32    EffectImplicitTargetA[MAX_EFFECT_INDEX];         // 86-88
     quint32    EffectImplicitTargetB[MAX_EFFECT_INDEX];         // 89-91
@@ -141,6 +141,15 @@ struct SpellEntry
     quint32    TotemCategory[MAX_SPELL_TOTEM_CATEGORIES];       // 212-213
     quint32    AreaId;                                          // 214
     quint32    SchoolMask;                                      // 215 school mask
+
+    inline quint32 getAmplitude() const
+    {
+        for (quint8 i = EFFECT_INDEX_0; i < MAX_EFFECT_INDEX; ++i)
+            if (EffectAmplitude[i])
+                return EffectAmplitude[i];
+
+        return 0;
+    }
 
     private:
         SpellEntry(SpellEntry const&);
