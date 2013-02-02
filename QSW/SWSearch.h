@@ -37,7 +37,7 @@ class MetaSpell : public QObject
         Q_INVOKABLE QVariant Dispel() { return m_spellInfo->Dispel; }
         Q_INVOKABLE QVariant Mechanic() { return m_spellInfo->Mechanic; }
         Q_INVOKABLE QVariant Attributes() { return m_spellInfo->Attributes; }
-        Q_INVOKABLE QVariant AttributesEx() { return m_spellInfo->AttributesEx; }
+        Q_INVOKABLE QVariant AttributesEx1() { return m_spellInfo->AttributesEx1; }
         Q_INVOKABLE QVariant AttributesEx2() { return m_spellInfo->AttributesEx2; }
         Q_INVOKABLE QVariant AttributesEx3() { return m_spellInfo->AttributesEx3; }
         Q_INVOKABLE QVariant AttributesEx4() { return m_spellInfo->AttributesEx4; }

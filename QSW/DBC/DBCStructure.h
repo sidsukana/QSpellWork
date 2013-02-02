@@ -50,7 +50,7 @@ struct SpellEntry
     quint32    Dispel;                                          // 4
     quint32    Mechanic;                                        // 5
     quint32    Attributes;                                      // 6
-    quint32    AttributesEx;                                    // 7
+    quint32    AttributesEx1;                                   // 7
     quint32    AttributesEx2;                                   // 8
     quint32    AttributesEx3;                                   // 9
     quint32    AttributesEx4;                                   // 10
