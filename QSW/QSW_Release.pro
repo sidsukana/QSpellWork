@@ -6,11 +6,10 @@
 # Remove it when you are finished editing this file.
 message("You are running qmake on a generated .pro file. This may not work!")
 
-QT += webkit core gui network sql
+QT += webkitwidgets webkit core gui widgets sql xml
 TEMPLATE = app
 TARGET = QSW
 DESTDIR = ../Release
-QT += core gui
 CONFIG += release
 INCLUDEPATH += ./GeneratedFiles \
     ./GeneratedFiles/Release \
@@ -34,6 +33,7 @@ HEADERS += \
     SWDefines.h \
     SWAboutForm.h \
     SWModels.h \
+    SWEnums.h \
     DBC/DBCStructure.h \
     DBC/DBCStores.h \
     DBC/DBCStore.h \
@@ -52,6 +52,7 @@ SOURCES += \
     SWDefines.cpp \
     SWAboutForm.cpp \
     SWModels.cpp \
+    SWEnums.cpp \
     DBC/DBCStores.cpp \
     DBC/DBCFileLoader.cpp
 
