@@ -112,6 +112,9 @@
     <ClCompile Include="GeneratedFiles\Template\moc_SWModels.cpp">
       <Filter>Generated Files\Template</Filter>
     </ClCompile>
+    <ClCompile Include="SWEnums.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Alphanum.h">
@@ -151,6 +154,9 @@
       <Filter>Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="SWObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SWEnums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -22,7 +22,7 @@ extern QString ProcFlagDesc[];
 enum AttrType
 {
     TYPE_ATTR,
-    TYPE_ATTR_EX,
+    TYPE_ATTR_EX1,
     TYPE_ATTR_EX2,
     TYPE_ATTR_EX3,
     TYPE_ATTR_EX4,
