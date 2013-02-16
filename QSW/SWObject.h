@@ -35,9 +35,6 @@ class SWObject
         QString getDescription(QString str, SpellEntry const *spellInfo);
         QString getSpellIconName(quint32 iconId);
 
-        QMetaEnum getMetaEnum() { return m_metaEnum; }
-        void setMetaEnum(const char* enumName);
-
         quint8 getType() const { return m_type; }
         void setType(quint8 type) { m_type = type; }
 
@@ -49,8 +46,6 @@ class SWObject
         bool m_regExp;
         QString html;
         quint8 m_type;
-
-        QMetaEnum m_metaEnum;
 };
 
 namespace Converter

@@ -55,6 +55,9 @@
     <ClCompile Include="SWDefines.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SWEnums.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="SWObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -121,6 +124,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SWDefines.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SWEnums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SWEvent.h">

@@ -151,10 +151,10 @@ QWidget *SpellDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem
         QStringList keys;
         QMetaEnum metaEnum;
 
-        if (item->dbcField == "Effect")
-            metaEnum = Enums::staticMetaObject.enumerator(Enums::staticMetaObject.indexOfEnumerator("Effects"));
-        else if (item->dbcField == "EffectApplyAuraName")
-            metaEnum = Enums::staticMetaObject.enumerator(Enums::staticMetaObject.indexOfEnumerator("AuraType"));
+//         if (item->dbcField == "Effect")
+//             metaEnum = Enums::staticMetaObject.enumerator(Enums::staticMetaObject.indexOfEnumerator("Effects"));
+//         else if (item->dbcField == "EffectApplyAuraName")
+//             metaEnum = Enums::staticMetaObject.enumerator(Enums::staticMetaObject.indexOfEnumerator("AuraType"));
 
         if (metaEnum.isValid())
         {
@@ -202,10 +202,10 @@ void SpellDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, con
             {
                 QMetaEnum metaEnum;
 
-                if (item->dbcField == "Effect")
-                    metaEnum = Enums::staticMetaObject.enumerator(Enums::staticMetaObject.indexOfEnumerator("Effects"));
-                else if (item->dbcField == "EffectApplyAuraName")
-                    metaEnum = Enums::staticMetaObject.enumerator(Enums::staticMetaObject.indexOfEnumerator("AuraType"));
+//                 if (item->dbcField == "Effect")
+//                     metaEnum = Enums::staticMetaObject.enumerator(Enums::staticMetaObject.indexOfEnumerator("Effects"));
+//                 else if (item->dbcField == "EffectApplyAuraName")
+//                     metaEnum = Enums::staticMetaObject.enumerator(Enums::staticMetaObject.indexOfEnumerator("AuraType"));
 
                 if (metaEnum.isValid())
                     model->setData(index, metaEnum.keyToValue(qPrintable(box->currentText())));

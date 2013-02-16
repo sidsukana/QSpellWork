@@ -14,11 +14,6 @@ void SWObject::search()
     delete search;
 }
 
-void SWObject::setMetaEnum(const char* enumName)
-{
-    m_metaEnum = Enums::staticMetaObject.enumerator(Enums::staticMetaObject.indexOfEnumerator(enumName));
-}
-
 float getRadius(SpellEntry const* spellInfo, quint8 effIndex)
 {
     SpellRadiusEntry const* spellRadius = sSpellRadiusStore.LookupEntry(spellInfo->getEffectRadiusIndex(effIndex));
@@ -733,9 +728,8 @@ void SWObject::showInfo(SpellEntry const* spellInfo, quint8 num)
         .arg(spellInfo->getSpellVisual(0))
         .arg(spellInfo->getSpellVisual(1)));
 
-    setMetaEnum("SpellFamilyNames");
     html.append(QString("<li>SpellFamilyName = %0, SpellFamilyFlags = 0x%1 %2 %3</li>")
-        .arg(m_metaEnum.valueToKey(spellInfo->getSpellFamilyName()))
+        .arg(m_form->getEnums()->getSpellFamilies()[spellInfo->getSpellFamilyName()])
         .arg(sSpellFamilyFlags2.toUpper())
         .arg(sSpellFamilyFlags1.toUpper())
         .arg(sSpellFamilyFlags0.toUpper()));
@@ -744,15 +738,13 @@ void SWObject::showInfo(SpellEntry const* spellInfo, quint8 num)
         .arg(spellInfo->getSchoolMask())
         .arg(containAttributes(spellInfo, TYPE_SCHOOL_MASK)));
 
-    setMetaEnum("DamageClass");
     html.append(QString("<li>DamageClass = %0 (%1)</li>")
         .arg(spellInfo->getDamageClass())
-        .arg(m_metaEnum.valueToKey(spellInfo->getDamageClass())));
+        .arg(m_form->getEnums()->getDamageClasses()[spellInfo->getDamageClass()]));
 
-    setMetaEnum("PreventionType");
     html.append(QString("<li>PreventionType = %0 (%1)</li>")
         .arg(spellInfo->getPreventionType())
-        .arg(m_metaEnum.valueToKey(spellInfo->getPreventionType())));
+        .arg(m_form->getEnums()->getPreventionTypes()[spellInfo->getPreventionType()]));
 
     html.append("</ul></div></div>");
 
@@ -774,7 +766,7 @@ void SWObject::showInfo(SpellEntry const* spellInfo, quint8 num)
         if (spellInfo->getAttributesEx1())
             html.append(QString("<li>AttributesEx1: 0x%0 (%1)</li>")
                 .arg(sAttributesEx1.toUpper())
-                .arg(containAttributes(spellInfo, TYPE_ATTR_EX)));
+                .arg(containAttributes(spellInfo, TYPE_ATTR_EX1)));
 
         if (spellInfo->getAttributesEx2())
             html.append(QString("<li>AttributesEx2: 0x%0 (%1)</li>")
@@ -866,10 +858,9 @@ void SWObject::showInfo(SpellEntry const* spellInfo, quint8 num)
 
     if (spellInfo->getEquippedItemClass() != -1)
     {
-        setMetaEnum("ItemClass");
         html.append(QString("<li>EquippedItemClass = %0 (%1)</li>")
             .arg(spellInfo->getEquippedItemClass())
-            .arg(m_metaEnum.valueToKey(spellInfo->getEquippedItemClass())));
+            .arg(m_form->getEnums()->getItemClasses()[spellInfo->getEquippedItemClass()]));
 
         if (spellInfo->getEquippedItemSubClassMask())
         {
@@ -909,15 +900,13 @@ void SWObject::showInfo(SpellEntry const* spellInfo, quint8 num)
     html.append(QString("<li>Category = %0</li>")
         .arg(spellInfo->getCategory()));
 
-    setMetaEnum("DispelType");
     html.append(QString("<li>DispelType = %0 (%1)</li>")
         .arg(spellInfo->getDispel())
-        .arg(m_metaEnum.valueToKey(spellInfo->getDispel())));
+        .arg(m_form->getEnums()->getDispelTypes()[spellInfo->getDispel()]));
 
-    setMetaEnum("Mechanic");
     html.append(QString("<li>Mechanic = %0 (%1)</li>")
         .arg(spellInfo->getMechanic())
-        .arg(m_metaEnum.valueToKey(spellInfo->getMechanic())));
+        .arg(m_form->getEnums()->getMechanics()[spellInfo->getMechanic()]));
 
     appendRangeInfo(spellInfo, num);
 
@@ -946,17 +935,16 @@ void SWObject::showInfo(SpellEntry const* spellInfo, quint8 num)
 
     if (spellInfo->getManaCost() || spellInfo->getManaCostPercentage())
     {
-        setMetaEnum("Powers");
         if (spellInfo->getManaCost())
         {
             html.append(QString("<li>Power Type = %0, Cost %1")
-                .arg(m_metaEnum.valueToKey(spellInfo->getPowerType()))
+                .arg(m_form->getEnums()->getPowers()[spellInfo->getPowerType()])
                 .arg(spellInfo->getManaCost()));
         }
         else if (spellInfo->getManaCostPercentage())
         {
             html.append(QString("<li>Power Type = %0, Cost %1% of base mana")
-                .arg(m_metaEnum.valueToKey(spellInfo->getPowerType()))
+                .arg(m_form->getEnums()->getPowers()[spellInfo->getPowerType()])
                 .arg(spellInfo->getManaCostPercentage()));
         }
 
@@ -976,26 +964,25 @@ void SWObject::showInfo(SpellEntry const* spellInfo, quint8 num)
         .arg(sAIF.toUpper())
         .arg(sCIF.toUpper()));
 
-    setMetaEnum("AuraState");
     if (spellInfo->getCasterAuraState())
         html.append(QString("<li>CasterAuraState = %0 (%1)</li>")
             .arg(spellInfo->getCasterAuraState())
-            .arg(m_metaEnum.valueToKey(spellInfo->getCasterAuraState())));
+            .arg(m_form->getEnums()->getAuraStates()[spellInfo->getCasterAuraState()]));
 
     if (spellInfo->getTargetAuraState())
         html.append(QString("<li>TargetAuraState = %0 (%1)</li>")
             .arg(spellInfo->getTargetAuraState())
-            .arg(m_metaEnum.valueToKey(spellInfo->getTargetAuraState())));
+            .arg(m_form->getEnums()->getAuraStates()[spellInfo->getTargetAuraState()]));
 
     if (spellInfo->getCasterAuraStateNot())
         html.append(QString("<li>CasterAuraStateNot = %0 (%1)</li>")
             .arg(spellInfo->getCasterAuraStateNot())
-            .arg(m_metaEnum.valueToKey(spellInfo->getCasterAuraStateNot())));
+            .arg(m_form->getEnums()->getAuraStates()[spellInfo->getCasterAuraStateNot()]));
 
     if (spellInfo->getTargetAuraStateNot())
         html.append(QString("<li>TargetAuraStateNot = %0 (%1)</li>")
             .arg(spellInfo->getTargetAuraStateNot())
-            .arg(m_metaEnum.valueToKey(spellInfo->getTargetAuraStateNot())));
+            .arg(m_form->getEnums()->getAuraStates()[spellInfo->getTargetAuraStateNot()]));
 
     if (spellInfo->getCasterAuraSpell())
     {
@@ -1162,19 +1149,17 @@ void SWObject::appendSpellEffectInfo(SpellEntry const* spellInfo, quint8 num)
             html.append(QString("<div class='b-effect_name'>Effect %0:</div>"
                                 "<ul>").arg(eff));
 
-            setMetaEnum("Effects");
             html.append(QString("<li>Id: %0 (%1)</li>")
                 .arg(spellInfo->getEffect(eff))
-                .arg(m_metaEnum.valueToKey(spellInfo->getEffect(eff))));
+                .arg(m_form->getEnums()->getSpellEffects()[spellInfo->getEffect(eff)]));
 
             html.append(_Result);
 
-            setMetaEnum("Targets");
             html.append(QString("<li>Targets (%0, %1) (%2, %3)</li>")
                 .arg(spellInfo->getEffectImplicitTargetA(eff))
                 .arg(spellInfo->getEffectImplicitTargetB(eff))
-                .arg(m_metaEnum.valueToKey(spellInfo->getEffectImplicitTargetA(eff)))
-                .arg(m_metaEnum.valueToKey(spellInfo->getEffectImplicitTargetB(eff))));
+                .arg(m_form->getEnums()->getTargets()[spellInfo->getEffectImplicitTargetA(eff)])
+                .arg(m_form->getEnums()->getTargets()[spellInfo->getEffectImplicitTargetB(eff)]));
 
             appendAuraInfo(spellInfo, eff, num);
 
@@ -1187,10 +1172,9 @@ void SWObject::appendSpellEffectInfo(SpellEntry const* spellInfo, quint8 num)
 
             if (spellInfo->getEffectMechanic(eff) != 0)
             {
-                setMetaEnum("Mechanic");
                 html.append(QString("<li>Effect Mechanic = %0 (%1)</li>")
                     .arg(spellInfo->getEffectMechanic(eff))
-                    .arg(m_metaEnum.valueToKey(spellInfo->getEffectMechanic(eff))));
+                    .arg(m_form->getEnums()->getMechanics()[spellInfo->getEffectMechanic(eff)]));
             }
 
             quint32 ClassMask[3];
@@ -1338,8 +1322,7 @@ void SWObject::appendRadiusInfo(SpellEntry const* spellInfo, quint8 index, quint
 
 void SWObject::appendAuraInfo(SpellEntry const* spellInfo, quint8 index, quint8 num)
 {
-    setMetaEnum("AuraType");
-    QString sAura(m_metaEnum.valueToKey(spellInfo->getEffectApplyAuraName(index)));
+    QString sAura(m_form->getEnums()->getSpellAuras()[spellInfo->getEffectApplyAuraName(index)]);
     quint32 misc = spellInfo->getEffectMiscValue(index);
 
     if (spellInfo->getEffectApplyAuraName(index) == 0)
@@ -1367,16 +1350,14 @@ void SWObject::appendAuraInfo(SpellEntry const* spellInfo, quint8 index, quint8 
     switch (spellInfo->getEffectApplyAuraName(index))
     {
         case 29:
-            setMetaEnum("UnitMods");
-            _SpecialAuraInfo = QString("(%0").arg(m_metaEnum.valueToKey(misc));
+            _SpecialAuraInfo = QString("(%0").arg(m_form->getEnums()->getUnitMods()[misc]);
             break;
         case 189:
             _SpecialAuraInfo = QString("(%0").arg(containAttributes(spellInfo, TYPE_CR, index));
             break;
         case 107:
         case 108:
-            setMetaEnum("SpellModOp");
-            _SpecialAuraInfo = QString("(%0").arg(m_metaEnum.valueToKey(misc));
+            _SpecialAuraInfo = QString("(%0").arg(m_form->getEnums()->getSpellMods()[misc]);
             break;
         // todo: more case
         default:
@@ -1397,12 +1378,13 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
     {
         case TYPE_ATTR:
         {
-            setMetaEnum("Attributes");
-            for (quint8 i = 0; i < m_metaEnum.keyCount(); ++i)
+            EnumIterator itr(m_form->getEnums()->getAttributes());
+            while (itr.hasNext())
             {
-                if (spellInfo->getAttributes() & m_metaEnum.value(i))
+                itr.next();
+                if (spellInfo->getAttributes() & itr.key())
                 {
-                    QString tstr(QString("%0, ").arg(m_metaEnum.key(i)));
+                    QString tstr(QString("%0, ").arg(itr.value()));
                     str += tstr;
                 }
             }
@@ -1411,14 +1393,15 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
             return str;
         }
         break;
-        case TYPE_ATTR_EX:
+        case TYPE_ATTR_EX1:
         {
-            setMetaEnum("AttributesEx1");
-            for (quint8 i = 0; i < m_metaEnum.keyCount(); ++i)
+            EnumIterator itr(m_form->getEnums()->getAttributesEx1());
+            while (itr.hasNext())
             {
-                if (spellInfo->getAttributesEx1() & m_metaEnum.value(i))
+                itr.next();
+                if (spellInfo->getAttributesEx1() & itr.key())
                 {
-                    QString tstr(QString("%0, ").arg(m_metaEnum.key(i)));
+                    QString tstr(QString("%0, ").arg(itr.value()));
                     str += tstr;
                 }
             }
@@ -1429,12 +1412,13 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
         break;
         case TYPE_ATTR_EX2:
         {
-            setMetaEnum("AttributesEx2");
-            for (quint8 i = 0; i < m_metaEnum.keyCount(); ++i)
+            EnumIterator itr(m_form->getEnums()->getAttributesEx2());
+            while (itr.hasNext())
             {
-                if (spellInfo->getAttributesEx2() & m_metaEnum.value(i))
+                itr.next();
+                if (spellInfo->getAttributesEx2() & itr.key())
                 {
-                    QString tstr(QString("%0, ").arg(m_metaEnum.key(i)));
+                    QString tstr(QString("%0, ").arg(itr.value()));
                     str += tstr;
                 }
             }
@@ -1445,12 +1429,13 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
         break;
         case TYPE_ATTR_EX3:
         {
-            setMetaEnum("AttributesEx3");
-            for (quint8 i = 0; i < m_metaEnum.keyCount(); ++i)
+            EnumIterator itr(m_form->getEnums()->getAttributesEx3());
+            while (itr.hasNext())
             {
-                if (spellInfo->getAttributesEx3() & m_metaEnum.value(i))
+                itr.next();
+                if (spellInfo->getAttributesEx3() & itr.key())
                 {
-                    QString tstr(QString("%0, ").arg(m_metaEnum.key(i)));
+                    QString tstr(QString("%0, ").arg(itr.value()));
                     str += tstr;
                 }
             }
@@ -1461,12 +1446,13 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
         break;
         case TYPE_ATTR_EX4:
         {
-            setMetaEnum("AttributesEx4");
-            for (quint8 i = 0; i < m_metaEnum.keyCount(); ++i)
+            EnumIterator itr(m_form->getEnums()->getAttributesEx4());
+            while (itr.hasNext())
             {
-                if (spellInfo->getAttributesEx4() & m_metaEnum.value(i))
+                itr.next();
+                if (spellInfo->getAttributesEx4() & itr.key())
                 {
-                    QString tstr(QString("%0, ").arg(m_metaEnum.key(i)));
+                    QString tstr(QString("%0, ").arg(itr.value()));
                     str += tstr;
                 }
             }
@@ -1477,12 +1463,13 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
         break;
         case TYPE_ATTR_EX5:
         {
-            setMetaEnum("AttributesEx5");
-            for (quint8 i = 0; i < m_metaEnum.keyCount(); ++i)
+            EnumIterator itr(m_form->getEnums()->getAttributesEx5());
+            while (itr.hasNext())
             {
-                if (spellInfo->getAttributesEx5() & m_metaEnum.value(i))
+                itr.next();
+                if (spellInfo->getAttributesEx5() & itr.key())
                 {
-                    QString tstr(QString("%0, ").arg(m_metaEnum.key(i)));
+                    QString tstr(QString("%0, ").arg(itr.value()));
                     str += tstr;
                 }
             }
@@ -1493,12 +1480,13 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
         break;
         case TYPE_ATTR_EX6:
         {
-            setMetaEnum("AttributesEx6");
-            for (quint8 i = 0; i < m_metaEnum.keyCount(); ++i)
+            EnumIterator itr(m_form->getEnums()->getAttributesEx6());
+            while (itr.hasNext())
             {
-                if (spellInfo->getAttributesEx6() & m_metaEnum.value(i))
+                itr.next();
+                if (spellInfo->getAttributesEx6() & itr.key())
                 {
-                    QString tstr(QString("%0, ").arg(m_metaEnum.key(i)));
+                    QString tstr(QString("%0, ").arg(itr.value()));
                     str += tstr;
                 }
             }
@@ -1509,12 +1497,13 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
         break;
         case TYPE_ATTR_EX7:
         {
-            setMetaEnum("AttributesEx7");
-            for (quint8 i = 0; i < m_metaEnum.keyCount(); ++i)
+            EnumIterator itr(m_form->getEnums()->getAttributesEx7());
+            while (itr.hasNext())
             {
-                if (spellInfo->getAttributesEx7() & m_metaEnum.value(i))
+                itr.next();
+                if (spellInfo->getAttributesEx7() & itr.key())
                 {
-                    QString tstr(QString("%0, ").arg(m_metaEnum.key(i)));
+                    QString tstr(QString("%0, ").arg(itr.value()));
                     str += tstr;
                 }
             }
@@ -1525,12 +1514,13 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
         break;
         case TYPE_ATTR_EX8:
         {
-            setMetaEnum("AttributesEx8");
-            for (quint8 i = 0; i < m_metaEnum.keyCount(); ++i)
+            EnumIterator itr(m_form->getEnums()->getAttributesEx8());
+            while (itr.hasNext())
             {
-                if (spellInfo->getAttributesEx8() & m_metaEnum.value(i))
+                itr.next();
+                if (spellInfo->getAttributesEx8() & itr.key())
                 {
-                    QString tstr(QString("%0, ").arg(m_metaEnum.key(i)));
+                    QString tstr(QString("%0, ").arg(itr.value()));
                     str += tstr;
                 }
             }
@@ -1541,12 +1531,13 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
         break;
         case TYPE_ATTR_EX9:
         {
-            setMetaEnum("AttributesEx9");
-            for (quint8 i = 0; i < m_metaEnum.keyCount(); ++i)
+            EnumIterator itr(m_form->getEnums()->getAttributesEx9());
+            while (itr.hasNext())
             {
-                if (spellInfo->getAttributesEx9() & m_metaEnum.value(i))
+                itr.next();
+                if (spellInfo->getAttributesEx9() & itr.key())
                 {
-                    QString tstr(QString("%0, ").arg(m_metaEnum.key(i)));
+                    QString tstr(QString("%0, ").arg(itr.value()));
                     str += tstr;
                 }
             }
@@ -1556,45 +1547,48 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
         }
         break;
         case TYPE_ATTR_EX10:
+        {
+            EnumIterator itr(m_form->getEnums()->getAttributesEx10());
+            while (itr.hasNext())
             {
-                setMetaEnum("AttributesEx10");
-                for (quint8 i = 0; i < m_metaEnum.keyCount(); ++i)
+                itr.next();
+                if (spellInfo->getAttributesEx10() & itr.key())
                 {
-                    if (spellInfo->getAttributesEx10() & m_metaEnum.value(i))
-                    {
-                        QString tstr(QString("%0, ").arg(m_metaEnum.key(i)));
-                        str += tstr;
-                    }
+                    QString tstr(QString("%0, ").arg(itr.value()));
+                    str += tstr;
                 }
-                if (!str.isEmpty())
-                    str.chop(2);
-                return str;
             }
-            break;
+            if (!str.isEmpty())
+                str.chop(2);
+            return str;
+        }
+        break;
         case TYPE_ATTR_EX11:
+        {
+            EnumIterator itr(m_form->getEnums()->getAttributesEx11());
+            while (itr.hasNext())
             {
-                setMetaEnum("AttributesEx11");
-                for (quint8 i = 0; i < m_metaEnum.keyCount(); ++i)
+                itr.next();
+                if (spellInfo->getAttributesEx11() & itr.key())
                 {
-                    if (spellInfo->getAttributesEx11() & m_metaEnum.value(i))
-                    {
-                        QString tstr(QString("%0, ").arg(m_metaEnum.key(i)));
-                        str += tstr;
-                    }
+                    QString tstr(QString("%0, ").arg(itr.value()));
+                    str += tstr;
                 }
-                if (!str.isEmpty())
-                    str.chop(2);
-                return str;
             }
-            break;
+            if (!str.isEmpty())
+                str.chop(2);
+            return str;
+        }
+        break;
         case TYPE_TARGETS:
         {
-            setMetaEnum("TargetFlags");
-            for (quint8 i = 0; i < m_metaEnum.keyCount(); ++i)
+            EnumIterator itr(m_form->getEnums()->getTargetFlags());
+            while (itr.hasNext())
             {
-                if (spellInfo->getTargets() & m_metaEnum.value(i))
+                itr.next();
+                if (spellInfo->getTargets() & itr.key())
                 {
-                    QString tstr(QString("%0, ").arg(m_metaEnum.key(i)));
+                    QString tstr(QString("%0, ").arg(itr.value()));
                     str += tstr;
                 }
             }
@@ -1605,12 +1599,13 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
         break;
         case TYPE_CREATURE:
         {
-            setMetaEnum("CreatureTypeMask");
-            for (quint8 i = 0; i < m_metaEnum.keyCount(); ++i)
+            EnumIterator itr(m_form->getEnums()->getCreatureTypes());
+            while (itr.hasNext())
             {
-                if (spellInfo->getTargetCreatureType() & m_metaEnum.value(i))
+                itr.next();
+                if (spellInfo->getTargetCreatureType() & itr.key())
                 {
-                    QString tstr(QString("%0, ").arg(m_metaEnum.key(i)));
+                    QString tstr(QString("%0, ").arg(itr.value()));
                     str += tstr;
                 }
             }
@@ -1621,12 +1616,13 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
         break;
         case TYPE_FORMS:
         {
-            setMetaEnum("ShapeshiftFormMask");
-            for (quint8 i = 0; i < m_metaEnum.keyCount(); ++i)
+            EnumIterator itr(m_form->getEnums()->getShapeshiftForms());
+            while (itr.hasNext())
             {
-                if (spellInfo->getStances() & m_metaEnum.value(i))
+                itr.next();
+                if (spellInfo->getStances() & itr.key())
                 {
-                    QString tstr(QString("%0, ").arg(m_metaEnum.key(i)));
+                    QString tstr(QString("%0, ").arg(itr.value()));
                     str += tstr;
                 }
             }
@@ -1637,12 +1633,13 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
         break;
         case TYPE_FORMS_NOT:
         {
-            setMetaEnum("ShapeshiftFormMask");
-            for (quint8 i = 0; i < m_metaEnum.keyCount(); ++i)
+            EnumIterator itr(m_form->getEnums()->getShapeshiftForms());
+            while (itr.hasNext())
             {
-                if (spellInfo->getStancesNot() & m_metaEnum.value(i))
+                itr.next();
+                if (spellInfo->getStancesNot() & itr.key())
                 {
-                    QString tstr(QString("%0, ").arg(m_metaEnum.key(i)));
+                    QString tstr(QString("%0, ").arg(itr.value()));
                     str += tstr;
                 }
             }
@@ -1653,12 +1650,13 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
         break;
         case TYPE_ITEM_WEAPON:
         {
-            setMetaEnum("ItemSubClassWeaponMask");
-            for (quint8 i = 0; i < m_metaEnum.keyCount(); ++i)
+            EnumIterator itr(m_form->getEnums()->getItemSubClassWeapons());
+            while (itr.hasNext())
             {
-                if (spellInfo->getEquippedItemSubClassMask() & m_metaEnum.value(i))
+                itr.next();
+                if (spellInfo->getEquippedItemSubClassMask() & itr.key())
                 {
-                    QString tstr(QString("%0, ").arg(m_metaEnum.key(i)));
+                    QString tstr(QString("%0, ").arg(itr.value()));
                     str += tstr;
                 }
             }
@@ -1669,12 +1667,13 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
         break;
         case TYPE_ITEM_ARMOR:
         {
-            setMetaEnum("ItemSubClassArmorMask");
-            for (quint8 i = 0; i < m_metaEnum.keyCount(); ++i)
+            EnumIterator itr(m_form->getEnums()->getItemSubClassArmors());
+            while (itr.hasNext())
             {
-                if (spellInfo->getEquippedItemSubClassMask() & m_metaEnum.value(i))
+                itr.next();
+                if (spellInfo->getEquippedItemSubClassMask() & itr.key())
                 {
-                    QString tstr(QString("%0, ").arg(m_metaEnum.key(i)));
+                    QString tstr(QString("%0, ").arg(itr.value()));
                     str += tstr;
                 }
             }
@@ -1685,12 +1684,13 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
         break;
         case TYPE_ITEM_MISC:
         {
-            setMetaEnum("ItemSubClassMiscMask");
-            for (quint8 i = 0; i < m_metaEnum.keyCount(); ++i)
+            EnumIterator itr(m_form->getEnums()->getItemSubClassMiscs());
+            while (itr.hasNext())
             {
-                if (spellInfo->getEquippedItemSubClassMask() & m_metaEnum.value(i))
+                itr.next();
+                if (spellInfo->getEquippedItemSubClassMask() & itr.key())
                 {
-                    QString tstr(QString("%0, ").arg(m_metaEnum.key(i)));
+                    QString tstr(QString("%0, ").arg(itr.value()));
                     str += tstr;
                 }
             }
@@ -1701,12 +1701,13 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
         break;
         case TYPE_ITEM_INVENTORY:
         {
-            setMetaEnum("InventoryTypeMask");
-            for (quint8 i = 0; i < m_metaEnum.keyCount(); ++i)
+            EnumIterator itr(m_form->getEnums()->getInventoryTypes());
+            while (itr.hasNext())
             {
-                if (spellInfo->getEquippedItemInventoryTypeMask() & m_metaEnum.value(i))
+                itr.next();
+                if (spellInfo->getEquippedItemInventoryTypeMask() & itr.key())
                 {
-                    QString tstr(QString("%0, ").arg(m_metaEnum.key(i)));
+                    QString tstr(QString("%0, ").arg(itr.value()));
                     str += tstr;
                 }
             }
@@ -1717,12 +1718,13 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
         break;
         case TYPE_CR:
         {
-            setMetaEnum("CombatRating");
-            for (quint8 i = 0; i < m_metaEnum.keyCount(); ++i)
+            EnumIterator itr(m_form->getEnums()->getCombatRatings());
+            while (itr.hasNext())
             {
-                if (spellInfo->getEffectMiscValue(index) & m_metaEnum.value(i))
+                itr.next();
+                if (spellInfo->getEffectMiscValue(index) & itr.key())
                 {
-                    QString tstr(QString("%0, ").arg(m_metaEnum.key(i)));
+                    QString tstr(QString("%0, ").arg(itr.value()));
                     str += tstr;
                 }
             }
@@ -1733,12 +1735,13 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
         break;
         case TYPE_SCHOOL_MASK:
         {
-            setMetaEnum("SpellSchoolMask");
-            for (quint8 i = 0; i < m_metaEnum.keyCount(); ++i)
+            EnumIterator itr(m_form->getEnums()->getSchools());
+            while (itr.hasNext())
             {
-                if (spellInfo->getSchoolMask() == m_metaEnum.value(i))
+                itr.next();
+                if (spellInfo->getSchoolMask() & itr.key())
                 {
-                    QString tstr(QString("%0, ").arg(m_metaEnum.key(i)));
+                    QString tstr(QString("%0, ").arg(itr.value()));
                     str += tstr;
                 }
             }
@@ -1746,6 +1749,8 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
                 str.chop(2);
             return str;
         }
+        break;
+        default:
         break;
     }
     return str;
