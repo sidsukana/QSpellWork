@@ -86,6 +86,7 @@
         <value value="POWER_ECLIPSE" key="8" />
         <value value="POWER_HOLY_POWER" key="9" />
         <value value="POWER_ALTERNATE_POWER" key="10" />
+        <value value="POWER_HEALTH" key="-2" />
     </Power>
     <SpellMod>
         <value value="SPELLMOD_DAMAGE" key="0" />
