@@ -2,9 +2,9 @@
 
 quint8 Locale = 0;
 
-QString QSW_VERSION("4.1");
+QString QSW_VERSION("4.2");
 QString CLIENT_VERSION("4.3.4");
-QString QSW_BUILD("16");
+QString QSW_BUILD("17");
 QString CLIENT_BUILD("15595");
 
 QString ProcFlagDesc[] =

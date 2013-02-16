@@ -181,7 +181,6 @@ void SWSearch::search()
 
             if (m_spellInfo)
             {
-                m_sw->setMetaEnum("SpellFamilyNames");
                 if (m_form->comboBox->currentIndex() > 0)
                 {
                     quint16 familyId = m_form->comboBox->itemData(m_form->comboBox->currentIndex()).toInt();
@@ -191,7 +190,6 @@ void SWSearch::search()
                 else
                     family = true;
 
-                m_sw->setMetaEnum("AuraType");
                 if (m_form->comboBox_2->currentIndex() > 0)
                 {
                     quint16 auraId = m_form->comboBox_2->itemData(m_form->comboBox_2->currentIndex()).toInt();
@@ -207,7 +205,6 @@ void SWSearch::search()
                 else
                     aura = true;
 
-                m_sw->setMetaEnum("Effects");
                 if (m_form->comboBox_3->currentIndex() > 0)
                 {
                     quint16 effectId = m_form->comboBox_3->itemData(m_form->comboBox_3->currentIndex()).toInt();
@@ -223,7 +220,6 @@ void SWSearch::search()
                 else
                     effect = true;
 
-                m_sw->setMetaEnum("Targets");
                 if (m_form->comboBox_4->currentIndex() > 0)
                 {
                     quint16 targetId = m_form->comboBox_4->itemData(m_form->comboBox_4->currentIndex()).toInt();

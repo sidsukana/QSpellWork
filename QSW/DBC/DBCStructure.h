@@ -233,7 +233,7 @@ struct SpellEntry
 {
     quint32     Id;                                           // 0        m_ID
     quint32     Attributes;                                   // 1        m_attribute
-    quint32     AttributesEx;                                 // 2        m_attributesEx
+    quint32     AttributesEx1;                                // 2        m_attributesEx
     quint32     AttributesEx2;                                // 3        m_attributesExB
     quint32     AttributesEx3;                                // 4        m_attributesExC
     quint32     AttributesEx4;                                // 5        m_attributesExD

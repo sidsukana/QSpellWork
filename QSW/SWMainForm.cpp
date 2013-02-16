@@ -18,6 +18,7 @@ SWMainForm::SWMainForm(QWidget* parent)
     setupUi(this);
 
     m_sw = new SWObject(this);
+    m_enums = new SWEnums();
 
     m_sortedModel = new SpellListSortedModel(this);
     m_sortedModel->setDynamicSortFilter(true);
@@ -334,48 +335,69 @@ void SWMainForm::loadComboBoxes()
     comboBox->clear();
     comboBox->setModel(new QStandardItemModel);
     comboBox->insertItem(0, "SpellFamilyName", 0);
-    m_sw->setMetaEnum("SpellFamilyNames");
-    for (quint16 i = 0; i < m_sw->getMetaEnum().keyCount(); ++i)
-        comboBox->insertItem(i + 1, QString("(%0) %1")
-            .arg(m_sw->getMetaEnum().value(i), 3, 10, QChar('0'))
-            .arg(m_sw->getMetaEnum().valueToKey(m_sw->getMetaEnum().value(i))), m_sw->getMetaEnum().value(i));
+    
+    EnumIterator itr(m_enums->getSpellFamilies());
+    quint32 i = 0;
+    while (itr.hasNext())
+    {
+        ++i;
+        itr.next();
+        comboBox->insertItem(i, QString("(%0) %1")
+            .arg(itr.key(), 3, 10, QChar('0'))
+            .arg(itr.value()), itr.key());
+    }
 
     comboBox_2->clear();
     comboBox_2->setModel(new QStandardItemModel);
     comboBox_2->insertItem(0, "Aura", 0);
-    m_sw->setMetaEnum("AuraType");
-    for (quint16 i = 0; i < m_sw->getMetaEnum().keyCount(); ++i)
+
+    itr = EnumIterator(m_enums->getSpellAuras());
+    i = 0;
+    while (itr.hasNext())
     {
-        comboBox_2->insertItem(i + 1, QString("(%0) %1")
-            .arg(m_sw->getMetaEnum().value(i), 3, 10, QChar('0'))
-            .arg(m_sw->getMetaEnum().valueToKey(m_sw->getMetaEnum().value(i))), m_sw->getMetaEnum().value(i));
+        ++i;
+        itr.next();
+        comboBox_2->insertItem(i, QString("(%0) %1")
+            .arg(itr.key(), 3, 10, QChar('0'))
+            .arg(itr.value()), itr.key());
     }
 
     comboBox_3->clear();
     comboBox_3->setModel(new QStandardItemModel);
     comboBox_3->insertItem(0, "Effect", 0);
-    m_sw->setMetaEnum("Effects");
-    for (quint16 i = 0; i < m_sw->getMetaEnum().keyCount(); ++i)
-        comboBox_3->insertItem(i + 1, QString("(%0) %1")
-            .arg(m_sw->getMetaEnum().value(i), 3, 10, QChar('0'))
-            .arg(m_sw->getMetaEnum().valueToKey(m_sw->getMetaEnum().value(i))), m_sw->getMetaEnum().value(i));
+    
+    itr = EnumIterator(m_enums->getSpellEffects());
+    i = 0;
+    while (itr.hasNext())
+    {
+        ++i;
+        itr.next();
+        comboBox_3->insertItem(i, QString("(%0) %1")
+            .arg(itr.key(), 3, 10, QChar('0'))
+            .arg(itr.value()), itr.key());
+    }
 
     comboBox_4->clear();
     comboBox_4->setModel(new QStandardItemModel);
-    m_sw->setMetaEnum("Targets");
     comboBox_4->insertItem(0, "Target A", 0);
-    for (quint16 i = 0; i < m_sw->getMetaEnum().keyCount(); ++i)
-        comboBox_4->insertItem(i + 1, QString("(%0) %1")
-            .arg(m_sw->getMetaEnum().value(i), 3, 10, QChar('0'))
-            .arg(m_sw->getMetaEnum().key(i)), m_sw->getMetaEnum().value(i));
-
     comboBox_5->clear();
     comboBox_5->setModel(new QStandardItemModel);
     comboBox_5->insertItem(0, "Target B", 0);
-    for (quint16 i = 0; i < m_sw->getMetaEnum().keyCount(); ++i)
-        comboBox_5->insertItem(i + 1, QString("(%0) %1")
-            .arg(m_sw->getMetaEnum().value(i), 3, 10, QChar('0'))
-            .arg(m_sw->getMetaEnum().key(i)), m_sw->getMetaEnum().value(i));
+
+    itr = EnumIterator(m_enums->getTargets());
+    i = 0;
+    while (itr.hasNext())
+    {
+        ++i;
+        itr.next();
+        comboBox_4->insertItem(i, QString("(%0) %1")
+            .arg(itr.key(), 3, 10, QChar('0'))
+            .arg(itr.value()), itr.key());
+
+        comboBox_5->insertItem(i, QString("(%0) %1")
+            .arg(itr.key(), 3, 10, QChar('0'))
+            .arg(itr.value()), itr.key());
+    }
 
     adBox1->clear();
     adBox2->clear();
