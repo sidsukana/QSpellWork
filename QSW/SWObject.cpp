@@ -778,6 +778,7 @@ void SWObject::showInfo(SpellEntry const* spellInfo, quint8 num)
                 .arg(sAttributes.toUpper())
                 .arg(containAttributes(spellInfo, TYPE_ATTR)));
 
+        if (spellInfo->AttributesEx1)
             html.append(QString("<li>AttributesEx1: 0x%0 (%1)</li>")
                 .arg(sAttributesEx1.toUpper())
                 .arg(containAttributes(spellInfo, TYPE_ATTR_EX1)));
