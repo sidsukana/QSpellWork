@@ -1086,7 +1086,7 @@ void SWObject::appendSpellEffectInfo(SpellEntry const* spellInfo, quint8 num)
 
     for (quint8 eff = EFFECT_INDEX_0; eff < MAX_EFFECT_INDEX; ++eff)
     {
-        if (!spellInfo->getEffect(eff))
+        if (!spellInfo->getSpellEffect(eff))
         {
             html.append(QString("<div class='b-effect_name'>Effect %0:</div>"
                                 "<ul>"
@@ -1286,6 +1286,10 @@ void SWObject::appendTriggerInfo(SpellEntry const* spellInfo, quint8 index, quin
 void SWObject::appendRadiusInfo(SpellEntry const* spellInfo, quint8 index, quint8 num)
 {
     quint16 rIndex = spellInfo->getEffectRadiusIndex(index);
+
+    if (rIndex == 0)
+        rIndex = spellInfo->getEffectRadiusMaxIndex(index);
+
     if (rIndex != 0)
     {
         SpellRadiusEntry const* spellRadius = sSpellRadiusStore.LookupEntry(rIndex);

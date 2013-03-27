@@ -207,8 +207,8 @@ struct SpellScalingEntry
 struct SpellShapeshiftEntry
 {
     // quint32     Id;                                           // 0        m_ID
-    quint32     Stances[2];                                      // 13       m_shapeshiftMask
-    quint32     StancesNot[2];                                   // 15       m_shapeshiftExclude
+    quint32     StancesNot[2];                                   // 13       m_shapeshiftExclude
+    quint32     Stances[2];                                      // 15       m_shapeshiftMask
     quint32     StanceBarOrder;                            // 155      m_stanceBarOrder not used
 };
 
