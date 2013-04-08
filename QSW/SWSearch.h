@@ -43,6 +43,8 @@ class MetaSpell : public QObject
         Q_INVOKABLE QVariant AttributesEx6() { return m_spellInfo->AttributesEx6; }
         Q_INVOKABLE QVariant AttributesEx7() { return m_spellInfo->AttributesEx7; }
         Q_INVOKABLE QVariant AttributesEx8() { return m_spellInfo->AttributesEx8; }
+        Q_INVOKABLE QVariant AttributesEx9() { return m_spellInfo->AttributesEx9; }
+        Q_INVOKABLE QVariant AttributesEx10() { return m_spellInfo->AttributesEx10; }
         Q_INVOKABLE QVariant Stances(quint8 index) { return m_spellInfo->getStances(index); }
         Q_INVOKABLE QVariant StancesNot(quint8 index) { return m_spellInfo->getStancesNot(index); }
         Q_INVOKABLE QVariant Targets() { return m_spellInfo->getTargets(); }

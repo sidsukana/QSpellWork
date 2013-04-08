@@ -241,8 +241,8 @@ struct SpellEntry
     quint32     AttributesEx6;                                // 7        m_attributesExF
     quint32     AttributesEx7;                                // 8       3.2.0 (0x20 - totems, 0x4 - paladin auras, etc...)
     quint32     AttributesEx8;                                // 9        m_attributesExH
-    // quint32     unk_400_1;                                 // 10       4.0.0
-    // quint32     unk_420;                                   // 11 - 4.2.0
+    quint32     AttributesEx9;                                // 10       m_attributesExI
+    quint32     AttributesEx10;                               // 11       m_attributesExJ
     quint32     CastingTimeIndex;                             // 12 - m_castingTimeIndex
     quint32     DurationIndex;                                // 13 - m_durationIndex
     quint32     PowerType;                                    // 14 - m_powerType
