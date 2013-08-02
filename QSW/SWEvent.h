@@ -19,7 +19,7 @@ class Event : public QEvent
         Event(QEvent::Type type) : QEvent(type) {}
         ~Event() {};
 
-        void addValue(QVariant value) { m_values << value; }
+        void addValue(const QVariant& value) { m_values << value; }
 
         QVariant getValue(int index) const
         {

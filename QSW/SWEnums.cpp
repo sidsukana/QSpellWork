@@ -36,5 +36,6 @@ void SWEnums::loadEnums()
                 enumerator[valueElement.attribute("key").toLongLong()]= valueElement.attribute("value");
         }
         m_enums[enumNodes.item(i).toElement().tagName()] = enumerator;
+        
     }
 }

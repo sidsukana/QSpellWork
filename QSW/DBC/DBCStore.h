@@ -19,7 +19,7 @@ class DBCStorage
         const char* GetFormat() const { return fmt; }
         quint32 GetFieldCount() const { return fieldCount; }
 
-        bool Load(const QString fn)
+        bool Load(const QString& fn)
         {
             DBCFileLoader dbc;
 
