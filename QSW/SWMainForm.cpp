@@ -3,11 +3,10 @@
 #include "SWModels.h"
 #include "SWSearch.h"
 
-#include <QtConcurrent/QtConcurrentRun>
+#include <QtCore/QtConcurrentRun>
 #include <QtCore/QTime>
 #include <QtGui/QStandardItemModel>
-
-#include <QtWidgets/QMessageBox>
+#include <QtGui/QMessageBox>
 
 SWMainForm::SWMainForm(QWidget* parent)
     : QMainWindow(parent)
@@ -17,8 +16,8 @@ SWMainForm::SWMainForm(QWidget* parent)
 
     setupUi(this);
 
-    m_sw = new SWObject(this);
     m_enums = new SWEnums();
+    m_sw = new SWObject(this);
 
     m_sortedModel = new SpellListSortedModel(this);
     m_sortedModel->setDynamicSortFilter(true);
@@ -431,7 +430,7 @@ void SWMainForm::loadComboBoxes()
     model->setItem(0, new QStandardItem("None"));
     for (quint16 i = offset; i < count; ++i)
     {
-        QString signature = metaSpell.metaObject()->method(i).methodSignature().data();
+        QString signature = metaSpell.metaObject()->method(i).signature();
         QRegExp rx("(\\D.*)(\\(.*\\))");
         if (rx.indexIn(signature) != -1)
         {
@@ -514,8 +513,8 @@ void SWMainForm::slotSearch(quint8 type)
     {
         SpellListSortedModel* smodel = static_cast<SpellListSortedModel*>(SpellList->model());
         SpellListModel* model = static_cast<SpellListModel*>(smodel->sourceModel());
-        if (model)
-            delete model;
+        delete model;
+        model = NULL;
     }
 
     m_sw->setType(type);
@@ -543,7 +542,7 @@ void SWMainForm::slotAutoRelate()
 
 bool SWMainForm::event(QEvent* ev)
 {
-    switch (ev->type())
+    switch (Event::Events(ev->type()))
     {
         case Event::EVENT_SEND_MODEL:
         {
