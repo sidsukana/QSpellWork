@@ -36,14 +36,14 @@ DBCStorage <SpellIconEntry> sSpellIconStore(SpellIconfmt);
 
 typedef QStringList StoreProblemList;
 
-static bool LoadDBC_assert_print(quint32 fsize, quint32 rsize, const QString filename)
+static bool LoadDBC_assert_print(quint32 fsize, quint32 rsize, const QString& filename)
 {
     // ASSERT must fail after function call
     return false;
 }
 
 template<class T>
-inline void LoadDBC(StoreProblemList& errlist, DBCStorage<T>& storage, const QString dbc_path, const QString filename)
+inline void LoadDBC(StoreProblemList& errlist, DBCStorage<T>& storage, const QString& dbc_path, const QString& filename)
 {
     // Compatibility format and C++ structure sizes
     assert(DBCFileLoader::GetFormatRecordSize(storage.GetFormat()) == sizeof(T) || LoadDBC_assert_print(DBCFileLoader::GetFormatRecordSize(storage.GetFormat()), sizeof(T), filename));
