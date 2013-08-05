@@ -3,14 +3,14 @@
 
 #include <QtCore/QSettings>
 
-#include <QtWidgets/QTextBrowser>
-#include <QtWidgets/QMainWindow>
-#include <QtWidgets/QToolButton>
-#include <QtWidgets/QCompleter>
+#include <QtGui/QTextBrowser>
+#include <QtGui/QMainWindow>
+#include <QtGui/QToolButton>
+#include <QtGui/QCompleter>
 #include <QtGui/QIcon>
 
-#include <QtWebKitWidgets/QWebView>
-#include <QtWebKitWidgets/QWebFrame>
+#include <QtWebKit/QWebView>
+#include <QtWebKit/QWebFrame>
 
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>

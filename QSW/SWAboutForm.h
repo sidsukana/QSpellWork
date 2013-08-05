@@ -1,7 +1,7 @@
 #ifndef SW_ABOUT_FORM_H
 #define SW_ABOUT_FORM_H
 
-#include <QtWidgets/QDialog>
+#include <QtGui/QDialog>
 #include "SWDefines.h"
 #include "ui_SWAboutUI.h"
 

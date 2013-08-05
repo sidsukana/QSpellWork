@@ -4,6 +4,7 @@
 #include <QtCore/QMetaEnum>
 
 #include "SWMainForm.h"
+#include "SWEnums.h"
 #include "SWEvent.h"
 #include "DBC/DBCStores.h"
 #include "SWDefines.h"
@@ -45,12 +46,13 @@ class SWObject
 
     private:
         SWMainForm *m_form;
-
-        bool m_regExp;
-        QString html;
-        quint8 m_type;
+        SWEnums* m_enums;
 
         QMetaEnum m_metaEnum;
+        QString html;
+
+        bool m_regExp;
+        quint8 m_type;
 };
 
 namespace Converter
