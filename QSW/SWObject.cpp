@@ -2,7 +2,7 @@
 #include "SWSearch.h"
 
 SWObject::SWObject(SWMainForm* form)
-    : m_form(form), m_regExp(false), m_type(0)
+    : m_form(form), m_regExp(false), m_type(0), m_enums(form->getEnums())
 {
     LoadDBCStores();
 }
@@ -222,57 +222,6 @@ void RegExpB(SpellEntry const* spellInfo, QRegExp rx, QString &str)
     {
         str.replace(rx.cap(0), QString("%0")
             .arg(abs(qint32(spellInfo->getEffectPointsPerComboPoint(rx.cap(6).toInt()-1)))));
-    }
-}
-
-void RegExpM(SpellEntry const* spellInfo, QRegExp rx, QString &str)
-{
-    if (!rx.cap(3).isEmpty())
-    {
-        if (!rx.cap(4).isEmpty())
-        {
-            SpellEntry const* tSpell = sSpellStore.LookupEntry(rx.cap(4).toInt());
-            if (tSpell)
-            {
-                if (rx.cap(2) == QString("/"))
-                {
-                    str.replace(rx.cap(0), QString("%0")
-                        .arg(abs(qint32((tSpell->getEffectBasePoints(rx.cap(6).toInt()-1)) / rx.cap(3).toInt()))));
-                }
-                else if (rx.cap(2) == QString("*"))
-                {
-                    str.replace(rx.cap(0), QString("%0")
-                        .arg(abs(qint32((tSpell->getEffectBasePoints(rx.cap(6).toInt()-1)) * rx.cap(3).toInt()))));
-                }
-            }
-        }
-        else
-        {
-            if (rx.cap(2) == QString("/"))
-            {
-                str.replace(rx.cap(0), QString("%0")
-                    .arg(abs(qint32((spellInfo->getEffectBasePoints(rx.cap(6).toInt()-1)) / rx.cap(3).toInt()))));
-            }
-            else if (rx.cap(2) == QString("*"))
-            {
-                str.replace(rx.cap(0), QString("%0")
-                    .arg(abs(qint32((spellInfo->getEffectBasePoints(rx.cap(6).toInt()-1)) * rx.cap(3).toInt()))));
-            }
-        }
-    }
-    else if (!rx.cap(4).isEmpty())
-    {
-        SpellEntry const* tSpell = sSpellStore.LookupEntry(rx.cap(4).toInt());
-        if (tSpell)
-        {
-            str.replace(rx.cap(0), QString("%0")
-                .arg(abs(tSpell->getEffectBasePoints(rx.cap(6).toInt()-1))));
-        }
-    }
-    else
-    {
-        str.replace(rx.cap(0), QString("%0")
-            .arg(abs(spellInfo->getEffectBasePoints(rx.cap(6).toInt()-1))));
     }
 }
 
@@ -587,7 +536,10 @@ QString SWObject::getDescription(QString str, SpellEntry const* spellInfo)
                 case 'q': RegExpQ(spellInfo, rx, str); break;
                 case 'i': RegExpI(spellInfo, rx, str); break;
                 case 'b': RegExpB(spellInfo, rx, str); break;
-                case 'm': RegExpM(spellInfo, rx, str); break;
+                case 'm':
+                case 's':
+                    RegExpS(spellInfo, rx, str);
+                    break;
                 case 'a': RegExpA(spellInfo, rx, str); break;
                 case 'd': RegExpD(spellInfo, rx, str); break;
                 case 'o': RegExpO(spellInfo, rx, str); break;
@@ -728,7 +680,7 @@ void SWObject::showInfo(SpellEntry const* spellInfo, quint8 num)
         .arg(spellInfo->SpellVisual[1]));
 
     html.append(QString("<li>SpellFamilyName = %0, SpellFamilyFlags = 0x%1 %2 %3</li>")
-        .arg(m_form->getEnums()->getSpellFamilies()[spellInfo->getSpellFamilyName()])
+        .arg(m_enums->getSpellFamilies()[spellInfo->getSpellFamilyName()])
         .arg(sSpellFamilyFlags2.toUpper())
         .arg(sSpellFamilyFlags1.toUpper())
         .arg(sSpellFamilyFlags0.toUpper()));
@@ -739,11 +691,11 @@ void SWObject::showInfo(SpellEntry const* spellInfo, quint8 num)
 
     html.append(QString("<li>DamageClass = %0 (%1)</li>")
         .arg(spellInfo->getDamageClass())
-        .arg(m_form->getEnums()->getDamageClasses()[spellInfo->getDamageClass()]));
+        .arg(m_enums->getDamageClasses()[spellInfo->getDamageClass()]));
 
     html.append(QString("<li>PreventionType = %0 (%1)</li>")
         .arg(spellInfo->getPreventionType())
-        .arg(m_form->getEnums()->getPreventionTypes()[spellInfo->getPreventionType()]));
+        .arg(m_enums->getPreventionTypes()[spellInfo->getPreventionType()]));
 
     html.append("</ul></div></div>");
 
@@ -854,7 +806,7 @@ void SWObject::showInfo(SpellEntry const* spellInfo, quint8 num)
     {
         html.append(QString("<li>EquippedItemClass = %0 (%1)</li>")
             .arg(spellInfo->getEquippedItemClass())
-            .arg(m_form->getEnums()->getItemClasses()[spellInfo->getEquippedItemClass()]));
+            .arg(m_enums->getItemClasses()[spellInfo->getEquippedItemClass()]));
 
         if (spellInfo->getEquippedItemSubClassMask())
         {
@@ -896,11 +848,11 @@ void SWObject::showInfo(SpellEntry const* spellInfo, quint8 num)
 
     html.append(QString("<li>DispelType = %0 (%1)</li>")
         .arg(spellInfo->getDispel())
-        .arg(m_form->getEnums()->getDispelTypes()[spellInfo->getDispel()]));
+        .arg(m_enums->getDispelTypes()[spellInfo->getDispel()]));
 
     html.append(QString("<li>Mechanic = %0 (%1)</li>")
         .arg(spellInfo->getMechanic())
-        .arg(m_form->getEnums()->getMechanics()[spellInfo->getMechanic()]));
+        .arg(m_enums->getMechanics()[spellInfo->getMechanic()]));
 
     appendRangeInfo(spellInfo, num);
 
@@ -932,13 +884,13 @@ void SWObject::showInfo(SpellEntry const* spellInfo, quint8 num)
         if (spellInfo->getManaCost())
         {
             html.append(QString("<li>Power Type = %0, Cost %1")
-                .arg(m_form->getEnums()->getPowers()[spellInfo->PowerType])
+                .arg(m_enums->getPowers()[spellInfo->PowerType])
                 .arg(spellInfo->getManaCost()));
         }
         else if (spellInfo->getManaCostPercentage())
         {
             html.append(QString("<li>Power Type = %0, Cost %1% of base mana")
-                .arg(m_form->getEnums()->getPowers()[spellInfo->PowerType])
+                .arg(m_enums->getPowers()[spellInfo->PowerType])
                 .arg(spellInfo->getManaCostPercentage()));
         }
 
@@ -961,22 +913,22 @@ void SWObject::showInfo(SpellEntry const* spellInfo, quint8 num)
     if (spellInfo->getCasterAuraState())
         html.append(QString("<li>CasterAuraState = %0 (%1)</li>")
             .arg(spellInfo->getCasterAuraState())
-            .arg(m_form->getEnums()->getAuraStates()[spellInfo->getCasterAuraState()]));
+            .arg(m_enums->getAuraStates()[spellInfo->getCasterAuraState()]));
 
     if (spellInfo->getTargetAuraState())
         html.append(QString("<li>TargetAuraState = %0 (%1)</li>")
             .arg(spellInfo->getTargetAuraState())
-            .arg(m_form->getEnums()->getAuraStates()[spellInfo->getTargetAuraState()]));
+            .arg(m_enums->getAuraStates()[spellInfo->getTargetAuraState()]));
 
     if (spellInfo->getCasterAuraStateNot())
         html.append(QString("<li>CasterAuraStateNot = %0 (%1)</li>")
             .arg(spellInfo->getCasterAuraStateNot())
-            .arg(m_form->getEnums()->getAuraStates()[spellInfo->getCasterAuraStateNot()]));
+            .arg(m_enums->getAuraStates()[spellInfo->getCasterAuraStateNot()]));
 
     if (spellInfo->getTargetAuraStateNot())
         html.append(QString("<li>TargetAuraStateNot = %0 (%1)</li>")
             .arg(spellInfo->getTargetAuraStateNot())
-            .arg(m_form->getEnums()->getAuraStates()[spellInfo->getTargetAuraStateNot()]));
+            .arg(m_enums->getAuraStates()[spellInfo->getTargetAuraStateNot()]));
 
     if (spellInfo->getCasterAuraSpell())
     {
@@ -1144,15 +1096,15 @@ void SWObject::appendSpellEffectInfo(SpellEntry const* spellInfo, quint8 num)
 
             html.append(QString("<li>Id: %0 (%1)</li>")
                 .arg(spellInfo->getEffect(eff))
-                .arg(m_form->getEnums()->getSpellEffects()[spellInfo->getEffect(eff)]));
+                .arg(m_enums->getSpellEffects()[spellInfo->getEffect(eff)]));
 
             html.append(_Result);
 
             html.append(QString("<li>Targets (%0, %1) (%2, %3)</li>")
                 .arg(spellInfo->getEffectImplicitTargetA(eff))
                 .arg(spellInfo->getEffectImplicitTargetB(eff))
-                .arg(m_form->getEnums()->getTargets()[spellInfo->getEffectImplicitTargetA(eff)])
-                .arg(m_form->getEnums()->getTargets()[spellInfo->getEffectImplicitTargetB(eff)]));
+                .arg(m_enums->getTargets()[spellInfo->getEffectImplicitTargetA(eff)])
+                .arg(m_enums->getTargets()[spellInfo->getEffectImplicitTargetB(eff)]));
 
             appendAuraInfo(spellInfo, eff, num);
 
@@ -1167,7 +1119,7 @@ void SWObject::appendSpellEffectInfo(SpellEntry const* spellInfo, quint8 num)
             {
                 html.append(QString("<li>Effect Mechanic = %0 (%1)</li>")
                     .arg(spellInfo->getEffectMechanic(eff))
-                    .arg(m_form->getEnums()->getMechanics()[spellInfo->getEffectMechanic(eff)]));
+                    .arg(m_enums->getMechanics()[spellInfo->getEffectMechanic(eff)]));
             }
 
             quint32 ClassMask[3];
@@ -1319,7 +1271,7 @@ void SWObject::appendRadiusInfo(SpellEntry const* spellInfo, quint8 index, quint
 
 void SWObject::appendAuraInfo(SpellEntry const* spellInfo, quint8 index, quint8 num)
 {
-    QString sAura(m_form->getEnums()->getSpellAuras()[spellInfo->getEffectApplyAuraName(index)]);
+    QString sAura(m_enums->getSpellAuras()[spellInfo->getEffectApplyAuraName(index)]);
     quint32 misc = spellInfo->getEffectMiscValue(index);
 
     if (spellInfo->getEffectApplyAuraName(index) == 0)
@@ -1347,14 +1299,14 @@ void SWObject::appendAuraInfo(SpellEntry const* spellInfo, quint8 index, quint8 
     switch (spellInfo->getEffectApplyAuraName(index))
     {
         case 29:
-            _SpecialAuraInfo = QString("(%0").arg(m_form->getEnums()->getUnitMods()[misc]);
+            _SpecialAuraInfo = QString("(%0").arg(m_enums->getUnitMods()[misc]);
             break;
         case 189:
             _SpecialAuraInfo = QString("(%0").arg(containAttributes(spellInfo, TYPE_CR, index));
             break;
         case 107:
         case 108:
-            _SpecialAuraInfo = QString("(%0").arg(m_form->getEnums()->getSpellMods()[misc]);
+            _SpecialAuraInfo = QString("(%0").arg(m_enums->getSpellMods()[misc]);
             break;
         // todo: more case
         default:
@@ -1375,7 +1327,7 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
     {
         case TYPE_ATTR:
         {
-            EnumIterator itr(m_form->getEnums()->getAttributes());
+            EnumIterator itr(m_enums->getAttributes());
             while (itr.hasNext())
             {
                 itr.next();
@@ -1392,7 +1344,7 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
         break;
         case TYPE_ATTR_EX1:
         {
-            EnumIterator itr(m_form->getEnums()->getAttributesEx1());
+            EnumIterator itr(m_enums->getAttributesEx1());
             while (itr.hasNext())
             {
                 itr.next();
@@ -1409,7 +1361,7 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
         break;
         case TYPE_ATTR_EX2:
         {
-            EnumIterator itr(m_form->getEnums()->getAttributesEx2());
+            EnumIterator itr(m_enums->getAttributesEx2());
             while (itr.hasNext())
             {
                 itr.next();
@@ -1426,7 +1378,7 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
         break;
         case TYPE_ATTR_EX3:
         {
-            EnumIterator itr(m_form->getEnums()->getAttributesEx3());
+            EnumIterator itr(m_enums->getAttributesEx3());
             while (itr.hasNext())
             {
                 itr.next();
@@ -1443,7 +1395,7 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
         break;
         case TYPE_ATTR_EX4:
         {
-            EnumIterator itr(m_form->getEnums()->getAttributesEx4());
+            EnumIterator itr(m_enums->getAttributesEx4());
             while (itr.hasNext())
             {
                 itr.next();
@@ -1460,7 +1412,7 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
         break;
         case TYPE_ATTR_EX5:
         {
-            EnumIterator itr(m_form->getEnums()->getAttributesEx5());
+            EnumIterator itr(m_enums->getAttributesEx5());
             while (itr.hasNext())
             {
                 itr.next();
@@ -1477,7 +1429,7 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
         break;
         case TYPE_ATTR_EX6:
         {
-            EnumIterator itr(m_form->getEnums()->getAttributesEx6());
+            EnumIterator itr(m_enums->getAttributesEx6());
             while (itr.hasNext())
             {
                 itr.next();
@@ -1494,7 +1446,7 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
         break;
         case TYPE_ATTR_EX7:
         {
-            EnumIterator itr(m_form->getEnums()->getAttributesEx7());
+            EnumIterator itr(m_enums->getAttributesEx7());
             while (itr.hasNext())
             {
                 itr.next();
@@ -1511,7 +1463,7 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
         break;
         case TYPE_ATTR_EX8:
         {
-            EnumIterator itr(m_form->getEnums()->getAttributesEx8());
+            EnumIterator itr(m_enums->getAttributesEx8());
             while (itr.hasNext())
             {
                 itr.next();
@@ -1528,7 +1480,7 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
         break;
         case TYPE_ATTR_EX9:
         {
-            EnumIterator itr(m_form->getEnums()->getAttributesEx9());
+            EnumIterator itr(m_enums->getAttributesEx9());
             while (itr.hasNext())
             {
                 itr.next();
@@ -1545,7 +1497,7 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
         break;
         case TYPE_ATTR_EX10:
         {
-            EnumIterator itr(m_form->getEnums()->getAttributesEx10());
+            EnumIterator itr(m_enums->getAttributesEx10());
             while (itr.hasNext())
             {
                 itr.next();
@@ -1562,7 +1514,7 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
         break;
         case TYPE_TARGETS:
         {
-            EnumIterator itr(m_form->getEnums()->getTargetFlags());
+            EnumIterator itr(m_enums->getTargetFlags());
             while (itr.hasNext())
             {
                 itr.next();
@@ -1579,7 +1531,7 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
         break;
         case TYPE_CREATURE:
         {
-            EnumIterator itr(m_form->getEnums()->getCreatureTypes());
+            EnumIterator itr(m_enums->getCreatureTypes());
             while (itr.hasNext())
             {
                 itr.next();
@@ -1596,7 +1548,7 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
         break;
         case TYPE_FORMS:
         {
-            EnumIterator itr(m_form->getEnums()->getShapeshiftForms());
+            EnumIterator itr(m_enums->getShapeshiftForms());
             while (itr.hasNext())
             {
                 itr.next();
@@ -1613,7 +1565,7 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
         break;
         case TYPE_FORMS_NOT:
         {
-            EnumIterator itr(m_form->getEnums()->getShapeshiftForms());
+            EnumIterator itr(m_enums->getShapeshiftForms());
             while (itr.hasNext())
             {
                 itr.next();
@@ -1630,7 +1582,7 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
         break;
         case TYPE_ITEM_WEAPON:
         {
-            EnumIterator itr(m_form->getEnums()->getItemSubClassWeapons());
+            EnumIterator itr(m_enums->getItemSubClassWeapons());
             while (itr.hasNext())
             {
                 itr.next();
@@ -1647,7 +1599,7 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
         break;
         case TYPE_ITEM_ARMOR:
         {
-            EnumIterator itr(m_form->getEnums()->getItemSubClassArmors());
+            EnumIterator itr(m_enums->getItemSubClassArmors());
             while (itr.hasNext())
             {
                 itr.next();
@@ -1664,7 +1616,7 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
         break;
         case TYPE_ITEM_MISC:
         {
-            EnumIterator itr(m_form->getEnums()->getItemSubClassMiscs());
+            EnumIterator itr(m_enums->getItemSubClassMiscs());
             while (itr.hasNext())
             {
                 itr.next();
@@ -1681,7 +1633,7 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
         break;
         case TYPE_ITEM_INVENTORY:
         {
-            EnumIterator itr(m_form->getEnums()->getInventoryTypes());
+            EnumIterator itr(m_enums->getInventoryTypes());
             while (itr.hasNext())
             {
                 itr.next();
@@ -1698,7 +1650,7 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
         break;
         case TYPE_CR:
         {
-            EnumIterator itr(m_form->getEnums()->getCombatRatings());
+            EnumIterator itr(m_enums->getCombatRatings());
             while (itr.hasNext())
             {
                 itr.next();
@@ -1715,7 +1667,7 @@ QString SWObject::containAttributes(SpellEntry const* spellInfo, AttrType attr, 
         break;
         case TYPE_SCHOOL_MASK:
         {
-            EnumIterator itr(m_form->getEnums()->getSchools());
+            EnumIterator itr(m_enums->getSchools());
             while (itr.hasNext())
             {
                 itr.next();
@@ -1814,7 +1766,7 @@ void SWObject::compare()
         {
             if (rx.indexIn((*itr1)) != -1)
             {
-                QString r1 = rx.cap(0); // Full
+                // QString r1 = rx.cap(0); // Full
                 QString r2 = rx.cap(1); // <xxx>
                 QString r3 = rx.cap(2); // <>xxx</>
                 QString r4 = rx.cap(3); // </xxx>
@@ -1840,7 +1792,7 @@ void SWObject::compare()
         {
             if (rx.indexIn((*itr1)) != -1)
             {
-                QString r1 = rx.cap(0); // Full
+                // QString r1 = rx.cap(0); // Full
                 QString r2 = rx.cap(1); // <xxx>
                 QString r3 = rx.cap(2); // <>xxx</>
                 QString r4 = rx.cap(3); // </xxx>
@@ -1882,7 +1834,7 @@ void SWObject::compare()
         {
             if (rx.indexIn((*itr2)) != -1)
             {
-                QString r1 = rx.cap(0); // Full
+                // QString r1 = rx.cap(0); // Full
                 QString r2 = rx.cap(1); // <xxx>
                 QString r3 = rx.cap(2); // <>xxx</>
                 QString r4 = rx.cap(3); // </xxx>
@@ -1908,7 +1860,7 @@ void SWObject::compare()
         {
             if (rx.indexIn((*itr2)) != -1)
             {
-                QString r1 = rx.cap(0); // Full
+                // QString r1 = rx.cap(0); // Full
                 QString r2 = rx.cap(1); // <xxx>
                 QString r3 = rx.cap(2); // <>xxx</>
                 QString r4 = rx.cap(3); // </xxx>

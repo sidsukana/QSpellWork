@@ -1,9 +1,8 @@
 #ifndef SWOBJECT_H
 #define SWOBJECT_H
 
-#include <QtCore/QMetaEnum>
-
 #include "SWMainForm.h"
+#include "SWEnums.h"
 #include "SWEvent.h"
 #include "DBC/DBCStores.h"
 #include "SWDefines.h"
@@ -42,9 +41,11 @@ class SWObject
 
     private:
         SWMainForm *m_form;
+        SWEnums* m_enums;
+
+        QString html;
 
         bool m_regExp;
-        QString html;
         quint8 m_type;
 };
 
