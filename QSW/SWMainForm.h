@@ -4,10 +4,13 @@
 #include <QtCore/QSettings>
 
 #include <QtGui/QTextBrowser>
+#include <QtGui/QTextEdit>
 #include <QtGui/QMainWindow>
 #include <QtGui/QToolButton>
 #include <QtGui/QCompleter>
 #include <QtGui/QIcon>
+#include <QtGui/QKeyEvent>
+#include <QtGui/QScrollBar>
 
 #include <QtWebKit/QWebView>
 #include <QtWebKit/QWebFrame>
@@ -21,6 +24,7 @@
 #include "SWObject.h"
 #include "ui_SWMainUI.h"
 
+class TextEdit;
 class SWObject;
 class SpellListSortedModel;
 
@@ -38,6 +42,7 @@ class SWMainForm : public QMainWindow, public Ui::SWMainUI
         bool isRegExp() const { return m_regExp->isChecked(); }
         void setRegExp(bool enable) { m_regExp->setChecked(enable); }
         SWEnums* getEnums() const { return m_enums; }
+        QString getFilterText() const { return ((QTextEdit*)m_advancedTextEdit)->toPlainText(); }
 
         QWebView* getBrowser(quint8 num) const
         {
@@ -55,6 +60,8 @@ class SWMainForm : public QMainWindow, public Ui::SWMainUI
 
     private slots:
         void slotAbout();
+        void slotAdvancedFilter();
+        void slotAdvancedApply();
         void slotFilterSearch();
         void slotButtonSearch();
         void slotCompareSearch();
@@ -91,6 +98,8 @@ class SWMainForm : public QMainWindow, public Ui::SWMainUI
         QAction* m_regExp;
         QAction* m_about;
         QAction* m_update;
+
+        TextEdit *m_advancedTextEdit;
 };
 
 class Enums : public QObject
@@ -111,6 +120,31 @@ public:
     };
 
     Q_ENUMS(LocalesDBC)
+};
+
+class TextEdit : public QTextEdit
+{
+    Q_OBJECT
+
+    public:
+        TextEdit(QWidget *parent = 0);
+        ~TextEdit();
+
+        QAbstractItemModel* setupModel();
+        QCompleter *completer() const;
+
+    protected:
+        void keyPressEvent(QKeyEvent *e);
+        void focusInEvent(QFocusEvent *e);
+
+    private slots:
+        void insertCompletion(const QString &completion);
+
+    private:
+        QString textUnderCursor() const;
+
+    private:
+        QCompleter *m_completer;
 };
 
 #endif
