@@ -4,7 +4,6 @@
 #include <QtCore/QString>
 #include <QtCore/QMetaType>
 
-extern QString QSW_VERSION;
 extern QString CLIENT_VERSION;
 extern QString QSW_BUILD;
 extern QString CLIENT_BUILD;
