@@ -50,127 +50,10 @@
         <property name="margin">
          <number>0</number>
         </property>
-        <item row="6" column="1">
-         <widget class="QGroupBox" name="groupBox_3">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>280</width>
-            <height>70</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>280</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="title">
-           <string>Advanced Filter</string>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_16">
-           <property name="leftMargin">
-            <number>5</number>
-           </property>
-           <property name="topMargin">
-            <number>3</number>
-           </property>
-           <property name="rightMargin">
-            <number>5</number>
-           </property>
-           <property name="bottomMargin">
-            <number>3</number>
-           </property>
-           <property name="spacing">
-            <number>0</number>
-           </property>
-           <item row="0" column="0">
-            <layout class="QGridLayout" name="gridLayout_15">
-             <property name="horizontalSpacing">
-              <number>6</number>
-             </property>
-             <property name="verticalSpacing">
-              <number>2</number>
-             </property>
-             <item row="0" column="0">
-              <widget class="QFontComboBox" name="adBox1">
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>20</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>150</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="editable">
-                <bool>false</bool>
-               </property>
-               <property name="currentIndex">
-                <number>184</number>
-               </property>
-               <property name="maxVisibleItems">
-                <number>20</number>
-               </property>
-               <property name="currentFont">
-                <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
-                </font>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QLineEdit" name="adLine1"/>
-             </item>
-             <item row="1" column="0">
-              <widget class="QFontComboBox" name="adBox2">
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>20</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>150</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="editable">
-                <bool>false</bool>
-               </property>
-               <property name="currentIndex">
-                <number>184</number>
-               </property>
-               <property name="maxVisibleItems">
-                <number>20</number>
-               </property>
-               <property name="currentFont">
-                <font>
-                 <family>MS Shell Dlg 2</family>
-                 <pointsize>8</pointsize>
-                </font>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QLineEdit" name="adLine2"/>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="4" column="1">
+        <property name="horizontalSpacing">
+         <number>6</number>
+        </property>
+        <item row="0" column="1" colspan="2">
          <widget class="QGroupBox" name="groupBox">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -181,7 +64,7 @@
           <property name="minimumSize">
            <size>
             <width>280</width>
-            <height>95</height>
+            <height>65</height>
            </size>
           </property>
           <property name="maximumSize">
@@ -191,7 +74,7 @@
            </size>
           </property>
           <property name="title">
-           <string>Spell Search</string>
+           <string>Search</string>
           </property>
           <property name="flat">
            <bool>false</bool>
@@ -223,10 +106,13 @@
              <property name="verticalSpacing">
               <number>2</number>
              </property>
-             <item row="0" column="0">
-              <widget class="QLabel" name="findLine_l1">
+             <item row="1" column="1">
+              <widget class="QLineEdit" name="findLine_e3"/>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="findLine_l3">
                <property name="text">
-                <string>ID or Name:</string>
+                <string>Description:</string>
                </property>
               </widget>
              </item>
@@ -246,32 +132,19 @@
                </property>
               </widget>
              </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="findLine_l3">
+             <item row="0" column="0">
+              <widget class="QLabel" name="findLine_l1">
                <property name="text">
-                <string>Description:</string>
+                <string>Id or Name:</string>
                </property>
               </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QLineEdit" name="findLine_e3"/>
-             </item>
-             <item row="2" column="0">
-              <widget class="QLabel" name="findLine_l2">
-               <property name="text">
-                <string>Icon ID:</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <widget class="QLineEdit" name="findLine_e2"/>
              </item>
             </layout>
            </item>
           </layout>
          </widget>
         </item>
-        <item row="5" column="1">
+        <item row="1" column="1" colspan="2">
          <widget class="QGroupBox" name="groupBox_2">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -292,7 +165,7 @@
            </size>
           </property>
           <property name="title">
-           <string>Spell Filter</string>
+           <string>Fast Filter</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_13">
            <property name="leftMargin">
@@ -330,7 +203,7 @@
                 <bool>false</bool>
                </property>
                <property name="currentIndex">
-                <number>184</number>
+                <number>140</number>
                </property>
                <property name="maxVisibleItems">
                 <number>20</number>
@@ -359,7 +232,7 @@
                 <bool>false</bool>
                </property>
                <property name="currentIndex">
-                <number>0</number>
+                <number>140</number>
                </property>
                <property name="maxVisibleItems">
                 <number>20</number>
@@ -369,7 +242,7 @@
                </property>
                <property name="currentFont">
                 <font>
-                 <family>Agency FB</family>
+                 <family>MS Shell Dlg 2</family>
                  <pointsize>8</pointsize>
                 </font>
                </property>
@@ -387,7 +260,7 @@
                 <bool>false</bool>
                </property>
                <property name="currentIndex">
-                <number>184</number>
+                <number>140</number>
                </property>
                <property name="maxVisibleItems">
                 <number>20</number>
@@ -412,7 +285,7 @@
                 <bool>false</bool>
                </property>
                <property name="currentIndex">
-                <number>184</number>
+                <number>140</number>
                </property>
                <property name="maxVisibleItems">
                 <number>20</number>
@@ -437,7 +310,7 @@
                 <bool>false</bool>
                </property>
                <property name="currentIndex">
-                <number>184</number>
+                <number>140</number>
                </property>
                <property name="maxVisibleItems">
                 <number>20</number>
@@ -455,7 +328,48 @@
           </layout>
          </widget>
         </item>
-        <item row="7" column="1">
+        <item row="0" column="0" rowspan="4">
+         <widget class="QWebView" name="webView1">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(206, 206, 206);</string>
+          </property>
+          <property name="url">
+           <url>
+            <string>about:blank</string>
+           </url>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QPushButton" name="adFilterButton">
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Advanced Filter</string>
+          </property>
+          <property name="checkable">
+           <bool>false</bool>
+          </property>
+          <property name="flat">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="QPushButton" name="adApplyButton">
+          <property name="text">
+           <string>Apply</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1" colspan="2">
          <widget class="QTableView" name="SpellList">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -556,24 +470,6 @@
           <attribute name="verticalHeaderMinimumSectionSize">
            <number>17</number>
           </attribute>
-         </widget>
-        </item>
-        <item row="4" column="0" rowspan="4">
-         <widget class="QWebView" name="webView1">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">background-color: rgb(206, 206, 206);</string>
-          </property>
-          <property name="url">
-           <url>
-            <string>about:blank</string>
-           </url>
-          </property>
          </widget>
         </item>
        </layout>

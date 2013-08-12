@@ -7,6 +7,7 @@
 #include <QtCore/QTime>
 #include <QtGui/QStandardItemModel>
 #include <QtGui/QMessageBox>
+#include <QtGui/QStringListModel>
 
 SWMainForm::SWMainForm(QWidget* parent)
     : QMainWindow(parent)
@@ -15,6 +16,10 @@ SWMainForm::SWMainForm(QWidget* parent)
     m_time.start();
 
     setupUi(this);
+    
+    m_advancedTextEdit = new TextEdit(page);
+    gridLayout_4->addWidget(m_advancedTextEdit, 0, 0, 4, 1);
+    m_advancedTextEdit->hide();
 
     m_enums = new SWEnums();
     m_sw = new SWObject(this);
@@ -44,6 +49,9 @@ SWMainForm::SWMainForm(QWidget* parent)
     selectedAction->setShortcut(QKeySequence::MoveToPreviousLine);
     connect(selectedAction, SIGNAL(triggered()), this, SLOT(slotPrevRow()));
     SpellList->addAction(selectedAction);
+    
+    connect(adFilterButton, SIGNAL(clicked()), this, SLOT(slotAdvancedFilter()));
+    connect(adApplyButton, SIGNAL(clicked()), this, SLOT(slotAdvancedApply()));
 
     selectedAction = new QAction(this);
     selectedAction->setShortcut(QKeySequence::MoveToNextLine);
@@ -55,7 +63,6 @@ SWMainForm::SWMainForm(QWidget* parent)
 
     // Main search connections
     connect(findLine_e1, SIGNAL(returnPressed()), this, SLOT(slotButtonSearch()));
-    connect(findLine_e2, SIGNAL(returnPressed()), this, SLOT(slotButtonSearch()));
     connect(findLine_e3, SIGNAL(returnPressed()), this, SLOT(slotButtonSearch()));
 
     // Menu connections
@@ -70,8 +77,6 @@ SWMainForm::SWMainForm(QWidget* parent)
     connect(comboBox_3, SIGNAL(currentIndexChanged(int)), this, SLOT(slotFilterSearch()));
     connect(comboBox_4, SIGNAL(currentIndexChanged(int)), this, SLOT(slotFilterSearch()));
     connect(comboBox_5, SIGNAL(currentIndexChanged(int)), this, SLOT(slotFilterSearch()));
-    connect(adLine1, SIGNAL(returnPressed()), this, SLOT(slotFilterSearch()));
-    connect(adLine2, SIGNAL(returnPressed()), this, SLOT(slotFilterSearch()));
 
     // Search connection
     connect(this, SIGNAL(signalSearch(quint8)), this, SLOT(slotSearch(quint8)));
@@ -94,6 +99,25 @@ SWMainForm::~SWMainForm()
     saveSettings();
 }
 
+void SWMainForm::slotAdvancedFilter()
+{
+    if (m_advancedTextEdit->isVisible())
+    {
+        webView1->show();
+        m_advancedTextEdit->hide();
+    }
+    else
+    {
+        webView1->hide();
+        m_advancedTextEdit->show();
+    }
+}
+
+void SWMainForm::slotAdvancedApply()
+{
+    emit signalSearch(3);
+}
+
 void SWMainForm::loadSettings()
 {
     m_settings = new QSettings("QSW.ini", QSettings::IniFormat, this);
@@ -104,8 +128,7 @@ void SWMainForm::loadSettings()
 
     // Search and filters
     findLine_e1->setText(m_settings->value("Search/IdOrName", "").toString());
-    findLine_e2->setText(m_settings->value("Search/Description", "").toString());
-    findLine_e3->setText(m_settings->value("Search/IconId", "").toString());
+    findLine_e3->setText(m_settings->value("Search/Description", "").toString());
     comboBox->setCurrentIndex(m_settings->value("Search/SpellFamilyIndex", 0).toInt());
     comboBox_2->setCurrentIndex(m_settings->value("Search/EffectIndex", 0).toInt());
     comboBox_3->setCurrentIndex(m_settings->value("Search/AuraIndex", 0).toInt());
@@ -129,8 +152,7 @@ void SWMainForm::saveSettings()
 
     // Search and filters
     m_settings->setValue("Search/IdOrName", findLine_e1->text());
-    m_settings->setValue("Search/Description", findLine_e2->text());
-    m_settings->setValue("Search/IconId", findLine_e3->text());
+    m_settings->setValue("Search/Description", findLine_e3->text());
     m_settings->setValue("Search/SpellFamilyIndex", comboBox->currentIndex());
     m_settings->setValue("Search/EffectIndex", comboBox_2->currentIndex());
     m_settings->setValue("Search/AuraIndex", comboBox_3->currentIndex());
@@ -342,8 +364,6 @@ void SWMainForm::slotConnectToDatabase()
     }
 
     model->appendDbcField("");
-    for (qint32 i = 1; i < adBox1->count(); ++i)
-        model->appendDbcField(adBox1->itemText(i));
 
     fieldsView->setItemDelegate(new RelationDelegate);
     fieldsView->setModel(model);
@@ -420,35 +440,6 @@ void SWMainForm::loadComboBoxes()
             .arg(itr.key(), 3, 10, QChar('0'))
             .arg(itr.value()), itr.key());
     }
-
-    adBox1->clear();
-    adBox2->clear();
-    MetaSpell metaSpell;
-    quint32 offset = metaSpell.metaObject()->methodOffset();
-    quint32 count = metaSpell.metaObject()->methodCount();
-    QStandardItemModel* model = new QStandardItemModel();
-    model->setItem(0, new QStandardItem("None"));
-    for (quint16 i = offset; i < count; ++i)
-    {
-        QString signature = metaSpell.metaObject()->method(i).signature();
-        QRegExp rx("(\\D.*)(\\(.*\\))");
-        if (rx.indexIn(signature) != -1)
-        {
-            QStandardItem* item = new QStandardItem(rx.cap(1));
-            item->setData(signature, 33);
-
-            QVariant arraySize = metaSpell.property(rx.cap(1).toLatin1().data());
-            if (arraySize.isValid())
-                item->setData(arraySize.toUInt(), 34);
-            else
-                item->setData(0, 34);
-
-            model->setItem(i - offset + 1, item);
-        }
-    }
-
-    adBox1->setModel(model);
-    adBox2->setModel(model);
 }
 
 void SWMainForm::slotRegExp()
@@ -575,4 +566,145 @@ bool SWMainForm::event(QEvent* ev)
     }
 
     return QWidget::event(ev);
+}
+
+TextEdit::TextEdit(QWidget *parent)
+    : QTextEdit(parent), m_completer(NULL)
+{
+    m_completer = new QCompleter(parent);
+    m_completer->setModel(setupModel());
+    m_completer->setModelSorting(QCompleter::UnsortedModel);
+    m_completer->setCaseSensitivity(Qt::CaseInsensitive);
+    m_completer->setWrapAround(false);
+    m_completer->setWidget(this);
+    m_completer->setCompletionMode(QCompleter::PopupCompletion);
+
+    QObject::connect(m_completer, SIGNAL(activated(QString)), this, SLOT(insertCompletion(QString)));
+}
+
+TextEdit::~TextEdit()
+{
+}
+
+QCompleter *TextEdit::completer() const
+{
+    return m_completer;
+}
+
+void TextEdit::insertCompletion(const QString& completion)
+{
+    if (m_completer->widget() != this)
+        return;
+    QTextCursor tc = textCursor();
+    int extra = completion.length() - m_completer->completionPrefix().length();
+    tc.select(QTextCursor::WordUnderCursor);
+    tc.insertText(completion);
+    setTextCursor(tc);
+}
+
+QString TextEdit::textUnderCursor() const
+{
+    QTextCursor tc = textCursor();
+    tc.select(QTextCursor::BlockUnderCursor);
+    return tc.selectedText();
+}
+
+void TextEdit::focusInEvent(QFocusEvent *e)
+{
+    if (m_completer)
+        m_completer->setWidget(this);
+    QTextEdit::focusInEvent(e);
+}
+
+void TextEdit::keyPressEvent(QKeyEvent *e)
+{
+    if (m_completer && m_completer->popup()->isVisible())
+    {
+        // The following keys are forwarded by the completer to the widget
+        switch (e->key()) {
+        case Qt::Key_Enter:
+        case Qt::Key_Return:
+        case Qt::Key_Escape:
+        case Qt::Key_Tab:
+        case Qt::Key_Backtab:
+            e->ignore();
+            return; // let the completer do default behavior
+        default:
+            break;
+        }
+    }
+
+    bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_E); // CTRL+E
+    if (!m_completer || !isShortcut) // do not process the shortcut when we have a completer
+        QTextEdit::keyPressEvent(e);
+
+    const bool ctrlOrShift = e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
+    if (!m_completer || (ctrlOrShift && e->text().isEmpty()))
+        return;
+
+    static QString eow(" ~!@#$%^&*()_+{}|:\"<>?,/;'[]\\-="); // end of word
+    bool hasModifier = (e->modifiers() != Qt::NoModifier) && !ctrlOrShift;
+    QString completionPrefix = textUnderCursor();
+
+    bool complete = false;
+    for (qint32 i = completionPrefix.size() - 1; i != -1; --i)
+    {
+        qint32 endIndx = completionPrefix.size() - i;
+        if (completionPrefix.at(i) == ' ')
+        {
+            m_completer->popup()->hide();
+            return;
+        }
+        else if (completionPrefix.at(i) == '.')
+        {
+            if (endIndx + 5 <= completionPrefix.size())
+            {
+                completionPrefix = completionPrefix.right(endIndx + 5);
+
+                if (completionPrefix.startsWith("spell."))
+                {
+                    completionPrefix.remove(0, 6);
+                    complete = true;
+                }
+            }
+            break;
+        }
+    }
+
+    if (!isShortcut && e->key() != Qt::Key_Period && (hasModifier || e->text().isEmpty() || (/*completionPrefix.length() < 3 && */!complete)
+        || eow.contains(e->text().right(1)))) {
+            m_completer->popup()->hide();
+            return;
+    }
+
+    if (completionPrefix != m_completer->completionPrefix()) {
+        m_completer->setCompletionPrefix(completionPrefix);
+        m_completer->popup()->setCurrentIndex(m_completer->completionModel()->index(0, 0));
+    }
+    QRect cr = cursorRect();
+    cr.setWidth(m_completer->popup()->sizeHintForColumn(0)
+        + m_completer->popup()->verticalScrollBar()->sizeHint().width());
+    m_completer->complete(cr); // popup it up!
+}
+
+QAbstractItemModel* TextEdit::setupModel()
+{
+    QSet<QString> fields;
+
+    MetaSpell spell;
+
+    qint32 propertyCount = spell.metaObject()->propertyCount();
+    qint32 methodCount = spell.metaObject()->methodCount();
+
+    for (qint32 i = 1; i < propertyCount; ++i)
+        fields << spell.metaObject()->property(i).name();
+
+    for (qint32 i = 0; i < propertyCount; ++i)
+    {
+        QString methodName = spell.metaObject()->method(i).signature();
+        if (methodName.contains("(quint8)"))
+            fields << methodName.replace("(quint8)", "(index)");
+    }
+
+    return new QStringListModel(fields.toList(), m_completer);
 }
