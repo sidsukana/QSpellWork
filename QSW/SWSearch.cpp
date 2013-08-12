@@ -1,164 +1,37 @@
 #include "SWSearch.h"
 #include "SWModels.h"
 
-SWSearch::SWSearch(SWObject* sw)
-: m_sw(sw), m_form(sw->getForm())
+Q_DECLARE_METATYPE(MetaSpell*)
+
+MetaSpell::MetaSpell() : m_spellInfo(NULL)
 {
+
+}
+
+SWSearch::SWSearch(SWObject* sw, QObject* parent)
+: QObject(parent), m_sw(sw), m_form(sw->getForm())
+{
+    m_scriptEngine = new QScriptEngine(this);
+
+    QString text = m_form->getFilterText();
+    //text.replace(QRegExp("([A-Za-z]+)"), "spell.\\1");
+    m_script = m_scriptEngine->evaluate("(function() { return (" + text + "); })");
 }
 
 SWSearch::~SWSearch()
 {
+    delete m_scriptEngine;
 }
 
-bool SWSearch::hasValue(int index, QString value, SpellEntry const* spellInfo)
+bool SWSearch::hasValue(SpellEntry const* spellInfo)
 {
-    QString signature = m_form->adBox1->itemData(index, 33).toString();
-    quint8 arraySize = m_form->adBox1->itemData(index, 34).toUInt();
+    MetaSpell metaSpell;
+    metaSpell.setSpell(spellInfo);
 
-    MetaSpell metaSpell(spellInfo);
+    QScriptValue objectValue = m_scriptEngine->newQObject(&metaSpell);
+    m_scriptEngine->globalObject().setProperty("spell", objectValue);
 
-    QMetaMethod handler = metaSpell.metaObject()->method(metaSpell.metaObject()->indexOfMethod(qPrintable(signature)));
-
-    QVariant spellValue;
-
-    value.remove(QChar(32));
-
-    switch (value.at(0).toLatin1())
-    {
-        case '=':
-        {
-            value.remove(0, 1);
-
-            if (arraySize)
-            {
-                for (quint8 i = 0; i < arraySize; ++i)
-                    if (handler.invoke(&metaSpell, Q_RETURN_ARG(QVariant, spellValue), Q_ARG(quint8, i)))
-                        if (spellValue.toLongLong() == Converter::getLongLong(value))
-                            return true;
-            }
-            else
-            {
-                if (handler.invoke(&metaSpell, Q_RETURN_ARG(QVariant, spellValue)))
-                    if (spellValue.toLongLong() == Converter::getLongLong(value))
-                        return true;
-            }
-        }
-        break;
-        case '>':
-        {
-            value.remove(0, 1);
-
-            if (arraySize)
-            {
-                for (quint8 i = 0; i < arraySize; ++i)
-                    if (handler.invoke(&metaSpell, Q_RETURN_ARG(QVariant, spellValue), Q_ARG(quint8, i)))
-                        if (spellValue.toLongLong() > Converter::getLongLong(value))
-                            return true;
-            }
-            else
-            {
-                if (handler.invoke(&metaSpell, Q_RETURN_ARG(QVariant, spellValue)))
-                    if (spellValue.toLongLong() > Converter::getLongLong(value))
-                        return true;
-            }
-        }
-        break;
-        case '<':
-        {
-            value.remove(0, 1);
-
-            if (arraySize)
-            {
-                for (quint8 i = 0; i < arraySize; ++i)
-                    if (handler.invoke(&metaSpell, Q_RETURN_ARG(QVariant, spellValue), Q_ARG(quint8, i)))
-                        if (spellValue.toLongLong() < Converter::getLongLong(value))
-                            return true;
-            }
-            else
-            {
-                if (handler.invoke(&metaSpell, Q_RETURN_ARG(QVariant, spellValue)))
-                    if (spellValue.toLongLong() < Converter::getLongLong(value))
-                        return true;
-            }
-        }
-        break;
-        case '&':
-        {
-            value.remove(0, 1);
-
-            if (arraySize)
-            {
-                for (quint8 i = 0; i < arraySize; ++i)
-                    if (handler.invoke(&metaSpell, Q_RETURN_ARG(QVariant, spellValue), Q_ARG(quint8, i)))
-                        if (spellValue.toLongLong() & Converter::getLongLong(value))
-                            return true;
-            }
-            else
-            {
-                if (handler.invoke(&metaSpell, Q_RETURN_ARG(QVariant, spellValue)))
-                    if (spellValue.toLongLong() & Converter::getLongLong(value))
-                        return true;
-            }
-        }
-        break;
-        case '~':
-        {
-            value.remove(0, 1);
-
-            if (arraySize)
-            {
-                for (quint8 i = 0; i < arraySize; ++i)
-                    if (handler.invoke(&metaSpell, Q_RETURN_ARG(QVariant, spellValue), Q_ARG(quint8, i)))
-                        if (~spellValue.toLongLong() & Converter::getLongLong(value))
-                            return true;
-            }
-            else
-            {
-                if (handler.invoke(&metaSpell, Q_RETURN_ARG(QVariant, spellValue)))
-                    if (~spellValue.toLongLong() & Converter::getLongLong(value))
-                        return true;
-            }
-        }
-        break;
-        case '!':
-        {
-            value.remove(0, 1);
-
-            if (arraySize)
-            {
-                for (quint8 i = 0; i < arraySize; ++i)
-                    if (handler.invoke(&metaSpell, Q_RETURN_ARG(QVariant, spellValue), Q_ARG(quint8, i)))
-                        if (spellValue.toLongLong() != Converter::getLongLong(value))
-                            return true;
-            }
-            else
-            {
-                if (handler.invoke(&metaSpell, Q_RETURN_ARG(QVariant, spellValue)))
-                    if (spellValue.toLongLong() != Converter::getLongLong(value))
-                        return true;
-            }
-        }
-        break;
-        default:
-        {
-            if (arraySize)
-            {
-                for (quint8 i = 0; i < arraySize; ++i)
-                    if (handler.invoke(&metaSpell, Q_RETURN_ARG(QVariant, spellValue), Q_ARG(quint8, i)))
-                        if (spellValue.toLongLong() == Converter::getLongLong(value))
-                            return true;
-            }
-            else
-            {
-                if (handler.invoke(&metaSpell, Q_RETURN_ARG(QVariant, spellValue)))
-                    if (spellValue.toLongLong() == Converter::getLongLong(value))
-                        return true;
-            }
-        }
-        break;
-    }
-
-    return false;
+    return m_script.call(QScriptValue()).toBool();
 }
 
 void SWSearch::search()
@@ -172,8 +45,6 @@ void SWSearch::search()
             bool family = false;
             bool aura = false;
             bool effect = false;
-            bool adFilter1 = false;
-            bool adFilter2 = false;
             bool targetA = false;
             bool targetB = false;
 
@@ -250,23 +121,7 @@ void SWSearch::search()
                 else
                     targetB = true;
 
-                if (m_form->adBox1->currentIndex() > 0)
-                {
-                    if (hasValue(m_form->adBox1->currentIndex(), m_form->adLine1->text(), m_spellInfo))
-                        adFilter1 = true;
-                }
-                else
-                    adFilter1 = true;
-
-                if (m_form->adBox2->currentIndex() > 0)
-                {
-                    if (hasValue(m_form->adBox2->currentIndex(), m_form->adLine2->text(), m_spellInfo))
-                        adFilter2 = true;
-                }
-                else
-                    adFilter2 = true;
-
-                if (family && aura && effect && adFilter1 && adFilter2 && targetA && targetB)
+                if (family && aura && effect && targetA && targetB)
                 {
                     QString sRank(QString::fromUtf8(m_spellInfo->Rank));
                     QString sFullName(QString::fromUtf8(m_spellInfo->SpellName));
@@ -300,6 +155,30 @@ void SWSearch::search()
                 QApplication::postEvent(m_form, ev);
             }
         }
+    }
+    else if (m_sw->getType() == 3)
+    {
+        for (quint32 i = 0; i < sSpellStore.GetNumRows(); ++i)
+        {
+            SpellEntry const* m_spellInfo = sSpellStore.LookupEntry(i);
+            if (m_spellInfo && hasValue(m_spellInfo))
+            {
+                QString sRank(QString::fromUtf8(m_spellInfo->Rank));
+                QString sFullName(QString::fromUtf8(m_spellInfo->SpellName));
+
+                if (!sRank.isEmpty())
+                    sFullName.append(QString(" (%0)").arg(sRank));
+
+                QStringList spellRecord;
+                spellRecord << QString("%0").arg(m_spellInfo->Id) << sFullName;
+
+                model->appendRecord(spellRecord);
+            }
+        }
+
+        Event* ev = new Event(Event::Type(Event::EVENT_SEND_MODEL));
+        ev->addValue(QVariant::fromValue(model));
+        QApplication::postEvent(m_form, ev);
     }
     else
     {
@@ -355,29 +234,6 @@ void SWSearch::search()
                     QApplication::postEvent(m_form, ev2);
                 }
             }
-        }
-        else if (!m_form->findLine_e2->text().isEmpty())
-        {
-            for (quint32 i = 0; i < sSpellStore.GetNumRows(); ++i)
-            {
-                SpellEntry const* m_spellInfo = sSpellStore.LookupEntry(i);
-                if (m_spellInfo && m_spellInfo->getSpellIconId() == m_form->findLine_e2->text().toUInt())
-                {
-                    QString sRank(QString::fromUtf8(m_spellInfo->Rank));
-                    QString sFullName(QString::fromUtf8(m_spellInfo->SpellName));
-
-                    if (!sRank.isEmpty())
-                        sFullName.append(QString(" (%0)").arg(sRank));
-
-                    QStringList spellRecord;
-                    spellRecord << QString("%0").arg(m_spellInfo->Id) << sFullName;
-
-                    model->appendRecord(spellRecord);
-                }
-            }
-            Event* ev = new Event(Event::Type(Event::EVENT_SEND_MODEL));
-            ev->addValue(QVariant::fromValue(model));
-            QApplication::postEvent(m_form, ev);
         }
         else if (!m_form->findLine_e3->text().isEmpty())
         {

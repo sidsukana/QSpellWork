@@ -4,15 +4,14 @@
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-    SWMainForm *form = new SWMainForm;
+    SWMainForm form;
 
-    form->setWindowTitle(QString("Qt SpellWork %0 (%1) for WoW %2 (%3)")
-        .arg(QSW_VERSION)
-        .arg(QSW_BUILD)
+    form.setWindowTitle(QString("Qt SpellWork for WoW %0 (%1) build %2")
         .arg(CLIENT_VERSION)
-        .arg(CLIENT_BUILD));
+        .arg(CLIENT_BUILD)
+        .arg(QSW_BUILD));
 
-    form->show();
+    form.show();
 
     return app.exec();
 }
