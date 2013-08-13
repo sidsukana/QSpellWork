@@ -587,7 +587,6 @@ QString SWObject::getDescription(QString str, SpellEntry const* spellInfo)
                 case 'a': RegExpA(spellInfo, rx, str); break;
                 case 'd': RegExpD(spellInfo, rx, str); break;
                 case 'o': RegExpO(spellInfo, rx, str); break;
-                case 's': RegExpS(spellInfo, rx, str); break;
                 case 't': RegExpT(spellInfo, rx, str); break;
                 case 'n': RegExpN(spellInfo, rx, str); break;
                 case 'x': RegExpX(spellInfo, rx, str); break;
