@@ -676,7 +676,7 @@ QAbstractItemModel* TextEdit::setupModel()
     for (qint32 i = 1; i < propertyCount; ++i)
         fields << spell.metaObject()->property(i).name();
 
-    for (qint32 i = 0; i < propertyCount; ++i)
+    for (qint32 i = 0; i < methodCount; ++i)
     {
         QString methodName = spell.metaObject()->method(i).signature();
         if (methodName.contains("(quint8)"))
