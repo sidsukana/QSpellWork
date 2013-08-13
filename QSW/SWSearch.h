@@ -19,7 +19,8 @@ class MetaSpell : public QObject
         MetaSpell();
         
         void setSpell(SpellEntry const* spellInfo) { m_spellInfo = spellInfo; }
-        
+    
+    public slots:
         quint32 Id() { return m_spellInfo->Id; }
         quint32 Category() { return m_spellInfo->Category; }
         quint32 Dispel() { return m_spellInfo->Dispel; }
