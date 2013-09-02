@@ -596,8 +596,8 @@ void TextEdit::insertCompletion(const QString& completion)
 {
     if (m_completer->widget() != this)
         return;
+
     QTextCursor tc = textCursor();
-    int extra = completion.length() - m_completer->completionPrefix().length();
     tc.select(QTextCursor::WordUnderCursor);
     tc.insertText(completion);
     setTextCursor(tc);
@@ -635,7 +635,7 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
         }
     }
 
-    bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_E); // CTRL+E
+    bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_Space); // CTRL+E
     if (!m_completer || !isShortcut) // do not process the shortcut when we have a completer
         QTextEdit::keyPressEvent(e);
 
@@ -643,49 +643,64 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
     if (!m_completer || (ctrlOrShift && e->text().isEmpty()))
         return;
 
-    static QString eow(" ~!@#$%^&*()_+{}|:\"<>?,/;'[]\\-="); // end of word
+    static QString eow(" ~!@#$%^&*_+{}|:\"<>?,/;'[]()\\-="); // end of word
     bool hasModifier = (e->modifiers() != Qt::NoModifier) && !ctrlOrShift;
+
     QString completionPrefix = textUnderCursor();
 
+    int pos = textCursor().positionInBlock();
     bool complete = false;
-    for (qint32 i = completionPrefix.size() - 1; i != -1; --i)
-    {
-        qint32 endIndx = completionPrefix.size() - i;
-        if (completionPrefix.at(i) == ' ')
-        {
-            m_completer->popup()->hide();
-            return;
-        }
-        else if (completionPrefix.at(i) == '.')
-        {
-            if (endIndx + 5 <= completionPrefix.size())
-            {
-                completionPrefix = completionPrefix.right(endIndx + 5);
 
-                if (completionPrefix.startsWith("spell."))
+    // Check autocomplete
+    if (completionPrefix.size() >= 6 && pos >= 6 && completionPrefix.contains("spell."))
+    {
+        // Remove all after first right whitespace about cursor position
+        for (qint32 i = pos; i < completionPrefix.size(); ++i)
+        {
+            if (completionPrefix.at(i) == ' ')
+            {
+                completionPrefix.remove(i, completionPrefix.size() - i);
+                break;
+            }
+        }
+
+        // Remove all before first dot about cursor position
+        // and contains 'spell.'
+        for (qint32 i = pos - 1; i != -1; --i)
+        {
+            if (completionPrefix.at(i) == '.')
+            {
+                if (completionPrefix.mid(i - 5, 6).startsWith("spell."))
                 {
-                    completionPrefix.remove(0, 6);
+                    completionPrefix.remove(0, i + 1);
                     complete = true;
+                    break;
                 }
             }
-            break;
         }
     }
-
-    if (!isShortcut && e->key() != Qt::Key_Period && (hasModifier || e->text().isEmpty() || (/*completionPrefix.length() < 3 && */!complete)
-        || eow.contains(e->text().right(1)))) {
-            m_completer->popup()->hide();
-            return;
+    
+    if (!isShortcut && e->key() != Qt::Key_Period && (hasModifier || e->text().isEmpty() || !complete || eow.contains(e->text().right(1))))
+    {
+        m_completer->popup()->hide();
+        return;
     }
 
-    if (completionPrefix != m_completer->completionPrefix()) {
+    if (completionPrefix != m_completer->completionPrefix())
+    {
         m_completer->setCompletionPrefix(completionPrefix);
         m_completer->popup()->setCurrentIndex(m_completer->completionModel()->index(0, 0));
     }
+    
+    if (completionPrefix == m_completer->currentCompletion())
+    {
+        m_completer->popup()->hide();
+        return;
+    }
+
     QRect cr = cursorRect();
-    cr.setWidth(m_completer->popup()->sizeHintForColumn(0)
-        + m_completer->popup()->verticalScrollBar()->sizeHint().width());
-    m_completer->complete(cr); // popup it up!
+    cr.setWidth(m_completer->popup()->sizeHintForColumn(0) + m_completer->popup()->verticalScrollBar()->sizeHint().width());
+    m_completer->complete(cr);
 }
 
 QAbstractItemModel* TextEdit::setupModel()
