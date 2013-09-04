@@ -15,6 +15,8 @@ class SWEnums
         SWEnums();
         ~SWEnums();
 
+        EnumHash getEnums() const { return m_enums; }
+
         Enumerator getSpellFamilies() const { return m_enums["SpellFamily"]; }
         Enumerator getMechanics() const { return m_enums["Mechanic"]; }
         Enumerator getSchools() const { return m_enums["School"]; }
