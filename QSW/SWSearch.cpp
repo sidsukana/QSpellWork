@@ -13,9 +13,13 @@ SWSearch::SWSearch(SWObject* sw, QObject* parent)
 {
     m_scriptEngine = new QScriptEngine(this);
 
-    QString text = m_form->getFilterText();
-    //text.replace(QRegExp("([A-Za-z]+)"), "spell.\\1");
-    m_script = m_scriptEngine->evaluate("(function() { return (" + text + "); })");
+    EnumHash enums = m_form->getEnums()->getEnums();
+
+    for (EnumHash::const_iterator itr = enums.begin(); itr != enums.end(); ++itr)
+        for (Enumerator::const_iterator itr2 = itr->begin(); itr2 != itr->end(); ++itr2)
+            m_scriptEngine->globalObject().setProperty(itr2.value(), qsreal(itr2.key()));
+
+    m_script = m_scriptEngine->evaluate("(function() { return (" + m_form->getFilterText() + "); })");
 }
 
 SWSearch::~SWSearch()
@@ -28,8 +32,7 @@ bool SWSearch::hasValue(SpellEntry const* spellInfo)
     MetaSpell metaSpell;
     metaSpell.setSpell(spellInfo);
 
-    QScriptValue objectValue = m_scriptEngine->newQObject(&metaSpell);
-    m_scriptEngine->globalObject().setProperty("spell", objectValue);
+    m_scriptEngine->globalObject().setProperty("spell", m_scriptEngine->newQObject(&metaSpell));
 
     return m_script.call(QScriptValue()).toBool();
 }
