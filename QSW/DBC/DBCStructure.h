@@ -25,6 +25,7 @@ struct SkillLineEntry
     char*      AlternateVerb;                                   // 5
     quint32    CanLink;                                         // 6
     // quint32    Unk7                                          // 7
+    // quint32    Unk8                                          // 8
 };
 
 struct SkillLineAbilityEntry
@@ -67,7 +68,7 @@ struct SpellAuraRestrictionsEntry
     quint32    CasterAuraSpell;                              // 7       m_casterAuraSpell
     quint32    TargetAuraSpell;                              // 8       m_targetAuraSpell
     quint32    ExcludeCasterAuraSpell;                       // 9       m_excludeCasterAuraSpell
-    quint32    ExcludeTargetAuraSpell;                       // 10       m_excludeTargetAuraSpell
+    quint32    ExcludeTargetAuraSpell;                       // 10      m_excludeTargetAuraSpell
 };
 
 struct SpellCastingRequirementsEntry
@@ -491,9 +492,10 @@ struct SpellCastTimesEntry
 struct SpellRadiusEntry
 {
     quint32    Id;
-    float      RadiusHostile;   //hostile
-    // Unk
-    float      RadiusFriendly;  //friedly
+    float      Radius;
+                                                            // 2        m_radiusPerLevel
+    //float                                                 // 3        5.x
+    //float     RadiusMax;                                  // 4        m_radiusMax
 };
 
 struct SpellRangeEntry

@@ -18,7 +18,7 @@ float getRadius(SpellEntry const* spellInfo, quint8 effIndex)
 {
     SpellRadiusEntry const* spellRadius = sSpellRadiusStore.LookupEntry(spellInfo->getEffectRadiusIndex(effIndex));
     if (spellRadius)
-        return spellRadius->RadiusFriendly;
+        return spellRadius->Radius;
 
     return 0.0f;
 }
@@ -1265,7 +1265,7 @@ void SWObject::appendRadiusInfo(SpellEntry const* spellInfo, quint8 index, quint
         {
             html.append(QString("<li>Radius (Id %0) %1</li>")
                 .arg(rIndex)
-                .arg(spellRadius->RadiusFriendly, 0, 'f', 2));
+                .arg(spellRadius->Radius, 0, 'f', 2));
         }
         else
             html.append(QString("<li>Radius (Id %0) Not found</li>").arg(rIndex));

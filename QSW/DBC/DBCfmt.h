@@ -1,7 +1,7 @@
 #ifndef DBCSFRM_H
 #define DBCSFRM_H
 
-const char* SkillLinefmt = "nissisix";
+const char* SkillLinefmt = "nissisixx";
 const char* SkillLineAbilityfmt = "niiiiiiiiiixx";
 const char* SpellAuraOptionsfmt = "dixiiii";
 const char* SpellAuraRestrictionsfmt = "dixiiiiiiii";
@@ -22,7 +22,7 @@ const char* SpellTotemsfmt = "diiii";
 const char* SpellMiscfmt = "dixiiiiiiiiiiiiiiifiiiii";
 const char* SpellEntryfmt = "nssssiiixiiiiiiiiiixiiiii";
 const char* SpellCastTimefmt = "nifi";
-const char* SpellRadiusfmt = "nfxf";
+const char* SpellRadiusfmt = "nfxxx";
 const char* SpellRangefmt = "nffffiss";
 const char* SpellDurationfmt = "niii";
 const char* SpellIconfmt = "ns";
