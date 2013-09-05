@@ -9,6 +9,8 @@
 #include <QtGui/QMessageBox>
 #include <QtGui/QStringListModel>
 
+#include <QtCore/QMetaProperty>
+
 SWMainForm::SWMainForm(QWidget* parent)
     : QMainWindow(parent)
 {

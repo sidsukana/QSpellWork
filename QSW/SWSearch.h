@@ -66,7 +66,7 @@ class MetaSpell : public QObject
         quint32 DurationIndex() { return m_spellInfo->getDurationIndex(); }
         qint32 PowerType() { return m_spellInfo->getPowerType(); }
         quint32 ManaCost() { return m_spellInfo->getManaCost(); }
-        quint32 ManaCostPerlevel() { return m_spellInfo->getManaCostPerLevel(); }
+        quint32 ManaCostPerLevel() { return m_spellInfo->getManaCostPerLevel(); }
         quint32 ManaPerSecond() { return m_spellInfo->getManaPerSecond(); }
         quint32 RangeIndex() { return m_spellInfo->getRangeIndex(); }
         float Speed() { return m_spellInfo->getSpeed(); }
@@ -174,7 +174,7 @@ class MetaSpell : public QObject
         Q_PROPERTY(quint32 DurationIndex READ DurationIndex)
         Q_PROPERTY(qint32 PowerType READ PowerType)
         Q_PROPERTY(quint32 ManaCost READ ManaCost)
-        Q_PROPERTY(quint32 ManaCostPerlevel READ ManaCostPerLevel)
+        Q_PROPERTY(quint32 ManaCostPerLevel READ ManaCostPerLevel)
         Q_PROPERTY(quint32 ManaPerSecond READ ManaPerSecond)
         Q_PROPERTY(quint32 RangeIndex READ RangeIndex)
         Q_PROPERTY(float Speed READ Speed)
@@ -185,10 +185,10 @@ class MetaSpell : public QObject
         Q_PROPERTY(qint32 EquippedItemInventoryTypeMask READ EquippedItemInventoryTypeMask)
         Q_PROPERTY(quint32 SpellIconId READ SpellIconId)
         Q_PROPERTY(quint32 SpellBuffIconId READ SpellBuffIconId)
-        Q_PROPERTY(QString SpellName READ SpellName))
-        Q_PROPERTY(QString Rank READ Rank))
-        Q_PROPERTY(QString Description READ Description))
-        Q_PROPERTY(QString ToolTip READ ToolTip))
+        Q_PROPERTY(QString SpellName READ SpellName)
+        Q_PROPERTY(QString Rank READ Rank)
+        Q_PROPERTY(QString Description READ Description)
+        Q_PROPERTY(QString ToolTip READ ToolTip)
         Q_PROPERTY(quint32 ManaCostPercentage READ ManaCostPercentage)
         Q_PROPERTY(quint32 StartRecoveryCategory READ StartRecoveryCategory)
         Q_PROPERTY(quint32 StartRecoveryTime READ StartRecoveryTime)
