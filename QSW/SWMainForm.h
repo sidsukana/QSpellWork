@@ -1,27 +1,25 @@
 #ifndef SWFORM_H
 #define SWFORM_H
 
-#include <QtCore/QSettings>
-
-#include <QtGui/QTextBrowser>
-#include <QtGui/QTextEdit>
-#include <QtGui/QMainWindow>
-#include <QtGui/QToolButton>
-#include <QtGui/QCompleter>
-#include <QtGui/QIcon>
-#include <QtGui/QKeyEvent>
-#include <QtGui/QScrollBar>
-
-#include <QtWebKit/QWebView>
-#include <QtWebKit/QWebFrame>
-
-#include <QtSql/QSqlDatabase>
-#include <QtSql/QSqlQuery>
-#include <QtSql/QSqlError>
-#include <QtSql/QSqlTableModel>
+#include <QSettings>
+#include <QTextBrowser>
+#include <QTextEdit>
+#include <QMainWindow>
+#include <QToolButton>
+#include <QCompleter>
+#include <QIcon>
+#include <QKeyEvent>
+#include <QScrollBar>
+#include <QWebView>
+#include <QWebFrame>
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
+#include <QSqlTableModel>
 
 #include "SWEnums.h"
 #include "SWObject.h"
+
 #include "ui_SWMainUI.h"
 
 class TextEdit;
@@ -39,8 +37,8 @@ class SWMainForm : public QMainWindow, public Ui::SWMainUI
         void saveSettings();
         void loadSettings();
 
-        bool isRegExp() const { return m_regExp->isChecked(); }
-        void setRegExp(bool enable) { m_regExp->setChecked(enable); }
+        bool isRegExp() const { return m_actionRegExp->isChecked(); }
+        void setRegExp(bool enable) { m_actionRegExp->setChecked(enable); }
         SWEnums* getEnums() const { return m_enums; }
         QString getFilterText() const { return ((QTextEdit*)m_advancedTextEdit)->toPlainText(); }
 
@@ -69,6 +67,7 @@ class SWMainForm : public QMainWindow, public Ui::SWMainUI
         void slotSearchFromList(const QModelIndex &index);
         void slotLinkClicked(const QUrl &url);
         void slotRegExp();
+        void slotSettings();
         void slotModeDatabase();
         void slotModeShow();
         void slotModeCompare();
@@ -90,14 +89,13 @@ class SWMainForm : public QMainWindow, public Ui::SWMainUI
 
         SWEnums* m_enums;
 
-        QSettings* m_settings;
         SpellListSortedModel* m_sortedModel;
         Ui::SWMainUI m_ui;
         SWObject* m_sw;
         QToolButton* m_modeButton;
-        QAction* m_regExp;
-        QAction* m_about;
-        QAction* m_update;
+        QAction* m_actionRegExp;
+        QAction* m_actionAbout;
+        QAction* m_actionSettings;
 
         TextEdit *m_advancedTextEdit;
 };

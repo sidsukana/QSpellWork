@@ -1,3 +1,3 @@
-#include <QtCore/QString>
+#include <QString>
 
 int compare(QString l, QString r);

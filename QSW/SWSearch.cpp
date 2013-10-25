@@ -1,5 +1,6 @@
 #include "SWSearch.h"
 #include "SWModels.h"
+#include "SWDefines.h"
 
 Q_DECLARE_METATYPE(MetaSpell*)
 
@@ -27,7 +28,7 @@ SWSearch::~SWSearch()
     delete m_scriptEngine;
 }
 
-bool SWSearch::hasValue(SpellEntry const* spellInfo)
+bool SWSearch::hasValue(Spell::entry const* spellInfo)
 {
     MetaSpell metaSpell;
     metaSpell.setSpell(spellInfo);
@@ -43,7 +44,7 @@ void SWSearch::search()
 
     if (m_sw->getType() == 1)
     {
-        for (quint32 i = 0; i < sSpellStore.GetNumRows(); ++i)
+        for (quint32 i = 0; i < Spell::getHeader()->recordCount; ++i)
         {
             bool family = false;
             bool aura = false;
@@ -51,14 +52,14 @@ void SWSearch::search()
             bool targetA = false;
             bool targetB = false;
 
-            SpellEntry const* m_spellInfo = sSpellStore.LookupEntry(i);
+            Spell::entry const* m_spellInfo = &Spell::getRecord(i);
 
             if (m_spellInfo)
             {
                 if (m_form->comboBox->currentIndex() > 0)
                 {
                     quint16 familyId = m_form->comboBox->itemData(m_form->comboBox->currentIndex()).toInt();
-                    if (m_spellInfo->SpellFamilyName == familyId)
+                    if (m_spellInfo->spellFamilyName == familyId)
                         family = true;
                 }
                 else
@@ -67,9 +68,9 @@ void SWSearch::search()
                 if (m_form->comboBox_2->currentIndex() > 0)
                 {
                     quint16 auraId = m_form->comboBox_2->itemData(m_form->comboBox_2->currentIndex()).toInt();
-                    for (quint8 i = EFFECT_INDEX_0; i < MAX_EFFECT_INDEX; ++i)
+                    for (quint8 i = 0; i < MAX_EFFECT_INDEX; ++i)
                     {
-                        if (m_spellInfo->EffectApplyAuraName[i] == auraId)
+                        if (m_spellInfo->effectApplyAuraName[i] == auraId)
                         {
                             aura = true;
                             break;
@@ -82,9 +83,9 @@ void SWSearch::search()
                 if (m_form->comboBox_3->currentIndex() > 0)
                 {
                     quint16 effectId = m_form->comboBox_3->itemData(m_form->comboBox_3->currentIndex()).toInt();
-                    for (quint8 i = EFFECT_INDEX_0; i < MAX_EFFECT_INDEX; ++i)
+                    for (quint8 i = 0; i < MAX_EFFECT_INDEX; ++i)
                     {
-                        if (m_spellInfo->Effect[i] == effectId)
+                        if (m_spellInfo->effect[i] == effectId)
                         {
                             effect = true;
                             break;
@@ -97,9 +98,9 @@ void SWSearch::search()
                 if (m_form->comboBox_4->currentIndex() > 0)
                 {
                     quint16 targetId = m_form->comboBox_4->itemData(m_form->comboBox_4->currentIndex()).toInt();
-                    for (quint8 i = EFFECT_INDEX_0; i < MAX_EFFECT_INDEX; ++i)
+                    for (quint8 i = 0; i < MAX_EFFECT_INDEX; ++i)
                     {
-                        if (m_spellInfo->EffectImplicitTargetA[i] == targetId)
+                        if (m_spellInfo->effectImplicitTargetA[i] == targetId)
                         {
                             targetA = true;
                             break;
@@ -112,9 +113,9 @@ void SWSearch::search()
                 if (m_form->comboBox_5->currentIndex() > 0)
                 {
                     quint16 targetId = m_form->comboBox_5->itemData(m_form->comboBox_5->currentIndex()).toInt();
-                    for (quint8 i = EFFECT_INDEX_0; i < MAX_EFFECT_INDEX; ++i)
+                    for (quint8 i = 0; i < MAX_EFFECT_INDEX; ++i)
                     {
-                        if (m_spellInfo->EffectImplicitTargetB[i] == targetId)
+                        if (m_spellInfo->effectImplicitTargetB[i] == targetId)
                         {
                             targetB = true;
                             break;
@@ -126,14 +127,14 @@ void SWSearch::search()
 
                 if (family && aura && effect && targetA && targetB)
                 {
-                    QString sRank(QString::fromUtf8(m_spellInfo->Rank[Locale]));
-                    QString sFullName(QString::fromUtf8(m_spellInfo->SpellName[Locale]));
+                    QString sRank(QString::fromUtf8(m_spellInfo->rank[QSW::Locale]));
+                    QString sFullName(QString::fromUtf8(m_spellInfo->spellName[QSW::Locale]));
 
                     if (!sRank.isEmpty())
                         sFullName.append(QString(" (%0)").arg(sRank));
 
                     QStringList spellRecord;
-                    spellRecord << QString("%0").arg(m_spellInfo->Id) << sFullName;
+                    spellRecord << QString("%0").arg(m_spellInfo->id) << sFullName;
 
                     model->appendRecord(spellRecord);
                 }
@@ -147,8 +148,8 @@ void SWSearch::search()
     {
         if (!m_form->compareSpell_1->text().isEmpty() && !m_form->compareSpell_2->text().isEmpty())
         {
-            SpellEntry const* sInfo1 = sSpellStore.LookupEntry(m_form->compareSpell_1->text().toInt());
-            SpellEntry const* sInfo2 = sSpellStore.LookupEntry(m_form->compareSpell_2->text().toInt());
+            Spell::entry * sInfo1 = &Spell::getRecord(m_form->compareSpell_1->text().toInt(), true);
+            Spell::entry * sInfo2 = &Spell::getRecord(m_form->compareSpell_2->text().toInt(), true);
 
             if (sInfo1 && sInfo2)
             {
@@ -161,19 +162,19 @@ void SWSearch::search()
     }
     else if (m_sw->getType() == 3)
     {
-        for (quint32 i = 0; i < sSpellStore.GetNumRows(); ++i)
+        for (quint32 i = 0; i < Spell::getHeader()->recordCount; ++i)
         {
-            SpellEntry const* m_spellInfo = sSpellStore.LookupEntry(i);
+            Spell::entry const* m_spellInfo = &Spell::getRecord(i);
             if (m_spellInfo && hasValue(m_spellInfo))
             {
-                QString sRank(QString::fromUtf8(m_spellInfo->Rank[Locale]));
-                QString sFullName(QString::fromUtf8(m_spellInfo->SpellName[Locale]));
+                QString sRank(QString::fromUtf8(m_spellInfo->rank[QSW::Locale]));
+                QString sFullName(QString::fromUtf8(m_spellInfo->spellName[QSW::Locale]));
 
                 if (!sRank.isEmpty())
                     sFullName.append(QString(" (%0)").arg(sRank));
 
                 QStringList spellRecord;
-                spellRecord << QString("%0").arg(m_spellInfo->Id) << sFullName;
+                spellRecord << QString("%0").arg(m_spellInfo->id) << sFullName;
 
                 model->appendRecord(spellRecord);
             }
@@ -189,19 +190,19 @@ void SWSearch::search()
         {
             if (!m_form->findLine_e1->text().toInt())
             {
-                for (quint32 i = 0; i < sSpellStore.GetNumRows(); ++i)
+                for (quint32 i = 0; i < Spell::getHeader()->recordCount; ++i)
                 {
-                    SpellEntry const* m_spellInfo = sSpellStore.LookupEntry(i);
-                    if (m_spellInfo && QString(QString::fromUtf8(m_spellInfo->SpellName[Locale])).contains(m_form->findLine_e1->text(), Qt::CaseInsensitive))
+                    Spell::entry const* m_spellInfo = &Spell::getRecord(i);
+                    if (m_spellInfo && QString(QString::fromUtf8(m_spellInfo->spellName[QSW::Locale])).contains(m_form->findLine_e1->text(), Qt::CaseInsensitive))
                     {
-                        QString sRank(QString::fromUtf8(m_spellInfo->Rank[Locale]));
-                        QString sFullName(QString::fromUtf8(m_spellInfo->SpellName[Locale]));
+                        QString sRank(QString::fromUtf8(m_spellInfo->rank[QSW::Locale]));
+                        QString sFullName(QString::fromUtf8(m_spellInfo->spellName[QSW::Locale]));
 
                         if (!sRank.isEmpty())
                             sFullName.append(QString(" (%0)").arg(sRank));
 
                         QStringList spellRecord;
-                        spellRecord << QString("%0").arg(m_spellInfo->Id) << sFullName;
+                        spellRecord << QString("%0").arg(m_spellInfo->id) << sFullName;
 
                         model->appendRecord(spellRecord);
                     }
@@ -213,18 +214,18 @@ void SWSearch::search()
             }
             else
             {
-                SpellEntry const* m_spellInfo = sSpellStore.LookupEntry(m_form->findLine_e1->text().toInt());
+                Spell::entry * m_spellInfo = &Spell::getRecord(m_form->findLine_e1->text().toInt(), true);
 
                 if (m_spellInfo)
                 {
-                    QString sRank(QString::fromUtf8(m_spellInfo->Rank[Locale]));
-                    QString sFullName(QString::fromUtf8(m_spellInfo->SpellName[Locale]));
+                    QString sRank(QString::fromUtf8(m_spellInfo->rank[QSW::Locale]));
+                    QString sFullName(QString::fromUtf8(m_spellInfo->spellName[QSW::Locale]));
 
                     if (!sRank.isEmpty())
                         sFullName.append(QString(" (%0)").arg(sRank));
 
                     QStringList spellRecord;
-                    spellRecord << QString("%0").arg(m_spellInfo->Id) << sFullName;
+                    spellRecord << QString("%0").arg(m_spellInfo->id) << sFullName;
 
                     model->appendRecord(spellRecord);
 
@@ -240,19 +241,19 @@ void SWSearch::search()
         }
         else if (!m_form->findLine_e3->text().isEmpty())
         {
-            for (quint32 i = 0; i < sSpellStore.GetNumRows(); ++i)
+            for (quint32 i = 0; i < Spell::getHeader()->recordCount; ++i)
             {
-                SpellEntry const* m_spellInfo = sSpellStore.LookupEntry(i);
-                if (m_spellInfo && QString(QString::fromUtf8(m_spellInfo->Description[Locale])).contains(m_form->findLine_e3->text(), Qt::CaseInsensitive))
+                Spell::entry const* m_spellInfo = &Spell::getRecord(i);
+                if (m_spellInfo && QString(QString::fromUtf8(m_spellInfo->description[QSW::Locale])).contains(m_form->findLine_e3->text(), Qt::CaseInsensitive))
                 {
-                    QString sRank(QString::fromUtf8(m_spellInfo->Rank[Locale]));
-                    QString sFullName(QString::fromUtf8(m_spellInfo->SpellName[Locale]));
+                    QString sRank(QString::fromUtf8(m_spellInfo->rank[QSW::Locale]));
+                    QString sFullName(QString::fromUtf8(m_spellInfo->spellName[QSW::Locale]));
 
                     if (!sRank.isEmpty())
                         sFullName.append(QString(" (%0)").arg(sRank));
 
                     QStringList spellRecord;
-                    spellRecord << QString("%0").arg(m_spellInfo->Id) << sFullName;
+                    spellRecord << QString("%0").arg(m_spellInfo->id) << sFullName;
 
                     model->appendRecord(spellRecord);
                 }
@@ -264,19 +265,19 @@ void SWSearch::search()
         }
         else
         {
-            for (quint32 i = 0; i < sSpellStore.GetNumRows(); ++i)
+            for (quint32 i = 0; i < Spell::getHeader()->recordCount; ++i)
             {
-                SpellEntry const* m_spellInfo = sSpellStore.LookupEntry(i);
+                Spell::entry const* m_spellInfo = &Spell::getRecord(i);
                 if (m_spellInfo)
                 {
-                    QString sRank(QString::fromUtf8(m_spellInfo->Rank[Locale]));
-                    QString sFullName(QString::fromUtf8(m_spellInfo->SpellName[Locale]));
+                    QString sRank(QString::fromUtf8(m_spellInfo->rank[QSW::Locale]));
+                    QString sFullName(QString::fromUtf8(m_spellInfo->spellName[QSW::Locale]));
 
                     if (!sRank.isEmpty())
                         sFullName.append(QString(" (%0)").arg(sRank));
 
                     QStringList spellRecord;
-                    spellRecord << QString("%0").arg(m_spellInfo->Id) << sFullName;
+                    spellRecord << QString("%0").arg(m_spellInfo->id) << sFullName;
 
                     model->appendRecord(spellRecord);
                 }

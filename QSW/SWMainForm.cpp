@@ -1,14 +1,18 @@
+#include <QtConcurrentRun>
+#include <QTime>
+#include <QStandardItemModel>
+#include <QStringListModel>
+#include <QDir>
+#include <QMessageBox>
+
 #include "SWMainForm.h"
 #include "SWAboutForm.h"
+#include "SWSettingsForm.h"
 #include "SWModels.h"
 #include "SWSearch.h"
+#include "SWDefines.h"
 
-#include <QtCore/QtConcurrentRun>
-#include <QtCore/QTime>
-#include <QtGui/QStandardItemModel>
-#include <QtGui/QStringListModel>
-
-#include <QtGui/QMessageBox>
+#include "WovWidget.h"
 
 SWMainForm::SWMainForm(QWidget* parent)
     : QMainWindow(parent)
@@ -37,10 +41,12 @@ SWMainForm::SWMainForm(QWidget* parent)
     mainToolBar->addSeparator();
     mainToolBar->addWidget(m_modeButton);
     mainToolBar->addSeparator();
-    m_regExp = mainToolBar->addAction(QIcon(":/SpellWork/Recources/regExp.png"), "<font color=red>Off</font>");
-    m_regExp->setCheckable(true);
+    m_actionRegExp = mainToolBar->addAction(QIcon(":/SpellWork/Recources/regExp.png"), "<font color=red>Off</font>");
+    m_actionRegExp->setCheckable(true);
     mainToolBar->addSeparator();
-    m_about = mainToolBar->addAction(QIcon(":/SpellWork/Recources/about.png"), "About");
+    m_actionAbout = mainToolBar->addAction(QIcon(":/SpellWork/Recources/about.png"), "About");
+    mainToolBar->addSeparator();
+    m_actionSettings = mainToolBar->addAction(QIcon(":/SpellWork/Recources/about.png"), "Settings");
 
     webView1->pageAction(QWebPage::Copy)->setShortcut(QKeySequence::Copy);
     webView2->pageAction(QWebPage::Copy)->setShortcut(QKeySequence::Copy);
@@ -67,10 +73,13 @@ SWMainForm::SWMainForm(QWidget* parent)
     connect(findLine_e3, SIGNAL(returnPressed()), this, SLOT(slotButtonSearch()));
 
     // Menu connections
-    connect(m_about, SIGNAL(triggered()), this, SLOT(slotAbout()));
+    connect(m_actionAbout, SIGNAL(triggered()), this, SLOT(slotAbout()));
 
     // RegExp connection
-    connect(m_regExp, SIGNAL(triggered()), this, SLOT(slotRegExp()));
+    connect(m_actionRegExp, SIGNAL(triggered()), this, SLOT(slotRegExp()));
+
+    // Settings form connection
+    connect(m_actionSettings, SIGNAL(triggered()), this, SLOT(slotSettings()));
 
     // Filter search connections
     connect(comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(slotFilterSearch()));
@@ -100,6 +109,12 @@ SWMainForm::~SWMainForm()
     saveSettings();
 }
 
+void SWMainForm::slotSettings()
+{
+    SWSettingsForm* settingsForm = new SWSettingsForm(this);
+    connect(settingsForm, SIGNAL(destroyed()), settingsForm, SLOT(deleteLater()));
+}
+
 void SWMainForm::slotAdvancedFilter()
 {
     if (m_advancedTextEdit->isVisible())
@@ -121,26 +136,23 @@ void SWMainForm::slotAdvancedApply()
 
 void SWMainForm::loadSettings()
 {
-    m_settings = new QSettings("QSW.ini", QSettings::IniFormat, this);
-    m_settings->sync();
-
     // Global
-    setRegExp(m_settings->value("Global/RegExp", false).toBool());
+    setRegExp(QSW::settings().value("Global/RegExp", false).toBool());
 
     // Search and filters
-    findLine_e1->setText(m_settings->value("Search/IdOrName", "").toString());
-    findLine_e3->setText(m_settings->value("Search/Description", "").toString());
-    comboBox->setCurrentIndex(m_settings->value("Search/SpellFamilyIndex", 0).toInt());
-    comboBox_2->setCurrentIndex(m_settings->value("Search/EffectIndex", 0).toInt());
-    comboBox_3->setCurrentIndex(m_settings->value("Search/AuraIndex", 0).toInt());
-    comboBox_4->setCurrentIndex(m_settings->value("Search/TargetAIndex", 0).toInt());
-    comboBox_5->setCurrentIndex(m_settings->value("Search/TargetBIndex", 0).toInt());
+    findLine_e1->setText(QSW::settings().value("Search/IdOrName", "").toString());
+    findLine_e3->setText(QSW::settings().value("Search/Description", "").toString());
+    comboBox->setCurrentIndex(QSW::settings().value("Search/SpellFamilyIndex", 0).toInt());
+    comboBox_2->setCurrentIndex(QSW::settings().value("Search/EffectIndex", 0).toInt());
+    comboBox_3->setCurrentIndex(QSW::settings().value("Search/AuraIndex", 0).toInt());
+    comboBox_4->setCurrentIndex(QSW::settings().value("Search/TargetAIndex", 0).toInt());
+    comboBox_5->setCurrentIndex(QSW::settings().value("Search/TargetBIndex", 0).toInt());
 
     // Database
-    hostname->setText(m_settings->value("Database/Hostname", "localhost").toString());
-    database->setText(m_settings->value("Database/Database", "").toString());
-    username->setText(m_settings->value("Database/Username", "root").toString());
-    password->setText(m_settings->value("Database/Password", "").toString());
+    hostname->setText(QSW::settings().value("Database/Hostname", "localhost").toString());
+    database->setText(QSW::settings().value("Database/Database", "").toString());
+    username->setText(QSW::settings().value("Database/Username", "root").toString());
+    password->setText(QSW::settings().value("Database/Password", "").toString());
 
     if (!findLine_e1->text().isEmpty())
         slotButtonSearch();
@@ -149,22 +161,22 @@ void SWMainForm::loadSettings()
 void SWMainForm::saveSettings()
 {
     // Global
-    m_settings->setValue("Global/RegExp", isRegExp());
+    QSW::settings().setValue("Global/RegExp", isRegExp());
 
     // Search and filters
-    m_settings->setValue("Search/IdOrName", findLine_e1->text());
-    m_settings->setValue("Search/Description", findLine_e3->text());
-    m_settings->setValue("Search/SpellFamilyIndex", comboBox->currentIndex());
-    m_settings->setValue("Search/EffectIndex", comboBox_2->currentIndex());
-    m_settings->setValue("Search/AuraIndex", comboBox_3->currentIndex());
-    m_settings->setValue("Search/TargetAIndex", comboBox_4->currentIndex());
-    m_settings->setValue("Search/TargetBIndex", comboBox_5->currentIndex());
+    QSW::settings().setValue("Search/IdOrName", findLine_e1->text());
+    QSW::settings().setValue("Search/Description", findLine_e3->text());
+    QSW::settings().setValue("Search/SpellFamilyIndex", comboBox->currentIndex());
+    QSW::settings().setValue("Search/EffectIndex", comboBox_2->currentIndex());
+    QSW::settings().setValue("Search/AuraIndex", comboBox_3->currentIndex());
+    QSW::settings().setValue("Search/TargetAIndex", comboBox_4->currentIndex());
+    QSW::settings().setValue("Search/TargetBIndex", comboBox_5->currentIndex());
 
     // Database
-    m_settings->setValue("Database/Hostname", hostname->text());
-    m_settings->setValue("Database/Database", database->text());
-    m_settings->setValue("Database/Username", username->text());
-    m_settings->setValue("Database/Password", password->text());
+    QSW::settings().setValue("Database/Hostname", hostname->text());
+    QSW::settings().setValue("Database/Database", database->text());
+    QSW::settings().setValue("Database/Username", username->text());
+    QSW::settings().setValue("Database/Password", password->text());
 }
 
 void SWMainForm::slotPrevRow()
@@ -173,7 +185,7 @@ void SWMainForm::slotPrevRow()
 
     QVariant var = SpellList->model()->data(SpellList->model()->index(SpellList->currentIndex().row(), 0));
 
-    if (SpellEntry const* spellInfo = sSpellStore.LookupEntry(var.toInt()))
+    if (Spell::entry const* spellInfo = &Spell::getRecord(var.toInt(), true))
         m_sw->showInfo(spellInfo);
 }
 
@@ -183,7 +195,7 @@ void SWMainForm::slotNextRow()
 
     QVariant var = SpellList->model()->data(SpellList->model()->index(SpellList->currentIndex().row(), 0));
 
-    if (SpellEntry const* spellInfo = sSpellStore.LookupEntry(var.toInt()))
+    if (Spell::entry const* spellInfo = &Spell::getRecord(var.toInt(), true))
         m_sw->showInfo(spellInfo);
 }
 
@@ -191,12 +203,12 @@ void SWMainForm::initializeCompleter()
 {
     QSet<QString> names;
 
-    for (quint32 i = 0; i < sSpellStore.GetNumRows(); ++i)
+    for (quint32 i = 0; i < Spell::getHeader()->recordCount; ++i)
     {
-        SpellEntry const* spellInfo = sSpellStore.LookupEntry(i);
+        Spell::entry const* spellInfo = &Spell::getRecord(i);
         if (spellInfo)
         {
-            QString sName = QString::fromUtf8(spellInfo->SpellName[Locale]);
+            QString sName = QString::fromUtf8(spellInfo->spellName[QSW::Locale]);
             if (names.find(sName) == names.end())
                 names << sName;
         }
@@ -229,7 +241,7 @@ void SWMainForm::createModeButton()
 
 void SWMainForm::detectLocale()
 {
-    SpellEntry const* spellInfo = sSpellStore.LookupEntry(1);
+    Spell::entry const* spellInfo = &Spell::getRecord(1, true);
 
     if (!spellInfo)
         return;
@@ -237,9 +249,9 @@ void SWMainForm::detectLocale()
     m_sw->setMetaEnum("LocalesDBC");
     for (quint8 i = 0; i < m_sw->getMetaEnum().keyCount(); ++i)
     {
-        if (!QString::fromUtf8(spellInfo->SpellName[i]).isEmpty())
+        if (!QString::fromUtf8(spellInfo->spellName[i]).isEmpty())
         {
-            Locale = i;
+            QSW::Locale = i;
             QLabel* label = new QLabel;
             label->setText(QString("%0<b>DBC Locale: <font color=green>%1 </font><b>")
                 .arg(QChar(QChar::Nbsp), 2, QChar(QChar::Nbsp))
@@ -261,17 +273,17 @@ void SWMainForm::slotLinkClicked(const QUrl &url)
     {
         case 1:
         {
-            if (SpellEntry const* spellInfo = sSpellStore.LookupEntry(id))
+            if (Spell::entry const* spellInfo = &Spell::getRecord(id, true))
                 m_sw->showInfo(spellInfo, browserId);
             break;
         }
         case 2:
         {
-            if (SpellEntry const* spellInfo = sSpellStore.LookupEntry(id))
+            if (Spell::entry const* spellInfo = &Spell::getRecord(id, true))
                 m_sw->showInfo(spellInfo, browserId);
 
             qint32 id3 = webView3->url().toString().section('/', -1).toInt();
-            if (SpellEntry const* spellInfo = sSpellStore.LookupEntry(id3))
+            if (Spell::entry const* spellInfo = &Spell::getRecord(id3, true))
                 m_sw->showInfo(spellInfo, 3);
 
             m_sw->compare();
@@ -279,11 +291,11 @@ void SWMainForm::slotLinkClicked(const QUrl &url)
         }
         case 3:
         {
-            if (SpellEntry const* spellInfo = sSpellStore.LookupEntry(id))
+            if (Spell::entry const* spellInfo = &Spell::getRecord(id, true))
                 m_sw->showInfo(spellInfo, browserId);
 
             qint32 id2 = webView2->url().toString().section('/', -1).toInt();
-            if (SpellEntry const* spellInfo = sSpellStore.LookupEntry(id2))
+            if (Spell::entry const* spellInfo = &Spell::getRecord(id2, true))
                 m_sw->showInfo(spellInfo, 2);
 
             m_sw->compare();
@@ -447,35 +459,38 @@ void SWMainForm::slotRegExp()
 {
     if (isRegExp())
     {
-        m_regExp->setChecked(true);
-        m_regExp->setIcon(QIcon(":/SpellWork/Recources/regExp.png"));
-        m_regExp->setText("<font color=green>On</font>");
+        m_actionRegExp->setChecked(true);
+        m_actionRegExp->setIcon(QIcon(":/SpellWork/Recources/regExp.png"));
+        m_actionRegExp->setText("<font color=green>On</font>");
+
+        WovWidget* wov = new WovWidget();
+        wov->show();
     }
     else
     {
-        m_regExp->setChecked(false);
-        m_regExp->setIcon(QIcon(":/SpellWork/Recources/regExp.png"));
-        m_regExp->setText("<font color=red>Off</font>");
+        m_actionRegExp->setChecked(false);
+        m_actionRegExp->setIcon(QIcon(":/SpellWork/Recources/regExp.png"));
+        m_actionRegExp->setText("<font color=red>Off</font>");
     }
 
-    if (SpellEntry const* spellInfo = sSpellStore.LookupEntry(webView1->url().path().remove(0, 1).toInt()))
+/*    if (Spell::entry const* spellInfo = &Spell::getRecord(webView1->url().path().remove(0, 1).toInt(), true))
         m_sw->showInfo(spellInfo);
 
     bool compared[2] = { false, false };
-    if (SpellEntry const* spellInfo = sSpellStore.LookupEntry(webView2->url().path().remove(0, 1).toInt()))
+    if (Spell::entry const* spellInfo = &Spell::getRecord(webView2->url().path().remove(0, 1).toInt(), true))
     {
         m_sw->showInfo(spellInfo, 2);
         compared[0] = true;
     }
 
-    if (SpellEntry const* spellInfo = sSpellStore.LookupEntry(webView3->url().path().remove(0, 1).toInt()))
+    if (Spell::entry const* spellInfo = &Spell::getRecord(webView3->url().path().remove(0, 1).toInt(), true))
     {
         m_sw->showInfo(spellInfo, 3);
         compared[1] = true;
     }
 
     if (compared[0] || compared[1])
-        m_sw->compare();
+        m_sw->compare();*/
 }
 
 void SWMainForm::slotAbout()
@@ -518,7 +533,7 @@ void SWMainForm::slotSearchFromList(const QModelIndex &index)
 {
     QVariant var = SpellList->model()->data(SpellList->model()->index(index.row(), 0));
 
-    if (SpellEntry const* spellInfo = sSpellStore.LookupEntry(var.toInt()))
+    if (Spell::entry const* spellInfo = &Spell::getRecord(var.toInt(), true))
         m_sw->showInfo(spellInfo);
 }
 
@@ -549,15 +564,15 @@ bool SWMainForm::event(QEvent* ev)
         case Event::EVENT_SEND_SPELL:
         {
             Event* m_ev = (Event*)ev;
-            m_sw->showInfo(m_ev->getValue(0).value<const SpellEntry*>());
+            m_sw->showInfo(m_ev->getValue(0).value<Spell::entry*>());
             return true;
         }
         break;
         case Event::EVENT_SEND_CSPELL:
         {
             Event* m_ev = (Event*)ev;
-            m_sw->showInfo(m_ev->getValue(0).value<const SpellEntry*>(), 2);
-            m_sw->showInfo(m_ev->getValue(1).value<const SpellEntry*>(), 3);
+            m_sw->showInfo(m_ev->getValue(0).value<Spell::entry*>(), 2);
+            m_sw->showInfo(m_ev->getValue(1).value<Spell::entry*>(), 3);
             m_sw->compare();
             return true;
         }

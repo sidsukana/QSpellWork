@@ -12,9 +12,6 @@
     <Filter Include="Header Files\DBC">
       <UniqueIdentifier>{36f6ece7-0c8e-449d-a840-87f6922ccbb9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Includes">
-      <UniqueIdentifier>{170d749f-30e7-44b7-9f17-786060325b1b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Form Files">
       <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
       <Extensions>ui</Extensions>
@@ -44,6 +41,9 @@
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
+    <Filter Include="Header Files\Includes">
+      <UniqueIdentifier>{8cd37d0e-91d5-439e-b4dc-bb201b21febd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Alphanum.cpp">
@@ -60,12 +60,6 @@
     </ClCompile>
     <ClCompile Include="SWSearch.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DBC\DBCFileLoader.cpp">
-      <Filter>Header Files\DBC</Filter>
-    </ClCompile>
-    <ClCompile Include="DBC\DBCStores.cpp">
-      <Filter>Header Files\DBC</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\qrc_SpellWork.cpp">
       <Filter>Generated Files</Filter>
@@ -115,6 +109,48 @@
     <ClCompile Include="SWEnums.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_WovWidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_WovWidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Template\moc_WovWidget.cpp">
+      <Filter>Generated Files\Template</Filter>
+    </ClCompile>
+    <ClCompile Include="WovWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SWSettingsForm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_SWSettingsForm.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_SWSettingsForm.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Template\moc_SWSettingsForm.cpp">
+      <Filter>Generated Files\Template</Filter>
+    </ClCompile>
+    <ClCompile Include="DBC\DBC.cpp">
+      <Filter>Header Files\DBC</Filter>
+    </ClCompile>
+    <ClCompile Include="DBC\DBCStructure.cpp">
+      <Filter>Header Files\DBC</Filter>
+    </ClCompile>
+    <ClCompile Include="DBC\BLP.cpp">
+      <Filter>Header Files\DBC</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_BLP.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_BLP.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Template\moc_BLP.cpp">
+      <Filter>Generated Files\Template</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Alphanum.h">
@@ -125,27 +161,6 @@
     </ClInclude>
     <ClInclude Include="SWEvent.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DBC\DBCFileLoader.h">
-      <Filter>Header Files\DBC</Filter>
-    </ClInclude>
-    <ClInclude Include="DBC\DBCfmt.h">
-      <Filter>Header Files\DBC</Filter>
-    </ClInclude>
-    <ClInclude Include="DBC\DBCStore.h">
-      <Filter>Header Files\DBC</Filter>
-    </ClInclude>
-    <ClInclude Include="DBC\DBCStores.h">
-      <Filter>Header Files\DBC</Filter>
-    </ClInclude>
-    <ClInclude Include="Includes\ByteConverter.h">
-      <Filter>Header Files\Includes</Filter>
-    </ClInclude>
-    <ClInclude Include="Includes\Platform\CompilerDefs.h">
-      <Filter>Header Files\Includes</Filter>
-    </ClInclude>
-    <ClInclude Include="Includes\Platform\Define.h">
-      <Filter>Header Files\Includes</Filter>
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_SWAboutUI.h">
       <Filter>Generated Files</Filter>
@@ -159,16 +174,23 @@
     <ClInclude Include="SWEnums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Includes\ByteConverter.h">
+      <Filter>Header Files\Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="Includes\CompilerDefs.h">
+      <Filter>Header Files\Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_SWSettingsUI.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DBC\DBC.h">
+      <Filter>Header Files\DBC</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Icon.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuildStep Include="mangos.ico">
-      <Filter>Resource Files</Filter>
-    </CustomBuildStep>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="SWSearch.h">
@@ -194,6 +216,18 @@
     </CustomBuild>
     <CustomBuild Include="SWModels.h">
       <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="WovWidget.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="SWSettingsUI.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="SWSettingsForm.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="DBC\BLP.h">
+      <Filter>Header Files\DBC</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>

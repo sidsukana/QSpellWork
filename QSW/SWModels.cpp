@@ -1,10 +1,9 @@
+#include <QFontComboBox>
+#include <QLineEdit>
+#include <QMetaEnum>
+
 #include "SWModels.h"
 #include "Alphanum.h"
-
-#include <QtGui/QFontComboBox>
-#include <QtGui/QLineEdit>
-
-#include <QtCore/QMetaEnum>
 
 SpellListSortedModel::SpellListSortedModel(QObject *parent)
     : QSortFilterProxyModel(parent)

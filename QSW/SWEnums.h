@@ -1,9 +1,9 @@
 #ifndef SWENUMS_H
 #define SWENUMS_H
 
-#include <QtCore/QMap>
-#include <QtCore/QHash>
-#include <QtXml/QDomDocument>
+#include <QMap>
+#include <QHash>
+#include <QDomDocument>
 
 typedef QMap<qint64, QString> Enumerator;
 typedef QHash<QString, Enumerator> EnumHash;

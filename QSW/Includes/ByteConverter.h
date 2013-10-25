@@ -9,7 +9,6 @@
     for cross platform where they have different endians.
  */
 
-#include "Define.h"
 #include <algorithm>
 
 namespace ByteConverter
@@ -31,7 +30,7 @@ namespace ByteConverter
     }
 }
 
-#if QSW_ENDIAN == QSW_BIGENDIAN
+#if Q_BYTE_ORDER == Q_BIG_ENDIAN
 template<typename T> inline void EndianConvert(T& val) { ByteConverter::apply<T>(&val); }
 template<typename T> inline void EndianConvertReverse(T&) { }
 #else

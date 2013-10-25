@@ -1,10 +1,10 @@
 #ifndef SW_MODELS_H
 #define SW_MODELS_H
 
-#include <QtCore/QStringList>
-#include <QtCore/QAbstractTableModel>
-#include <QtGui/QSortFilterProxyModel>
-#include <QtGui/QItemDelegate>
+#include <QStringList>
+#include <QAbstractTableModel>
+#include <QSortFilterProxyModel>
+#include <QItemDelegate>
 
 #include "SWMainForm.h"
 

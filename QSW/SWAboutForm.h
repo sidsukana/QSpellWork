@@ -1,8 +1,8 @@
 #ifndef SW_ABOUT_FORM_H
 #define SW_ABOUT_FORM_H
 
-#include <QtGui/QDialog>
-#include "SWDefines.h"
+#include <QDialog>
+
 #include "ui_SWAboutUI.h"
 
 class SWAboutForm : public QDialog, public Ui::SWAboutUI

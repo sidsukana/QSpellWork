@@ -1,11 +1,13 @@
 <RCC>
-  <qresource prefix="/SpellWork">
-    <file>Recources/database.png</file>
-    <file>Recources/styles.css</file>
-    <file>Recources/about.png</file>
-    <file>Recources/compare.png</file>
-    <file>Recources/show.png</file>
-    <file>Recources/regExp.png</file>
-    <file>Recources/mangos.ico</file>
-  </qresource>
+    <qresource prefix="/SpellWork">
+        <file>Recources/database.png</file>
+        <file>Recources/styles.css</file>
+        <file>Recources/about.png</file>
+        <file>Recources/compare.png</file>
+        <file>Recources/show.png</file>
+        <file>Recources/regExp.png</file>
+        <file>Recources/mangos.ico</file>
+        <file>Recources/border.png</file>
+        <file>Recources/borderHover.png</file>
+    </qresource>
 </RCC>

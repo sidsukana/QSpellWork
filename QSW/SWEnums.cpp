@@ -1,6 +1,6 @@
-#include "SWEnums.h"
+#include <QFile>
 
-#include <QtCore/QFile>
+#include "SWEnums.h"
 
 SWEnums::SWEnums()
 {

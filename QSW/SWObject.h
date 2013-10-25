@@ -1,40 +1,58 @@
 #ifndef SWOBJECT_H
 #define SWOBJECT_H
 
-#include <QtCore/QMetaEnum>
+#include <QMetaEnum>
 
 #include "SWMainForm.h"
 #include "SWEnums.h"
 #include "SWEvent.h"
-#include "DBC/DBCStores.h"
-#include "SWDefines.h"
+#include "DBC/DBCStructure.h"
+#include "DBC/BLP.h"
+
+enum MaskType
+{
+    TYPE_ATTR,
+    TYPE_ATTR_EX1,
+    TYPE_ATTR_EX2,
+    TYPE_ATTR_EX3,
+    TYPE_ATTR_EX4,
+    TYPE_TARGETS,
+    TYPE_CREATURE,
+    TYPE_FORMS,
+    TYPE_FORMS_NOT,
+    TYPE_ITEM_WEAPON,
+    TYPE_ITEM_ARMOR,
+    TYPE_ITEM_MISC,
+    TYPE_ITEM_INVENTORY,
+    MAX_ATTR_TYPE
+};
 
 class SWMainForm;
-
 class SWObject
 {
     public:
         SWObject(SWMainForm *form);
         ~SWObject();
 
-        void showInfo(SpellEntry const* spellInfo, quint8 num = 1);
+        void showInfo(Spell::entry const* spellInfo, quint8 num = 1);
         quint32 getParentSpellId(quint32 triggerId);
         void compare();
         void search();
 
-        void appendSkillInfo(SpellEntry const* spellInfo, quint8 num);
-        void appendCastTimeInfo(SpellEntry const* spellInfo, quint8 num);
-        void appendDurationInfo(SpellEntry const* spellInfo, quint8 num);
-        void appendRangeInfo(SpellEntry const* spellInfo, quint8 num);
-        void appendSpellEffectInfo(SpellEntry const* spellInfo, quint8 num);
-        void appendAuraInfo(SpellEntry const* spellInfo, quint8 index, quint8 num);
-        void appendRadiusInfo(SpellEntry const* spellInfo, quint8 index, quint8 num);
-        void appendTriggerInfo(SpellEntry const* spellInfo, quint8 index, quint8 num);
-        void appendProcInfo(SpellEntry const *spellInfo, quint8 num);
+        void appendSkillInfo(Spell::entry const* spellInfo, quint8 num);
+        void appendCastTimeInfo(Spell::entry const* spellInfo, quint8 num);
+        void appendDurationInfo(Spell::entry const* spellInfo, quint8 num);
+        void appendRangeInfo(Spell::entry const* spellInfo, quint8 num);
+        void appendSpellEffectInfo(Spell::entry const* spellInfo, quint8 num);
+        void appendAuraInfo(Spell::entry const* spellInfo, quint8 index, quint8 num);
+        void appendRadiusInfo(Spell::entry const* spellInfo, quint8 index, quint8 num);
+        void appendTriggerInfo(Spell::entry const* spellInfo, quint8 index, quint8 num);
+        void appendProcInfo(Spell::entry const *spellInfo, quint8 num);
 
-        QString containAttributes(SpellEntry const* spellInfo, AttrType attr, quint8 index = 0);
-        QString getDescription(QString str, SpellEntry const *spellInfo);
+        QString containAttributes(Spell::entry const* spellInfo, MaskType type, quint8 index = 0);
+        QString getDescription(QString str, Spell::entry const *spellInfo);
         QString getSpellIconName(quint32 iconId);
+        QImage getSpellIcon(quint32 iconId);
 
         QMetaEnum getMetaEnum() { return m_metaEnum; }
         void setMetaEnum(const char* enumName);

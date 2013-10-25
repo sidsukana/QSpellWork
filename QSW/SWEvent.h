@@ -1,9 +1,9 @@
 #ifndef EVENT_H
 #define EVENT_H
 
-#include <QtCore/QEvent>
-#include <QtCore/QVariant>
-#include <QtCore/QVector>
+#include <QEvent>
+#include <QVariant>
+#include <QVector>
 
 class Event : public QEvent
 {
