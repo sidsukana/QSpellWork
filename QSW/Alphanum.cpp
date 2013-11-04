@@ -3,8 +3,6 @@
  * \brief Description
  */
 
-
-
 #include "Alphanum.h"
 
 /*!

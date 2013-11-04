@@ -1,8 +1,8 @@
-#include "DBC/DBC.h"
-#include "mpq/MPQ.h"
-#include "SWDefines.h"
-
 #include <QDebug>
+
+#include "mpq/MPQ.h"
+#include "dbc/DBC.h"
+#include "SWDefines.h"
 
 DBCFile::DBCFile(const QString &fileName) : m_header(0), m_records(0), m_strings(0)
 {

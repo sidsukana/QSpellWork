@@ -6,8 +6,8 @@
 #include "SWMainForm.h"
 #include "SWEnums.h"
 #include "SWEvent.h"
-#include "DBC/DBCStructure.h"
-#include "DBC/BLP.h"
+#include "dbc/DBCStructure.h"
+#include "blp/BLP.h"
 
 enum MaskType
 {

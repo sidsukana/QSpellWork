@@ -11,7 +11,6 @@
 #include "SWModels.h"
 #include "SWSearch.h"
 #include "SWDefines.h"
-
 #include "WovWidget.h"
 
 SWMainForm::SWMainForm(QWidget* parent)

@@ -1,5 +1,5 @@
 #include "SWDefines.h"
-#include "DBC/DBCStructure.h"
+#include "dbc/DBCStructure.h"
 
 SkillLine::entry SkillLine::getRecord(quint32 id, bool realId)
 {

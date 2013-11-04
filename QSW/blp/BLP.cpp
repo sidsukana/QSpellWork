@@ -1,10 +1,10 @@
 #include <QDebug>
 #include <QDir>
 
-#include "DBC/BLP.h"
-#include "SWDefines.h"
-#include "squish.h"
+#include "BLP.h"
 #include "mpq/MPQ.h"
+#include "squish/include/squish.h"
+#include "SWDefines.h"
 
 QImage BLP::getImage(const QString &fileName)
 {

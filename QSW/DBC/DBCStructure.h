@@ -3,7 +3,7 @@
 
 #include <QMetaType>
 
-#include "DBC/DBC.h"
+#include "dbc/DBC.h"
 
 #define MAX_SPELL_REAGENTS 8
 #define MAX_SPELL_TOTEMS   2

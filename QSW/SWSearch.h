@@ -7,7 +7,7 @@
 
 #include "SWDefines.h"
 #include "SWObject.h"
-#include "DBC/DBCStructure.h"
+#include "dbc/DBCStructure.h"
  
 class SWObject;
 class SWMainForm;

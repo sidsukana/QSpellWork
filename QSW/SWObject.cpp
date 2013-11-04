@@ -1,10 +1,9 @@
+#include <QBuffer>
+
 #include "SWObject.h"
 #include "SWSearch.h"
 #include "SWDefines.h"
-
-#include "DBC/BLP.h"
-
-#include <QBuffer>
+#include "blp/BLP.h"
 
 SWObject::SWObject(SWMainForm* form)
     : m_form(form), m_regExp(false), m_type(0), m_enums(form->getEnums())
