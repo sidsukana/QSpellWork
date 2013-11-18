@@ -19,7 +19,7 @@ class MetaSpell : public QObject
     public:
         MetaSpell();
 
-        void setSpell(Spell::entry const* spellInfo) { m_spellInfo = spellInfo; }
+        void setSpell(const Spell::entry* spellInfo) { m_spellInfo = spellInfo; }
 
     public slots:
         quint32 Id() { return m_spellInfo->id; }
@@ -90,11 +90,11 @@ class MetaSpell : public QObject
         quint32 SpellIconId() { return m_spellInfo->spellIconId; }
         quint32 ActiveIconId() { return m_spellInfo->activeIconId; }
         quint32 SpellPriority() { return m_spellInfo->spellPriority; }
-        QString SpellName() { return QString::fromUtf8(m_spellInfo->spellName[QSW::Locale]); }
-        QString Rank() { return QString::fromUtf8(m_spellInfo->rank[QSW::Locale]); }
-        QString Description() { return QString::fromUtf8(m_spellInfo->description[QSW::Locale]); }
-        QString ToolTip() { return QString::fromUtf8(m_spellInfo->toolTip[QSW::Locale]); }
-        quint32 SpellNameFlag() { return m_spellInfo->spellNameFlag; }
+        QString Name() { return m_spellInfo->name(); }
+        QString Rank() { return m_spellInfo->rank(); }
+        QString Description() { return m_spellInfo->description(); }
+        QString ToolTip() { return m_spellInfo->toolTip(); }
+        quint32 NameFlag() { return m_spellInfo->nameFlag; }
         quint32 RankFlags() { return m_spellInfo->rankFlags; }
         quint32 DescriptionFlags() { return m_spellInfo->descriptionFlags; }
         quint32 ToolTipFlags() { return m_spellInfo->toolTipFlags; }
@@ -114,7 +114,7 @@ class MetaSpell : public QObject
         quint32 RequiredAuraVision() { return m_spellInfo->requiredAuraVision; }
 
     private:
-        Spell::entry const* m_spellInfo;
+        const Spell::entry* m_spellInfo;
 
         Q_PROPERTY(quint32 Id READ Id)
         Q_PROPERTY(quint32 School READ School)
@@ -162,11 +162,11 @@ class MetaSpell : public QObject
         Q_PROPERTY(quint32 SpellIconId READ SpellIconId)
         Q_PROPERTY(quint32 ActiveIconId READ ActiveIconId)
         Q_PROPERTY(quint32 SpellPriority READ SpellPriority)
-        Q_PROPERTY(QString SpellName READ SpellName)
+        Q_PROPERTY(QString Name READ Name)
         Q_PROPERTY(QString Rank READ Rank)
         Q_PROPERTY(QString Description READ Description)
         Q_PROPERTY(QString ToolTip READ ToolTip)
-        Q_PROPERTY(quint32 SpellNameFlag READ SpellNameFlag)
+        Q_PROPERTY(quint32 NameFlag READ NameFlag)
         Q_PROPERTY(quint32 RankFlags READ RankFlags)
         Q_PROPERTY(quint32 DescriptionFlags READ DescriptionFlags)
         Q_PROPERTY(quint32 ToolTipFlags READ ToolTipFlags)
@@ -191,7 +191,7 @@ public:
     SWSearch(SWObject* sw, QObject* parent = NULL);
     ~SWSearch();
 
-    void search();
+    QList<QEvent*> search();
     bool hasValue(Spell::entry const* spellInfo);
 
 private:

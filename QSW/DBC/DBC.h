@@ -18,31 +18,22 @@ class DBCFile
 {
     public:
         explicit DBCFile(const QString &fileName);
+        ~DBCFile();
 
         template <typename T>
-        T getEntry(quint32 id) const
+        const T* getEntry(quint32 id) const
         {
-            if (!m_header)
-                return T();
-
-            for (quint32 i = 0; i < m_header->recordCount; i++) {
-                T entry = getRecord<T>(i);
-
-                if (entry.id == id)
-                    return entry;
-            }
-
-            return T();
+            return (id > m_maxId ? NULL : getRecord<T>(m_indexes[id]));
         }
 
         template <typename T>
-        T getRecord(quint32 id) const
+        const T* getRecord(quint32 id) const
         {
-            return *reinterpret_cast<const T *>(m_records + m_header->recordSize * id);
+            return reinterpret_cast<const T*>(m_records + m_header->recordSize * id);
         }
 
-        const char * getStringBlock() const;
-        const DBCFileHeader * getHeader() const { return m_header; }
+        const char* getStringBlock() const;
+        const DBCFileHeader* getHeader() const { return m_header; }
 
     private:
 
@@ -50,6 +41,8 @@ class DBCFile
         const DBCFileHeader *m_header;
         const char *m_records;
         const char *m_strings;
+        quint32 *m_indexes;
+        quint32 m_maxId;
 };
 
 #endif

@@ -9,6 +9,13 @@
 #define MAX_SPELL_TOTEMS   2
 #define MAX_EFFECT_INDEX   3
 
+#if defined( __GNUC__ )
+#pragma pack(1)
+#else
+#pragma pack(push,1)
+#endif
+
+
 namespace SkillLine
 {
     struct entry
@@ -16,16 +23,19 @@ namespace SkillLine
         quint32     id;                                          // 0 index
         qint32      categoryId;                                  // 1 index from SkillLineCategory.dbc
         quint32     skillCostId;                                 // 2 not used
-        const char* name[8];                        // 3-10
+        quint32     nameOffset[8];                               // 3-10
         quint32     nameFlags;                                   // 11 string flags, not used
-        const char* description[8];                 // 12-19, not used
+        quint32     descriptionOffset[8];                        // 12-19, not used
         quint32     descriptionFlags;                            // 20 string flags, not used
         quint32     spellIcon;                                   // 21
+
+        const QString name() const;
+        const QString description() const;
     };
 
-    const DBCFile getDbc();
+    const DBCFile& getDbc();
     const DBCFileHeader* getHeader();
-    entry getRecord(quint32 id, bool realId = false);
+    const entry* getRecord(quint32 id, bool realId = false);
 }
 
 namespace SkillLineAbility
@@ -48,9 +58,9 @@ namespace SkillLineAbility
         quint32 requiredTrainPoints;                             // 14
     };
 
-    const DBCFile getDbc();
+    const DBCFile& getDbc();
     const DBCFileHeader* getHeader();
-    entry getRecord(quint32 id, bool realId = false);
+    const entry* getRecord(quint32 id, bool realId = false);
 }
 
 namespace Spell
@@ -125,13 +135,13 @@ namespace Spell
         quint32    spellIconId;                                     // 117
         quint32    activeIconId;                                    // 118
         quint32    spellPriority;                                   // 119
-        const char*      spellName[8];                              // 120-127
-        quint32    spellNameFlag;                                   // 128
-        const char*      rank[8];                                   // 129-136
+        quint32    nameOffset[8];                                   // 120-127
+        quint32    nameFlag;                                        // 128
+        quint32    rankOffset[8];                                   // 129-136
         quint32    rankFlags;                                       // 137
-        const char*      description[8];                            // 138-145 not used
+        quint32    descriptionOffset[8];                            // 138-145 not used
         quint32    descriptionFlags;                                // 146     not used
-        const char*      toolTip[8];                                // 147-154 not used
+        quint32    toolTipOffset[8];                                // 147-154 not used
         quint32    toolTipFlags;                                    // 155     not used
         quint32    manaCostPercentage;                              // 156
         quint32    startRecoveryCategory;                           // 157
@@ -148,7 +158,7 @@ namespace Spell
         quint32    minReputation;                                   // 171 not used, and 0 in 2.4.2
         quint32    requiredAuraVision;                              // 172 not used
 
-        quint32 getAmplitude()
+        quint32 getAmplitude() const
         {
             for (quint8 i = 0; i < MAX_EFFECT_INDEX; ++i)
                 if (effectAmplitude[i])
@@ -156,16 +166,17 @@ namespace Spell
 
             return 0;
         }
+
+        const QString name() const;
+        const QString description() const;
+        const QString rank() const;
+        const QString toolTip() const;
     };
 
-    
-
-    const DBCFile getDbc();
+    const DBCFile& getDbc();
     const DBCFileHeader* getHeader();
-    entry getRecord(quint32 id, bool realId = false);
+    const entry* getRecord(quint32 id, bool realId = false);
 }
-
-Q_DECLARE_METATYPE(Spell::entry*);
 
 namespace SpellCastTimes
 {
@@ -177,9 +188,9 @@ namespace SpellCastTimes
         qint32     minCastTime;                                     // 3 unsure
     };
 
-    const DBCFile getDbc();
+    const DBCFile& getDbc();
     const DBCFileHeader* getHeader();
-    entry getRecord(quint32 id, bool realId = false);
+    const entry* getRecord(quint32 id, bool realId = false);
 }
 
 namespace SpellRadius
@@ -192,9 +203,9 @@ namespace SpellRadius
         float      maxRadius;                                       // 3
     };
 
-    const DBCFile getDbc();
+    const DBCFile& getDbc();
     const DBCFileHeader* getHeader();
-    entry getRecord(quint32 id, bool realId = false);
+    const entry* getRecord(quint32 id, bool realId = false);
 }
 
 namespace SpellRange
@@ -205,15 +216,18 @@ namespace SpellRange
         float       minRange;                                        // 1
         float       maxRange;                                        // 2
         quint32     flags;                                           // 3
-        const char* name[8];                                         // 4-11 unused
+        quint32     nameOffset[8];                                   // 4-11 unused
         quint32     nameFlags;                                       // 12 unused
-        const char* shortName[8];                                    // 13-20 unused
+        quint32     shortNameOffset[8];                              // 13-20 unused
         quint32     shortNameFlags;                                  // 21 unused
+
+        const QString name() const;
+        const QString shortName() const;
     };
 
-    const DBCFile getDbc();
+    const DBCFile& getDbc();
     const DBCFileHeader* getHeader();
-    entry getRecord(quint32 id, bool realId = false);
+    const entry* getRecord(quint32 id, bool realId = false);
 }
 
 namespace SpellDuration
@@ -226,22 +240,30 @@ namespace SpellDuration
         qint32     maxDuration;
     };
 
-    const DBCFile getDbc();
+    const DBCFile& getDbc();
     const DBCFileHeader* getHeader();
-    entry getRecord(quint32 id, bool realId = false);
+    const entry* getRecord(quint32 id, bool realId = false);
 }
 
 namespace SpellIcon
 {
     struct entry
     {
-        quint32     id;
-        const char* iconPath;
+        quint32 id;                                     // 0 Id
+        quint32 iconPathOffset;                         // 1 Path offset
+
+        const QString iconPath() const;
     };
 
-    const DBCFile getDbc();
+    const DBCFile& getDbc();
     const DBCFileHeader* getHeader();
-    entry getRecord(quint32 id, bool realId = false);
+    const entry* getRecord(quint32 id, bool realId = false);
 }
+
+#if defined( __GNUC__ )
+#pragma pack()
+#else
+#pragma pack(pop)
+#endif
 
 #endif

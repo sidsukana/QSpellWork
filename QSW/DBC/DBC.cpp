@@ -1,10 +1,8 @@
-#include <QDebug>
-
 #include "mpq/MPQ.h"
 #include "dbc/DBC.h"
 #include "SWDefines.h"
 
-DBCFile::DBCFile(const QString &fileName) : m_header(0), m_records(0), m_strings(0)
+DBCFile::DBCFile(const QString &fileName) : m_header(NULL), m_records(NULL), m_strings(NULL), m_indexes(NULL), m_maxId(0)
 {
     m_data = MPQ::readFile(fileName);
 
@@ -22,11 +20,25 @@ DBCFile::DBCFile(const QString &fileName) : m_header(0), m_records(0), m_strings
 
     m_records = m_data.constData() + sizeof(DBCFileHeader);
     m_strings = m_records + m_header->recordCount * m_header->recordSize;
+
+    m_maxId = *reinterpret_cast<const quint32*>(m_records + m_header->recordSize * (m_header->recordCount - 1));
+
+    m_indexes = new quint32[m_maxId + 1];
+    memset(m_indexes, 0, (m_maxId + 1) * 4);
+    for (quint32 i = 0; i < m_header->recordCount; ++i)
+    {
+        quint32 id = *reinterpret_cast<const quint32*>(m_records + m_header->recordSize * i);
+        m_indexes[id] = i;
+    }
 }
 
-const char * DBCFile::getStringBlock() const
+const char* DBCFile::getStringBlock() const
 {
     return m_strings;
 }
 
+DBCFile::~DBCFile()
+{
+    delete[] m_indexes;
+}
 

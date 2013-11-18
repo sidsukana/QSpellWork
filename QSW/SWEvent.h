@@ -5,16 +5,15 @@
 #include <QVariant>
 #include <QVector>
 
-class Event : public QEvent
+class Event : public QEvent, public QObject
 {
     public:
         enum Events
         {
             EVENT_SEND_SPELL  = QEvent::User + 1,
             EVENT_SEND_MODEL  = QEvent::User + 2,
-            EVENT_SEND_CSPELL = QEvent::User + 3,
-            EVENT_SEND_TEXT   = QEvent::User + 4,
-            EVENT_SEND_ACTION = QEvent::User + 5
+            EVENT_SEND_TEXT   = QEvent::User + 3,
+            EVENT_SEND_ACTION = QEvent::User + 4
         };
         Event(QEvent::Type type) : QEvent(type) {}
         ~Event() {};

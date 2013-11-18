@@ -28,8 +28,11 @@ SWSearch::~SWSearch()
     delete m_scriptEngine;
 }
 
-bool SWSearch::hasValue(Spell::entry const* spellInfo)
+bool SWSearch::hasValue(const Spell::entry* spellInfo)
 {
+    if (!spellInfo)
+        return false;
+
     MetaSpell metaSpell;
     metaSpell.setSpell(spellInfo);
 
@@ -38,9 +41,10 @@ bool SWSearch::hasValue(Spell::entry const* spellInfo)
     return m_script.call(QScriptValue()).toBool();
 }
 
-void SWSearch::search()
+QList<QEvent*> SWSearch::search()
 {
-    SpellListModel *model = new SpellListModel(m_form);
+    SpellListModel *model = new SpellListModel();
+    QList<QEvent*> eventList;
 
     if (m_sw->getType() == 1)
     {
@@ -52,9 +56,7 @@ void SWSearch::search()
             bool targetA = false;
             bool targetB = false;
 
-            Spell::entry const* m_spellInfo = &Spell::getRecord(i);
-
-            if (m_spellInfo)
+            if (const Spell::entry* m_spellInfo = Spell::getRecord(i))
             {
                 if (m_form->comboBox->currentIndex() > 0)
                 {
@@ -127,8 +129,8 @@ void SWSearch::search()
 
                 if (family && aura && effect && targetA && targetB)
                 {
-                    QString sRank(QString::fromUtf8(m_spellInfo->rank[QSW::Locale]));
-                    QString sFullName(QString::fromUtf8(m_spellInfo->spellName[QSW::Locale]));
+                    QString sRank(m_spellInfo->rank());
+                    QString sFullName(m_spellInfo->name());
 
                     if (!sRank.isEmpty())
                         sFullName.append(QString(" (%0)").arg(sRank));
@@ -142,33 +144,17 @@ void SWSearch::search()
         }
         Event* ev = new Event(Event::Type(Event::EVENT_SEND_MODEL));
         ev->addValue(QVariant::fromValue(model));
-        QApplication::postEvent(m_form, ev);
-    }
-    else if (m_sw->getType() == 2)
-    {
-        if (!m_form->compareSpell_1->text().isEmpty() && !m_form->compareSpell_2->text().isEmpty())
-        {
-            Spell::entry * sInfo1 = &Spell::getRecord(m_form->compareSpell_1->text().toInt(), true);
-            Spell::entry * sInfo2 = &Spell::getRecord(m_form->compareSpell_2->text().toInt(), true);
-
-            if (sInfo1 && sInfo2)
-            {
-                Event* ev = new Event(Event::Type(Event::EVENT_SEND_CSPELL));
-                ev->addValue(QVariant::fromValue(sInfo1));
-                ev->addValue(QVariant::fromValue(sInfo2));
-                QApplication::postEvent(m_form, ev);
-            }
-        }
+        eventList << ev;
     }
     else if (m_sw->getType() == 3)
     {
         for (quint32 i = 0; i < Spell::getHeader()->recordCount; ++i)
         {
-            Spell::entry const* m_spellInfo = &Spell::getRecord(i);
-            if (m_spellInfo && hasValue(m_spellInfo))
+            const Spell::entry* m_spellInfo = Spell::getRecord(i);
+            if (hasValue(m_spellInfo))
             {
-                QString sRank(QString::fromUtf8(m_spellInfo->rank[QSW::Locale]));
-                QString sFullName(QString::fromUtf8(m_spellInfo->spellName[QSW::Locale]));
+                QString sRank(m_spellInfo->rank());
+                QString sFullName(m_spellInfo->name());
 
                 if (!sRank.isEmpty())
                     sFullName.append(QString(" (%0)").arg(sRank));
@@ -182,7 +168,7 @@ void SWSearch::search()
 
         Event* ev = new Event(Event::Type(Event::EVENT_SEND_MODEL));
         ev->addValue(QVariant::fromValue(model));
-        QApplication::postEvent(m_form, ev);
+        eventList << ev;
     }
     else
     {
@@ -192,11 +178,11 @@ void SWSearch::search()
             {
                 for (quint32 i = 0; i < Spell::getHeader()->recordCount; ++i)
                 {
-                    Spell::entry const* m_spellInfo = &Spell::getRecord(i);
-                    if (m_spellInfo && QString(QString::fromUtf8(m_spellInfo->spellName[QSW::Locale])).contains(m_form->findLine_e1->text(), Qt::CaseInsensitive))
+                    const Spell::entry* m_spellInfo = Spell::getRecord(i);
+                    if (m_spellInfo && m_spellInfo->name().contains(m_form->findLine_e1->text(), Qt::CaseInsensitive))
                     {
-                        QString sRank(QString::fromUtf8(m_spellInfo->rank[QSW::Locale]));
-                        QString sFullName(QString::fromUtf8(m_spellInfo->spellName[QSW::Locale]));
+                        QString sRank(m_spellInfo->rank());
+                        QString sFullName(m_spellInfo->name());
 
                         if (!sRank.isEmpty())
                             sFullName.append(QString(" (%0)").arg(sRank));
@@ -210,16 +196,14 @@ void SWSearch::search()
 
                 Event* ev = new Event(Event::Type(Event::EVENT_SEND_MODEL));
                 ev->addValue(QVariant::fromValue(model));
-                QApplication::postEvent(m_form, ev);
+                eventList << ev;
             }
             else
             {
-                Spell::entry * m_spellInfo = &Spell::getRecord(m_form->findLine_e1->text().toInt(), true);
-
-                if (m_spellInfo)
+                if (const Spell::entry* m_spellInfo = Spell::getRecord(m_form->findLine_e1->text().toInt(), true))
                 {
-                    QString sRank(QString::fromUtf8(m_spellInfo->rank[QSW::Locale]));
-                    QString sFullName(QString::fromUtf8(m_spellInfo->spellName[QSW::Locale]));
+                    QString sRank(m_spellInfo->rank());
+                    QString sFullName(m_spellInfo->name());
 
                     if (!sRank.isEmpty())
                         sFullName.append(QString(" (%0)").arg(sRank));
@@ -231,11 +215,11 @@ void SWSearch::search()
 
                     Event* ev1 = new Event(Event::Type(Event::EVENT_SEND_MODEL));
                     ev1->addValue(QVariant::fromValue(model));
-                    QApplication::postEvent(m_form, ev1);
+                    eventList << ev1;
 
                     Event* ev2 = new Event(Event::Type(Event::EVENT_SEND_SPELL));
-                    ev2->addValue(QVariant::fromValue(m_spellInfo));
-                    QApplication::postEvent(m_form, ev2);
+                    ev2->addValue(m_spellInfo->id);
+                    eventList << ev2;
                 }
             }
         }
@@ -243,11 +227,11 @@ void SWSearch::search()
         {
             for (quint32 i = 0; i < Spell::getHeader()->recordCount; ++i)
             {
-                Spell::entry const* m_spellInfo = &Spell::getRecord(i);
-                if (m_spellInfo && QString(QString::fromUtf8(m_spellInfo->description[QSW::Locale])).contains(m_form->findLine_e3->text(), Qt::CaseInsensitive))
+                const Spell::entry* m_spellInfo = Spell::getRecord(i);
+                if (m_spellInfo && m_spellInfo->description().contains(m_form->findLine_e3->text(), Qt::CaseInsensitive))
                 {
-                    QString sRank(QString::fromUtf8(m_spellInfo->rank[QSW::Locale]));
-                    QString sFullName(QString::fromUtf8(m_spellInfo->spellName[QSW::Locale]));
+                    QString sRank(m_spellInfo->rank());
+                    QString sFullName(m_spellInfo->name());
 
                     if (!sRank.isEmpty())
                         sFullName.append(QString(" (%0)").arg(sRank));
@@ -261,17 +245,16 @@ void SWSearch::search()
 
             Event* ev = new Event(Event::Type(Event::EVENT_SEND_MODEL));
             ev->addValue(QVariant::fromValue(model));
-            QApplication::postEvent(m_form, ev);
+            eventList << ev;
         }
         else
         {
             for (quint32 i = 0; i < Spell::getHeader()->recordCount; ++i)
             {
-                Spell::entry const* m_spellInfo = &Spell::getRecord(i);
-                if (m_spellInfo)
+                if (const Spell::entry* m_spellInfo = Spell::getRecord(i))
                 {
-                    QString sRank(QString::fromUtf8(m_spellInfo->rank[QSW::Locale]));
-                    QString sFullName(QString::fromUtf8(m_spellInfo->spellName[QSW::Locale]));
+                    QString sRank(m_spellInfo->rank());
+                    QString sFullName(m_spellInfo->name());
 
                     if (!sRank.isEmpty())
                         sFullName.append(QString(" (%0)").arg(sRank));
@@ -285,7 +268,9 @@ void SWSearch::search()
 
             Event* ev = new Event(Event::Type(Event::EVENT_SEND_MODEL));
             ev->addValue(QVariant::fromValue(model));
-            QApplication::postEvent(m_form, ev);
+            eventList << ev;
         }
     }
+
+    return eventList;
 }

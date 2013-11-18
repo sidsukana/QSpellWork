@@ -136,7 +136,6 @@
       <Filter>dbc</Filter>
     </ClInclude>
     <ClInclude Include="SWObject.h" />
-    <ClInclude Include="SWEvent.h" />
     <ClInclude Include="SWEnums.h" />
     <ClInclude Include="SWDefines.h" />
     <ClInclude Include="Alphanum.h" />
@@ -174,5 +173,6 @@
     <CustomBuild Include="blp\BLP.h">
       <Filter>Generated Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="SWEvent.h" />
   </ItemGroup>
 </Project>

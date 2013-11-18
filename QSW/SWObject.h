@@ -34,23 +34,23 @@ class SWObject
         SWObject(SWMainForm *form);
         ~SWObject();
 
-        void showInfo(Spell::entry const* spellInfo, quint8 num = 1);
+        void showInfo(const Spell::entry* spellInfo, quint8 num = 1);
         quint32 getParentSpellId(quint32 triggerId);
         void compare();
-        void search();
+        QList<QEvent*> search();
 
-        void appendSkillInfo(Spell::entry const* spellInfo, quint8 num);
-        void appendCastTimeInfo(Spell::entry const* spellInfo, quint8 num);
-        void appendDurationInfo(Spell::entry const* spellInfo, quint8 num);
-        void appendRangeInfo(Spell::entry const* spellInfo, quint8 num);
-        void appendSpellEffectInfo(Spell::entry const* spellInfo, quint8 num);
-        void appendAuraInfo(Spell::entry const* spellInfo, quint8 index, quint8 num);
-        void appendRadiusInfo(Spell::entry const* spellInfo, quint8 index, quint8 num);
-        void appendTriggerInfo(Spell::entry const* spellInfo, quint8 index, quint8 num);
-        void appendProcInfo(Spell::entry const *spellInfo, quint8 num);
+        void appendSkillInfo(const Spell::entry* spellInfo, quint8 num);
+        void appendCastTimeInfo(const Spell::entry* spellInfo, quint8 num);
+        void appendDurationInfo(const Spell::entry* spellInfo, quint8 num);
+        void appendRangeInfo(const Spell::entry* spellInfo, quint8 num);
+        void appendSpellEffectInfo(const Spell::entry* spellInfo, quint8 num);
+        void appendAuraInfo(const Spell::entry* spellInfo, quint8 index, quint8 num);
+        void appendRadiusInfo(const Spell::entry* spellInfo, quint8 index, quint8 num);
+        void appendTriggerInfo(const Spell::entry* spellInfo, quint8 index, quint8 num);
+        void appendProcInfo(const Spell::entry *spellInfo, quint8 num);
 
-        QString containAttributes(Spell::entry const* spellInfo, MaskType type, quint8 index = 0);
-        QString getDescription(QString str, Spell::entry const *spellInfo);
+        QString containAttributes(const Spell::entry* spellInfo, MaskType type, quint8 index = 0);
+        QString getDescription(QString str, const Spell::entry* spellInfo);
         QString getSpellIconName(quint32 iconId);
         QImage getSpellIcon(quint32 iconId);
 

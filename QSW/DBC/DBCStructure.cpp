@@ -1,14 +1,11 @@
 #include "SWDefines.h"
 #include "dbc/DBCStructure.h"
 
-SkillLine::entry SkillLine::getRecord(quint32 id, bool realId)
+// SkillLine.dbc
+const DBCFile& SkillLine::getDbc()
 {
-    DBCFile dbc = getDbc();
-    entry e = realId ? dbc.getEntry<entry>(id) : dbc.getRecord<entry>(id);
-    e.name[QSW::Locale] = dbc.getStringBlock() + quint32(e.name[QSW::Locale]);
-    e.description[QSW::Locale] = dbc.getStringBlock() + quint32(e.description[QSW::Locale]);
-
-    return e;
+    static DBCFile dbc("DBFilesClient/SkillLine.dbc");
+    return dbc;
 }
 
 const DBCFileHeader* SkillLine::getHeader()
@@ -16,17 +13,26 @@ const DBCFileHeader* SkillLine::getHeader()
     return getDbc().getHeader();
 }
 
-const DBCFile SkillLine::getDbc()
+const SkillLine::entry* SkillLine::getRecord(quint32 id, bool realId)
 {
-    static DBCFile dbc("DBFilesClient/SkillLine.dbc");
-    return dbc;
+    return (realId ? getDbc().getEntry<entry>(id) : getDbc().getRecord<entry>(id));
 }
 
-SkillLineAbility::entry SkillLineAbility::getRecord(quint32 id, bool realId)
+const QString SkillLine::entry::name() const
 {
-    entry e = realId ? getDbc().getEntry<entry>(id) : getDbc().getRecord<entry>(id);
+    return QString::fromUtf8(getDbc().getStringBlock() + quint32(nameOffset[QSW::Locale]));
+}
 
-    return e;
+const QString SkillLine::entry::description() const
+{
+    return QString::fromUtf8(getDbc().getStringBlock() + quint32(descriptionOffset[QSW::Locale]));
+}
+
+// SkillLineAbility.dbc
+const DBCFile& SkillLineAbility::getDbc()
+{
+    static DBCFile dbc("DBFilesClient/SkillLineAbility.dbc");
+    return dbc;
 }
 
 const DBCFileHeader* SkillLineAbility::getHeader()
@@ -34,22 +40,16 @@ const DBCFileHeader* SkillLineAbility::getHeader()
     return getDbc().getHeader();
 }
 
-const DBCFile SkillLineAbility::getDbc()
+const SkillLineAbility::entry* SkillLineAbility::getRecord(quint32 id, bool realId)
 {
-    static DBCFile dbc("DBFilesClient/SkillLineAbility.dbc");
-    return dbc;
+    return (realId ? getDbc().getEntry<entry>(id) : getDbc().getRecord<entry>(id));
 }
 
-Spell::entry Spell::getRecord(quint32 id, bool realId)
+// Spell.dbc
+const DBCFile& Spell::getDbc()
 {
-    DBCFile dbc = getDbc();
-    entry e = realId ? dbc.getEntry<entry>(id) : dbc.getRecord<entry>(id);
-    e.spellName[QSW::Locale] = dbc.getStringBlock() + quint32(e.spellName[QSW::Locale]);
-    e.description[QSW::Locale] = dbc.getStringBlock() + quint32(e.description[QSW::Locale]);
-    e.rank[QSW::Locale] = dbc.getStringBlock() + quint32(e.rank[QSW::Locale]);
-    e.toolTip[QSW::Locale] = dbc.getStringBlock() + quint32(e.toolTip[QSW::Locale]);
-
-    return e;
+    static DBCFile dbc("DBFilesClient/Spell.dbc");
+    return dbc;
 }
 
 const DBCFileHeader* Spell::getHeader()
@@ -57,17 +57,36 @@ const DBCFileHeader* Spell::getHeader()
     return getDbc().getHeader();
 }
 
-const DBCFile Spell::getDbc()
+const Spell::entry* Spell::getRecord(quint32 id, bool realId)
 {
-    static DBCFile dbc("DBFilesClient/Spell.dbc");
-    return dbc;
+    return (realId ? getDbc().getEntry<entry>(id) : getDbc().getRecord<entry>(id));
 }
 
-SpellCastTimes::entry SpellCastTimes::getRecord(quint32 id, bool realId)
+const QString Spell::entry::name() const
 {
-    entry e = realId ? getDbc().getEntry<entry>(id) : getDbc().getRecord<entry>(id);
+    return QString::fromUtf8(getDbc().getStringBlock() + quint32(nameOffset[QSW::Locale]));
+}
 
-    return e;
+const QString Spell::entry::description() const
+{
+    return QString::fromUtf8(getDbc().getStringBlock() + quint32(descriptionOffset[QSW::Locale]));
+}
+
+const QString Spell::entry::rank() const
+{
+    return QString::fromUtf8(getDbc().getStringBlock() + quint32(rankOffset[QSW::Locale]));
+}
+
+const QString Spell::entry::toolTip() const
+{
+    return QString::fromUtf8(getDbc().getStringBlock() + quint32(toolTipOffset[QSW::Locale]));
+}
+
+// SpellCastTimes.dbc
+const DBCFile& SpellCastTimes::getDbc()
+{
+    static DBCFile dbc("DBFilesClient/SpellCastTimes.dbc");
+    return dbc;
 }
 
 const DBCFileHeader* SpellCastTimes::getHeader()
@@ -75,17 +94,16 @@ const DBCFileHeader* SpellCastTimes::getHeader()
     return getDbc().getHeader();
 }
 
-const DBCFile SpellCastTimes::getDbc()
+const SpellCastTimes::entry* SpellCastTimes::getRecord(quint32 id, bool realId)
 {
-    static DBCFile dbc("DBFilesClient/SpellCastTimes.dbc");
-    return dbc;
+    return (realId ? getDbc().getEntry<entry>(id) : getDbc().getRecord<entry>(id));
 }
 
-SpellRadius::entry SpellRadius::getRecord(quint32 id, bool realId)
+// SpellRadius.dbc
+const DBCFile& SpellRadius::getDbc()
 {
-    entry e = realId ? getDbc().getEntry<entry>(id) : getDbc().getRecord<entry>(id);
-
-    return e;
+    static DBCFile dbc("DBFilesClient/SpellRadius.dbc");
+    return dbc;
 }
 
 const DBCFileHeader* SpellRadius::getHeader()
@@ -93,20 +111,16 @@ const DBCFileHeader* SpellRadius::getHeader()
     return getDbc().getHeader();
 }
 
-const DBCFile SpellRadius::getDbc()
+const SpellRadius::entry* SpellRadius::getRecord(quint32 id, bool realId)
 {
-    static DBCFile dbc("DBFilesClient/SpellRadius.dbc");
-    return dbc;
+   return (realId ? getDbc().getEntry<entry>(id) : getDbc().getRecord<entry>(id));
 }
 
-SpellRange::entry SpellRange::getRecord(quint32 id, bool realId)
+// SpellRange.dbc
+const DBCFile& SpellRange::getDbc()
 {
-    DBCFile dbc = getDbc();
-    entry e = realId ? dbc.getEntry<entry>(id) : dbc.getRecord<entry>(id);
-    e.name[QSW::Locale] = dbc.getStringBlock() + quint32(e.name[QSW::Locale]);
-    e.shortName[QSW::Locale] = dbc.getStringBlock() + quint32(e.shortName[QSW::Locale]);
-
-    return e;
+    static DBCFile dbc("DBFilesClient/SpellRange.dbc");
+    return dbc;
 }
 
 const DBCFileHeader* SpellRange::getHeader()
@@ -114,17 +128,26 @@ const DBCFileHeader* SpellRange::getHeader()
     return getDbc().getHeader();
 }
 
-const DBCFile SpellRange::getDbc()
+const SpellRange::entry* SpellRange::getRecord(quint32 id, bool realId)
 {
-    static DBCFile dbc("DBFilesClient/SpellRange.dbc");
-    return dbc;
+    return (realId ? getDbc().getEntry<entry>(id) : getDbc().getRecord<entry>(id));
 }
 
-SpellDuration::entry SpellDuration::getRecord(quint32 id, bool realId)
+const QString SpellRange::entry::name() const
 {
-    entry e = realId ? getDbc().getEntry<entry>(id) : getDbc().getRecord<entry>(id);
+    return QString::fromUtf8(getDbc().getStringBlock() + quint32(nameOffset[QSW::Locale]));
+}
 
-    return e;
+const QString SpellRange::entry::shortName() const
+{
+    return QString::fromUtf8(getDbc().getStringBlock() + quint32(shortNameOffset[QSW::Locale]));
+}
+
+// SpellDuration.dbc
+const DBCFile& SpellDuration::getDbc()
+{
+    static DBCFile dbc("DBFilesClient/SpellDuration.dbc");
+    return dbc;
 }
 
 const DBCFileHeader* SpellDuration::getHeader()
@@ -132,19 +155,16 @@ const DBCFileHeader* SpellDuration::getHeader()
     return getDbc().getHeader();
 }
 
-const DBCFile SpellDuration::getDbc()
+const SpellDuration::entry* SpellDuration::getRecord(quint32 id, bool realId)
 {
-    static DBCFile dbc("DBFilesClient/SpellDuration.dbc");
-    return dbc;
+    return (realId ? getDbc().getEntry<entry>(id) : getDbc().getRecord<entry>(id));
 }
 
-SpellIcon::entry SpellIcon::getRecord(quint32 id, bool realId)
+// SpellIcon.dbc
+const DBCFile& SpellIcon::getDbc()
 {
-    DBCFile dbc = getDbc();
-    entry e = realId ? dbc.getEntry<entry>(id) : dbc.getRecord<entry>(id);
-    e.iconPath = dbc.getStringBlock() + quint32(e.iconPath);
-
-    return e;
+    static DBCFile dbc("DBFilesClient/SpellIcon.dbc");
+    return dbc;
 }
 
 const DBCFileHeader* SpellIcon::getHeader()
@@ -152,8 +172,12 @@ const DBCFileHeader* SpellIcon::getHeader()
     return getDbc().getHeader();
 }
 
-const DBCFile SpellIcon::getDbc()
+const SpellIcon::entry* SpellIcon::getRecord(quint32 id, bool realId)
 {
-    static DBCFile dbc("DBFilesClient/SpellIcon.dbc");
-    return dbc;
+    return (realId ? getDbc().getEntry<entry>(id) : getDbc().getRecord<entry>(id));
+}
+
+const QString SpellIcon::entry::iconPath() const
+{
+    return QString::fromUtf8(getDbc().getStringBlock() + quint32(iconPathOffset));
 }

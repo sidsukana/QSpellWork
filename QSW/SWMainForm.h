@@ -2,6 +2,7 @@
 #define SWFORM_H
 
 #include <QSettings>
+#include <QFutureWatcher>
 #include <QTextBrowser>
 #include <QTextEdit>
 #include <QMainWindow>
@@ -64,6 +65,7 @@ class SWMainForm : public QMainWindow, public Ui::SWMainUI
         void slotButtonSearch();
         void slotCompareSearch();
         void slotSearch(quint8 type);
+        void slotSearchResult();
         void slotSearchFromList(const QModelIndex &index);
         void slotLinkClicked(const QUrl &url);
         void slotRegExp();
@@ -98,6 +100,7 @@ class SWMainForm : public QMainWindow, public Ui::SWMainUI
         QAction* m_actionSettings;
 
         TextEdit *m_advancedTextEdit;
+        QFutureWatcher<QList<QEvent*>>* m_watcher;
 };
 
 class Enums : public QObject

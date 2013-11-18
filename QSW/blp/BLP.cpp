@@ -1,4 +1,3 @@
-#include <QDebug>
 #include <QDir>
 
 #include "BLP.h"

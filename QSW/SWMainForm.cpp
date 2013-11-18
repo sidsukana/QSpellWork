@@ -1,4 +1,5 @@
 #include <QtConcurrentRun>
+#include <QFuture>
 #include <QTime>
 #include <QStandardItemModel>
 #include <QStringListModel>
@@ -27,6 +28,8 @@ SWMainForm::SWMainForm(QWidget* parent)
 
     m_enums = new SWEnums();
     m_sw = new SWObject(this);
+    m_watcher = new QFutureWatcher<QList<QEvent*>>;
+    connect(m_watcher, SIGNAL(finished()), this, SLOT(slotSearchResult()));
 
     m_sortedModel = new SpellListSortedModel(this);
     m_sortedModel->setDynamicSortFilter(true);
@@ -183,9 +186,7 @@ void SWMainForm::slotPrevRow()
     SpellList->selectRow(SpellList->currentIndex().row() - 1);
 
     QVariant var = SpellList->model()->data(SpellList->model()->index(SpellList->currentIndex().row(), 0));
-
-    if (Spell::entry const* spellInfo = &Spell::getRecord(var.toInt(), true))
-        m_sw->showInfo(spellInfo);
+    m_sw->showInfo(Spell::getRecord(var.toInt(), true));
 }
 
 void SWMainForm::slotNextRow()
@@ -193,9 +194,7 @@ void SWMainForm::slotNextRow()
     SpellList->selectRow(SpellList->currentIndex().row() + 1);
 
     QVariant var = SpellList->model()->data(SpellList->model()->index(SpellList->currentIndex().row(), 0));
-
-    if (Spell::entry const* spellInfo = &Spell::getRecord(var.toInt(), true))
-        m_sw->showInfo(spellInfo);
+    m_sw->showInfo(Spell::getRecord(var.toInt(), true));
 }
 
 void SWMainForm::initializeCompleter()
@@ -204,10 +203,9 @@ void SWMainForm::initializeCompleter()
 
     for (quint32 i = 0; i < Spell::getHeader()->recordCount; ++i)
     {
-        Spell::entry const* spellInfo = &Spell::getRecord(i);
-        if (spellInfo)
+        if (const Spell::entry* spellInfo = Spell::getRecord(i))
         {
-            QString sName = QString::fromUtf8(spellInfo->spellName[QSW::Locale]);
+            QString sName = spellInfo->name();
             if (names.find(sName) == names.end())
                 names << sName;
         }
@@ -240,23 +238,21 @@ void SWMainForm::createModeButton()
 
 void SWMainForm::detectLocale()
 {
-    Spell::entry const* spellInfo = &Spell::getRecord(1, true);
-
-    if (!spellInfo)
-        return;
-
-    m_sw->setMetaEnum("LocalesDBC");
-    for (quint8 i = 0; i < m_sw->getMetaEnum().keyCount(); ++i)
+    if (const Spell::entry* spellInfo = Spell::getRecord(1, true))
     {
-        if (!QString::fromUtf8(spellInfo->spellName[i]).isEmpty())
+        m_sw->setMetaEnum("LocalesDBC");
+        for (quint8 i = 0; i < m_sw->getMetaEnum().keyCount(); ++i)
         {
-            QSW::Locale = i;
-            QLabel* label = new QLabel;
-            label->setText(QString("%0<b>DBC Locale: <font color=green>%1 </font><b>")
-                .arg(QChar(QChar::Nbsp), 2, QChar(QChar::Nbsp))
-                .arg(m_sw->getMetaEnum().valueToKey(m_sw->getMetaEnum().value(i))));
-            mainToolBar->addWidget(label);
-            break;
+            if (spellInfo->nameOffset[i])
+            {
+                QSW::Locale = i;
+                QLabel* label = new QLabel;
+                label->setText(QString("%0<b>DBC Locale: <font color=green>%1 </font><b>")
+                    .arg(QChar(QChar::Nbsp), 2, QChar(QChar::Nbsp))
+                    .arg(m_sw->getMetaEnum().valueToKey(m_sw->getMetaEnum().value(i))));
+                mainToolBar->addWidget(label);
+                break;
+            }
         }
     }
 }
@@ -272,31 +268,22 @@ void SWMainForm::slotLinkClicked(const QUrl &url)
     {
         case 1:
         {
-            if (Spell::entry const* spellInfo = &Spell::getRecord(id, true))
-                m_sw->showInfo(spellInfo, browserId);
+            m_sw->showInfo(Spell::getRecord(id, true), browserId);
             break;
         }
         case 2:
         {
-            if (Spell::entry const* spellInfo = &Spell::getRecord(id, true))
-                m_sw->showInfo(spellInfo, browserId);
-
             qint32 id3 = webView3->url().toString().section('/', -1).toInt();
-            if (Spell::entry const* spellInfo = &Spell::getRecord(id3, true))
-                m_sw->showInfo(spellInfo, 3);
-
+            m_sw->showInfo(Spell::getRecord(id, true), browserId);
+            m_sw->showInfo(Spell::getRecord(id3, true), 3);
             m_sw->compare();
             break;
         }
         case 3:
         {
-            if (Spell::entry const* spellInfo = &Spell::getRecord(id, true))
-                m_sw->showInfo(spellInfo, browserId);
-
             qint32 id2 = webView2->url().toString().section('/', -1).toInt();
-            if (Spell::entry const* spellInfo = &Spell::getRecord(id2, true))
-                m_sw->showInfo(spellInfo, 2);
-
+            m_sw->showInfo(Spell::getRecord(id, true), browserId);
+            m_sw->showInfo(Spell::getRecord(id2, true), 2);
             m_sw->compare();
             break;
         }
@@ -472,24 +459,23 @@ void SWMainForm::slotRegExp()
         m_actionRegExp->setText("<font color=red>Off</font>");
     }
 
-/*    if (Spell::entry const* spellInfo = &Spell::getRecord(webView1->url().path().remove(0, 1).toInt(), true))
-        m_sw->showInfo(spellInfo);
+    m_sw->showInfo(Spell::getRecord(webView1->url().path().remove(0, 1).toInt(), true));
 
     bool compared[2] = { false, false };
-    if (Spell::entry const* spellInfo = &Spell::getRecord(webView2->url().path().remove(0, 1).toInt(), true))
+    if (const Spell::entry* spellInfo = Spell::getRecord(webView2->url().path().remove(0, 1).toInt(), true))
     {
         m_sw->showInfo(spellInfo, 2);
         compared[0] = true;
     }
 
-    if (Spell::entry const* spellInfo = &Spell::getRecord(webView3->url().path().remove(0, 1).toInt(), true))
+    if (const Spell::entry* spellInfo = Spell::getRecord(webView3->url().path().remove(0, 1).toInt(), true))
     {
         m_sw->showInfo(spellInfo, 3);
         compared[1] = true;
     }
 
     if (compared[0] || compared[1])
-        m_sw->compare();*/
+        m_sw->compare();
 }
 
 void SWMainForm::slotAbout()
@@ -510,30 +496,39 @@ void SWMainForm::slotFilterSearch()
 
 void SWMainForm::slotCompareSearch()
 {
-    emit signalSearch(2);
+    if (!compareSpell_1->text().isEmpty() && !compareSpell_2->text().isEmpty())
+    {
+        m_sw->showInfo(Spell::getRecord(compareSpell_1->text().toInt(), true), 2);
+        m_sw->showInfo(Spell::getRecord(compareSpell_2->text().toInt(), true), 3);
+        m_sw->compare();
+    }
 }
 
 void SWMainForm::slotSearch(quint8 type)
 {
-    if (type != 2)
-    {
-        SpellListSortedModel* smodel = static_cast<SpellListSortedModel*>(SpellList->model());
-        SpellListModel* model = static_cast<SpellListModel*>(smodel->sourceModel());
-        delete model;
-        model = NULL;
-    }
+    SpellListSortedModel* smodel = static_cast<SpellListSortedModel*>(SpellList->model());
+    SpellListModel* model = static_cast<SpellListModel*>(smodel->sourceModel());
+    delete model;
+    model = NULL;
 
     m_sw->setType(type);
 
-    QtConcurrent::run(m_sw, &SWObject::search);
+    m_watcher->setFuture(QtConcurrent::run<QList<QEvent*>, SWObject>(m_sw, &SWObject::search));
+}
+
+void SWMainForm::slotSearchResult()
+{
+    QFutureWatcher<QList<QEvent*>>* watcher = (QFutureWatcher<QList<QEvent*>>*)QObject::sender();
+
+    QList<QEvent*> eventList = watcher->future().result();
+    for (QList<QEvent*>::iterator itr = eventList.begin(); itr != eventList.end(); ++itr)
+        QApplication::postEvent(this, *itr);
 }
 
 void SWMainForm::slotSearchFromList(const QModelIndex &index)
 {
     QVariant var = SpellList->model()->data(SpellList->model()->index(index.row(), 0));
-
-    if (Spell::entry const* spellInfo = &Spell::getRecord(var.toInt(), true))
-        m_sw->showInfo(spellInfo);
+    m_sw->showInfo(Spell::getRecord(var.toInt(), true));
 }
 
 void SWMainForm::slotResetRelate()
@@ -550,7 +545,7 @@ bool SWMainForm::event(QEvent* ev)
 {
     switch (Event::Events(ev->type()))
     {
-        case Event::EVENT_SEND_MODEL:
+    case Event::EVENT_SEND_MODEL:
         {
             Event* m_ev = (Event*)ev;
             m_sortedModel->sourceModel()->deleteLater();
@@ -560,24 +555,15 @@ bool SWMainForm::event(QEvent* ev)
             return true;
         }
         break;
-        case Event::EVENT_SEND_SPELL:
+    case Event::EVENT_SEND_SPELL:
         {
             Event* m_ev = (Event*)ev;
-            m_sw->showInfo(m_ev->getValue(0).value<Spell::entry*>());
+            m_sw->showInfo(Spell::getRecord(m_ev->getValue(0).toUInt(), true));
             return true;
         }
         break;
-        case Event::EVENT_SEND_CSPELL:
-        {
-            Event* m_ev = (Event*)ev;
-            m_sw->showInfo(m_ev->getValue(0).value<Spell::entry*>(), 2);
-            m_sw->showInfo(m_ev->getValue(1).value<Spell::entry*>(), 3);
-            m_sw->compare();
-            return true;
-        }
+    default:
         break;
-        default:
-            break;
     }
 
     return QWidget::event(ev);
