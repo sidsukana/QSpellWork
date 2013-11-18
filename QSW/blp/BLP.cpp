@@ -12,16 +12,19 @@ QImage BLP::getImage(const QString &fileName)
 
     if (m_data.size() == 0) {
         qCritical("Cannot load texture '%s'", qPrintable(fileName));
+        return QImage();
     }
 
     m_header = reinterpret_cast<BLPHeader *>(m_data.data());
 
     if (qstrncmp(m_header->magic, BLP_MAGIC, 4) != 0) {
         qCritical("File '%s' is not a valid BLP file!", qPrintable(fileName));
+        return QImage();
     }
 
     if (m_header->type != 1) {
         qCritical("File '%s' has unsupported BLP type!", qPrintable(fileName));
+        return QImage();
     }
 
     quint8* imageData = reinterpret_cast<quint8 *>(m_data.data() + m_header->mipmapOffset[0]);
