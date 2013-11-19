@@ -92,15 +92,6 @@
     <ClCompile Include="GeneratedFiles\Template\moc_SWSettingsForm.cpp">
       <Filter>Generated Files\Template</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_BLP.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_BLP.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Template\moc_BLP.cpp">
-      <Filter>Generated Files\Template</Filter>
-    </ClCompile>
     <ClCompile Include="blp\BLP.cpp">
       <Filter>blp</Filter>
     </ClCompile>

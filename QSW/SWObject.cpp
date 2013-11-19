@@ -583,7 +583,7 @@ QImage SWObject::getSpellIcon(quint32 iconId)
 {
     const SpellIcon::entry* iconInfo = SpellIcon::getRecord(iconId, true);
 
-    return (iconInfo ? BLP().getImage(iconInfo->iconPath() + QString(".blp")) : QImage());
+    return (iconInfo ? BLP::getImage(iconInfo->iconPath() + QString(".blp")) : QImage());
 }
 
 void SWObject::showInfo(const Spell::entry* spellInfo, quint8 num)

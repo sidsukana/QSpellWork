@@ -19,17 +19,9 @@ struct BLPHeader
     quint32 mipmapLength[16];
 };
 
-class BLP : public QObject
+namespace BLP
 {
-    Q_OBJECT
-
-    public:
-        BLP() {}
-
-        QImage getImage(const QString &fileName);
-
-        QByteArray m_data;
-        BLPHeader *m_header;
+    QImage getImage(const QString &fileName);
 };
 
 #endif
