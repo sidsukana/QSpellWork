@@ -150,12 +150,6 @@ void SWMainForm::loadSettings()
     comboBox_4->setCurrentIndex(QSW::settings().value("Search/TargetAIndex", 0).toInt());
     comboBox_5->setCurrentIndex(QSW::settings().value("Search/TargetBIndex", 0).toInt());
 
-    // Database
-    hostname->setText(QSW::settings().value("Database/Hostname", "localhost").toString());
-    database->setText(QSW::settings().value("Database/Database", "").toString());
-    username->setText(QSW::settings().value("Database/Username", "root").toString());
-    password->setText(QSW::settings().value("Database/Password", "").toString());
-
     if (!findLine_e1->text().isEmpty())
         slotButtonSearch();
 }
@@ -173,12 +167,6 @@ void SWMainForm::saveSettings()
     QSW::settings().setValue("Search/AuraIndex", comboBox_3->currentIndex());
     QSW::settings().setValue("Search/TargetAIndex", comboBox_4->currentIndex());
     QSW::settings().setValue("Search/TargetBIndex", comboBox_5->currentIndex());
-
-    // Database
-    QSW::settings().setValue("Database/Hostname", hostname->text());
-    QSW::settings().setValue("Database/Database", database->text());
-    QSW::settings().setValue("Database/Username", username->text());
-    QSW::settings().setValue("Database/Password", password->text());
 }
 
 void SWMainForm::slotPrevRow()
@@ -220,11 +208,9 @@ void SWMainForm::createModeButton()
 {
     QAction* actionShow = new QAction(QIcon(":/SpellWork/Recources/show.png"), "Show", this);
     QAction* actionCompare = new QAction(QIcon(":/SpellWork/Recources/compare.png"), "Compare", this);
-    QAction* actionDatabaase = new QAction(QIcon(":/SpellWork/Recources/database.png"), "Database", this);
 
     connect(actionShow, SIGNAL(triggered()), this, SLOT(slotModeShow()));
     connect(actionCompare, SIGNAL(triggered()), this, SLOT(slotModeCompare()));
-    connect(actionDatabaase, SIGNAL(triggered()), this, SLOT(slotModeDatabase()));
 
     m_modeButton = new QToolButton(this);
     m_modeButton->setText("Mode");
@@ -233,7 +219,6 @@ void SWMainForm::createModeButton()
 
     m_modeButton->addAction(actionShow);
     m_modeButton->addAction(actionCompare);
-    m_modeButton->addAction(actionDatabaase);
 }
 
 void SWMainForm::detectLocale()
@@ -301,73 +286,6 @@ void SWMainForm::slotModeCompare()
 {
     m_modeButton->setIcon(m_modeButton->actions().at(1)->icon());
     stackedWidget->setCurrentIndex(1);
-}
-
-void SWMainForm::slotModeDatabase()
-{
-    m_modeButton->setIcon(m_modeButton->actions().at(2)->icon());
-    stackedWidget->setCurrentIndex(2);
-
-    connect(nextButton3, SIGNAL(clicked()), this, SLOT(slotConnectToDatabase()));
-    connect(nextButton4, SIGNAL(clicked()), this, SLOT(slotSpellTable()));
-}
-
-void SWMainForm::slotSpellTable()
-{
-    QSqlTableModel* sqlModel = new QSqlTableModel(this, QSqlDatabase::database("DB"));
-
-    sqlModel->setTable("spell_dbc");
-    sqlModel->setEditStrategy(QSqlTableModel::OnFieldChange);
-    sqlModel->select();
-
-    spellDbcView->setItemDelegate(new SpellDelegate(this));
-    spellDbcView->setModel(sqlModel);
-
-    for (qint32 i = 0; i < sqlModel->columnCount(); ++i)
-        spellDbcView->hideColumn(i);
-
-    RelationList relationList = ((RelationModel*)fieldsView->model())->getRelations();
-    for (RelationList::iterator itr = relationList.begin(); itr != relationList.end(); ++itr)
-        if (!(*itr)->dbcField.isEmpty())
-            spellDbcView->showColumn(sqlModel->fieldIndex((*itr)->sqlField));
-
-    stackedWidget->setCurrentIndex(4);
-}
-
-void SWMainForm::slotConnectToDatabase()
-{
-    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL", "DB");
-    db.setHostName(hostname->text());
-    db.setUserName(username->text());
-    db.setPassword(password->text());
-    db.setDatabaseName(database->text());
-
-    if (!db.open())
-    {
-        QMessageBox::warning(this, "MySQL Error!", db.lastError().text());
-        return;
-    }
-
-    QSqlQuery result(QSqlDatabase::database("DB"));
-    result.exec("SHOW FULL FIELDS FROM `spell_dbc`");
-
-    RelationModel* model = new RelationModel(fieldsView);
-    connect(relateButton4, SIGNAL(clicked()), this, SLOT(slotAutoRelate()));
-    connect(resetButton4, SIGNAL(clicked()), this, SLOT(slotResetRelate()));
-
-    while (result.next())
-    {
-        RelationItem* item = new RelationItem();
-        item->sqlField = result.value(0).toString();
-        model->appendRelation(item);
-    }
-
-    model->appendDbcField("");
-
-    fieldsView->setItemDelegate(new RelationDelegate);
-    fieldsView->setModel(model);
-
-    stackedWidget->setCurrentIndex(3);
 }
 
 void SWMainForm::loadComboBoxes()
@@ -529,16 +447,6 @@ void SWMainForm::slotSearchFromList(const QModelIndex &index)
 {
     QVariant var = SpellList->model()->data(SpellList->model()->index(index.row(), 0));
     m_sw->showInfo(Spell::getRecord(var.toInt(), true));
-}
-
-void SWMainForm::slotResetRelate()
-{
-    ((RelationModel*)fieldsView->model())->resetRelate();
-}
-
-void SWMainForm::slotAutoRelate()
-{
-    ((RelationModel*)fieldsView->model())->autoRelate();
 }
 
 bool SWMainForm::event(QEvent* ev)

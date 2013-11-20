@@ -13,10 +13,6 @@
 #include <QScrollBar>
 #include <QWebView>
 #include <QWebFrame>
-#include <QSqlDatabase>
-#include <QSqlQuery>
-#include <QSqlError>
-#include <QSqlTableModel>
 
 #include "SWEnums.h"
 #include "SWObject.h"
@@ -70,16 +66,10 @@ class SWMainForm : public QMainWindow, public Ui::SWMainUI
         void slotLinkClicked(const QUrl &url);
         void slotRegExp();
         void slotSettings();
-        void slotModeDatabase();
         void slotModeShow();
         void slotModeCompare();
         void slotPrevRow();
         void slotNextRow();
-
-        void slotConnectToDatabase();
-        void slotSpellTable();
-        void slotAutoRelate();
-        void slotResetRelate();
 
         bool event(QEvent* ev);
 
