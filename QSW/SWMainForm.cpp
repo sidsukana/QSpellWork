@@ -28,7 +28,7 @@ SWMainForm::SWMainForm(QWidget* parent)
 
     m_enums = new SWEnums();
     m_sw = new SWObject(this);
-    m_watcher = new QFutureWatcher<QList<QEvent*>>;
+    m_watcher = new SearchResultWatcher();
     connect(m_watcher, SIGNAL(finished()), this, SLOT(slotSearchResult()));
 
     m_sortedModel = new SpellListSortedModel(this);
@@ -431,15 +431,15 @@ void SWMainForm::slotSearch(quint8 type)
 
     m_sw->setType(type);
 
-    m_watcher->setFuture(QtConcurrent::run<QList<QEvent*>, SWObject>(m_sw, &SWObject::search));
+    m_watcher->setFuture(QtConcurrent::run<EventList, SWObject>(m_sw, &SWObject::search));
 }
 
 void SWMainForm::slotSearchResult()
 {
-    QFutureWatcher<QList<QEvent*>>* watcher = (QFutureWatcher<QList<QEvent*>>*)QObject::sender();
+    SearchResultWatcher* watcher = (SearchResultWatcher*)QObject::sender();
 
-    QList<QEvent*> eventList = watcher->future().result();
-    for (QList<QEvent*>::iterator itr = eventList.begin(); itr != eventList.end(); ++itr)
+    EventList eventList = watcher->future().result();
+    for (EventList::iterator itr = eventList.begin(); itr != eventList.end(); ++itr)
         QApplication::postEvent(this, *itr);
 }
 

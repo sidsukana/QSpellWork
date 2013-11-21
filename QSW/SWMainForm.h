@@ -90,7 +90,10 @@ class SWMainForm : public QMainWindow, public Ui::SWMainUI
         QAction* m_actionSettings;
 
         TextEdit *m_advancedTextEdit;
-        QFutureWatcher<QList<QEvent*>>* m_watcher;
+        
+        typedef QList<QEvent*> EventList;
+        typedef QFutureWatcher<EventList> SearchResultWatcher;
+        SearchResultWatcher* m_watcher;
 };
 
 class Enums : public QObject
