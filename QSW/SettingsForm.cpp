@@ -1,11 +1,11 @@
 #include <QFileDialog>
 #include <QDir>
 
-#include "SWSettingsForm.h"
-#include "SWDefines.h"
+#include "SettingsForm.h"
+#include "Defines.h"
 #include "mpq/MPQ.h"
 
-SWSettingsForm::SWSettingsForm(QWidget *parent)
+SettingsForm::SettingsForm(QWidget *parent)
     : QDialog(parent)
 {
     setupUi(this);
@@ -18,7 +18,7 @@ SWSettingsForm::SWSettingsForm(QWidget *parent)
     show();
 }
 
-void SWSettingsForm::slotDir()
+void SettingsForm::slotDir()
 {
     QString dir = QFileDialog::getExistingDirectory(this, "Set WoW 1.12.x directory", editDir->text());
     if (!dir.isEmpty())
@@ -28,7 +28,7 @@ void SWSettingsForm::slotDir()
     }
 }
 
-void SWSettingsForm::slotAccept()
+void SettingsForm::slotAccept()
 {
     if (!editDir->text().isEmpty())
     {

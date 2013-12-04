@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>SWAboutUI</class>
- <widget class="QDialog" name="SWAboutUI">
+ <class>about</class>
+ <widget class="QDialog" name="about">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -56,7 +56,6 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Copyright&lt;/span&gt;&lt;span style=&quot; font-weight:600; vertical-align:super;&quot;&gt;©&lt;/span&gt;&lt;span style=&quot; font-weight:600;&quot;&gt; Sidsukana 2010-2013&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Design by Velenor 2011&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Thanks for &lt;/span&gt;&lt;a href=&quot;http://getmangos.com/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;MaNGOS&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-weight:600;&quot;&gt; DBC loader.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Thanks to LordJZ and Konstantin for &lt;/span&gt;&lt;a href=&quot;http://github.com/LordJZ/spellwork_cs&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;C# SpellWork&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Thanks to Chester aka DiSlord for original SpellWork.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
@@ -95,7 +94,7 @@ p, li { white-space: pre-wrap; }
   <connection>
    <sender>pushButton</sender>
    <signal>clicked()</signal>
-   <receiver>SWAboutUI</receiver>
+   <receiver>about</receiver>
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">

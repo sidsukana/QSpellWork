@@ -86,6 +86,7 @@ copy $(SolutionDir)QSW\mpq\StormLib\lib\$(Platform)\$(Configuration)\*.lib $(Out
       </DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
+      <Optimization>MaxSpeed</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

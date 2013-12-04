@@ -3,9 +3,9 @@
 #include <QDir>
 #include <QMessageBox>
 
-#include "SWMainForm.h"
-#include "SWSettingsForm.h"
-#include "SWDefines.h"
+#include "MainForm.h"
+#include "SettingsForm.h"
+#include "Defines.h"
 #include "mpq/MPQ.h"
 
 int main(int argc, char *argv[])
@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
     {
         while (!hasGameDir)
         {
-            SWSettingsForm settingsForm;
+            SettingsForm settingsForm;
             if (settingsForm.exec() == QDialog::Accepted)
             {
                 if (!QSW::checkDir(MPQ::gameDir()))
@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
     if (!hasGameDir)
         return 0;
 
-    SWMainForm form;
+    MainForm form;
 
     form.setWindowTitle(QString("Qt SpellWork for WoW %0 (%1) build %2")
         .arg(QSW::CLIENT_VERSION)

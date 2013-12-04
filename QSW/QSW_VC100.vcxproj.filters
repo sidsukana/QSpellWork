@@ -41,30 +41,6 @@
     <ClCompile Include="GeneratedFiles\qrc_SpellWork.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_SWSearch.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_SWSearch.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_SWAboutForm.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_SWAboutForm.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Template\moc_SWAboutForm.cpp">
-      <Filter>Generated Files\Template</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_SWMainForm.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_SWMainForm.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Template\moc_SWMainForm.cpp">
-      <Filter>Generated Files\Template</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_SWModels.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
@@ -83,15 +59,6 @@
     <ClCompile Include="GeneratedFiles\Template\moc_WovWidget.cpp">
       <Filter>Generated Files\Template</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_SWSettingsForm.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_SWSettingsForm.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Template\moc_SWSettingsForm.cpp">
-      <Filter>Generated Files\Template</Filter>
-    </ClCompile>
     <ClCompile Include="blp\BLP.cpp">
       <Filter>blp</Filter>
     </ClCompile>
@@ -103,35 +70,91 @@
     </ClCompile>
     <ClCompile Include="Alphanum.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="SWAboutForm.cpp" />
-    <ClCompile Include="SWDefines.cpp" />
     <ClCompile Include="SWEnums.cpp" />
-    <ClCompile Include="SWMainForm.cpp" />
     <ClCompile Include="SWModels.cpp" />
     <ClCompile Include="SWObject.cpp" />
-    <ClCompile Include="SWSearch.cpp" />
-    <ClCompile Include="SWSettingsForm.cpp" />
     <ClCompile Include="WovWidget.cpp" />
+    <ClCompile Include="GeneratedFiles\Debug\moc_AboutForm.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_AboutForm.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Template\moc_AboutForm.cpp">
+      <Filter>Generated Files\Template</Filter>
+    </ClCompile>
+    <ClCompile Include="Defines.cpp" />
+    <ClCompile Include="GeneratedFiles\Debug\moc_ScriptEdit.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ScriptEdit.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Template\moc_ScriptEdit.cpp">
+      <Filter>Generated Files\Template</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_SettingsForm.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_SettingsForm.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Template\moc_SettingsForm.cpp">
+      <Filter>Generated Files\Template</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_MainForm.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_MainForm.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Template\moc_MainForm.cpp">
+      <Filter>Generated Files\Template</Filter>
+    </ClCompile>
+    <ClCompile Include="AboutForm.cpp" />
+    <ClCompile Include="MainForm.cpp" />
+    <ClCompile Include="ScriptEdit.cpp" />
+    <ClCompile Include="SettingsForm.cpp" />
+    <ClCompile Include="GeneratedFiles\Debug\moc_SWObject.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_SWObject.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Template\moc_SWObject.cpp">
+      <Filter>Generated Files\Template</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_DBCStructure.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_DBCStructure.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Template\moc_DBCStructure.cpp">
+      <Filter>Generated Files\Template</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GeneratedFiles\ui_SWAboutUI.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GeneratedFiles\ui_SWMainUI.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GeneratedFiles\ui_SWSettingsUI.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
     <ClInclude Include="dbc\DBC.h">
       <Filter>dbc</Filter>
     </ClInclude>
-    <ClInclude Include="SWObject.h" />
     <ClInclude Include="SWEnums.h" />
-    <ClInclude Include="SWDefines.h" />
     <ClInclude Include="Alphanum.h" />
     <ClInclude Include="blp\BLP.h">
       <Filter>blp</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_advancedFilter.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_about.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Defines.h" />
+    <ClInclude Include="GeneratedFiles\ui_settings.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_main.h">
+      <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -143,27 +166,28 @@
     <CustomBuild Include="SpellWork.qrc">
       <Filter>Resource Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="SWAboutUI.ui">
-      <Filter>Form Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="SWMainUI.ui">
-      <Filter>Form Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="SWSettingsUI.ui">
-      <Filter>Form Files</Filter>
-    </CustomBuild>
     <CustomBuild Include="dbc\DBCStructure.h">
       <Filter>dbc</Filter>
     </CustomBuild>
     <CustomBuild Include="WovWidget.h" />
-    <CustomBuild Include="SWSettingsForm.h" />
-    <CustomBuild Include="SWSearch.h" />
     <CustomBuild Include="SWModels.h" />
-    <CustomBuild Include="SWMainForm.h" />
-    <CustomBuild Include="SWAboutForm.h" />
-    <CustomBuild Include="blp\BLP.h">
-      <Filter>Generated Files</Filter>
-    </CustomBuild>
     <CustomBuild Include="SWEvent.h" />
+    <CustomBuild Include="advancedFilter.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="about.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="settings.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="main.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="AboutForm.h" />
+    <CustomBuild Include="MainForm.h" />
+    <CustomBuild Include="ScriptEdit.h" />
+    <CustomBuild Include="SettingsForm.h" />
+    <CustomBuild Include="SWObject.h" />
   </ItemGroup>
 </Project>

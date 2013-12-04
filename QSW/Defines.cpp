@@ -3,7 +3,7 @@
 #include <QMessageBox>
 #include <QIcon>
 
-#include "SWDefines.h"
+#include "Defines.h"
 
 bool QSW::checkDir(const QString &dir)
 {

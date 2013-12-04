@@ -58,7 +58,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
       <AdditionalIncludeDirectories>$(QTDIR)\include\QtGui;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtWebKit;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtScript;.\GeneratedFiles;$(QTDIR)\include;.\GeneratedFiles\$(Configuration);.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>UNICODE;WIN32;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_DLL;__STORMLIB_SELF__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -113,18 +113,32 @@
     </Link>
     <ClCompile>
       <PreprocessorDefinitions>QT_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\GeneratedFiles;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\GeneratedFiles;.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AboutForm.cpp" />
     <ClCompile Include="blp\BLP.cpp" />
     <ClCompile Include="dbc\DBC.cpp" />
     <ClCompile Include="dbc\DBCStructure.cpp" />
-    <ClCompile Include="GeneratedFiles\Debug\moc_SWAboutForm.cpp">
+    <ClCompile Include="Defines.cpp" />
+    <ClCompile Include="GeneratedFiles\Debug\moc_AboutForm.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_SWMainForm.cpp">
+    <ClCompile Include="GeneratedFiles\Debug\moc_DBCStructure.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_MainForm.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ScriptEdit.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_SettingsForm.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -132,7 +146,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_SWSettingsForm.cpp">
+    <ClCompile Include="GeneratedFiles\Debug\moc_SWObject.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -140,11 +154,23 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_SWAboutForm.cpp">
+    <ClCompile Include="GeneratedFiles\Release\moc_AboutForm.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_SWMainForm.cpp">
+    <ClCompile Include="GeneratedFiles\Release\moc_DBCStructure.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_MainForm.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ScriptEdit.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_SettingsForm.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -152,15 +178,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_SWSearch.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_SWSearch.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_SWSettingsForm.cpp">
+    <ClCompile Include="GeneratedFiles\Release\moc_SWObject.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -168,11 +186,23 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Template\moc_SWAboutForm.cpp">
+    <ClCompile Include="GeneratedFiles\Template\moc_AboutForm.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Template\moc_SWMainForm.cpp">
+    <ClCompile Include="GeneratedFiles\Template\moc_DBCStructure.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Template\moc_MainForm.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Template\moc_ScriptEdit.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Template\moc_SettingsForm.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -180,7 +210,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Template\moc_SWSettingsForm.cpp">
+    <ClCompile Include="GeneratedFiles\Template\moc_SWObject.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -188,65 +218,42 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="SWAboutForm.cpp" />
+    <ClCompile Include="MainForm.cpp" />
+    <ClCompile Include="ScriptEdit.cpp" />
     <ClCompile Include="Alphanum.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="SWDefines.cpp" />
+    <ClCompile Include="SettingsForm.cpp" />
     <ClCompile Include="SWEnums.cpp" />
-    <ClCompile Include="SWMainForm.cpp" />
     <ClCompile Include="SWModels.cpp" />
     <ClCompile Include="SWObject.cpp" />
-    <ClCompile Include="SWSearch.cpp" />
     <ClCompile Include="GeneratedFiles\qrc_SpellWork.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="SWSettingsForm.cpp" />
     <ClCompile Include="WovWidget.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="blp\BLP.h">
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(AdditionalInputs)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(AdditionalInputs)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">%(AdditionalInputs)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
-      </Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
-      </Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
-      </Command>
+    <CustomBuild Include="AboutForm.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing AboutForm.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_DLL -D__STORMLIB_SELF__ "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtWebKit" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtScript" "-I.\GeneratedFiles" "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(Configuration)\." "-I."</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing AboutForm.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_DLL -D__STORMLIB_SELF__ "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtWebKit" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtScript" "-I.\GeneratedFiles" "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(Configuration)\." "-I."</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">Moc%27ing AboutForm.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DQT_DLL "-I.\GeneratedFiles" "-I."</Command>
     </CustomBuild>
     <ClInclude Include="blp\BLP.h" />
     <ClInclude Include="dbc\DBC.h" />
-    <ClInclude Include="GeneratedFiles\ui_SWSettingsUI.h" />
-    <CustomBuild Include="SWSettingsForm.h">
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing SWSettingsForm.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_DLL -D__STORMLIB_SELF__  "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtWebKit" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtScript" "-I.\GeneratedFiles" "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(Configuration)\." "-I."</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing SWSettingsForm.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_DLL -D__STORMLIB_SELF__  "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtWebKit" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtScript" "-I.\GeneratedFiles" "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(Configuration)\." "-I."</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">Moc%27ing SWSettingsForm.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DQT_DLL "-I.\GeneratedFiles"</Command>
-    </CustomBuild>
+    <ClInclude Include="Defines.h" />
+    <ClInclude Include="GeneratedFiles\ui_about.h" />
+    <ClInclude Include="GeneratedFiles\ui_advancedFilter.h" />
     <CustomBuild Include="WovWidget.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing WovWidget.h...</Message>
@@ -259,7 +266,7 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">Moc%27ing WovWidget.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DQT_DLL "-I.\GeneratedFiles"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DQT_DLL  "-I.\GeneratedFiles" "-I."</Command>
     </CustomBuild>
     <CustomBuild Include="SWModels.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
@@ -273,26 +280,53 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">Moc%27ing SWModels.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DQT_DLL "-I.\GeneratedFiles"</Command>
-    </CustomBuild>
-    <CustomBuild Include="SWAboutForm.h">
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing SWAboutForm.h...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_DLL -D__STORMLIB_SELF__  "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtWebKit" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtScript" "-I.\GeneratedFiles" "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(Configuration)\." "-I."</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath);%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(Configuration)\moc_%(Filename).cpp;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing SWAboutForm.h...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_DLL -D__STORMLIB_SELF__  "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtWebKit" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtScript" "-I.\GeneratedFiles" "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(Configuration)\." "-I."</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath);%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(Configuration)\moc_%(Filename).cpp;%(Outputs)</Outputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">Moc%27ing SWAboutForm.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DQT_DLL  "-I.\GeneratedFiles"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DQT_DLL  "-I.\GeneratedFiles" "-I."</Command>
     </CustomBuild>
     <ClInclude Include="Alphanum.h" />
-    <ClInclude Include="GeneratedFiles\ui_SWAboutUI.h" />
-    <ClInclude Include="GeneratedFiles\ui_SWMainUI.h" />
-    <ClInclude Include="SWDefines.h" />
+    <ClInclude Include="GeneratedFiles\ui_main.h" />
+    <ClInclude Include="GeneratedFiles\ui_settings.h" />
+    <CustomBuild Include="ScriptEdit.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing ScriptEdit.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_DLL -D__STORMLIB_SELF__ "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtWebKit" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtScript" "-I.\GeneratedFiles" "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(Configuration)\." "-I."</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing ScriptEdit.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_DLL -D__STORMLIB_SELF__ "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtWebKit" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtScript" "-I.\GeneratedFiles" "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(Configuration)\." "-I."</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">Moc%27ing ScriptEdit.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DQT_DLL "-I.\GeneratedFiles" "-I."</Command>
+    </CustomBuild>
+    <CustomBuild Include="SettingsForm.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing SettingsForm.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_DLL -D__STORMLIB_SELF__ "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtWebKit" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtScript" "-I.\GeneratedFiles" "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(Configuration)\." "-I."</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing SettingsForm.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_DLL -D__STORMLIB_SELF__ "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtWebKit" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtScript" "-I.\GeneratedFiles" "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(Configuration)\." "-I."</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">Moc%27ing SettingsForm.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DQT_DLL "-I.\GeneratedFiles" "-I."</Command>
+    </CustomBuild>
+    <CustomBuild Include="MainForm.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing MainForm.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_DLL -D__STORMLIB_SELF__ "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtWebKit" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtScript" "-I.\GeneratedFiles" "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(Configuration)\." "-I."</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing MainForm.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_DLL -D__STORMLIB_SELF__ "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtWebKit" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtScript" "-I.\GeneratedFiles" "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(Configuration)\." "-I."</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">Moc%27ing MainForm.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DQT_DLL "-I.\GeneratedFiles" "-I."</Command>
+    </CustomBuild>
     <ClInclude Include="SWEnums.h" />
     <CustomBuild Include="SWEvent.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(AdditionalInputs)</AdditionalInputs>
@@ -317,44 +351,33 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
       </Command>
     </CustomBuild>
-    <ClInclude Include="SWObject.h" />
-    <CustomBuild Include="SWMainForm.h">
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing SWMainForm.h...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_DLL -D__STORMLIB_SELF__  "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtWebKit" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtScript" "-I.\GeneratedFiles" "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(Configuration)\." "-I."</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath);%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(Configuration)\moc_%(Filename).cpp;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing SWMainForm.h...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_DLL -D__STORMLIB_SELF__  "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtWebKit" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtScript" "-I.\GeneratedFiles" "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(Configuration)\." "-I."</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath);%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(Configuration)\moc_%(Filename).cpp;%(Outputs)</Outputs>
+    <CustomBuild Include="SWObject.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing SWObject.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_DLL -D__STORMLIB_SELF__ "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtWebKit" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtScript" "-I.\GeneratedFiles" "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(Configuration)\." "-I."</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing SWObject.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_DLL -D__STORMLIB_SELF__ "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtWebKit" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtScript" "-I.\GeneratedFiles" "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(Configuration)\." "-I."</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">Moc%27ing SWMainForm.h...</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">Moc%27ing SWObject.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DQT_DLL  "-I.\GeneratedFiles"</Command>
-    </CustomBuild>
-    <CustomBuild Include="SWSearch.h">
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing %(Filename)%(Extension)...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_DLL -D__STORMLIB_SELF__  "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtWebKit" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtScript" "-I.\GeneratedFiles" "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(Configuration)\." "-I."</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(Configuration)\moc_%(Filename).cpp;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing %(Filename)%(Extension)...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_DLL -D__STORMLIB_SELF__  "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtWebKit" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtScript" "-I.\GeneratedFiles" "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(Configuration)\." "-I."</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(Configuration)\moc_%(Filename).cpp;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DQT_DLL "-I.\GeneratedFiles" "-I."</Command>
     </CustomBuild>
     <CustomBuild Include="dbc\DBCStructure.h">
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing DBCStructure.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_DLL -D__STORMLIB_SELF__ "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtWebKit" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtScript" "-I.\GeneratedFiles" "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(Configuration)\." "-I."</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing DBCStructure.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_DLL -D__STORMLIB_SELF__ "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtWebKit" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtScript" "-I.\GeneratedFiles" "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(Configuration)\." "-I."</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);%(AdditionalInputs)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">Moc%27ing DBCStructure.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DQT_DLL "-I.\GeneratedFiles" "-I."</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -384,7 +407,7 @@
     <ResourceCompile Include="Icon.rc" />
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="SWAboutUI.ui">
+    <CustomBuild Include="main.ui">
       <FileType>Document</FileType>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Uic%27ing %(Identity)...</Message>
@@ -401,7 +424,7 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="SWMainUI.ui">
+    <CustomBuild Include="settings.ui">
       <FileType>Document</FileType>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Uic%27ing %(Identity)...</Message>
@@ -418,7 +441,24 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="SWSettingsUI.ui">
+    <CustomBuild Include="advancedFilter.ui">
+      <FileType>Document</FileType>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Uic%27ing %(Identity)...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Uic%27ing %(Identity)...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">Uic%27ing %(Identity)...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">"$(QTDIR)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="about.ui">
       <FileType>Document</FileType>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Uic%27ing %(Identity)...</Message>

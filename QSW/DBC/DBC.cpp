@@ -1,6 +1,6 @@
 #include "mpq/MPQ.h"
 #include "dbc/DBC.h"
-#include "SWDefines.h"
+#include "Defines.h"
 
 DBCFile::DBCFile(const QString &fileName) : m_header(NULL), m_records(NULL), m_strings(NULL), m_indexes(NULL), m_maxId(0)
 {

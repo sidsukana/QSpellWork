@@ -1,7 +1,7 @@
-#include "SWAboutForm.h"
-#include "SWDefines.h"
+#include "AboutForm.h"
+#include "Defines.h"
 
-SWAboutForm::SWAboutForm(QWidget *parent)
+AboutForm::AboutForm(QWidget *parent)
     : QDialog(parent)
 {
     setupUi(this);
@@ -13,8 +13,4 @@ SWAboutForm::SWAboutForm(QWidget *parent)
     connect(pushButton_2, SIGNAL(clicked()), qApp, SLOT(aboutQt()));
 
     show();
-}
-
-SWAboutForm::~SWAboutForm()
-{
 }

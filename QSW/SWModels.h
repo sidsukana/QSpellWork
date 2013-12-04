@@ -5,9 +5,9 @@
 #include <QAbstractTableModel>
 #include <QSortFilterProxyModel>
 
-#include "SWMainForm.h"
+#include "MainForm.h"
 
-class SWMainForm;
+class MainForm;
 
 class SpellListSortedModel : public QSortFilterProxyModel
 {

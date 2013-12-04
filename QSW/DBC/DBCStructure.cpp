@@ -1,4 +1,4 @@
-#include "SWDefines.h"
+#include "Defines.h"
 #include "dbc/DBCStructure.h"
 
 // SkillLine.dbc

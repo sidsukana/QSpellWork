@@ -2,8 +2,11 @@
 #define SWOBJECT_H
 
 #include <QMetaEnum>
+#include <QScriptEngine>
+#include <QScriptValue>
+#include <QScriptValueList>
 
-#include "SWMainForm.h"
+#include "MainForm.h"
 #include "SWEnums.h"
 #include "SWEvent.h"
 #include "dbc/DBCStructure.h"
@@ -27,12 +30,14 @@ enum MaskType
     MAX_ATTR_TYPE
 };
 
-class SWMainForm;
-class SWObject
+class MainForm;
+class SWObject : public QObject
 {
+    Q_OBJECT
+
     public:
-        SWObject(SWMainForm *form);
-        ~SWObject();
+        SWObject(MainForm *form);
+        ~SWObject() {}
 
         void showInfo(const Spell::entry* spellInfo, quint8 num = 1);
         quint32 getParentSpellId(quint32 triggerId);
@@ -60,10 +65,10 @@ class SWObject
         quint8 getType() const { return m_type; }
         void setType(quint8 type) { m_type = type; }
 
-        SWMainForm* getForm() { return m_form; }
+        MainForm* getForm() { return m_form; }
 
     private:
-        SWMainForm *m_form;
+        MainForm *m_form;
         SWEnums* m_enums;
 
         QMetaEnum m_metaEnum;

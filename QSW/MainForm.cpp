@@ -5,16 +5,16 @@
 #include <QStringListModel>
 #include <QDir>
 #include <QMessageBox>
+#include <QPropertyAnimation>
 
-#include "SWMainForm.h"
-#include "SWAboutForm.h"
-#include "SWSettingsForm.h"
+#include "MainForm.h"
+#include "AboutForm.h"
+#include "SettingsForm.h"
 #include "SWModels.h"
-#include "SWSearch.h"
-#include "SWDefines.h"
+#include "Defines.h"
 #include "WovWidget.h"
 
-SWMainForm::SWMainForm(QWidget* parent)
+MainForm::MainForm(QWidget* parent)
     : QMainWindow(parent)
 {
     QTime m_time;
@@ -22,9 +22,14 @@ SWMainForm::SWMainForm(QWidget* parent)
 
     setupUi(this);
 
-    m_advancedTextEdit = new TextEdit(page);
-    gridLayout_4->addWidget(m_advancedTextEdit, 0, 0, 4, 1);
-    m_advancedTextEdit->hide();
+    m_advancedFilterWidget = new AdvancedFilterWidget(page);
+    m_advancedFilterWidget->stackUnder(widget);
+    m_advancedFilterWidget->setGeometry(QRect(webView1->x() - 280 , webView1->y(), 280, webView1->height()));
+
+    // WOV widget
+    //WovWidget* wov = new WovWidget();
+    //wov->show();
+    //
 
     m_enums = new SWEnums();
     m_sw = new SWObject(this);
@@ -65,7 +70,6 @@ SWMainForm::SWMainForm(QWidget* parent)
     SpellList->addAction(selectedAction);
 
     connect(adFilterButton, SIGNAL(clicked()), this, SLOT(slotAdvancedFilter()));
-    connect(adApplyButton, SIGNAL(clicked()), this, SLOT(slotAdvancedApply()));
 
     // List search connection
     connect(SpellList, SIGNAL(clicked(QModelIndex)), this, SLOT(slotSearchFromList(QModelIndex)));
@@ -93,6 +97,8 @@ SWMainForm::SWMainForm(QWidget* parent)
     // Search connection
     connect(this, SIGNAL(signalSearch(quint8)), this, SLOT(slotSearch(quint8)));
 
+    connect(m_advancedFilterWidget->pushButton, SIGNAL(clicked()), this, SLOT(slotAdvancedApply()));
+
     connect(compareSpell_1, SIGNAL(returnPressed()), this, SLOT(slotCompareSearch()));
     connect(compareSpell_2, SIGNAL(returnPressed()), this, SLOT(slotCompareSearch()));
 
@@ -106,37 +112,51 @@ SWMainForm::SWMainForm(QWidget* parent)
     loadSettings();
 }
 
-SWMainForm::~SWMainForm()
+MainForm::~MainForm()
 {
     saveSettings();
 }
 
-void SWMainForm::slotSettings()
+void MainForm::slotSettings()
 {
-    SWSettingsForm* settingsForm = new SWSettingsForm(this);
-    connect(settingsForm, SIGNAL(destroyed()), settingsForm, SLOT(deleteLater()));
+    SettingsForm settingsForm(this);
+    settingsForm.exec();
 }
 
-void SWMainForm::slotAdvancedFilter()
+void MainForm::slotAdvancedFilter()
 {
-    if (m_advancedTextEdit->isVisible())
+    if (adFilterButton->isChecked())
     {
-        webView1->show();
-        m_advancedTextEdit->hide();
+        QPropertyAnimation* animation = new QPropertyAnimation(m_advancedFilterWidget, "geometry");
+        animation->setDuration(500);
+        animation->setStartValue(QRect(webView1->x() - 280, webView1->y(), 280, webView1->height()));
+        animation->setEndValue(QRect(webView1->x(), webView1->y(), 280, webView1->height()));
+
+        animation->start();
     }
     else
     {
-        webView1->hide();
-        m_advancedTextEdit->show();
+        QPropertyAnimation* animation = new QPropertyAnimation(m_advancedFilterWidget, "geometry");
+        animation->setDuration(500);
+        animation->setStartValue(QRect(webView1->x(), webView1->y(), 280, webView1->height()));
+        animation->setEndValue(QRect(webView1->x() - 280, webView1->y(), 280, webView1->height()));
+
+
+        animation->start();
     }
 }
 
-void SWMainForm::slotAdvancedApply()
+void MainForm::resizeEvent(QResizeEvent* event)
+{
+    m_advancedFilterWidget->setGeometry(QRect(webView1->x(), webView1->y(), adFilterButton->isChecked() ? 280 : 0, webView1->height()));
+}
+
+void MainForm::slotAdvancedApply()
 {
     emit signalSearch(3);
 }
 
-void SWMainForm::loadSettings()
+void MainForm::loadSettings()
 {
     // Global
     setRegExp(QSW::settings().value("Global/RegExp", false).toBool());
@@ -154,7 +174,7 @@ void SWMainForm::loadSettings()
         slotButtonSearch();
 }
 
-void SWMainForm::saveSettings()
+void MainForm::saveSettings()
 {
     // Global
     QSW::settings().setValue("Global/RegExp", isRegExp());
@@ -169,7 +189,7 @@ void SWMainForm::saveSettings()
     QSW::settings().setValue("Search/TargetBIndex", comboBox_5->currentIndex());
 }
 
-void SWMainForm::slotPrevRow()
+void MainForm::slotPrevRow()
 {
     SpellList->selectRow(SpellList->currentIndex().row() - 1);
 
@@ -177,7 +197,7 @@ void SWMainForm::slotPrevRow()
     m_sw->showInfo(Spell::getRecord(var.toInt(), true));
 }
 
-void SWMainForm::slotNextRow()
+void MainForm::slotNextRow()
 {
     SpellList->selectRow(SpellList->currentIndex().row() + 1);
 
@@ -185,7 +205,7 @@ void SWMainForm::slotNextRow()
     m_sw->showInfo(Spell::getRecord(var.toInt(), true));
 }
 
-void SWMainForm::initializeCompleter()
+void MainForm::initializeCompleter()
 {
     QSet<QString> names;
 
@@ -204,7 +224,7 @@ void SWMainForm::initializeCompleter()
     findLine_e1->setCompleter(completer);
 }
 
-void SWMainForm::createModeButton()
+void MainForm::createModeButton()
 {
     QAction* actionShow = new QAction(QIcon(":/SpellWork/Recources/show.png"), "Show", this);
     QAction* actionCompare = new QAction(QIcon(":/SpellWork/Recources/compare.png"), "Compare", this);
@@ -221,7 +241,7 @@ void SWMainForm::createModeButton()
     m_modeButton->addAction(actionCompare);
 }
 
-void SWMainForm::detectLocale()
+void MainForm::detectLocale()
 {
     if (const Spell::entry* spellInfo = Spell::getRecord(1, true))
     {
@@ -242,7 +262,7 @@ void SWMainForm::detectLocale()
     }
 }
 
-void SWMainForm::slotLinkClicked(const QUrl &url)
+void MainForm::slotLinkClicked(const QUrl &url)
 {
     QWebView* webView = static_cast<QWebView*>(sender());
 
@@ -276,19 +296,19 @@ void SWMainForm::slotLinkClicked(const QUrl &url)
     }
 }
 
-void SWMainForm::slotModeShow()
+void MainForm::slotModeShow()
 {
     m_modeButton->setIcon(m_modeButton->actions().at(0)->icon());
     stackedWidget->setCurrentIndex(0);
 }
 
-void SWMainForm::slotModeCompare()
+void MainForm::slotModeCompare()
 {
     m_modeButton->setIcon(m_modeButton->actions().at(1)->icon());
     stackedWidget->setCurrentIndex(1);
 }
 
-void SWMainForm::loadComboBoxes()
+void MainForm::loadComboBoxes()
 {
     comboBox->clear();
     comboBox->setModel(new QStandardItemModel);
@@ -359,7 +379,7 @@ void SWMainForm::loadComboBoxes()
     }
 }
 
-void SWMainForm::slotRegExp()
+void MainForm::slotRegExp()
 {
     if (isRegExp())
     {
@@ -396,23 +416,23 @@ void SWMainForm::slotRegExp()
         m_sw->compare();
 }
 
-void SWMainForm::slotAbout()
+void MainForm::slotAbout()
 {
-    SWAboutForm* aboutForm = new SWAboutForm(this);
-    connect(aboutForm, SIGNAL(destroyed()), aboutForm, SLOT(deleteLater()));
+    AboutForm aboutView(this);
+    aboutView.exec();
 }
 
-void SWMainForm::slotButtonSearch()
+void MainForm::slotButtonSearch()
 {
     emit signalSearch(0);
 }
 
-void SWMainForm::slotFilterSearch()
+void MainForm::slotFilterSearch()
 {
     emit signalSearch(1);
 }
 
-void SWMainForm::slotCompareSearch()
+void MainForm::slotCompareSearch()
 {
     if (!compareSpell_1->text().isEmpty() && !compareSpell_2->text().isEmpty())
     {
@@ -422,7 +442,7 @@ void SWMainForm::slotCompareSearch()
     }
 }
 
-void SWMainForm::slotSearch(quint8 type)
+void MainForm::slotSearch(quint8 type)
 {
     SpellListSortedModel* smodel = static_cast<SpellListSortedModel*>(SpellList->model());
     SpellListModel* model = static_cast<SpellListModel*>(smodel->sourceModel());
@@ -434,7 +454,7 @@ void SWMainForm::slotSearch(quint8 type)
     m_watcher->setFuture(QtConcurrent::run<EventList, SWObject>(m_sw, &SWObject::search));
 }
 
-void SWMainForm::slotSearchResult()
+void MainForm::slotSearchResult()
 {
     SearchResultWatcher* watcher = (SearchResultWatcher*)QObject::sender();
 
@@ -443,13 +463,13 @@ void SWMainForm::slotSearchResult()
         QApplication::postEvent(this, *itr);
 }
 
-void SWMainForm::slotSearchFromList(const QModelIndex &index)
+void MainForm::slotSearchFromList(const QModelIndex &index)
 {
     QVariant var = SpellList->model()->data(SpellList->model()->index(index.row(), 0));
     m_sw->showInfo(Spell::getRecord(var.toInt(), true));
 }
 
-bool SWMainForm::event(QEvent* ev)
+bool MainForm::event(QEvent* ev)
 {
     switch (Event::Events(ev->type()))
     {
@@ -477,158 +497,9 @@ bool SWMainForm::event(QEvent* ev)
     return QWidget::event(ev);
 }
 
-TextEdit::TextEdit(QWidget *parent)
-    : QTextEdit(parent), m_completer(NULL)
+AdvancedFilterWidget::AdvancedFilterWidget(QWidget* parent /* = NULL */)
+    : QWidget(parent)
 {
-    m_completer = new QCompleter(parent);
-    m_completer->setModel(setupModel());
-    m_completer->setModelSorting(QCompleter::UnsortedModel);
-    m_completer->setCaseSensitivity(Qt::CaseInsensitive);
-    m_completer->setWrapAround(false);
-    m_completer->setWidget(this);
-    m_completer->setCompletionMode(QCompleter::PopupCompletion);
-
-    QObject::connect(m_completer, SIGNAL(activated(QString)), this, SLOT(insertCompletion(QString)));
-}
-
-TextEdit::~TextEdit()
-{
-}
-
-QCompleter *TextEdit::completer() const
-{
-    return m_completer;
-}
-
-void TextEdit::insertCompletion(const QString& completion)
-{
-    if (m_completer->widget() != this)
-        return;
-
-    QTextCursor tc = textCursor();
-    tc.select(QTextCursor::WordUnderCursor);
-    tc.insertText(completion);
-    setTextCursor(tc);
-}
-
-QString TextEdit::textUnderCursor() const
-{
-    QTextCursor tc = textCursor();
-    tc.select(QTextCursor::BlockUnderCursor);
-    return tc.selectedText();
-}
-
-void TextEdit::focusInEvent(QFocusEvent *e)
-{
-    if (m_completer)
-        m_completer->setWidget(this);
-    QTextEdit::focusInEvent(e);
-}
-
-void TextEdit::keyPressEvent(QKeyEvent *e)
-{
-    if (m_completer && m_completer->popup()->isVisible())
-    {
-        // The following keys are forwarded by the completer to the widget
-        switch (e->key()) {
-        case Qt::Key_Enter:
-        case Qt::Key_Return:
-        case Qt::Key_Escape:
-        case Qt::Key_Tab:
-        case Qt::Key_Backtab:
-            e->ignore();
-            return; // let the completer do default behavior
-        default:
-            break;
-        }
-    }
-
-    bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_Space); // CTRL+E
-    if (!m_completer || !isShortcut) // do not process the shortcut when we have a completer
-        QTextEdit::keyPressEvent(e);
-
-    const bool ctrlOrShift = e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
-    if (!m_completer || (ctrlOrShift && e->text().isEmpty()))
-        return;
-
-    static QString eow(" ~!@#$%^&*_+{}|:\"<>?,/;'[]()\\-="); // end of word
-    bool hasModifier = (e->modifiers() != Qt::NoModifier) && !ctrlOrShift;
-
-    QString completionPrefix = textUnderCursor();
-
-    int pos = textCursor().positionInBlock();
-    bool complete = false;
-
-    // Check autocomplete
-    if (completionPrefix.size() >= 6 && pos >= 6 && completionPrefix.contains("spell."))
-    {
-        // Remove all after first right whitespace about cursor position
-        for (qint32 i = pos; i < completionPrefix.size(); ++i)
-        {
-            if (completionPrefix.at(i) == ' ')
-            {
-                completionPrefix.remove(i, completionPrefix.size() - i);
-                break;
-            }
-        }
-
-        // Remove all before first dot about cursor position
-        // and contains 'spell.'
-        for (qint32 i = pos - 1; i != -1; --i)
-        {
-            if (completionPrefix.at(i) == '.')
-            {
-                if (completionPrefix.mid(i - 5, 6).startsWith("spell."))
-                {
-                    completionPrefix.remove(0, i + 1);
-                    complete = true;
-                    break;
-                }
-            }
-        }
-    }
-    
-    if (!isShortcut && e->key() != Qt::Key_Period && (hasModifier || e->text().isEmpty() || !complete || eow.contains(e->text().right(1))))
-    {
-        m_completer->popup()->hide();
-        return;
-    }
-
-    if (completionPrefix != m_completer->completionPrefix())
-    {
-        m_completer->setCompletionPrefix(completionPrefix);
-        m_completer->popup()->setCurrentIndex(m_completer->completionModel()->index(0, 0));
-    }
-    
-    if (completionPrefix == m_completer->currentCompletion())
-    {
-        m_completer->popup()->hide();
-        return;
-    }
-
-    QRect cr = cursorRect();
-    cr.setWidth(m_completer->popup()->sizeHintForColumn(0) + m_completer->popup()->verticalScrollBar()->sizeHint().width());
-    m_completer->complete(cr);
-}
-
-QAbstractItemModel* TextEdit::setupModel()
-{
-    QSet<QString> fields;
-
-    MetaSpell spell;
-
-    qint32 propertyCount = spell.metaObject()->propertyCount();
-    qint32 methodCount = spell.metaObject()->methodCount();
-
-    for (qint32 i = 1; i < propertyCount; ++i)
-        fields << spell.metaObject()->property(i).name();
-
-    for (qint32 i = 0; i < methodCount; ++i)
-    {
-        QString methodName = spell.metaObject()->method(i).signature();
-        if (methodName.contains("(quint8)"))
-            fields << methodName.replace("(quint8)", "(index)");
-    }
-
-    return new QStringListModel(fields.toList(), m_completer);
+    setupUi(this);
+    setAutoFillBackground(true);
 }

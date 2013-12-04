@@ -38,7 +38,7 @@ void Model::setDisplayId(quint32 displayId)
 
     CreatureDisplayInfoDBC::entry displayInfo = CreatureDisplayInfoDBC::getEntry(m_displayId);
     CreatureModelDataDBC::entry modelData = CreatureModelDataDBC::getEntry(displayInfo.model);
-
+    
     if (displayInfo.id != m_displayId) {
         qDebug("Creature display ID %u does not exist", m_displayId);
         return;

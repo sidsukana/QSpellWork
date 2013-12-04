@@ -1,35 +1,60 @@
-#ifndef SWFORM_H
-#define SWFORM_H
+#ifndef MAIN_FORM_H
+#define MAIN_FORM_H
 
 #include <QSettings>
 #include <QFutureWatcher>
 #include <QTextBrowser>
-#include <QTextEdit>
 #include <QMainWindow>
 #include <QToolButton>
-#include <QCompleter>
 #include <QIcon>
-#include <QKeyEvent>
-#include <QScrollBar>
 #include <QWebView>
 #include <QWebFrame>
 
 #include "SWEnums.h"
 #include "SWObject.h"
 
-#include "ui_SWMainUI.h"
+#include "ui_main.h"
+#include "ui_advancedFilter.h"
 
-class TextEdit;
 class SWObject;
 class SpellListSortedModel;
 
-class SWMainForm : public QMainWindow, public Ui::SWMainUI
+class Enums : public QObject
+{
+    Q_OBJECT
+public:
+
+    enum LocalesDBC
+    {
+        enUS,
+        koKR,
+        frFR,
+        deDE,
+        zhCN,
+        zhTW,
+        esES,
+        esMX
+    };
+
+    Q_ENUMS(LocalesDBC)
+};
+
+class AdvancedFilterWidget : public QWidget, public Ui::advancedFilter
+{
+    Q_OBJECT
+
+public:
+    AdvancedFilterWidget(QWidget* parent = NULL);
+    ~AdvancedFilterWidget() {}
+};
+
+class MainForm : public QMainWindow, public Ui::main
 {
     Q_OBJECT
 
     public:
-        SWMainForm(QWidget* parent = 0);
-        ~SWMainForm();
+        MainForm(QWidget* parent = NULL);
+        ~MainForm();
 
         void saveSettings();
         void loadSettings();
@@ -37,7 +62,7 @@ class SWMainForm : public QMainWindow, public Ui::SWMainUI
         bool isRegExp() const { return m_actionRegExp->isChecked(); }
         void setRegExp(bool enable) { m_actionRegExp->setChecked(enable); }
         SWEnums* getEnums() const { return m_enums; }
-        QString getFilterText() const { return ((QTextEdit*)m_advancedTextEdit)->toPlainText(); }
+        QString getFilterText() const { return m_advancedFilterWidget->textEdit->toPlainText(); }
 
         QWebView* getBrowser(quint8 num) const
         {
@@ -72,6 +97,7 @@ class SWMainForm : public QMainWindow, public Ui::SWMainUI
         void slotNextRow();
 
         bool event(QEvent* ev);
+        void resizeEvent (QResizeEvent* event);
 
     private:
         void loadComboBoxes();
@@ -82,63 +108,18 @@ class SWMainForm : public QMainWindow, public Ui::SWMainUI
         SWEnums* m_enums;
 
         SpellListSortedModel* m_sortedModel;
-        Ui::SWMainUI m_ui;
+        Ui::main m_ui;
         SWObject* m_sw;
         QToolButton* m_modeButton;
         QAction* m_actionRegExp;
         QAction* m_actionAbout;
         QAction* m_actionSettings;
 
-        TextEdit *m_advancedTextEdit;
-        
         typedef QList<QEvent*> EventList;
         typedef QFutureWatcher<EventList> SearchResultWatcher;
         SearchResultWatcher* m_watcher;
+
+        AdvancedFilterWidget* m_advancedFilterWidget;
 };
 
-class Enums : public QObject
-{
-    Q_OBJECT
-public:
-
-    enum LocalesDBC
-    {
-        enUS,
-        koKR,
-        frFR,
-        deDE,
-        zhCN,
-        zhTW,
-        esES,
-        esMX
-    };
-
-    Q_ENUMS(LocalesDBC)
-};
-
-class TextEdit : public QTextEdit
-{
-    Q_OBJECT
-
-    public:
-        TextEdit(QWidget *parent = 0);
-        ~TextEdit();
-
-        QAbstractItemModel* setupModel();
-        QCompleter *completer() const;
-
-    protected:
-        void keyPressEvent(QKeyEvent *e);
-        void focusInEvent(QFocusEvent *e);
-
-    private slots:
-        void insertCompletion(const QString &completion);
-
-    private:
-        QString textUnderCursor() const;
-
-    private:
-        QCompleter *m_completer;
-};
-
-#endif
+#endif // MAIN_FORM_H
