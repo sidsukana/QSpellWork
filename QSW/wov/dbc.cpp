@@ -1,5 +1,5 @@
 #include "dbc.h"
-#include "./../mpq/MPQ.h"
+#include "./../mpq/mpq.h"
 
 DBC::DBC(const QString &fileName) : m_header(0), m_records(0), m_strings(0)
 {

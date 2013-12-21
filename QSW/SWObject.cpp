@@ -862,7 +862,7 @@ void SWObject::showInfo(const Spell::entry* spellInfo, quint8 num)
 
     html.append("<html>"
                 "<head>"
-                "<link rel='stylesheet' type='text/css' href='qrc:///SpellWork/Recources/styles.css'>"
+                "<link rel='stylesheet' type='text/css' href='qrc:///qsw/resources/styles.css'>"
                 "</head>");
 
     html.append(QString("<body>"));
@@ -875,11 +875,11 @@ void SWObject::showInfo(const Spell::entry* spellInfo, quint8 num)
 
     buffer[1].setBuffer(&byteArray[1]);
     buffer[1].open(QIODevice::WriteOnly);
-    QImage(":/SpellWork/Recources/border.png").save(&buffer[1], "PNG");
+    QImage(":/qsw/resources/border.png").save(&buffer[1], "PNG");
 
     buffer[2].setBuffer(&byteArray[2]);
     buffer[2].open(QIODevice::WriteOnly);
-    QImage(":/SpellWork/Recources/borderHover.png").save(&buffer[2], "PNG");
+    QImage(":/qsw/resources/borderHover.png").save(&buffer[2], "PNG");
 
     html.append(QString("<div class='b-tooltip_icon'>"
 	                    "<style>"
@@ -1025,7 +1025,7 @@ void SWObject::showInfo(const Spell::entry* spellInfo, quint8 num)
             .arg(sFormMask.toUpper())
             .arg(containAttributes(spellInfo, TYPE_FORMS_NOT)));
 
-    appendSkillInfo(spellInfo, num);
+    appendSkillInfo(spellInfo);
     html.append(QString("<li>Spell Level = %0, BaseLevel %1, MaxLevel %2, MaxTargetLevel %3</li>")
         .arg(spellInfo->spellLevel)
         .arg(spellInfo->baseLevel)
@@ -1084,7 +1084,7 @@ void SWObject::showInfo(const Spell::entry* spellInfo, quint8 num)
         .arg(spellInfo->mechanic)
         .arg(m_enums->getMechanics()[spellInfo->mechanic]));
 
-    appendRangeInfo(spellInfo, num);
+    appendRangeInfo(spellInfo);
 
     if (spellInfo->speed)
         html.append(QString("<li>Speed: %0</li>")
@@ -1094,7 +1094,7 @@ void SWObject::showInfo(const Spell::entry* spellInfo, quint8 num)
         html.append(QString("<li>Stackable up to %0</li>")
             .arg(spellInfo->stackAmount));
 
-    appendCastTimeInfo(spellInfo, num);
+    appendCastTimeInfo(spellInfo);
 
     if (spellInfo->recoveryTime || spellInfo->categoryRecoveryTime || spellInfo->startRecoveryCategory)
     {
@@ -1107,7 +1107,7 @@ void SWObject::showInfo(const Spell::entry* spellInfo, quint8 num)
             .arg(float(spellInfo->startRecoveryTime), 0, 'f', 2));
     }
 
-    appendDurationInfo(spellInfo, num);
+    appendDurationInfo(spellInfo);
 
     if (spellInfo->manaCost || spellInfo->manaCostPercentage)
     {
@@ -1166,7 +1166,7 @@ void SWObject::showInfo(const Spell::entry* spellInfo, quint8 num)
             .arg(spellInfo->procChance)
             .arg(spellInfo->procCharges));
 
-        appendProcInfo(spellInfo, num);
+        appendProcInfo(spellInfo);
     }
     else
     {
@@ -1177,7 +1177,7 @@ void SWObject::showInfo(const Spell::entry* spellInfo, quint8 num)
 
     html.append("</ul></div></div>");
 
-    appendSpellEffectInfo(spellInfo, num);
+    appendSpellEffectInfo(spellInfo);
 
     html.append("</body></html>");
 
@@ -1188,7 +1188,7 @@ void SWObject::showInfo(const Spell::entry* spellInfo, quint8 num)
     browser->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
 }
 
-void SWObject::appendRangeInfo(Spell::entry const* spellInfo, quint8 num)
+void SWObject::appendRangeInfo(Spell::entry const* spellInfo)
 {
     if (const SpellRange::entry* range = SpellRange::getRecord(spellInfo->rangeIndex, true))
     {
@@ -1202,7 +1202,7 @@ void SWObject::appendRangeInfo(Spell::entry const* spellInfo, quint8 num)
     }
 }
 
-void SWObject::appendProcInfo(Spell::entry const* spellInfo, quint8 num)
+void SWObject::appendProcInfo(Spell::entry const* spellInfo)
 {
     quint8 i = 0;
     quint64 proc = spellInfo->procFlags;
@@ -1218,7 +1218,7 @@ void SWObject::appendProcInfo(Spell::entry const* spellInfo, quint8 num)
     html.append("</ul>");
 }
 
-void SWObject::appendSpellEffectInfo(Spell::entry const* spellInfo, quint8 num)
+void SWObject::appendSpellEffectInfo(Spell::entry const* spellInfo)
 {
     html.append("<div class='b-box-title'>Effects</div>"
                 "<div class='b-box-body'>"
@@ -1281,11 +1281,11 @@ void SWObject::appendSpellEffectInfo(Spell::entry const* spellInfo, quint8 num)
                 .arg(m_enums->getTargets()[spellInfo->effectImplicitTargetA[eff]])
                 .arg(m_enums->getTargets()[spellInfo->effectImplicitTargetB[eff]]));
 
-            appendAuraInfo(spellInfo, eff, num);
+            appendAuraInfo(spellInfo, eff);
 
-            appendRadiusInfo(spellInfo, eff, num);
+            appendRadiusInfo(spellInfo, eff);
 
-            appendTriggerInfo(spellInfo, eff, num);
+            appendTriggerInfo(spellInfo, eff);
 
             if (spellInfo->effectChainTarget[eff] != 0)
                 html.append(QString("<li>EffectChainTarget = %0</li>").arg(spellInfo->effectChainTarget[eff]));
@@ -1350,7 +1350,7 @@ void SWObject::appendSpellEffectInfo(Spell::entry const* spellInfo, quint8 num)
     html.append("</div></div>");
 }
 
-void SWObject::appendTriggerInfo(Spell::entry const* spellInfo, quint8 index, quint8 num)
+void SWObject::appendTriggerInfo(Spell::entry const* spellInfo, quint8 index)
 {
     quint32 trigger = spellInfo->effectTriggerSpell[index];
     if (trigger != 0)
@@ -1383,7 +1383,7 @@ void SWObject::appendTriggerInfo(Spell::entry const* spellInfo, quint8 index, qu
                 {
                     html.append(QString("<li>Charges - %0</li>").arg(triggerSpell->procCharges));
                     html.append("<hr style='margin: 0 25px;'>");
-                    appendProcInfo(triggerSpell, num);
+                    appendProcInfo(triggerSpell);
                 }
 
                 html.append("</ul>");
@@ -1395,7 +1395,7 @@ void SWObject::appendTriggerInfo(Spell::entry const* spellInfo, quint8 index, qu
     }
 }
 
-void SWObject::appendRadiusInfo(Spell::entry const* spellInfo, quint8 index, quint8 num)
+void SWObject::appendRadiusInfo(Spell::entry const* spellInfo, quint8 index)
 {
     quint16 rIndex = spellInfo->effectRadiusIndex[index];
     if (rIndex != 0)
@@ -1411,7 +1411,7 @@ void SWObject::appendRadiusInfo(Spell::entry const* spellInfo, quint8 index, qui
     }
 }
 
-void SWObject::appendAuraInfo(Spell::entry const* spellInfo, quint8 index, quint8 num)
+void SWObject::appendAuraInfo(Spell::entry const* spellInfo, quint8 index)
 {
     QString sAura(m_enums->getSpellAuras()[spellInfo->effectApplyAuraName[index]]);
     quint32 misc = spellInfo->effectMiscValue[index];
@@ -1455,7 +1455,7 @@ void SWObject::appendAuraInfo(Spell::entry const* spellInfo, quint8 index, quint
     html.append(_Result + "</li>");
 }
 
-QString SWObject::containAttributes(Spell::entry const* spellInfo, MaskType type, quint8 index)
+QString SWObject::containAttributes(Spell::entry const* spellInfo, MaskType type)
 {
     QString str("");
     switch (type)
@@ -1687,7 +1687,7 @@ QString SWObject::containAttributes(Spell::entry const* spellInfo, MaskType type
     return str;
 }
 
-void SWObject::appendSkillInfo(Spell::entry const* spellInfo, quint8 num)
+void SWObject::appendSkillInfo(Spell::entry const* spellInfo)
 {
     for (quint32 i = 0; i < SkillLineAbility::getHeader()->recordCount; ++i)
     {
@@ -1718,7 +1718,7 @@ void SWObject::appendSkillInfo(Spell::entry const* spellInfo, quint8 num)
     }
 }
 
-void SWObject::appendCastTimeInfo(Spell::entry const* spellInfo, quint8 num)
+void SWObject::appendCastTimeInfo(Spell::entry const* spellInfo)
 {
     if (const SpellCastTimes::entry* castInfo = SpellCastTimes::getRecord(spellInfo->castingTimeIndex, true))
     {
@@ -1728,7 +1728,7 @@ void SWObject::appendCastTimeInfo(Spell::entry const* spellInfo, quint8 num)
     }
 }
 
-void SWObject::appendDurationInfo(Spell::entry const* spellInfo, quint8 num)
+void SWObject::appendDurationInfo(Spell::entry const* spellInfo)
 {
     if (const SpellDuration::entry* durationInfo = SpellDuration::getRecord(spellInfo->durationIndex, true))
     {

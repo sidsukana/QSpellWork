@@ -1,4 +1,4 @@
-QSW - is a SpellWork project application written on C++ language with using Qt4 GUI framework.
+QSW - is a SpellWork project application written on C++ language with using Qt5 GUI framework.
 
 Thanks to:
     Chestr aka DiSlord - for the idea and released source of original SpellWork.

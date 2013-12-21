@@ -48,12 +48,12 @@ MainForm::MainForm(QWidget* parent)
     mainToolBar->addSeparator();
     mainToolBar->addWidget(m_modeButton);
     mainToolBar->addSeparator();
-    m_actionRegExp = mainToolBar->addAction(QIcon(":/SpellWork/Recources/regExp.png"), "<font color=red>Off</font>");
+    m_actionRegExp = mainToolBar->addAction(QIcon(":/qsw/resources/regExp.png"), "<font color=red>Off</font>");
     m_actionRegExp->setCheckable(true);
     mainToolBar->addSeparator();
-    m_actionAbout = mainToolBar->addAction(QIcon(":/SpellWork/Recources/about.png"), "About");
+    m_actionAbout = mainToolBar->addAction(QIcon(":/qsw/resources/about.png"), "About");
     mainToolBar->addSeparator();
-    m_actionSettings = mainToolBar->addAction(QIcon(":/SpellWork/Recources/about.png"), "Settings");
+    m_actionSettings = mainToolBar->addAction(QIcon(":/qsw/resources/about.png"), "Settings");
 
     webView1->pageAction(QWebPage::Copy)->setShortcut(QKeySequence::Copy);
     webView2->pageAction(QWebPage::Copy)->setShortcut(QKeySequence::Copy);
@@ -146,7 +146,7 @@ void MainForm::slotAdvancedFilter()
     }
 }
 
-void MainForm::resizeEvent(QResizeEvent* event)
+void MainForm::resizeEvent(QResizeEvent* /* event */)
 {
     m_advancedFilterWidget->setGeometry(QRect(webView1->x(), webView1->y(), adFilterButton->isChecked() ? 280 : 0, webView1->height()));
 }
@@ -226,8 +226,8 @@ void MainForm::initializeCompleter()
 
 void MainForm::createModeButton()
 {
-    QAction* actionShow = new QAction(QIcon(":/SpellWork/Recources/show.png"), "Show", this);
-    QAction* actionCompare = new QAction(QIcon(":/SpellWork/Recources/compare.png"), "Compare", this);
+    QAction* actionShow = new QAction(QIcon(":/qsw/resources/show.png"), "Show", this);
+    QAction* actionCompare = new QAction(QIcon(":/qsw/resources/compare.png"), "Compare", this);
 
     connect(actionShow, SIGNAL(triggered()), this, SLOT(slotModeShow()));
     connect(actionCompare, SIGNAL(triggered()), this, SLOT(slotModeCompare()));
@@ -384,7 +384,7 @@ void MainForm::slotRegExp()
     if (isRegExp())
     {
         m_actionRegExp->setChecked(true);
-        m_actionRegExp->setIcon(QIcon(":/SpellWork/Recources/regExp.png"));
+        m_actionRegExp->setIcon(QIcon(":/qsw/resources/regExp.png"));
         m_actionRegExp->setText("<font color=green>On</font>");
 
         WovWidget* wov = new WovWidget();
@@ -393,7 +393,7 @@ void MainForm::slotRegExp()
     else
     {
         m_actionRegExp->setChecked(false);
-        m_actionRegExp->setIcon(QIcon(":/SpellWork/Recources/regExp.png"));
+        m_actionRegExp->setIcon(QIcon(":/qsw/resources/regExp.png"));
         m_actionRegExp->setText("<font color=red>Off</font>");
     }
 

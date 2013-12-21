@@ -3,7 +3,6 @@
 
 #include <QSettings>
 #include <QFutureWatcher>
-#include <QTextBrowser>
 #include <QMainWindow>
 #include <QToolButton>
 #include <QIcon>

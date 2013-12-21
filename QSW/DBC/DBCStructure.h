@@ -2,6 +2,7 @@
 #define DBCSTRUCTURE_H_
 
 #include <QMetaType>
+#include <QObject>
 
 #include "dbc/DBC.h"
 
@@ -65,7 +66,7 @@ namespace SkillLineAbility
 
 namespace Spell
 {
-    struct meta;
+    class meta;
     struct entry
     {
         quint32    id;                                              // 0 normally counted from 0 field (but some tools start counting from 1, check this before tool use for data view!)

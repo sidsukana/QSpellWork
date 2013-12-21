@@ -109,7 +109,7 @@ void ParticleEmitter::update(quint32 animation, quint32 time, float timeDelta, Q
 
         if (m_emitterType == 2) {
             if (horizontalRange == 0)
-                horizontalRange = M_PI;
+                horizontalRange = float(M_PI);
 
             QMatrix4x4 m = getParticleMatrix(verticalRange * 2, horizontalRange * 2, length, width);
 

@@ -1,8 +1,8 @@
 #include <QDir>
 
 #include "BLP.h"
-#include "mpq/MPQ.h"
-#include "squish/include/squish.h"
+#include "mpq.h"
+#include "squish.h"
 #include "Defines.h"
 
 QImage BLP::getImage(const QString &fileName)

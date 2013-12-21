@@ -10,7 +10,7 @@ bool QSW::checkDir(const QString &dir)
     if (dir.isEmpty())
     {
         QMessageBox messageBox(QMessageBox::Warning, "Warning!", "Please set game directory!");
-        messageBox.setWindowIcon(QIcon(":/SpellWork/Recources/mangos.ico"));
+        messageBox.setWindowIcon(QIcon(":/qsw/resources/mangos.ico"));
         messageBox.exec();
         return false;
     }
@@ -50,7 +50,7 @@ bool QSW::checkDir(const QString &dir)
         }
         message.append("\n not found!");
         QMessageBox messageBox(QMessageBox::Warning, "Warning!", message);
-        messageBox.setWindowIcon(QIcon(":/SpellWork/Recources/mangos.ico"));
+        messageBox.setWindowIcon(QIcon(":/qsw/resources/mangos.ico"));
         messageBox.exec();
         return false;
     }

@@ -1,4 +1,4 @@
-#include <QApplication>
+#include <QGuiApplication>
 #include <QDesktopWidget>
 #include <QDir>
 #include <QMessageBox>
@@ -6,11 +6,11 @@
 #include "MainForm.h"
 #include "SettingsForm.h"
 #include "Defines.h"
-#include "mpq/MPQ.h"
+#include "mpq.h"
 
 int main(int argc, char *argv[])
 {
-    QApplication app(argc, argv);
+    QGuiApplication app(argc, argv);
 
     MPQ::gameDir() = QDir::fromNativeSeparators(QSW::settings().value("Directories/WoW1", "").toString());
 

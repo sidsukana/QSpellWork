@@ -38,9 +38,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GeneratedFiles\qrc_SpellWork.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_SWModels.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
@@ -58,9 +55,6 @@
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Template\moc_WovWidget.cpp">
       <Filter>Generated Files\Template</Filter>
-    </ClCompile>
-    <ClCompile Include="blp\BLP.cpp">
-      <Filter>blp</Filter>
     </ClCompile>
     <ClCompile Include="dbc\DBCStructure.cpp">
       <Filter>dbc</Filter>
@@ -133,6 +127,12 @@
     <ClCompile Include="GeneratedFiles\Template\moc_DBCStructure.cpp">
       <Filter>Generated Files\Template</Filter>
     </ClCompile>
+    <ClCompile Include="blp\blp.cpp">
+      <Filter>blp</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\qrc_qsw.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dbc\DBC.h">
@@ -140,9 +140,6 @@
     </ClInclude>
     <ClInclude Include="SWEnums.h" />
     <ClInclude Include="Alphanum.h" />
-    <ClInclude Include="blp\BLP.h">
-      <Filter>blp</Filter>
-    </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_advancedFilter.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
@@ -156,16 +153,11 @@
     <ClInclude Include="GeneratedFiles\ui_main.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
+    <ClInclude Include="blp\blp.h">
+      <Filter>blp</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Icon.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="SpellWork.qrc">
-      <Filter>Resource Files</Filter>
-    </CustomBuild>
     <CustomBuild Include="dbc\DBCStructure.h">
       <Filter>dbc</Filter>
     </CustomBuild>
@@ -189,5 +181,39 @@
     <CustomBuild Include="ScriptEdit.h" />
     <CustomBuild Include="SettingsForm.h" />
     <CustomBuild Include="SWObject.h" />
+    <CustomBuild Include="qsw.qrc">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\styles.css">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resources\about.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resources\compare.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resources\show.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resources\regExp.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resources\mangos.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resources\border.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resources\borderHover.png">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="icon.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

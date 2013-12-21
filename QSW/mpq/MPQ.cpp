@@ -1,6 +1,7 @@
 #include <QHash>
 
-#include "MPQ.h"
+#include "StormLib.h"
+#include "mpq.h"
 
 QString & MPQ::gameDir()
 {

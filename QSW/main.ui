@@ -23,8 +23,8 @@
    <string>QSW - Qt SpellWork for 1.12.x</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="SpellWork.qrc">
-    <normaloff>:/SpellWork/Recources/mangos.ico</normaloff>:/SpellWork/Recources/mangos.ico</iconset>
+   <iconset resource="qsw.qrc">
+    <normaloff>:/qsw/resources/mangos.ico</normaloff>:/qsw/resources/mangos.ico</iconset>
   </property>
   <property name="documentMode">
    <bool>false</bool>
@@ -738,7 +738,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="SpellWork.qrc"/>
+  <include location="qsw.qrc"/>
  </resources>
  <connections/>
 </ui>

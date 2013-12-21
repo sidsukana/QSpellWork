@@ -20,11 +20,11 @@ void SWEnums::loadEnums()
     xmlFile.close();
 
     QDomNodeList enumNodes = m_xmlData.firstChild().childNodes();
-    for (quint32 i = 0; i < enumNodes.count(); i++)
+    for (qint32 i = 0; i < enumNodes.count(); ++i)
     {
         QDomNodeList valuesNodes = enumNodes.item(i).toElement().childNodes();
         Enumerator enumerator;
-        for (quint32 j = 0; j < valuesNodes.count(); j++)
+        for (qint32 j = 0; j < valuesNodes.count(); ++j)
         {
             QDomElement valueElement = valuesNodes.item(j).toElement();
             if (valueElement.attribute("key").contains("0x"))

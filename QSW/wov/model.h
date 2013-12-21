@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-#include "global.h"
+#include "wov_global.h"
 #include "mvp.h"
 
 class QGLShaderProgram;

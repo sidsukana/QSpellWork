@@ -5,8 +5,8 @@
 #include <QGroupBox>
 
 #include "WovWidget.h"
-#include "wov/src/modelscene.h"
-#include "wov/src/spellvisual.h"
+#include "wov/modelscene.h"
+#include "wov/spellvisual.h"
 
 WovWidget::WovWidget(QWidget* parent) : QWidget(parent), m_selection(0), m_drag(0),  m_visual(0)
 {
