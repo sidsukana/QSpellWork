@@ -93,7 +93,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>qtmaind.lib;Qt5Widgets.lib;Qt5Scriptd.lib;Qt5Xmld.lib;Qt5Cored.lib;Qt5Concurrentd.lib;Qt5Guid.lib;Qt5WebKitWidgetsd.lib;Qt5OpenGLd.lib;opengl32.lib;glu32.lib;wov.lib;squish.lib;mpq.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>qtmaind.lib;Qt5Widgetsd.lib;Qt5Scriptd.lib;Qt5Xmld.lib;Qt5Cored.lib;Qt5Concurrentd.lib;Qt5Guid.lib;Qt5WebKitWidgetsd.lib;Qt5OpenGLd.lib;opengl32.lib;glu32.lib;wov.lib;squish.lib;mpq.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;.\blp\squish\$(Configuration);$(SolutionDir)$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
