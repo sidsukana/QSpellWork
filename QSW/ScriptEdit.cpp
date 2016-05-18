@@ -154,8 +154,8 @@ QAbstractItemModel* ScriptEdit::setupModel()
     for (qint32 i = 0; i < methodCount; ++i)
     {
         QString methodName = spell.metaObject()->method(i).methodSignature();
-        if (methodName.contains("(quint8)"))
-            fields << methodName.replace("(quint8)", "(index)");
+        if (methodName.contains("(uchar)"))
+            fields << methodName.replace("(uchar)", "(index)");
     }
 
     return new QStringListModel(fields.toList(), m_completer);
