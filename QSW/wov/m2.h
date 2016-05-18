@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QMatrix4x4>
 #include <QTimer>
+#include <QOpenGLFunctions_2_0>
 
 #include "m2structures.h"
 #include "texture.h"
@@ -13,7 +14,7 @@
 #include "particleemitter.h"
 #include "mvp.h"
 
-class M2 : public QObject
+class M2 : public QObject, public QOpenGLFunctions_2_0
 {
     Q_OBJECT
     Q_PROPERTY(quint32 animation READ animation WRITE setAnimation)
@@ -23,8 +24,8 @@ public:
     explicit M2(const QString &fileName);
 
     void initialize();
-    void render(QGLShaderProgram *program, MVP mvp);
-    void renderParticles(QGLShaderProgram *program, MVP viewProjection);
+    void render(QOpenGLShaderProgram *program, MVP mvp);
+    void renderParticles(QOpenGLShaderProgram *program, MVP viewProjection);
     void update(int timeDelta, QMatrix4x4 model);
 
     void setAnimation(qint32 animation, bool forceOneshot = false);
@@ -45,16 +46,16 @@ public:
     }
 
 private:
-    void bindBuffers(QGLShaderProgram *program);
-    void releaseBuffers(QGLShaderProgram *program);
+    void bindBuffers(QOpenGLShaderProgram *program);
+    void releaseBuffers(QOpenGLShaderProgram *program);
 
     void switchAnimation();
 
     void updateEmitters(int timeDelta, QMatrix4x4 model);
     void updateAttachments(int timeDelta, QMatrix4x4 model);
 
-    void renderAttachments(QGLShaderProgram *program, MVP mvp);
-    void renderAttachmentsParticles(QGLShaderProgram *program, MVP viewProjection);
+    void renderAttachments(QOpenGLShaderProgram *program, MVP mvp);
+    void renderAttachmentsParticles(QOpenGLShaderProgram *program, MVP viewProjection);
 
     QByteArray m_data;
 
@@ -104,8 +105,8 @@ private:
     qint32 m_animationState;
     qint32 m_animationOneshot;
 
-    QGLBuffer *m_vertexBuffer;
-    QGLBuffer *m_indexBuffer;
+    QOpenGLBuffer *m_vertexBuffer;
+    QOpenGLBuffer *m_indexBuffer;
 };
 
 #endif

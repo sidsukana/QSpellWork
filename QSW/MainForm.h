@@ -6,8 +6,6 @@
 #include <QMainWindow>
 #include <QToolButton>
 #include <QIcon>
-#include <QWebView>
-#include <QWebFrame>
 
 #include "SWEnums.h"
 #include "SWObject.h"
@@ -62,8 +60,9 @@ class MainForm : public QMainWindow, public Ui::main
         void setRegExp(bool enable) { m_actionRegExp->setChecked(enable); }
         SWEnums* getEnums() const { return m_enums; }
         QString getFilterText() const { return m_advancedFilterWidget->textEdit->toPlainText(); }
+        void setFilterText(QString str) { m_advancedFilterWidget->textEdit->setText(str); }
 
-        QWebView* getBrowser(quint8 num) const
+        QWebEngineView* getBrowser(quint8 num) const
         {
             switch (num)
             {
@@ -89,6 +88,7 @@ class MainForm : public QMainWindow, public Ui::main
         void slotSearchFromList(const QModelIndex &index);
         void slotLinkClicked(const QUrl &url);
         void slotRegExp();
+        void slotWov();
         void slotSettings();
         void slotModeShow();
         void slotModeCompare();
@@ -96,7 +96,6 @@ class MainForm : public QMainWindow, public Ui::main
         void slotNextRow();
 
         bool event(QEvent* ev);
-        void resizeEvent (QResizeEvent* event);
 
     private:
         void loadComboBoxes();
@@ -113,6 +112,7 @@ class MainForm : public QMainWindow, public Ui::main
         QAction* m_actionRegExp;
         QAction* m_actionAbout;
         QAction* m_actionSettings;
+        QAction* m_actionWov;
 
         typedef QList<QEvent*> EventList;
         typedef QFutureWatcher<EventList> SearchResultWatcher;

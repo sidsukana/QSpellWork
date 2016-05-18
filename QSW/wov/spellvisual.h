@@ -3,11 +3,10 @@
 
 #include <QObject>
 
-#include "wov_global.h"
-#include "dbc.h"
+#include "wovdbc.h"
 #include "model.h"
 
-class WOV_EXPORT SpellVisual : public QObject
+class SpellVisual : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(quint32 visual READ visual WRITE setVisual)
@@ -40,7 +39,7 @@ public slots:
     void cancel();
 
 private:
-    SpellVisualDBC::entry m_visual;
+    const SpellVisualDBC::entry* m_visual;
 
     quint32 m_castingTime;
     quint32 m_duration;

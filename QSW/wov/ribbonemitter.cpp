@@ -66,14 +66,16 @@ void RibbonEmitter::update(quint32 animation, quint32 time, QMatrix4x4 boneMatri
 
 void RibbonEmitter::initialize()
 {
-    m_vertexBuffer = new QGLBuffer(QGLBuffer::VertexBuffer);
+    initializeOpenGLFunctions();
+
+    m_vertexBuffer = new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
     m_vertexBuffer->create();
-    m_vertexBuffer->setUsagePattern(QGLBuffer::StreamDraw);
+    m_vertexBuffer->setUsagePattern(QOpenGLBuffer::StreamDraw);
 
     m_initialized = true;
 }
 
-void RibbonEmitter::render(QGLShaderProgram *program, MVP viewProjection)
+void RibbonEmitter::render(QOpenGLShaderProgram *program, MVP viewProjection)
 {
     if (!m_initialized)
         initialize();

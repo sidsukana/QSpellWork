@@ -120,15 +120,15 @@ QList<QEvent*> SWObject::search()
     }
     else if (getType() == 3)
     {
-        QScriptEngine engine;
+        QJSEngine engine;
 
         EnumHash enums = m_form->getEnums()->getEnums();
 
         for (EnumHash::const_iterator itr = enums.begin(); itr != enums.end(); ++itr)
             for (Enumerator::const_iterator itr2 = itr->begin(); itr2 != itr->end(); ++itr2)
-                engine.globalObject().setProperty(itr2.value(), qsreal(itr2.key()));
+                engine.globalObject().setProperty(itr2.value(), qreal(itr2.key()));
 
-        QScriptValue script = engine.evaluate("(function() { return (" + m_form->getFilterText() + "); })");
+        QJSValue script = engine.evaluate("(function() { return (" + m_form->getFilterText() + "); })");
 
         for (quint32 i = 0; i < Spell::getHeader()->recordCount; ++i)
         {
@@ -141,7 +141,7 @@ QList<QEvent*> SWObject::search()
 
             engine.globalObject().setProperty("spell", engine.newQObject(&metaSpell));
 
-            if (script.call(QScriptValue()).toBool())
+            if (script.call(QJSValueList()).toBool())
             {
                 QString sRank(m_spellInfo->rank());
                 QString sFullName(m_spellInfo->name());
@@ -840,7 +840,7 @@ void SWObject::showInfo(const Spell::entry* spellInfo, quint8 num)
     if (!spellInfo)
         return;
 
-    QWebView* browser = m_form->getBrowser(num);
+    QWebEngineView* browser = m_form->getBrowser(num);
     html.clear();
 
     QString sName(spellInfo->name());
@@ -882,7 +882,7 @@ void SWObject::showInfo(const Spell::entry* spellInfo, quint8 num)
     QImage(":/qsw/resources/borderHover.png").save(&buffer[2], "PNG");
 
     html.append(QString("<div class='b-tooltip_icon'>"
-	                    "<style>"
+                        "<style>"
                         "div.icon { width: 68px; height: 68px; background: url(\"data:image/png;base64," + byteArray[0].toBase64() + "\") no-repeat center; }"
                         "div.icon div { background: url(\"data:image/png;base64," + byteArray[1].toBase64() + "\") no-repeat center;}"
                         "div.icon div div:hover { background: url(\"data:image/png;base64," + byteArray[2].toBase64() + "\") no-repeat center; }"
@@ -1185,7 +1185,7 @@ void SWObject::showInfo(const Spell::entry* spellInfo, quint8 num)
     html.replace("><", ">\n<");
 
     browser->setHtml(html, QUrl(QString("http://spellwork/%0").arg(spellInfo->id)));
-    browser->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
+    //browser->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
 }
 
 void SWObject::appendRangeInfo(Spell::entry const* spellInfo)
@@ -1740,154 +1740,176 @@ void SWObject::appendDurationInfo(Spell::entry const* spellInfo)
     }
 }
 
-void SWObject::compare()
+void SWObject::compare(bool ok)
 {
-    QStringList list1 = m_form->webView2->page()->mainFrame()->toHtml().split("\n");
-    QStringList list2 = m_form->webView3->page()->mainFrame()->toHtml().split("\n");
-
-    QString html2;
-    html.clear();
-    html2.clear();
-
-    QRegExp rx("(<[A-Za-z_0-9]*>)+([A-Za-z_0-9-!\"#$%&'()*+,./:;=?@[\\]_`{|}~\\s]*)+(</[A-Za-z_0-9]*>)");
-
-    for (QStringList::iterator itr1 = list1.begin(); itr1 != list1.end(); ++itr1)
+    if (ok && !m_sourceHtml[1].isEmpty() && !m_sourceHtml[2].isEmpty())
     {
-        bool yes = false;
+        QStringList list1 = m_sourceHtml[1].split("\n");
+        QStringList list2 = m_sourceHtml[2].split("\n");
 
-        for (QStringList::iterator itr2 = list2.begin(); itr2 != list2.end(); ++itr2)
-        {
-            if ((*itr1) == (*itr2))
-            {
-                yes = true;
-                break;
-            }
-        }
+        QString html1, html2;
 
-        if (yes)
-        {
-            if (rx.indexIn((*itr1)) != -1)
-            {
-                // QString r1 = rx.cap(0); // Full
-                QString r2 = rx.cap(1); // <xxx>
-                QString r3 = rx.cap(2); // <>xxx</>
-                QString r4 = rx.cap(3); // </xxx>
-
-                if (r2 == "<b>")
-                    html.append(QString("<span style='background-color: cyan'>%0</span>").arg((*itr1)));
-                else if (r2 == "<style>")
-                {
-                    html.append((*itr1));
-                }
-                else
-                {
-                    r3 = QString("<span style='background-color: cyan'>%0</span>").arg(r3);
-                    r3.prepend(r2);
-                    r3.append(r4);
-                    html.append(r3);
-                }
-            }
-            else
-                html.append((*itr1));
-        }
-        else
-        {
-            if (rx.indexIn((*itr1)) != -1)
-            {
-                // QString r1 = rx.cap(0); // Full
-                QString r2 = rx.cap(1); // <xxx>
-                QString r3 = rx.cap(2); // <>xxx</>
-                QString r4 = rx.cap(3); // </xxx>
-
-                if (r2 == "<b>")
-                    html.append(QString("<span style='background-color: salmon'>%0</span>").arg((*itr1)));
-                else if (r2 == "<style>")
-                {
-                    html.append((*itr1));
-                }
-                else
-                {
-                    r3 = QString("<span style='background-color: salmon'>%0</span>").arg(r3);
-                    r3.prepend(r2);
-                    r3.append(r4);
-                    html.append(r3);
-                }
-            }
-            else
-                html.append((*itr1));
-        }
-    }
-
-    // second
-    for (QStringList::iterator itr2 = list2.begin(); itr2 != list2.end(); ++itr2)
-    {
-        bool yes = false;
+        QRegExp rx("(<[A-Za-z_0-9]*>)+([A-Za-z_0-9-!\"#$%&'()*+,./:;=?@[\\]_`{|}~\\s]*)+(</[A-Za-z_0-9]*>)");
 
         for (QStringList::iterator itr1 = list1.begin(); itr1 != list1.end(); ++itr1)
         {
-            if ((*itr2) == (*itr1))
+            bool yes = false;
+
+            for (QStringList::iterator itr2 = list2.begin(); itr2 != list2.end(); ++itr2)
             {
-                yes = true;
-                break;
+                if ((*itr1) == (*itr2))
+                {
+                    yes = true;
+                    break;
+                }
+            }
+
+            if (yes)
+            {
+                if (rx.indexIn((*itr1)) != -1)
+                {
+                    // QString r1 = rx.cap(0); // Full
+                    QString r2 = rx.cap(1); // <xxx>
+                    QString r3 = rx.cap(2); // <>xxx</>
+                    QString r4 = rx.cap(3); // </xxx>
+
+                    if (r2 == "<b>")
+                        html1.append(QString("<span style='background-color: cyan'>%0</span>").arg((*itr1)));
+                    else if (r2 == "<style>")
+                    {
+                        html1.append((*itr1));
+                    }
+                    else
+                    {
+                        r3 = QString("<span style='background-color: cyan'>%0</span>").arg(r3);
+                        r3.prepend(r2);
+                        r3.append(r4);
+                        html1.append(r3);
+                    }
+                }
+                else
+                    html1.append((*itr1));
+            }
+            else
+            {
+                if (rx.indexIn((*itr1)) != -1)
+                {
+                    // QString r1 = rx.cap(0); // Full
+                    QString r2 = rx.cap(1); // <xxx>
+                    QString r3 = rx.cap(2); // <>xxx</>
+                    QString r4 = rx.cap(3); // </xxx>
+
+                    if (r2 == "<b>")
+                        html1.append(QString("<span style='background-color: salmon'>%0</span>").arg((*itr1)));
+                    else if (r2 == "<style>")
+                    {
+                        html1.append((*itr1));
+                    }
+                    else
+                    {
+                        r3 = QString("<span style='background-color: salmon'>%0</span>").arg(r3);
+                        r3.prepend(r2);
+                        r3.append(r4);
+                        html1.append(r3);
+                    }
+                }
+                else
+                    html1.append((*itr1));
             }
         }
 
-        if (yes)
+        // second
+        for (QStringList::iterator itr2 = list2.begin(); itr2 != list2.end(); ++itr2)
         {
-            if (rx.indexIn((*itr2)) != -1)
-            {
-                // QString r1 = rx.cap(0); // Full
-                QString r2 = rx.cap(1); // <xxx>
-                QString r3 = rx.cap(2); // <>xxx</>
-                QString r4 = rx.cap(3); // </xxx>
+            bool yes = false;
 
-                if (r2 == "<b>")
-                    html2.append(QString("<span style='background-color: cyan'>%0</span>").arg((*itr2)));
-                else if (r2 == "<style>")
+            for (QStringList::iterator itr1 = list1.begin(); itr1 != list1.end(); ++itr1)
+            {
+                if ((*itr2) == (*itr1))
                 {
-                    html2.append((*itr2));
-                }
-                else
-                {
-                    r3 = QString("<span style='background-color: cyan'>%0</span>").arg(r3);
-                    r3.prepend(r2);
-                    r3.append(r4);
-                    html2.append(r3);
+                    yes = true;
+                    break;
                 }
             }
+
+            if (yes)
+            {
+                if (rx.indexIn((*itr2)) != -1)
+                {
+                    // QString r1 = rx.cap(0); // Full
+                    QString r2 = rx.cap(1); // <xxx>
+                    QString r3 = rx.cap(2); // <>xxx</>
+                    QString r4 = rx.cap(3); // </xxx>
+
+                    if (r2 == "<b>")
+                        html2.append(QString("<span style='background-color: cyan'>%0</span>").arg((*itr2)));
+                    else if (r2 == "<style>")
+                    {
+                        html2.append((*itr2));
+                    }
+                    else
+                    {
+                        r3 = QString("<span style='background-color: cyan'>%0</span>").arg(r3);
+                        r3.prepend(r2);
+                        r3.append(r4);
+                        html2.append(r3);
+                    }
+                }
+                else
+                    html2.append((*itr2));
+            }
             else
-                html2.append((*itr2));
+            {
+                if (rx.indexIn((*itr2)) != -1)
+                {
+                    // QString r1 = rx.cap(0); // Full
+                    QString r2 = rx.cap(1); // <xxx>
+                    QString r3 = rx.cap(2); // <>xxx</>
+                    QString r4 = rx.cap(3); // </xxx>
+
+                    if (r2 == "<b>")
+                        html2.append(QString("<span style='background-color: salmon'>%0</span>").arg((*itr2)));
+                    else if (r2 == "<style>")
+                    {
+                        html2.append((*itr2));
+                    }
+                    else
+                    {
+                        r3 = QString("<span style='background-color: salmon'>%0</span>").arg(r3);
+                        r3.prepend(r2);
+                        r3.append(r4);
+                        html2.append(r3);
+                    }
+                }
+                else
+                    html2.append((*itr2));
+            }
         }
-        else
-        {
-            if (rx.indexIn((*itr2)) != -1)
-            {
-                // QString r1 = rx.cap(0); // Full
-                QString r2 = rx.cap(1); // <xxx>
-                QString r3 = rx.cap(2); // <>xxx</>
-                QString r4 = rx.cap(3); // </xxx>
 
-                if (r2 == "<b>")
-                    html2.append(QString("<span style='background-color: salmon'>%0</span>").arg((*itr2)));
-                else if (r2 == "<style>")
-                {
-                    html2.append((*itr2));
-                }
-                else
-                {
-                    r3 = QString("<span style='background-color: salmon'>%0</span>").arg(r3);
-                    r3.prepend(r2);
-                    r3.append(r4);
-                    html2.append(r3);
-                }
-            }
-            else
-                html2.append((*itr2));
+        m_form->webView2->setHtml(html1, m_form->webView2->url());
+        m_form->webView3->setHtml(html2, m_form->webView3->url());
+        m_sourceHtml[1].clear();
+        m_sourceHtml[2].clear();
+    }
+    else
+    {
+        if (m_sourceHtml[1].isEmpty())
+        {
+            m_form->webView2->page()->toHtml([this](const QString &result)
+            {
+                this->m_sourceHtml[1] = result;
+                this->compare(true);
+            });
+        }
+        if (m_sourceHtml[2].isEmpty())
+        {
+            m_form->webView3->page()->toHtml([this](const QString &result)
+            {
+                this->m_sourceHtml[2] = result;
+                this->compare(true);
+            });
         }
     }
-
-    m_form->webView2->setHtml(html, m_form->webView2->url());
-    m_form->webView3->setHtml(html2, m_form->webView3->url());
 }
 
 quint64 Converter::getULongLong(QString value)

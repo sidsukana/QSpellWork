@@ -4,7 +4,7 @@
 
 SpellVisual::SpellVisual() : m_caster(0), m_target(0)
 {
-    m_visual.id = 0;
+    m_visual = nullptr;
 
     m_castingTime = 2000;
     m_duration = 5000;
@@ -13,7 +13,7 @@ SpellVisual::SpellVisual() : m_caster(0), m_target(0)
 
 quint32 SpellVisual::visual() const
 {
-    return m_visual.id;
+    return m_visual ? m_visual->id : 0;
 }
 
 quint32 SpellVisual::castingTime() const
@@ -43,10 +43,7 @@ Model * SpellVisual::target()
 
 void SpellVisual::setVisual(quint32 visual)
 {
-    m_visual = SpellVisualDBC::getEntry(visual);
-
-    if (m_visual.id != visual)
-        m_visual.id = 0;
+    m_visual = SpellVisualDBC::getRecord(visual, true);
 }
 
 void SpellVisual::setCastingTime(quint32 castingTime)
@@ -76,33 +73,33 @@ void SpellVisual::setTarget(Model *target)
 
 void SpellVisual::start()
 {
-    if (!visual())
+    if (!m_visual)
         return;
 
     if (caster())
-        caster()->addSpellVisualKit(m_visual.precast);
+        caster()->addSpellVisualKit(m_visual->precast);
 
     QTimer::singleShot(castingTime(), this, SLOT(cast()));
 }
 
 void SpellVisual::cast()
 {
-    if (!visual())
+    if (!m_visual)
         return;
 
     if (caster()) {
-        caster()->removeSpellVisualKit(m_visual.precast);
-        caster()->addSpellVisualKit(m_visual.cast, true);
+        caster()->removeSpellVisualKit(m_visual->precast);
+        caster()->addSpellVisualKit(m_visual->cast, true);
 
         if (duration() && channeled())
-            caster()->addSpellVisualKit(m_visual.channel);
+            caster()->addSpellVisualKit(m_visual->channel);
     }
 
     if (target()) {
-        target()->addSpellVisualKit(m_visual.impact, true);
+        target()->addSpellVisualKit(m_visual->impact, true);
 
         if (duration())
-            target()->addSpellVisualKit(m_visual.state);
+            target()->addSpellVisualKit(m_visual->state);
     }
 
     if (duration())
@@ -111,14 +108,14 @@ void SpellVisual::cast()
 
 void SpellVisual::cancel()
 {
-    if (!visual())
+    if (!m_visual)
         return;
 
     if (caster()) {
-        caster()->removeSpellVisualKit(m_visual.precast);
-        caster()->removeSpellVisualKit(m_visual.channel);
+        caster()->removeSpellVisualKit(m_visual->precast);
+        caster()->removeSpellVisualKit(m_visual->channel);
     }
 
     if (target())
-        target()->removeSpellVisualKit(m_visual.state);
+        target()->removeSpellVisualKit(m_visual->state);
 }

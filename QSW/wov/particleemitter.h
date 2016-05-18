@@ -1,8 +1,9 @@
 #ifndef PARTICLE_EMITTER_H
 #define PARTICLE_EMITTER_H
 
-#include <QGLShaderProgram>
-#include <QGLBuffer>
+#include <QOpenGLShaderProgram>
+#include <QOpenGLBuffer>
+#include <QOpenGLFunctions>
 
 #include "m2structures.h"
 #include "animatedvalue.h"
@@ -49,13 +50,13 @@ struct ParticleVertex
     float m_texcoord[2];
 };
 
-class ParticleEmitter
+class ParticleEmitter : public QOpenGLFunctions
 {
 public:
     ParticleEmitter(const M2ParticleEmitter &emitter, const quint32 *sequences, const QByteArray &data);
 
     void update(quint32 animation, quint32 time, float timeDelta, QMatrix4x4 boneMatrix);
-    void render(QGLShaderProgram *program, MVP viewProjection);
+    void render(QOpenGLShaderProgram *program, MVP viewProjection);
 
     qint16 getBoneId();
     qint16 getTextureId();
@@ -97,8 +98,8 @@ private:
 
     bool m_initialized;
 
-    QGLBuffer *m_vertexBuffer;
-    QGLBuffer *m_indexBuffer;
+    QOpenGLBuffer *m_vertexBuffer;
+    QOpenGLBuffer *m_indexBuffer;
 };
 
 #endif

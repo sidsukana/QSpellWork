@@ -1,64 +1,22 @@
-#ifndef DBC_H
-#define DBC_H
+#ifndef WOV_DBC_H
+#define WOV_DBC_H
 
 #include <QString>
-
-#define DBC_MAGIC "WDBC"
-
-struct DBCHeader
-{
-    char magic[4];
-    quint32 recordCount;
-    quint32 fieldCount;
-    quint32 recordSize;
-    quint32 stringBlockSize;
-};
-
-class DBC
-{
-public:
-    explicit DBC(const QString &fileName);
-
-    template <typename T>
-    T getEntry(quint32 id) const
-    {
-        if (!m_header)
-            return T();
-
-        for (quint32 i = 0; i < m_header->recordCount; i++) {
-            T entry = getRecord<T>(i);
-
-            if (entry.id == id)
-                return entry;
-        }
-
-        return T();
-    }
-
-    const char * getStringBlock() const;
-
-private:
-    template <typename T>
-    T getRecord(quint32 id) const
-    {
-        return *reinterpret_cast<const T *>(m_records + m_header->recordSize * id);
-    }
-
-    QByteArray m_data;
-    const DBCHeader *m_header;
-    const char *m_records;
-    const char *m_strings;
-};
+#include "dbc/DBC.h"
 
 namespace AnimationDataDBC
 {
     struct entry
     {
         quint32 id;
-        const char *name;
+        quint32 nameOffset;
+
+        const QString name() const;
     };
 
-    entry getEntry(quint32 id);
+    const DBCFile& getDbc();
+    const DBCFileHeader* getHeader();
+    const entry* getRecord(quint32 id, bool realId = false);
 }
 
 namespace CameraShakesDBC
@@ -75,7 +33,9 @@ namespace CameraShakesDBC
         float coefficient;
     };
 
-    entry getEntry(quint32 id);
+    const DBCFile& getDbc();
+    const DBCFileHeader* getHeader();
+    const entry* getRecord(quint32 id, bool realId = false);
 }
 
 namespace CreatureDisplayInfoDBC
@@ -88,15 +48,21 @@ namespace CreatureDisplayInfoDBC
         quint32 extra;
         float scale;
         quint32 opacity;
-        const char *skin1;
-        const char *skin2;
-        const char *skin3;
+        quint32 skin1Offset;
+        quint32 skin2Offset;
+        quint32 skin3Offset;
         quint32 unknown1;
         quint32 unknown2;
         quint32 npcSound;
+
+        const QString skin1() const;
+        const QString skin2() const;
+        const QString skin3() const;
     };
 
-    entry getEntry(quint32 id);
+    const DBCFile& getDbc();
+    const DBCFileHeader* getHeader();
+    const entry* getRecord(quint32 id, bool realId = false);
 }
 
 namespace CreatureModelDataDBC
@@ -105,10 +71,14 @@ namespace CreatureModelDataDBC
     {
         quint32 id;
         quint32 flags;
-        const char *model;
+        quint32 modelOffset;
+
+        const QString model() const;
     };
 
-    entry getEntry(quint32 id);
+    const DBCFile& getDbc();
+    const DBCFileHeader* getHeader();
+    const entry* getRecord(quint32 id, bool realId = false);
 }
 
 namespace SpellEffectCameraShakesDBC
@@ -119,7 +89,9 @@ namespace SpellEffectCameraShakesDBC
         quint32 shakes[3];
     };
 
-    entry getEntry(quint32 id);
+    const DBCFile& getDbc();
+    const DBCFileHeader* getHeader();
+    const entry* getRecord(quint32 id, bool realId = false);
 }
 
 namespace SpellVisualDBC
@@ -136,7 +108,9 @@ namespace SpellVisualDBC
         quint32 missile;
     };
 
-    entry getEntry(quint32 id);
+    const DBCFile& getDbc();
+    const DBCFileHeader* getHeader();
+    const entry* getRecord(quint32 id, bool realId = false);
 }
 
 namespace SpellVisualKitDBC
@@ -160,7 +134,9 @@ namespace SpellVisualKitDBC
         quint32 shakes;
     };
 
-    entry getEntry(quint32 id);
+    const DBCFile& getDbc();
+    const DBCFileHeader* getHeader();
+    const entry* getRecord(quint32 id, bool realId = false);
 }
 
 namespace SpellVisualEffectNameDBC
@@ -168,11 +144,16 @@ namespace SpellVisualEffectNameDBC
     struct entry
     {
         quint32 id;
-        const char *name;
-        const char *model;
+        quint32 nameOffset;
+        quint32 modelOffset;
+
+        const QString name() const;
+        const QString model() const;
     };
 
-    entry getEntry(quint32 id);
+    const DBCFile& getDbc();
+    const DBCFileHeader* getHeader();
+    const entry* getRecord(quint32 id, bool realId = false);
 }
 
 #endif

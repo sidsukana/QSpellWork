@@ -3,16 +3,15 @@
 
 #include <QObject>
 
-#include "wov_global.h"
 #include "mvp.h"
 
-class QGLShaderProgram;
+class QOpenGLShaderProgram;
 
 class M2;
 class ModelScene;
 class SpellVisualKit;
 
-class WOV_EXPORT Model : public QObject
+class Model : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(quint32 displayId READ displayId WRITE setDisplayId)
@@ -38,8 +37,8 @@ public:
     void setOrientation(float orientation);
 
     void update(int timeDelta);
-    void render(QGLShaderProgram *program, MVP mvp);
-    void renderParticles(QGLShaderProgram *program, MVP mvp);
+    void render(QOpenGLShaderProgram *program, MVP mvp);
+    void renderParticles(QOpenGLShaderProgram *program, MVP mvp);
 
 private:
     void updateVisualKits();

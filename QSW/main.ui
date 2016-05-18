@@ -62,31 +62,22 @@
       </property>
       <widget class="QWidget" name="page">
        <layout class="QGridLayout" name="gridLayout_4">
-        <property name="margin">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
          <number>0</number>
         </property>
         <property name="spacing">
          <number>6</number>
         </property>
-        <item row="0" column="3" rowspan="3">
-         <widget class="QWebView" name="webView1">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">background-color: rgb(206, 206, 206);</string>
-          </property>
-          <property name="url">
-           <url>
-            <string>about:blank</string>
-           </url>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0" rowspan="3">
+        <item row="0" column="0" rowspan="2">
          <widget class="QWidget" name="widget" native="true">
           <property name="minimumSize">
            <size>
@@ -104,7 +95,16 @@
            <bool>true</bool>
           </property>
           <layout class="QGridLayout" name="gridLayout_5">
-           <property name="margin">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
             <number>0</number>
            </property>
            <property name="spacing">
@@ -272,7 +272,7 @@
                    <bool>false</bool>
                   </property>
                   <property name="currentIndex">
-                   <number>140</number>
+                   <number>159</number>
                   </property>
                   <property name="maxVisibleItems">
                    <number>20</number>
@@ -301,7 +301,7 @@
                    <bool>false</bool>
                   </property>
                   <property name="currentIndex">
-                   <number>140</number>
+                   <number>159</number>
                   </property>
                   <property name="maxVisibleItems">
                    <number>20</number>
@@ -329,7 +329,7 @@
                    <bool>false</bool>
                   </property>
                   <property name="currentIndex">
-                   <number>140</number>
+                   <number>159</number>
                   </property>
                   <property name="maxVisibleItems">
                    <number>20</number>
@@ -354,7 +354,7 @@
                    <bool>false</bool>
                   </property>
                   <property name="currentIndex">
-                   <number>140</number>
+                   <number>159</number>
                   </property>
                   <property name="maxVisibleItems">
                    <number>20</number>
@@ -379,7 +379,7 @@
                    <bool>false</bool>
                   </property>
                   <property name="currentIndex">
-                   <number>140</number>
+                   <number>159</number>
                   </property>
                   <property name="maxVisibleItems">
                    <number>20</number>
@@ -510,7 +510,16 @@
           </layout>
          </widget>
         </item>
+        <item row="0" column="1" rowspan="2">
+         <widget class="QWebEngineView" name="webView1">
+          <property name="layoutDirection">
+           <enum>Qt::LeftToRight</enum>
+          </property>
+         </widget>
+        </item>
        </layout>
+       <zorder>webView1</zorder>
+       <zorder>widget</zorder>
       </widget>
       <widget class="QWidget" name="page_2">
        <property name="sizePolicy">
@@ -520,7 +529,16 @@
         </sizepolicy>
        </property>
        <layout class="QGridLayout" name="gridLayout_9">
-        <property name="margin">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
          <number>0</number>
         </property>
         <item row="0" column="0">
@@ -569,7 +587,16 @@
             <property name="sizeConstraint">
              <enum>QLayout::SetDefaultConstraint</enum>
             </property>
-            <property name="margin">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
              <number>0</number>
             </property>
             <property name="spacing">
@@ -578,24 +605,6 @@
             <item row="0" column="1">
              <widget class="QLineEdit" name="compareSpell_1"/>
             </item>
-            <item row="1" column="0" colspan="2">
-             <widget class="QWebView" name="webView2">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">background-color: rgb(206, 206, 206);</string>
-              </property>
-              <property name="url">
-               <url>
-                <string>about:blank</string>
-               </url>
-              </property>
-             </widget>
-            </item>
             <item row="0" column="0">
              <widget class="QLabel" name="slabel1">
               <property name="text">
@@ -603,28 +612,13 @@
               </property>
              </widget>
             </item>
+            <item row="1" column="0" colspan="2">
+             <widget class="QWebEngineView" name="webView2"/>
+            </item>
            </layout>
           </widget>
           <widget class="QWidget" name="layoutWidget1">
            <layout class="QGridLayout" name="gridLayout_2">
-            <item row="1" column="0" colspan="2">
-             <widget class="QWebView" name="webView3">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">background-color: rgb(206, 206, 206);</string>
-              </property>
-              <property name="url">
-               <url>
-                <string>about:blank</string>
-               </url>
-              </property>
-             </widget>
-            </item>
             <item row="0" column="0">
              <widget class="QLabel" name="slabel2">
               <property name="text">
@@ -634,6 +628,9 @@
             </item>
             <item row="0" column="1">
              <widget class="QLineEdit" name="compareSpell_2"/>
+            </item>
+            <item row="1" column="0" colspan="2">
+             <widget class="QWebEngineView" name="webView3"/>
             </item>
            </layout>
           </widget>
@@ -730,13 +727,6 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <customwidgets>
-  <customwidget>
-   <class>QWebView</class>
-   <extends>QWidget</extends>
-   <header>QtWebKit/QWebView</header>
-  </customwidget>
- </customwidgets>
  <resources>
   <include location="qsw.qrc"/>
  </resources>

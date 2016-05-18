@@ -1,7 +1,7 @@
 #include <QHash>
 
-#include "StormLib.h"
-#include "mpq.h"
+#include "StormLib/StormLib.h"
+#include "MPQ.h"
 
 QString & MPQ::gameDir()
 {
@@ -32,6 +32,7 @@ QByteArray MPQ::readFile(const QString &fileName)
     static QHash<QString, QByteArray> files;
 
     static const QString mpqs[] = {
+		"ruRU/patch-3.MPQ",		// custom ruRU locale by Maus Team
         "patch-2.MPQ",
         "patch.MPQ",
         "dbc.MPQ",
@@ -53,11 +54,10 @@ QByteArray MPQ::readFile(const QString &fileName)
 
         hMPQ = getHandle(path);
 
-        if (hMPQ && SFileHasFile(hMPQ, fileName.toUtf8().constData()))
+		if (hMPQ && SFileHasFile(hMPQ, fileName.toUtf8().constData()))
             break;
         else
             hMPQ = 0;
-
         mpq++;
     }
 

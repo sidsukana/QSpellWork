@@ -23,13 +23,8 @@ MainForm::MainForm(QWidget* parent)
     setupUi(this);
 
     m_advancedFilterWidget = new AdvancedFilterWidget(page);
-    m_advancedFilterWidget->stackUnder(widget);
-    m_advancedFilterWidget->setGeometry(QRect(webView1->x() - 280 , webView1->y(), 280, webView1->height()));
-
-    // WOV widget
-    //WovWidget* wov = new WovWidget();
-    //wov->show();
-    //
+    gridLayout_4->addWidget(m_advancedFilterWidget, 0, 1, 2, 1);
+    m_advancedFilterWidget->hide();
 
     m_enums = new SWEnums();
     m_sw = new SWObject(this);
@@ -51,13 +46,11 @@ MainForm::MainForm(QWidget* parent)
     m_actionRegExp = mainToolBar->addAction(QIcon(":/qsw/resources/regExp.png"), "<font color=red>Off</font>");
     m_actionRegExp->setCheckable(true);
     mainToolBar->addSeparator();
-    m_actionAbout = mainToolBar->addAction(QIcon(":/qsw/resources/about.png"), "About");
+    m_actionSettings = mainToolBar->addAction(QIcon(":/qsw/resources/cog.png"), "Settings");
     mainToolBar->addSeparator();
-    m_actionSettings = mainToolBar->addAction(QIcon(":/qsw/resources/about.png"), "Settings");
-
-    webView1->pageAction(QWebPage::Copy)->setShortcut(QKeySequence::Copy);
-    webView2->pageAction(QWebPage::Copy)->setShortcut(QKeySequence::Copy);
-    webView3->pageAction(QWebPage::Copy)->setShortcut(QKeySequence::Copy);
+    m_actionWov = mainToolBar->addAction(QIcon(":/qsw/resources/wand.png"), "Wov");
+    mainToolBar->addSeparator();
+    m_actionAbout = mainToolBar->addAction(QIcon(":/qsw/resources/information.png"), "About");
 
     QAction* selectedAction = new QAction(this);
     selectedAction->setShortcut(QKeySequence::MoveToPreviousLine);
@@ -87,6 +80,9 @@ MainForm::MainForm(QWidget* parent)
     // Settings form connection
     connect(m_actionSettings, SIGNAL(triggered()), this, SLOT(slotSettings()));
 
+    // Wov form connection
+    connect(m_actionWov, SIGNAL(triggered()), this, SLOT(slotWov()));
+
     // Filter search connections
     connect(comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(slotFilterSearch()));
     connect(comboBox_2, SIGNAL(currentIndexChanged(int)), this, SLOT(slotFilterSearch()));
@@ -102,9 +98,9 @@ MainForm::MainForm(QWidget* parent)
     connect(compareSpell_1, SIGNAL(returnPressed()), this, SLOT(slotCompareSearch()));
     connect(compareSpell_2, SIGNAL(returnPressed()), this, SLOT(slotCompareSearch()));
 
-    connect(webView1, SIGNAL(linkClicked(QUrl)), this, SLOT(slotLinkClicked(QUrl)));
-    connect(webView2, SIGNAL(linkClicked(QUrl)), this, SLOT(slotLinkClicked(QUrl)));
-    connect(webView3, SIGNAL(linkClicked(QUrl)), this, SLOT(slotLinkClicked(QUrl)));
+    connect(webView1, SIGNAL(anchorClicked(QUrl)), this, SLOT(slotLinkClicked(QUrl)));
+    connect(webView2, SIGNAL(anchorClicked(QUrl)), this, SLOT(slotLinkClicked(QUrl)));
+    connect(webView3, SIGNAL(anchorClicked(QUrl)), this, SLOT(slotLinkClicked(QUrl)));
 
     webView1->setHtml(QString("Load time: %0 ms").arg(m_time.elapsed()));
 
@@ -125,30 +121,16 @@ void MainForm::slotSettings()
 
 void MainForm::slotAdvancedFilter()
 {
-    if (adFilterButton->isChecked())
+    if (m_advancedFilterWidget->isVisible())
     {
-        QPropertyAnimation* animation = new QPropertyAnimation(m_advancedFilterWidget, "geometry");
-        animation->setDuration(500);
-        animation->setStartValue(QRect(webView1->x() - 280, webView1->y(), 280, webView1->height()));
-        animation->setEndValue(QRect(webView1->x(), webView1->y(), 280, webView1->height()));
-
-        animation->start();
+        webView1->show();
+        m_advancedFilterWidget->hide();
     }
     else
     {
-        QPropertyAnimation* animation = new QPropertyAnimation(m_advancedFilterWidget, "geometry");
-        animation->setDuration(500);
-        animation->setStartValue(QRect(webView1->x(), webView1->y(), 280, webView1->height()));
-        animation->setEndValue(QRect(webView1->x() - 280, webView1->y(), 280, webView1->height()));
-
-
-        animation->start();
+        webView1->hide();
+        m_advancedFilterWidget->show();
     }
-}
-
-void MainForm::resizeEvent(QResizeEvent* /* event */)
-{
-    m_advancedFilterWidget->setGeometry(QRect(webView1->x(), webView1->y(), adFilterButton->isChecked() ? 280 : 0, webView1->height()));
 }
 
 void MainForm::slotAdvancedApply()
@@ -226,8 +208,8 @@ void MainForm::initializeCompleter()
 
 void MainForm::createModeButton()
 {
-    QAction* actionShow = new QAction(QIcon(":/qsw/resources/show.png"), "Show", this);
-    QAction* actionCompare = new QAction(QIcon(":/qsw/resources/compare.png"), "Compare", this);
+    QAction* actionShow = new QAction(QIcon(":/qsw/resources/application.png"), "Show", this);
+    QAction* actionCompare = new QAction(QIcon(":/qsw/resources/application_tile_horizontal.png"), "Compare", this);
 
     connect(actionShow, SIGNAL(triggered()), this, SLOT(slotModeShow()));
     connect(actionCompare, SIGNAL(triggered()), this, SLOT(slotModeCompare()));
@@ -264,7 +246,7 @@ void MainForm::detectLocale()
 
 void MainForm::slotLinkClicked(const QUrl &url)
 {
-    QWebView* webView = static_cast<QWebView*>(sender());
+    QWebEngineView* webView = static_cast<QWebEngineView*>(sender());
 
     qint32 browserId = webView->objectName().at(7).digitValue();
     qint32 id = url.toString().section('/', -1).toInt();
@@ -386,9 +368,6 @@ void MainForm::slotRegExp()
         m_actionRegExp->setChecked(true);
         m_actionRegExp->setIcon(QIcon(":/qsw/resources/regExp.png"));
         m_actionRegExp->setText("<font color=green>On</font>");
-
-        WovWidget* wov = new WovWidget();
-        wov->show();
     }
     else
     {
@@ -414,6 +393,12 @@ void MainForm::slotRegExp()
 
     if (compared[0] || compared[1])
         m_sw->compare();
+}
+
+void MainForm::slotWov()
+{
+    WovWidget* wov = new WovWidget();
+    wov->show();
 }
 
 void MainForm::slotAbout()

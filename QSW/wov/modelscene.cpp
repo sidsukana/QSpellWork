@@ -1,5 +1,5 @@
-#include <QGLShaderProgram>
-#include <QGLBuffer>
+#include <QOpenGLShaderProgram>
+#include <QOpenGLBuffer>
 #include <QMatrix4x4>
 #include <QTimer>
 #include <QMouseEvent>
@@ -9,7 +9,7 @@
 #include "particleemitter.h"
 #include "camerashake.h"
 
-ModelScene::ModelScene(QWidget *parent) : QGLWidget(parent),
+ModelScene::ModelScene(QWidget *parent) : QOpenGLWidget(parent),
     m_rotationX(0.0f),
     m_rotationY(0.0f),
     m_distance(0.0f),
@@ -98,19 +98,21 @@ void ModelScene::addCameraShake(quint32 id)
 
 void ModelScene::initializeGL()
 {
+    initializeOpenGLFunctions();
+
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
     glEnable(GL_DEPTH_TEST);
     glDepthMask(GL_TRUE);
 
-    m_program = new QGLShaderProgram();
-    m_program->addShaderFromSourceFile(QGLShader::Vertex, ":/shader.vs");
-    m_program->addShaderFromSourceFile(QGLShader::Fragment, ":/shader.fs");
+    m_program = new QOpenGLShaderProgram();
+    m_program->addShaderFromSourceFile(QOpenGLShader::Vertex, ":/shader.vs");
+    m_program->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shader.fs");
     m_program->link();
 
-    m_particleProgram = new QGLShaderProgram();
-    m_particleProgram->addShaderFromSourceFile(QGLShader::Vertex, ":/particle.vs");
-    m_particleProgram->addShaderFromSourceFile(QGLShader::Fragment, ":/particle.fs");
+    m_particleProgram = new QOpenGLShaderProgram();
+    m_particleProgram->addShaderFromSourceFile(QOpenGLShader::Vertex, ":/particle.vs");
+    m_particleProgram->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/particle.fs");
     m_particleProgram->link();
 
     const GLubyte white[3] = {255, 255, 255};
@@ -218,7 +220,7 @@ void ModelScene::update()
         }
     }
 
-    updateGL();
+    //updateGL();
 }
 
 void ModelScene::renderGrid(int size, float step, MVP mvp)
@@ -250,9 +252,9 @@ void ModelScene::renderGrid(int size, float step, MVP mvp)
             v4.setTexcoord(texcoord);
         }
 
-        m_gridBuffer = new QGLBuffer(QGLBuffer::VertexBuffer);
+        m_gridBuffer = new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
         m_gridBuffer->create();
-        m_gridBuffer->setUsagePattern(QGLBuffer::StaticDraw);
+        m_gridBuffer->setUsagePattern(QOpenGLBuffer::StaticDraw);
         m_gridBuffer->bind();
         m_gridBuffer->allocate(vertices, 4 * size * sizeof(ParticleVertex));
         m_gridBuffer->release();

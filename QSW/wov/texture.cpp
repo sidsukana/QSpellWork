@@ -3,7 +3,7 @@
 #include <QStringList>
 
 #include "texture.h"
-#include "./../mpq/MPQ.h"
+#include "mpq/MPQ.h"
 
 #ifndef GL_COMPRESSED_RGB_S3TC_DXT1_EXT
 #  define GL_COMPRESSED_RGB_S3TC_DXT1_EXT   0x83F0
@@ -87,7 +87,7 @@ void Texture::create()
     if (!m_texture)
         glGenTextures(1, &m_texture);
 
-    initializeGLFunctions();
+    initializeOpenGLFunctions();
 
     glBindTexture(GL_TEXTURE_2D, m_texture);
 

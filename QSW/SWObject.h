@@ -2,9 +2,9 @@
 #define SWOBJECT_H
 
 #include <QMetaEnum>
-#include <QScriptEngine>
-#include <QScriptValue>
-#include <QScriptValueList>
+#include <QJSEngine>
+#include <QJSValue>
+#include <QJSValueList>
 
 #include "MainForm.h"
 #include "SWEnums.h"
@@ -41,7 +41,7 @@ class SWObject : public QObject
 
         void showInfo(const Spell::entry* spellInfo, quint8 num = 1);
         quint32 getParentSpellId(quint32 triggerId);
-        void compare();
+        void compare(bool ok = false);
         QList<QEvent*> search();
 
         void appendSkillInfo(const Spell::entry* spellInfo);
@@ -76,6 +76,8 @@ class SWObject : public QObject
 
         bool m_regExp;
         quint8 m_type;
+
+        QString m_sourceHtml[3];
 };
 
 namespace Converter

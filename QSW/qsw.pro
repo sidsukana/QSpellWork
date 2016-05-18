@@ -4,12 +4,15 @@
 #
 #-------------------------------------------------
 
-QT       += core gui xml script opengl widgets webkitwidgets concurrent
+QT += core gui xml qml widgets webenginewidgets webengine webenginecore concurrent
 
 TARGET = qsw
 TEMPLATE = app
-RC_FILE = icon.rc
+CONFIG -= debug_and_release
+CONFIG += c++11
+DEFINES += __STORMLIB_SELF__
 
+win32:RC_ICONS += resources/mangos.ico
 
 SOURCES += \
     AboutForm.cpp \
@@ -25,7 +28,21 @@ SOURCES += \
     blp/blp.cpp \
     dbc/DBC.cpp \
     dbc/DBCStructure.cpp \
-    Main.cpp
+    mpq/MPQ.cpp \
+    wov/bone.cpp \
+    wov/camerashake.cpp \
+    wov/m2.cpp \
+    wov/model.cpp \
+    wov/modelscene.cpp \
+    wov/mvp.cpp \
+    wov/particleemitter.cpp \
+    wov/ribbonemitter.cpp \
+    wov/spellvisual.cpp \
+    wov/spellvisualkit.cpp \
+    wov/texture.cpp \
+    wov/textureanimation.cpp \
+    Main.cpp \
+    wov/wovdbc.cpp
 
 HEADERS  += \
     AboutForm.h \
@@ -41,36 +58,65 @@ HEADERS  += \
     WovWidget.h \
     blp/blp.h \
     dbc/DBC.h \
-    dbc/DBCStructure.h
+    dbc/DBCStructure.h \
+    mpq/MPQ.h \
+    wov/animatedvalue.h \
+    wov/bone.h \
+    wov/camerashake.h \
+    wov/m2.h \
+    wov/m2structures.h \
+    wov/model.h \
+    wov/modelscene.h \
+    wov/mvp.h \
+    wov/particleemitter.h \
+    wov/ribbonemitter.h \
+    wov/spellvisual.h \
+    wov/spellvisualkit.h \
+    wov/texture.h \
+    wov/textureanimation.h \
+    wov/wovdbc.h
 
-FORMS    += \
+FORMS += \
     about.ui \
-    advancedFilter.ui \
     main.ui \
-    settings.ui
+    settings.ui \
+    advancedFilter.ui
+
+OTHER_FILES += \
+    wov/particle.fs \
+    wov/particle.vs \
+    wov/shader.fs \
+    wov/shader.vs
 
 RESOURCES += \
-    qsw.qrc
+    qsw.qrc \
+    wov/wov.qrc
 
-INCLUDEPATH += $$PWD
+INCLUDEPATH += $$PWD/mpq/StormLib
+DEPENDPATH += $$PWD/mpq/StormLib
 
-win32:CONFIG(release, debug|release): DLLDESTDIR = $$OUT_PWD/../../bin/release/
-else:win32:CONFIG(debug, debug|release): DLLDESTDIR = $$OUT_PWD/../../bin/debug/
-
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/mpq/release/ -lmpq
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/mpq/debug/ -lmpq
-
-INCLUDEPATH += $$PWD/mpq
-DEPENDPATH += $$PWD/mpq
-
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/wov/release/ -lwov
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/wov/debug/ -lwov
-
-INCLUDEPATH += $$PWD/wov
-DEPENDPATH += $$PWD/wov
-
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/blp/squish/release/ -lsquish
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/blp/squish/debug/ -lsquish
-
-INCLUDEPATH += $$PWD/blp/squish
-DEPENDPATH += $$PWD/blp/squish
+win32: {
+    contains(QT_ARCH, i386) {
+        message("32-bit")
+        CONFIG(debug, debug|release) {
+            LIBS += -L$$PWD/mpq/StormLib/Win32/Debug -lStormLib
+            LIBS += -L$$PWD/blp/squish/Win32/Debug -lsquish
+            DLLDESTDIR = $$OUT_PWD/../bin/Win32/Debug/
+        } else {
+            LIBS += -L$$PWD/mpq/StormLib/Win32/Release/ -lStormLib
+            LIBS += -L$$PWD/blp/squish/Win32/Release/ -lsquish
+            DLLDESTDIR = $$OUT_PWD/../bin/Win32/Release/
+        }
+    } else {
+        message("64-bit")
+        CONFIG(debug, debug|release) {
+            LIBS += -L$$PWD/mpq/StormLib/x64/Debug/ -lStormLib
+            LIBS += -L$$PWD/blp/squish/x64/Debug/ -lsquish
+            DLLDESTDIR = $$OUT_PWD/../bin/x64/Debug/
+        } else {
+            LIBS += -L$$PWD/mpq/StormLib/x64/Release/ -lStormLib
+            LIBS += -L$$PWD/blp/squish/x64/Release/ -lsquish
+            DLLDESTDIR = $$OUT_PWD/../bin/x64/Release/
+        }
+    }
+}

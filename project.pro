@@ -1,5 +1,5 @@
 TEMPLATE = subdirs
 
-SUBDIRS = qsw/mpq qsw/wov qsw
+SUBDIRS = qsw
 
-CONFIG += mpq wov qsw
+CONFIG += qsw

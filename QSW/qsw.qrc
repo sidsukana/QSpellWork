@@ -1,12 +1,14 @@
 <RCC>
-  <qresource prefix="/qsw">
-    <file>resources/styles.css</file>
-    <file>resources/about.png</file>
-    <file>resources/compare.png</file>
-    <file>resources/show.png</file>
-    <file>resources/regExp.png</file>
-    <file>resources/mangos.ico</file>
-    <file>resources/border.png</file>
-    <file>resources/borderHover.png</file>
-  </qresource>
+    <qresource prefix="/qsw">
+        <file>resources/styles.css</file>
+        <file>resources/regExp.png</file>
+        <file>resources/mangos.ico</file>
+        <file>resources/border.png</file>
+        <file>resources/borderHover.png</file>
+        <file>resources/application.png</file>
+        <file>resources/application_tile_horizontal.png</file>
+        <file>resources/cog.png</file>
+        <file>resources/information.png</file>
+        <file>resources/wand.png</file>
+    </qresource>
 </RCC>

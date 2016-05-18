@@ -1,19 +1,19 @@
 #ifndef MODEL_SCENE_H
 #define MODEL_SCENE_H
 
-#include <QGLWidget>
+#include <QOpenGLWidget>
 #include <QTime>
+#include <QOpenGLFunctions>
 
-#include "wov_global.h"
 #include "mvp.h"
 
-class QGLShaderProgram;
-class QGLBuffer;
+class QOpenGLShaderProgram;
+class QOpenGLBuffer;
 
 class Model;
 class CameraShake;
 
-class WOV_EXPORT ModelScene : public QGLWidget
+class ModelScene : public QOpenGLWidget, public QOpenGLFunctions
 {
     Q_OBJECT
     Q_PROPERTY(float rotationX READ rotationX WRITE setRotationX)
@@ -84,10 +84,10 @@ private:
 
     float m_worldX, m_worldY, m_worldZ;
 
-    QGLShaderProgram *m_program;
-    QGLShaderProgram *m_particleProgram;
+    QOpenGLShaderProgram *m_program;
+    QOpenGLShaderProgram *m_particleProgram;
 
-    QGLBuffer *m_gridBuffer;
+    QOpenGLBuffer *m_gridBuffer;
 };
 
 #endif

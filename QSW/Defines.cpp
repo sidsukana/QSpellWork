@@ -67,7 +67,7 @@ QSettings& QSW::settings()
 
 quint8 QSW::Locale = 0;
 QString QSW::CLIENT_VERSION = "1.12.x";
-QString QSW::QSW_BUILD = "112";
+QString QSW::QSW_BUILD = "121";
 QString QSW::CLIENT_BUILD = "5875, 6005";
 
 QString ProcFlagDesc[] =

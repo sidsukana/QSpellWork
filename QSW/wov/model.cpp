@@ -1,7 +1,7 @@
 #include "model.h"
 #include "m2.h"
 #include "spellvisualkit.h"
-#include "dbc.h"
+#include "wovdbc.h"
 
 Model::Model(ModelScene *scene)
     : m_scene(scene), m_displayId(0),
@@ -36,21 +36,26 @@ void Model::setDisplayId(quint32 displayId)
 {
     m_displayId = displayId;
 
-    CreatureDisplayInfoDBC::entry displayInfo = CreatureDisplayInfoDBC::getEntry(m_displayId);
-    CreatureModelDataDBC::entry modelData = CreatureModelDataDBC::getEntry(displayInfo.model);
+    const CreatureDisplayInfoDBC::entry* displayInfo = CreatureDisplayInfoDBC::getRecord(m_displayId, true);
+    const CreatureModelDataDBC::entry* modelData = CreatureModelDataDBC::getRecord(displayInfo->model, true);
     
-    if (displayInfo.id != m_displayId) {
+    if (!displayInfo) {
         qDebug("Creature display ID %u does not exist", m_displayId);
         return;
     }
 
-    m_modelFileName = QString(modelData.model).replace("\\", "/").replace(".mdx", ".m2");
+    if (!modelData) {
+        qDebug("Creature model data ID %u does not exist", displayInfo->model);
+        return;
+    }
+
+    m_modelFileName = QString(modelData->model()).replace("\\", "/").replace(".mdx", ".m2");
 
     QString modelPath = m_modelFileName.section('/', 0, -2);
 
-    m_textureFileNames[11] = modelPath + "/" + QString(displayInfo.skin1) + ".blp";
-    m_textureFileNames[12] = modelPath + "/" + QString(displayInfo.skin2) + ".blp";
-    m_textureFileNames[13] = modelPath + "/" + QString(displayInfo.skin3) + ".blp";
+    m_textureFileNames[11] = modelPath + "/" + QString(displayInfo->skin1()) + ".blp";
+    m_textureFileNames[12] = modelPath + "/" + QString(displayInfo->skin2()) + ".blp";
+    m_textureFileNames[13] = modelPath + "/" + QString(displayInfo->skin3()) + ".blp";
 
     m_modelChanged = true;
 }
@@ -118,7 +123,7 @@ void Model::update(int timeDelta)
     updateVisualKits();
 }
 
-void Model::render(QGLShaderProgram *program, MVP mvp)
+void Model::render(QOpenGLShaderProgram *program, MVP mvp)
 {
     mvp.model.translate(m_x, m_y, 0.0f);
     mvp.model.rotate(m_orientation, 0.0f, 0.0f, 1.0f);
@@ -127,7 +132,7 @@ void Model::render(QGLShaderProgram *program, MVP mvp)
         m_model->render(program, mvp);
 }
 
-void Model::renderParticles(QGLShaderProgram *program, MVP mvp)
+void Model::renderParticles(QOpenGLShaderProgram *program, MVP mvp)
 {
     if (m_model)
         m_model->renderParticles(program, mvp);

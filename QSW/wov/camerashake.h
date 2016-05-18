@@ -3,7 +3,7 @@
 
 #include <QVector3D>
 
-#include "dbc.h"
+#include "wovdbc.h"
 
 class CameraShake
 {
@@ -14,7 +14,7 @@ public:
     QVector3D getShake();
 
 private:
-    CameraShakesDBC::entry m_shake;
+    const CameraShakesDBC::entry* m_shake;
 
     float m_duration;
 };

@@ -3,7 +3,7 @@
 
 #include <QHash>
 
-#include "dbc.h"
+#include "wovdbc.h"
 
 class M2;
 class ModelScene;
@@ -23,7 +23,7 @@ public:
 private:
     void attachEffect(qint32 id, quint32 slot);
 
-    SpellVisualKitDBC::entry m_kit;
+    const SpellVisualKitDBC::entry* m_kit;
     bool m_oneshot;
 
     M2 *m_model;

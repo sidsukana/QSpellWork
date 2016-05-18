@@ -3,10 +3,10 @@
 #include "spellvisualkit.h"
 #include "m2.h"
 #include "modelscene.h"
-#include "dbc.h"
+#include "wovdbc.h"
 
 SpellVisualKit::SpellVisualKit(quint32 id, bool oneshot)
-    : m_kit(SpellVisualKitDBC::getEntry(id)),
+    : m_kit(SpellVisualKitDBC::getRecord(id, true)),
       m_oneshot(oneshot),
       m_model(0)
 {
@@ -16,20 +16,20 @@ void SpellVisualKit::attach(M2 *model)
 {
     m_model = model;
 
-    attachEffect(m_kit.head, ATTACHMENT_HEAD);
-    attachEffect(m_kit.chest, ATTACHMENT_CHEST);
-    attachEffect(m_kit.base, ATTACHMENT_BASE);
-    attachEffect(m_kit.leftHand, ATTACHMENT_LEFT_HAND);
-    attachEffect(m_kit.rightHand, ATTACHMENT_RIGHT_HAND);
-    attachEffect(m_kit.breath1, ATTACHMENT_BREATH_2);
-    attachEffect(m_kit.breath2, ATTACHMENT_BREATH);
-    attachEffect(m_kit.base2, ATTACHMENT_BASE);
+    attachEffect(m_kit->head, ATTACHMENT_HEAD);
+    attachEffect(m_kit->chest, ATTACHMENT_CHEST);
+    attachEffect(m_kit->base, ATTACHMENT_BASE);
+    attachEffect(m_kit->leftHand, ATTACHMENT_LEFT_HAND);
+    attachEffect(m_kit->rightHand, ATTACHMENT_RIGHT_HAND);
+    attachEffect(m_kit->breath1, ATTACHMENT_BREATH_2);
+    attachEffect(m_kit->breath2, ATTACHMENT_BREATH);
+    attachEffect(m_kit->base2, ATTACHMENT_BASE);
 
-    //if (m_kit.startAnimation != -1)
-    //    m_model->setAnimation(m_kit.startAnimation);
+    //if (m_kit->startAnimation != -1)
+    //    m_model->setAnimation(m_kit->startAnimation);
 
-    if (m_kit.animation != -1)
-        m_model->setAnimation(m_kit.animation);
+    if (m_kit->animation != -1)
+        m_model->setAnimation(m_kit->animation);
 }
 
 void SpellVisualKit::detach()
@@ -46,14 +46,16 @@ void SpellVisualKit::detach()
 
 void SpellVisualKit::addCameraShakes(ModelScene *scene)
 {
-    if (!scene || !m_kit.shakes)
+    if (!scene || !m_kit->shakes)
         return;
 
-    SpellEffectCameraShakesDBC::entry shakes = SpellEffectCameraShakesDBC::getEntry(m_kit.shakes);
+    const SpellEffectCameraShakesDBC::entry* shakes = SpellEffectCameraShakesDBC::getRecord(m_kit->shakes, true);
+    if (!shakes)
+        return;
 
     for (int i = 0; i < 3; i++) {
-        if (shakes.shakes[i])
-            scene->addCameraShake(shakes.shakes[i]);
+        if (shakes->shakes[i])
+            scene->addCameraShake(shakes->shakes[i]);
     }
 }
 
@@ -86,9 +88,11 @@ void SpellVisualKit::attachEffect(qint32 id, quint32 slot)
     if (id <= 0)
         return;
 
-    SpellVisualEffectNameDBC::entry effectName = SpellVisualEffectNameDBC::getEntry(id);
+    const SpellVisualEffectNameDBC::entry* effectName = SpellVisualEffectNameDBC::getRecord(id, true);
+    if (!effectName)
+        return;
 
-    QString modelName = QString(effectName.model).replace(QRegExp(".md[xl]", Qt::CaseInsensitive), ".m2");
+    QString modelName = QString(effectName->model()).replace(QRegExp(".md[xl]", Qt::CaseInsensitive), ".m2");
 
     M2 *effect = new M2(modelName);
     effect->setAnimation(0, m_oneshot);

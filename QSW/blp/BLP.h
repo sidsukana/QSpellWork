@@ -22,6 +22,6 @@ struct BLPHeader
 namespace BLP
 {
     QImage getImage(const QString &fileName);
-};
+}
 
 #endif
