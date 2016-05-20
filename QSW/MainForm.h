@@ -6,6 +6,7 @@
 #include <QMainWindow>
 #include <QToolButton>
 #include <QIcon>
+#include <QStringListModel>
 
 #include "SWEnums.h"
 #include "SWObject.h"
@@ -40,9 +41,38 @@ class AdvancedFilterWidget : public QWidget, public Ui::advancedFilter
 {
     Q_OBJECT
 
-public:
-    AdvancedFilterWidget(QWidget* parent = NULL);
-    ~AdvancedFilterWidget() {}
+    public:
+        AdvancedFilterWidget(QWidget* parent = NULL);
+        ~AdvancedFilterWidget() {}
+
+        void addBookmark(QString str) {
+            str =  str.trimmed();
+            if (!m_bookmarks.contains(str))
+                m_bookmarks << str;
+            m_model->setStringList(m_bookmarks);
+        }
+
+        void removeBookmark(int index) {
+            if (index < m_bookmarks.size())
+                m_bookmarks.removeAt(index);
+            m_model->setStringList(m_bookmarks);
+        }
+
+        void clearBookmarks() {
+            m_bookmarks.clear();
+            m_model->setStringList(m_bookmarks);
+        }
+
+        QStringList getBookmarks() const { return m_bookmarks; }
+
+    public slots:
+        void slotAdd();
+        void slotRemove();
+        void slotClear();
+
+    private:
+        QStringList m_bookmarks;
+        QStringListModel* m_model;
 };
 
 class MainForm : public QMainWindow, public Ui::main

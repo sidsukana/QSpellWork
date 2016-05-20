@@ -147,35 +147,55 @@ void MainForm::slotAdvancedApply()
 
 void MainForm::loadSettings()
 {
-    // Global
-    setRegExp(QSW::settings().value("Global/RegExp", false).toBool());
+    QSW::settings().beginGroup("Global");
+    setRegExp(QSW::settings().value("RegExp", false).toBool());
+    QSW::settings().endGroup();
 
-    // Search and filters
-    findLine_e1->setText(QSW::settings().value("Search/IdOrName", "").toString());
-    findLine_e3->setText(QSW::settings().value("Search/Description", "").toString());
-    comboBox->setCurrentIndex(QSW::settings().value("Search/SpellFamilyIndex", 0).toInt());
-    comboBox_2->setCurrentIndex(QSW::settings().value("Search/EffectIndex", 0).toInt());
-    comboBox_3->setCurrentIndex(QSW::settings().value("Search/AuraIndex", 0).toInt());
-    comboBox_4->setCurrentIndex(QSW::settings().value("Search/TargetAIndex", 0).toInt());
-    comboBox_5->setCurrentIndex(QSW::settings().value("Search/TargetBIndex", 0).toInt());
+    QSW::settings().beginGroup("FastFilter");
+    findLine_e1->setText(QSW::settings().value("IdOrName", "").toString());
+    findLine_e3->setText(QSW::settings().value("Description", "").toString());
+    comboBox->setCurrentIndex(QSW::settings().value("SpellFamilyIndex", 0).toInt());
+    comboBox_2->setCurrentIndex(QSW::settings().value("EffectIndex", 0).toInt());
+    comboBox_3->setCurrentIndex(QSW::settings().value("AuraIndex", 0).toInt());
+    comboBox_4->setCurrentIndex(QSW::settings().value("TargetAIndex", 0).toInt());
+    comboBox_5->setCurrentIndex(QSW::settings().value("TargetBIndex", 0).toInt());
+    QSW::settings().endGroup();
 
-    if (!findLine_e1->text().isEmpty())
-        slotButtonSearch();
+    QSW::settings().beginGroup("ScriptFilter");
+    int size = QSW::settings().beginReadArray("Bookmarks");
+    for (auto i = 0; i < size; ++i) {
+        QSW::settings().setArrayIndex(i);
+        m_advancedFilterWidget->addBookmark(QSW::settings().value("filter").toString());
+    }
+    QSW::settings().endArray();
+    QSW::settings().endGroup();
 }
 
 void MainForm::saveSettings()
 {
-    // Global
-    QSW::settings().setValue("Global/RegExp", isRegExp());
+    QSW::settings().beginGroup("Global");
+    QSW::settings().setValue("RegExp", isRegExp());
+    QSW::settings().endGroup();
 
-    // Search and filters
-    QSW::settings().setValue("Search/IdOrName", findLine_e1->text());
-    QSW::settings().setValue("Search/Description", findLine_e3->text());
-    QSW::settings().setValue("Search/SpellFamilyIndex", comboBox->currentIndex());
-    QSW::settings().setValue("Search/EffectIndex", comboBox_2->currentIndex());
-    QSW::settings().setValue("Search/AuraIndex", comboBox_3->currentIndex());
-    QSW::settings().setValue("Search/TargetAIndex", comboBox_4->currentIndex());
-    QSW::settings().setValue("Search/TargetBIndex", comboBox_5->currentIndex());
+    QSW::settings().beginGroup("FastFilter");
+    QSW::settings().setValue("IdOrName", findLine_e1->text());
+    QSW::settings().setValue("Description", findLine_e3->text());
+    QSW::settings().setValue("SpellFamilyIndex", comboBox->currentIndex());
+    QSW::settings().setValue("EffectIndex", comboBox_2->currentIndex());
+    QSW::settings().setValue("AuraIndex", comboBox_3->currentIndex());
+    QSW::settings().setValue("TargetAIndex", comboBox_4->currentIndex());
+    QSW::settings().setValue("TargetBIndex", comboBox_5->currentIndex());
+    QSW::settings().endGroup();
+
+    QSW::settings().beginGroup("ScriptFilter");
+    QStringList bookmarks = m_advancedFilterWidget->getBookmarks();
+    QSW::settings().beginWriteArray("Bookmarks", bookmarks.size());
+    for (auto i = 0; i < bookmarks.size(); ++i) {
+        QSW::settings().setArrayIndex(i);
+        QSW::settings().setValue("filter", bookmarks.at(i));
+    }
+    QSW::settings().endArray();
+    QSW::settings().endGroup();
 }
 
 void MainForm::slotPrevRow()
@@ -477,25 +497,25 @@ bool MainForm::event(QEvent* ev)
 {
     switch (Event::Events(ev->type()))
     {
-    case Event::EVENT_SEND_MODEL:
-        {
-            Event* m_ev = (Event*)ev;
-            m_sortedModel->sourceModel()->deleteLater();
-            m_sortedModel->setSourceModel(m_ev->getValue(0).value<SpellListModel*>());
-            SpellList->setColumnWidth(0, 40);
-            SpellList->setColumnWidth(1, 150);
-            return true;
-        }
-        break;
-    case Event::EVENT_SEND_SPELL:
-        {
-            Event* m_ev = (Event*)ev;
-            m_sw->showInfo(Spell::getRecord(m_ev->getValue(0).toUInt(), true));
-            return true;
-        }
-        break;
-    default:
-        break;
+        case Event::EVENT_SEND_MODEL:
+            {
+                Event* m_ev = (Event*)ev;
+                m_sortedModel->sourceModel()->deleteLater();
+                m_sortedModel->setSourceModel(m_ev->getValue(0).value<SpellListModel*>());
+                SpellList->setColumnWidth(0, 40);
+                SpellList->setColumnWidth(1, 150);
+                return true;
+            }
+            break;
+        case Event::EVENT_SEND_SPELL:
+            {
+                Event* m_ev = (Event*)ev;
+                m_sw->showInfo(Spell::getRecord(m_ev->getValue(0).toUInt(), true));
+                return true;
+            }
+            break;
+        default:
+            break;
     }
 
     return QWidget::event(ev);
@@ -506,4 +526,26 @@ AdvancedFilterWidget::AdvancedFilterWidget(QWidget* parent /* = NULL */)
 {
     setupUi(this);
     setAutoFillBackground(true);
+
+    connect(buttonAdd, SIGNAL(clicked(bool)), this, SLOT(slotAdd()));
+    connect(buttonRemove, SIGNAL(clicked(bool)), this, SLOT(slotRemove()));
+    connect(buttonClear, SIGNAL(clicked(bool)), this, SLOT(slotClear()));
+
+    m_model = new QStringListModel(m_bookmarks);
+    listView->setModel(m_model);
+}
+
+void AdvancedFilterWidget::slotAdd()
+{
+    addBookmark(textEdit->toPlainText());
+}
+
+void AdvancedFilterWidget::slotRemove()
+{
+    removeBookmark(listView->currentIndex().row());
+}
+
+void AdvancedFilterWidget::slotClear()
+{
+    clearBookmarks();
 }
