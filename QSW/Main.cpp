@@ -10,6 +10,9 @@
 
 int main(int argc, char *argv[])
 {
+    // temporary sulution for ATI cards (QTBUG-49954)
+    QCoreApplication::setAttribute(Qt::AA_UseOpenGLES);
+
     QApplication app(argc, argv);
 
     MPQ::gameDir() = QDir::fromNativeSeparators(QSW::settings().value("Directories/WoW1", "").toString());
