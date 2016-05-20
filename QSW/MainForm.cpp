@@ -6,6 +6,7 @@
 #include <QDir>
 #include <QMessageBox>
 #include <QPropertyAnimation>
+#include <QClipboard>
 
 #include "MainForm.h"
 #include "AboutForm.h"
@@ -54,13 +55,19 @@ MainForm::MainForm(QWidget* parent)
 
     QAction* selectedAction = new QAction(this);
     selectedAction->setShortcut(QKeySequence::MoveToPreviousLine);
+    selectedAction->setVisible(false);
     connect(selectedAction, SIGNAL(triggered()), this, SLOT(slotPrevRow()));
     SpellList->addAction(selectedAction);
 
     selectedAction = new QAction(this);
     selectedAction->setShortcut(QKeySequence::MoveToNextLine);
+    selectedAction->setVisible(false);
     connect(selectedAction, SIGNAL(triggered()), this, SLOT(slotNextRow()));
     SpellList->addAction(selectedAction);
+
+    QAction* copyAction = new QAction("Copy all", this);
+    connect(copyAction, SIGNAL(triggered()), this, SLOT(slotCopyAll()));
+    SpellList->addAction(copyAction);
 
     connect(adFilterButton, SIGNAL(clicked()), this, SLOT(slotAdvancedFilter()));
 
@@ -185,6 +192,18 @@ void MainForm::slotNextRow()
 
     QVariant var = SpellList->model()->data(SpellList->model()->index(SpellList->currentIndex().row(), 0));
     m_sw->showInfo(Spell::getRecord(var.toInt(), true));
+}
+
+void MainForm::slotCopyAll()
+{
+    QClipboard *clipboard = QApplication::clipboard();
+
+    auto spellList = ((SpellListModel*)m_sortedModel->sourceModel())->getSpellList();
+
+    QString str;
+    for (auto itr = spellList.begin(); itr != spellList.end(); ++itr)
+        str.append(itr->at(0) + " | " + itr->at(1) + "\n");
+    clipboard->setText(str);
 }
 
 void MainForm::initializeCompleter()

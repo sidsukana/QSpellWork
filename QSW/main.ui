@@ -130,6 +130,9 @@
                <height>0</height>
               </size>
              </property>
+             <property name="contextMenuPolicy">
+              <enum>Qt::ActionsContextMenu</enum>
+             </property>
              <property name="autoFillBackground">
               <bool>false</bool>
              </property>
@@ -272,7 +275,7 @@
                    <bool>false</bool>
                   </property>
                   <property name="currentIndex">
-                   <number>159</number>
+                   <number>162</number>
                   </property>
                   <property name="maxVisibleItems">
                    <number>20</number>
@@ -301,7 +304,7 @@
                    <bool>false</bool>
                   </property>
                   <property name="currentIndex">
-                   <number>159</number>
+                   <number>162</number>
                   </property>
                   <property name="maxVisibleItems">
                    <number>20</number>
@@ -329,7 +332,7 @@
                    <bool>false</bool>
                   </property>
                   <property name="currentIndex">
-                   <number>159</number>
+                   <number>162</number>
                   </property>
                   <property name="maxVisibleItems">
                    <number>20</number>
@@ -354,7 +357,7 @@
                    <bool>false</bool>
                   </property>
                   <property name="currentIndex">
-                   <number>159</number>
+                   <number>162</number>
                   </property>
                   <property name="maxVisibleItems">
                    <number>20</number>
@@ -379,7 +382,7 @@
                    <bool>false</bool>
                   </property>
                   <property name="currentIndex">
-                   <number>159</number>
+                   <number>162</number>
                   </property>
                   <property name="maxVisibleItems">
                    <number>20</number>
@@ -511,7 +514,7 @@
          </widget>
         </item>
         <item row="0" column="1" rowspan="2">
-         <widget class="QWebEngineView" name="webView1">
+         <widget class="QWebEngineView" name="webView1" native="true">
           <property name="layoutDirection">
            <enum>Qt::LeftToRight</enum>
           </property>
@@ -613,7 +616,7 @@
              </widget>
             </item>
             <item row="1" column="0" colspan="2">
-             <widget class="QWebEngineView" name="webView2"/>
+             <widget class="QWebEngineView" name="webView2" native="true"/>
             </item>
            </layout>
           </widget>
@@ -630,7 +633,7 @@
              <widget class="QLineEdit" name="compareSpell_2"/>
             </item>
             <item row="1" column="0" colspan="2">
-             <widget class="QWebEngineView" name="webView3"/>
+             <widget class="QWebEngineView" name="webView3" native="true"/>
             </item>
            </layout>
           </widget>
@@ -727,6 +730,13 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>QWebEngineView</class>
+   <extends>QWidget</extends>
+   <header>qwebengineview.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="qsw.qrc"/>
  </resources>

@@ -94,6 +94,7 @@ class MainForm : public QMainWindow, public Ui::main
         void slotModeCompare();
         void slotPrevRow();
         void slotNextRow();
+        void slotCopyAll();
 
         bool event(QEvent* ev);
 
