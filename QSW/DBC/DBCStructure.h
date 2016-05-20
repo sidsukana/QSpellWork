@@ -64,9 +64,25 @@ namespace SkillLineAbility
     const entry* getRecord(quint32 id, bool realId = false);
 }
 
+namespace SpellDuration
+{
+    struct entry
+    {
+        quint32    id;
+        qint32     duration;
+        qint32     durationPerLevel;
+        qint32     maxDuration;
+    };
+
+    const DBCFile& getDbc();
+    const DBCFileHeader* getHeader();
+    const entry* getRecord(quint32 id, bool realId = false);
+}
+
 namespace Spell
 {
     class meta;
+
     struct entry
     {
         quint32    id;                                              // 0 normally counted from 0 field (but some tools start counting from 1, check this before tool use for data view!)
@@ -160,6 +176,11 @@ namespace Spell
         quint32    minReputation;                                   // 171 not used, and 0 in 2.4.2
         quint32    requiredAuraVision;                              // 172 not used
 
+        const QString name() const;
+        const QString description() const;
+        const QString rank() const;
+        const QString toolTip() const;
+
         quint32 getAmplitude() const
         {
             for (quint8 i = 0; i < MAX_EFFECT_INDEX; ++i)
@@ -169,11 +190,21 @@ namespace Spell
             return 0;
         }
 
-        const QString name() const;
-        const QString description() const;
-        const QString rank() const;
-        const QString toolTip() const;
+        qint32 getDuration() const
+        {
+            const SpellDuration::entry* durationInfo = SpellDuration::getRecord(durationIndex, true);
+            if (durationInfo)
+                return durationInfo->duration;
+
+            return 0;
+        }
+
+        qint32 getTriggerDuration(quint8 index) const;
     };
+
+    const DBCFile& getDbc();
+    const DBCFileHeader* getHeader();
+    const entry* getRecord(quint32 id, bool realId = false);
 
     class meta : public QObject
     {
@@ -275,6 +306,8 @@ namespace Spell
         quint32 MinFactionId() { return m_info->minFactionId; }
         quint32 MinReputation() { return m_info->minReputation; }
         quint32 RequiredAuraVision() { return m_info->requiredAuraVision; }
+        qint32 Duration() { return m_info->getDuration(); }
+        qint32 TriggerDuration(quint8 index) { return m_info->getTriggerDuration(index); }
 
         private:
 
@@ -347,11 +380,8 @@ namespace Spell
         Q_PROPERTY(quint32 MinFactionId READ MinFactionId)
         Q_PROPERTY(quint32 MinReputation READ MinReputation)
         Q_PROPERTY(quint32 RequiredAuraVision READ RequiredAuraVision)
+        Q_PROPERTY(qint32 Duration READ Duration)
     };
-
-    const DBCFile& getDbc();
-    const DBCFileHeader* getHeader();
-    const entry* getRecord(quint32 id, bool realId = false);
 }
 
 namespace SpellCastTimes
@@ -399,21 +429,6 @@ namespace SpellRange
 
         const QString name() const;
         const QString shortName() const;
-    };
-
-    const DBCFile& getDbc();
-    const DBCFileHeader* getHeader();
-    const entry* getRecord(quint32 id, bool realId = false);
-}
-
-namespace SpellDuration
-{
-    struct entry
-    {
-        quint32    id;
-        qint32     duration;
-        qint32     durationPerLevel;
-        qint32     maxDuration;
     };
 
     const DBCFile& getDbc();

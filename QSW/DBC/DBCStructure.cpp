@@ -82,6 +82,15 @@ const QString Spell::entry::toolTip() const
     return QString::fromUtf8(getDbc().getStringBlock() + quint32(toolTipOffset[QSW::Locale]));
 }
 
+qint32 Spell::entry::getTriggerDuration(quint8 index) const
+{
+    const Spell::entry* triggerSpell = Spell::getRecord(effectTriggerSpell[index], true);
+    if (triggerSpell)
+        return triggerSpell->getDuration();
+
+    return 0;
+}
+
 // SpellCastTimes.dbc
 const DBCFile& SpellCastTimes::getDbc()
 {
