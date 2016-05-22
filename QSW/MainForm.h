@@ -152,4 +152,25 @@ class MainForm : public QMainWindow, public Ui::main
         AdvancedFilterWidget* m_advancedFilterWidget;
 };
 
+class QSWPage : public QWebEnginePage
+{
+    Q_OBJECT
+    public:
+        QSWPage(QObject* parent = 0) : QWebEnginePage(parent){}
+
+        bool acceptNavigationRequest(const QUrl & url, QWebEnginePage::NavigationType type, bool)
+        {
+            if (type == QWebEnginePage::NavigationTypeLinkClicked)
+            {
+                emit linkClicked(url);
+                return false;
+            }
+            return true;
+        }
+
+    signals:
+        void linkClicked(const QUrl&);
+
+};
+
 #endif // MAIN_FORM_H

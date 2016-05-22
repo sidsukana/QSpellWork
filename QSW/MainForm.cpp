@@ -105,9 +105,13 @@ MainForm::MainForm(QWidget* parent)
     connect(compareSpell_1, SIGNAL(returnPressed()), this, SLOT(slotCompareSearch()));
     connect(compareSpell_2, SIGNAL(returnPressed()), this, SLOT(slotCompareSearch()));
 
-    connect(webView1, SIGNAL(anchorClicked(QUrl)), this, SLOT(slotLinkClicked(QUrl)));
-    connect(webView2, SIGNAL(anchorClicked(QUrl)), this, SLOT(slotLinkClicked(QUrl)));
-    connect(webView3, SIGNAL(anchorClicked(QUrl)), this, SLOT(slotLinkClicked(QUrl)));
+    webView1->setPage(new QSWPage());
+    webView2->setPage(new QSWPage());
+    webView3->setPage(new QSWPage());
+
+    connect(webView1->page(), SIGNAL(linkClicked(QUrl)), this, SLOT(slotLinkClicked(QUrl)));
+    connect(webView2->page(), SIGNAL(linkClicked(QUrl)), this, SLOT(slotLinkClicked(QUrl)));
+    connect(webView3->page(), SIGNAL(linkClicked(QUrl)), this, SLOT(slotLinkClicked(QUrl)));
 
     webView1->setHtml(QString("Load time: %0 ms").arg(m_time.elapsed()));
 
@@ -285,9 +289,9 @@ void MainForm::detectLocale()
 
 void MainForm::slotLinkClicked(const QUrl &url)
 {
-    QWebEngineView* webView = static_cast<QWebEngineView*>(sender());
+    QSWPage* page = static_cast<QSWPage*>(sender());
 
-    qint32 browserId = webView->objectName().at(7).digitValue();
+    qint32 browserId = page->view()->objectName().at(7).digitValue();
     qint32 id = url.toString().section('/', -1).toInt();
 
     switch (browserId)
