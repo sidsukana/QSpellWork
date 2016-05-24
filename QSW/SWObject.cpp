@@ -1893,22 +1893,15 @@ void SWObject::compare(bool ok)
     }
     else
     {
-        if (m_sourceHtml[1].isEmpty())
+        m_form->webView2->page()->toHtml([this](const QString &result)
         {
-            m_form->webView2->page()->toHtml([this](const QString &result)
-            {
-                this->m_sourceHtml[1] = result;
-                this->compare(true);
-            });
-        }
-        if (m_sourceHtml[2].isEmpty())
-        {
+            this->m_sourceHtml[1] = result;
             m_form->webView3->page()->toHtml([this](const QString &result)
             {
                 this->m_sourceHtml[2] = result;
                 this->compare(true);
             });
-        }
+        });
     }
 }
 
