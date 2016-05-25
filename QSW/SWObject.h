@@ -9,6 +9,7 @@
 #include "MainForm.h"
 #include "SWEnums.h"
 #include "SWEvent.h"
+#include "Defines.h"
 #include "dbc/DBCStructure.h"
 #include "blp/BLP.h"
 
@@ -39,9 +40,9 @@ class SWObject : public QObject
         SWObject(MainForm *form);
         ~SWObject() {}
 
-        void showInfo(const Spell::entry* spellInfo, quint8 num = 1);
+        void showInfo(const Spell::entry* spellInfo, QSW::Pages pageId = QSW::PAGE_MAIN);
         quint32 getParentSpellId(quint32 triggerId);
-        void compare(bool ok = false);
+        void compare();
         QList<QEvent*> search();
 
         void appendSkillInfo(const Spell::entry* spellInfo);
@@ -76,8 +77,6 @@ class SWObject : public QObject
 
         bool m_regExp;
         quint8 m_type;
-
-        QString m_sourceHtml[3];
 };
 
 namespace Converter
@@ -86,6 +85,6 @@ namespace Converter
     qint64  getLongLong(QString value);
     quint32 getULong(QString value);
     qint32  getLong(QString value);
-};
+}
 
 #endif // SWOBJECT_H

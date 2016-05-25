@@ -14,6 +14,14 @@ namespace QSW
     extern QString CLIENT_VERSION;
     extern QString QSW_BUILD;
     extern QString CLIENT_BUILD;
+
+    enum Pages
+    {
+        PAGE_MAIN       = 0,
+        PAGE_CLEFT      = 1,
+        PAGE_CRIGHT     = 2,
+        PAGE_MAX        = 3
+    };
 }
 
 extern QString ProcFlagDesc[];

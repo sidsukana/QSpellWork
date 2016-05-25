@@ -105,15 +105,22 @@ MainForm::MainForm(QWidget* parent)
     connect(compareSpell_1, SIGNAL(returnPressed()), this, SLOT(slotCompareSearch()));
     connect(compareSpell_2, SIGNAL(returnPressed()), this, SLOT(slotCompareSearch()));
 
-    webView1->setPage(new QSWPage());
-    webView2->setPage(new QSWPage());
-    webView3->setPage(new QSWPage());
+    for (quint8 i = QSW::PAGE_MAIN; i < QSW::PAGE_MAX; ++i)
+    {
+        m_pages[i] = new QSWPage(QSW::Pages(i));
+        connect(m_pages[i], SIGNAL(linkClicked(QUrl)), this, SLOT(slotLinkClicked(QUrl)));
 
-    connect(webView1->page(), SIGNAL(linkClicked(QUrl)), this, SLOT(slotLinkClicked(QUrl)));
-    connect(webView2->page(), SIGNAL(linkClicked(QUrl)), this, SLOT(slotLinkClicked(QUrl)));
-    connect(webView3->page(), SIGNAL(linkClicked(QUrl)), this, SLOT(slotLinkClicked(QUrl)));
+        switch (i)
+        {
+            case QSW::PAGE_MAIN: webView1->setPage(m_pages[i]); break;
+            case QSW::PAGE_CLEFT: webView2->setPage(m_pages[i]); break;
+            case QSW::PAGE_CRIGHT: webView3->setPage(m_pages[i]); break;
+            default: break;
+        }
 
-    webView1->setHtml(QString("Load time: %0 ms").arg(m_time.elapsed()));
+    }
+
+    getPage(QSW::PAGE_MAIN)->setInfo(QString("Load time: %0 ms").arg(m_time.elapsed()));
 
     // Load settings at end
     loadSettings();
@@ -291,29 +298,21 @@ void MainForm::slotLinkClicked(const QUrl &url)
 {
     QSWPage* page = static_cast<QSWPage*>(sender());
 
-    qint32 browserId = page->view()->objectName().at(7).digitValue();
-    qint32 id = url.toString().section('/', -1).toInt();
+    qint32 id = url.toString().section('/', -1).toUInt();
 
-    switch (browserId)
+    m_sw->showInfo(Spell::getRecord(id, true), page->getPageId());
+
+    switch (page->getPageId())
     {
-        case 1:
+        case QSW::PAGE_CLEFT:
         {
-            m_sw->showInfo(Spell::getRecord(id, true), browserId);
-            break;
-        }
-        case 2:
-        {
-            qint32 id3 = webView3->url().toString().section('/', -1).toInt();
-            m_sw->showInfo(Spell::getRecord(id, true), browserId);
-            m_sw->showInfo(Spell::getRecord(id3, true), 3);
+            m_sw->showInfo(Spell::getRecord(getPage(QSW::PAGE_CRIGHT)->getSpellId(), true), QSW::PAGE_CRIGHT);
             m_sw->compare();
             break;
         }
-        case 3:
+        case QSW::PAGE_CRIGHT:
         {
-            qint32 id2 = webView2->url().toString().section('/', -1).toInt();
-            m_sw->showInfo(Spell::getRecord(id, true), browserId);
-            m_sw->showInfo(Spell::getRecord(id2, true), 2);
+            m_sw->showInfo(Spell::getRecord(getPage(QSW::PAGE_CLEFT)->getSpellId(), true), QSW::PAGE_CLEFT);
             m_sw->compare();
             break;
         }
@@ -424,13 +423,13 @@ void MainForm::slotRegExp()
     bool compared[2] = { false, false };
     if (const Spell::entry* spellInfo = Spell::getRecord(webView2->url().path().remove(0, 1).toInt(), true))
     {
-        m_sw->showInfo(spellInfo, 2);
+        m_sw->showInfo(spellInfo, QSW::PAGE_CLEFT);
         compared[0] = true;
     }
 
     if (const Spell::entry* spellInfo = Spell::getRecord(webView3->url().path().remove(0, 1).toInt(), true))
     {
-        m_sw->showInfo(spellInfo, 3);
+        m_sw->showInfo(spellInfo, QSW::PAGE_CRIGHT);
         compared[1] = true;
     }
 
@@ -464,8 +463,8 @@ void MainForm::slotCompareSearch()
 {
     if (!compareSpell_1->text().isEmpty() && !compareSpell_2->text().isEmpty())
     {
-        m_sw->showInfo(Spell::getRecord(compareSpell_1->text().toInt(), true), 2);
-        m_sw->showInfo(Spell::getRecord(compareSpell_2->text().toInt(), true), 3);
+        m_sw->showInfo(Spell::getRecord(compareSpell_1->text().toInt(), true), QSW::PAGE_CLEFT);
+        m_sw->showInfo(Spell::getRecord(compareSpell_2->text().toInt(), true), QSW::PAGE_CRIGHT);
         m_sw->compare();
     }
 }

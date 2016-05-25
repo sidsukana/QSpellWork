@@ -10,6 +10,7 @@
 
 #include "SWEnums.h"
 #include "SWObject.h"
+#include "Defines.h"
 
 #include "ui_main.h"
 #include "ui_advancedFilter.h"
@@ -75,6 +76,52 @@ class AdvancedFilterWidget : public QWidget, public Ui::advancedFilter
         QStringListModel* m_model;
 };
 
+class QSWPage : public QWebEnginePage
+{
+    Q_OBJECT
+    public:
+        QSWPage(QSW::Pages pageId, QObject* parent = 0)
+            : QWebEnginePage(parent), m_pageId(pageId), m_spellId(0) {}
+
+        QSW::Pages getPageId() const { return m_pageId; }
+        quint32 getSpellId() const { return m_spellId; }
+        QString getSourceHtml() const { return m_sourceHtml; }
+
+        bool acceptNavigationRequest(const QUrl& url, QWebEnginePage::NavigationType type, bool)
+        {
+            if (type == QWebEnginePage::NavigationTypeLinkClicked)
+            {
+                emit linkClicked(url);
+                return false;
+            }
+            return true;
+        }
+
+        void setCompareInfo(const QString &html)
+        {
+            setHtml(html, QUrl(QString("http://spellwork/%0").arg(m_spellId)));
+        }
+
+        void setInfo(const QString &html, quint32 spellId = 0)
+        {
+            if (spellId)
+                m_spellId = spellId;
+
+            m_sourceHtml = html;
+
+            setHtml(html, QUrl(QString("http://spellwork/%0").arg(m_spellId)));
+        }
+
+    signals:
+        void linkClicked(const QUrl&);
+
+    private:
+        quint32 m_spellId;
+        QSW::Pages m_pageId;
+        QString m_sourceHtml;
+
+};
+
 class MainForm : public QMainWindow, public Ui::main
 {
     Q_OBJECT
@@ -101,6 +148,11 @@ class MainForm : public QMainWindow, public Ui::main
                 case 3: return webView3;
                 default: return webView1;
             }
+        }
+
+        QSWPage* getPage(QSW::Pages pageId) const
+        {
+            return m_pages[pageId];
         }
 
     signals:
@@ -150,27 +202,8 @@ class MainForm : public QMainWindow, public Ui::main
         SearchResultWatcher* m_watcher;
 
         AdvancedFilterWidget* m_advancedFilterWidget;
-};
 
-class QSWPage : public QWebEnginePage
-{
-    Q_OBJECT
-    public:
-        QSWPage(QObject* parent = 0) : QWebEnginePage(parent){}
-
-        bool acceptNavigationRequest(const QUrl & url, QWebEnginePage::NavigationType type, bool)
-        {
-            if (type == QWebEnginePage::NavigationTypeLinkClicked)
-            {
-                emit linkClicked(url);
-                return false;
-            }
-            return true;
-        }
-
-    signals:
-        void linkClicked(const QUrl&);
-
+        QSWPage* m_pages[QSW::PAGE_MAX];
 };
 
 #endif // MAIN_FORM_H
