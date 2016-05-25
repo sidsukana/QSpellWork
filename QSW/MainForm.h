@@ -43,7 +43,7 @@ class AdvancedFilterWidget : public QWidget, public Ui::advancedFilter
     Q_OBJECT
 
     public:
-        AdvancedFilterWidget(QWidget* parent = NULL);
+        AdvancedFilterWidget(QWidget* parent = nullptr);
         ~AdvancedFilterWidget() {}
 
         void addBookmark(QString str) {
@@ -80,7 +80,7 @@ class QSWPage : public QWebEnginePage
 {
     Q_OBJECT
     public:
-        QSWPage(QSW::Pages pageId, QObject* parent = 0)
+        QSWPage(QSW::Pages pageId, QObject* parent = nullptr)
             : QWebEnginePage(parent), m_pageId(pageId), m_spellId(0) {}
 
         QSW::Pages getPageId() const { return m_pageId; }
@@ -127,7 +127,7 @@ class MainForm : public QMainWindow, public Ui::main
     Q_OBJECT
 
     public:
-        MainForm(QWidget* parent = NULL);
+        MainForm(QWidget* parent = nullptr);
         ~MainForm();
 
         void saveSettings();

@@ -2,7 +2,8 @@
 #include "dbc/DBC.h"
 #include "Defines.h"
 
-DBCFile::DBCFile(const QString &fileName) : m_header(NULL), m_records(NULL), m_strings(NULL), m_indexes(NULL), m_maxId(0)
+DBCFile::DBCFile(const QString &fileName)
+    : m_header(nullptr), m_records(nullptr), m_strings(nullptr), m_indexes(nullptr), m_maxId(0)
 {
     m_data = MPQ::readFile(fileName);
 

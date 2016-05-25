@@ -12,7 +12,7 @@ class ScriptEdit : public QTextEdit
     Q_OBJECT
 
     public:
-        ScriptEdit(QWidget *parent = NULL);
+        ScriptEdit(QWidget *parent = nullptr);
         ~ScriptEdit();
 
         QAbstractItemModel* setupModel();

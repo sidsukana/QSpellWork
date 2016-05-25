@@ -10,7 +10,7 @@ class AboutForm : public QDialog, public Ui::about
     Q_OBJECT
 
     public:
-        AboutForm(QWidget *parent = NULL);
+        AboutForm(QWidget *parent = nullptr);
         ~AboutForm() {}
 
     private:

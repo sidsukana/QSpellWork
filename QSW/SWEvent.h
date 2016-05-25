@@ -16,7 +16,7 @@ class Event : public QEvent, public QObject
             EVENT_SEND_ACTION = QEvent::User + 4
         };
         Event(QEvent::Type type) : QEvent(type) {}
-        ~Event() {};
+        ~Event() {}
 
         void addValue(const QVariant& value) { m_values << value; }
 

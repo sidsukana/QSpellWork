@@ -14,7 +14,7 @@ class SpellListSortedModel : public QSortFilterProxyModel
     Q_OBJECT
 
     public:
-        SpellListSortedModel(QObject *parent = 0);
+        SpellListSortedModel(QObject *parent = nullptr);
 
         bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
 };
@@ -24,7 +24,7 @@ class SpellListModel : public QAbstractTableModel
     Q_OBJECT
 
     public:
-        SpellListModel(QObject *parent = 0);
+        SpellListModel(QObject *parent = nullptr);
 
         int rowCount(const QModelIndex &parent) const;
         int columnCount(const QModelIndex &parent) const;

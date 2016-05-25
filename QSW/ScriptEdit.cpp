@@ -6,7 +6,7 @@
 #include "dbc/DBCStructure.h"
 
 ScriptEdit::ScriptEdit(QWidget *parent)
-    : QTextEdit(parent), m_completer(NULL)
+    : QTextEdit(parent), m_completer(nullptr)
 {
     m_completer = new QCompleter(parent);
     m_completer->setModel(setupModel());
@@ -143,7 +143,7 @@ QAbstractItemModel* ScriptEdit::setupModel()
 {
     QSet<QString> fields;
 
-    Spell::meta spell(NULL);
+    Spell::meta spell(nullptr);
 
     qint32 propertyCount = spell.metaObject()->propertyCount();
     qint32 methodCount = spell.metaObject()->methodCount();

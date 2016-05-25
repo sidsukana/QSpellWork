@@ -15,7 +15,7 @@ class WovWidget : public QWidget
     Q_OBJECT
 
 public:
-    WovWidget(QWidget* parent = NULL);
+    WovWidget(QWidget* parent = nullptr);
 
     private slots:
         void addModel();

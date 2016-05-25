@@ -474,7 +474,7 @@ void MainForm::slotSearch(quint8 type)
     SpellListSortedModel* smodel = static_cast<SpellListSortedModel*>(SpellList->model());
     SpellListModel* model = static_cast<SpellListModel*>(smodel->sourceModel());
     delete model;
-    model = NULL;
+    model = nullptr;
 
     m_sw->setType(type);
 
@@ -524,7 +524,7 @@ bool MainForm::event(QEvent* ev)
     return QWidget::event(ev);
 }
 
-AdvancedFilterWidget::AdvancedFilterWidget(QWidget* parent /* = NULL */)
+AdvancedFilterWidget::AdvancedFilterWidget(QWidget* parent /* = nullptr */)
     : QWidget(parent)
 {
     setupUi(this);

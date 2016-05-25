@@ -10,7 +10,7 @@ class SettingsForm : public QDialog, public Ui::settings
     Q_OBJECT
 
     public:
-        SettingsForm(QWidget *parent = 0);
+        SettingsForm(QWidget *parent = nullptr);
         ~SettingsForm() {}
 
     public slots:

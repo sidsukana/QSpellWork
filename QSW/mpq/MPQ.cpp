@@ -73,7 +73,7 @@ QByteArray MPQ::readFile(const QString &fileName)
         return files[fileName];
     }
 
-    DWORD size = SFileGetFileSize(hFile, NULL);
+    DWORD size = SFileGetFileSize(hFile, nullptr);
 
     if (size == SFILE_INVALID_SIZE) {
         qCritical("Cannot read file '%s' from archive", qPrintable(fileName));
@@ -82,7 +82,7 @@ QByteArray MPQ::readFile(const QString &fileName)
 
     char *data = new char[size];
 
-    if (!SFileReadFile(hFile, data, size, NULL, NULL)) {
+    if (!SFileReadFile(hFile, data, size, nullptr, nullptr)) {
         qCritical("Cannot read file '%s' from archive", qPrintable(fileName));
         SFileCloseFile(hFile);
         delete[] data;
