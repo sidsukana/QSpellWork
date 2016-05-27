@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/qsw">
-        <file>resources/styles.css</file>
         <file>resources/regExp.png</file>
         <file>resources/mangos.ico</file>
         <file>resources/border.png</file>

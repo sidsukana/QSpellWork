@@ -30,6 +30,9 @@ DBCFile::DBCFile(const QString &fileName)
     {
         quint32 id = *reinterpret_cast<const quint32*>(m_records + m_header->recordSize * i);
         m_indexes[id] = i;
+
+        if (i == 0)
+            m_minId = id;
     }
 }
 

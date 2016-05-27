@@ -42,7 +42,8 @@ SOURCES += \
     wov/texture.cpp \
     wov/textureanimation.cpp \
     Main.cpp \
-    wov/wovdbc.cpp
+    wov/wovdbc.cpp \
+    mustache/mustache.cpp
 
 HEADERS  += \
     AboutForm.h \
@@ -74,7 +75,8 @@ HEADERS  += \
     wov/spellvisualkit.h \
     wov/texture.h \
     wov/textureanimation.h \
-    wov/wovdbc.h
+    wov/wovdbc.h \
+    mustache/mustache.h
 
 FORMS += \
     about.ui \

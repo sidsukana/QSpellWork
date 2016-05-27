@@ -82,6 +82,11 @@ const QString Spell::entry::toolTip() const
     return QString::fromUtf8(getDbc().getStringBlock() + quint32(toolTipOffset[QSW::Locale]));
 }
 
+const QString Spell::entry::nameWithRank() const
+{
+    return (!rank().isEmpty() ? name() + " (" + rank() + ")" : name());
+}
+
 qint32 Spell::entry::getTriggerDuration(quint8 index) const
 {
     const Spell::entry* triggerSpell = Spell::getRecord(effectTriggerSpell[index], true);

@@ -1,16 +1,28 @@
 #include <QBuffer>
 #include <QThread>
+#include <QResource>
 
 #include "SWObject.h"
 #include "SWModels.h"
 #include "Defines.h"
 #include "blp/BLP.h"
 
+#include "mustache/mustache.h"
+
 Q_DECLARE_METATYPE(Spell::meta*)
 
 SWObject::SWObject(MainForm* form)
     : QObject(form), m_form(form), m_regExp(false), m_type(0), m_enums(form->getEnums())
 {
+    QFile templateFile("data/template.html");
+    templateFile.open(QIODevice::ReadOnly);
+    m_templateHtml = templateFile.readAll();
+    templateFile.close();
+
+    QFile styleFile("data/style.css");
+    styleFile.open(QIODevice::ReadOnly);
+    m_styleCss = styleFile.readAll();
+    styleFile.close();
 }
 
 QList<QEvent*> SWObject::search()
@@ -101,14 +113,8 @@ QList<QEvent*> SWObject::search()
 
                 if (family && aura && effect && targetA && targetB)
                 {
-                    QString sRank(m_spellInfo->rank());
-                    QString sFullName(m_spellInfo->name());
-
-                    if (!sRank.isEmpty())
-                        sFullName.append(QString(" (%0)").arg(sRank));
-
                     QStringList spellRecord;
-                    spellRecord << QString("%0").arg(m_spellInfo->id) << sFullName;
+                    spellRecord << QString("%0").arg(m_spellInfo->id) << m_spellInfo->nameWithRank();
 
                     model->appendRecord(spellRecord);
                 }
@@ -143,14 +149,8 @@ QList<QEvent*> SWObject::search()
 
             if (script.call(QJSValueList()).toBool())
             {
-                QString sRank(m_spellInfo->rank());
-                QString sFullName(m_spellInfo->name());
-
-                if (!sRank.isEmpty())
-                    sFullName.append(QString(" (%0)").arg(sRank));
-
                 QStringList spellRecord;
-                spellRecord << QString("%0").arg(m_spellInfo->id) << sFullName;
+                spellRecord << QString("%0").arg(m_spellInfo->id) << m_spellInfo->nameWithRank();
 
                 model->appendRecord(spellRecord);
             }
@@ -171,14 +171,8 @@ QList<QEvent*> SWObject::search()
                     const Spell::entry* m_spellInfo = Spell::getRecord(i);
                     if (m_spellInfo && m_spellInfo->name().contains(m_form->findLine_e1->text(), Qt::CaseInsensitive))
                     {
-                        QString sRank(m_spellInfo->rank());
-                        QString sFullName(m_spellInfo->name());
-
-                        if (!sRank.isEmpty())
-                            sFullName.append(QString(" (%0)").arg(sRank));
-
                         QStringList spellRecord;
-                        spellRecord << QString("%0").arg(m_spellInfo->id) << sFullName;
+                        spellRecord << QString("%0").arg(m_spellInfo->id) << m_spellInfo->nameWithRank();
 
                         model->appendRecord(spellRecord);
                     }
@@ -192,14 +186,8 @@ QList<QEvent*> SWObject::search()
             {
                 if (const Spell::entry* m_spellInfo = Spell::getRecord(m_form->findLine_e1->text().toInt(), true))
                 {
-                    QString sRank(m_spellInfo->rank());
-                    QString sFullName(m_spellInfo->name());
-
-                    if (!sRank.isEmpty())
-                        sFullName.append(QString(" (%0)").arg(sRank));
-
                     QStringList spellRecord;
-                    spellRecord << QString("%0").arg(m_spellInfo->id) << sFullName;
+                    spellRecord << QString("%0").arg(m_spellInfo->id) << m_spellInfo->nameWithRank();
 
                     model->appendRecord(spellRecord);
 
@@ -220,14 +208,8 @@ QList<QEvent*> SWObject::search()
                 const Spell::entry* m_spellInfo = Spell::getRecord(i);
                 if (m_spellInfo && m_spellInfo->description().contains(m_form->findLine_e3->text(), Qt::CaseInsensitive))
                 {
-                    QString sRank(m_spellInfo->rank());
-                    QString sFullName(m_spellInfo->name());
-
-                    if (!sRank.isEmpty())
-                        sFullName.append(QString(" (%0)").arg(sRank));
-
                     QStringList spellRecord;
-                    spellRecord << QString("%0").arg(m_spellInfo->id) << sFullName;
+                    spellRecord << QString("%0").arg(m_spellInfo->id) << m_spellInfo->nameWithRank();
 
                     model->appendRecord(spellRecord);
                 }
@@ -243,14 +225,8 @@ QList<QEvent*> SWObject::search()
             {
                 if (const Spell::entry* m_spellInfo = Spell::getRecord(i))
                 {
-                    QString sRank(m_spellInfo->rank());
-                    QString sFullName(m_spellInfo->name());
-
-                    if (!sRank.isEmpty())
-                        sFullName.append(QString(" (%0)").arg(sRank));
-
                     QStringList spellRecord;
-                    spellRecord << QString("%0").arg(m_spellInfo->id) << sFullName;
+                    spellRecord << QString("%0").arg(m_spellInfo->id) << m_spellInfo->nameWithRank();
 
                     model->appendRecord(spellRecord);
                 }
@@ -840,31 +816,18 @@ void SWObject::showInfo(const Spell::entry* spellInfo, QSW::Pages pageId)
     if (!spellInfo)
         return;
 
-    html.clear();
-
-    QString sName(spellInfo->name());
-    QString sDescription(spellInfo->description());
-    QString sRank(spellInfo->rank());
-    QString sToolTip(spellInfo->toolTip());
-    QString sSpellFamilyFlags(QString("%0").arg(spellInfo->spellFamilyFlags, 16, 16, QChar('0')));
-    QString sAttributes(QString("%0").arg(spellInfo->attributes, 8, 16, QChar('0')));
-    QString sAttributesEx1(QString("%0").arg(spellInfo->attributesEx1, 8, 16, QChar('0')));
-    QString sAttributesEx2(QString("%0").arg(spellInfo->attributesEx2, 8, 16, QChar('0')));
-    QString sAttributesEx3(QString("%0").arg(spellInfo->attributesEx3, 8, 16, QChar('0')));
-    QString sAttributesEx4(QString("%0").arg(spellInfo->attributesEx4, 8, 16, QChar('0')));
-    QString sTargetMask(QString("%0").arg(spellInfo->targets, 8, 16, QChar('0')));
-    QString sCreatureTypeMask(QString("%0").arg(spellInfo->targetCreatureType, 8, 16, QChar('0')));
-    QString sFormMask(QString("%0").arg(spellInfo->stances, 8, 16, QChar('0')));
-    QString sIF(QString("%0").arg(spellInfo->interruptFlags, 8, 16, QChar('0')));
-    QString sAIF(QString("%0").arg(spellInfo->auraInterruptFlags, 8, 16, QChar('0')));
-    QString sCIF(QString("%0").arg(spellInfo->channelInterruptFlags, 8, 16, QChar('0')));
-
-    html.append("<html>"
-                "<head>"
-                "<link rel='stylesheet' type='text/css' href='qrc:///qsw/resources/styles.css'>"
-                "</head>");
-
-    html.append(QString("<body>"));
+    QString sSpellFamilyFlags("0x" + QString("%0").arg(spellInfo->spellFamilyFlags, 16, 16, QChar('0')).toUpper());
+    QString sAttributes("0x" + QString("%0").arg(spellInfo->attributes, 8, 16, QChar('0')).toUpper());
+    QString sAttributesEx1("0x" + QString("%0").arg(spellInfo->attributesEx1, 8, 16, QChar('0')).toUpper());
+    QString sAttributesEx2("0x" + QString("%0").arg(spellInfo->attributesEx2, 8, 16, QChar('0')).toUpper());
+    QString sAttributesEx3("0x" + QString("%0").arg(spellInfo->attributesEx3, 8, 16, QChar('0')).toUpper());
+    QString sAttributesEx4("0x" + QString("%0").arg(spellInfo->attributesEx4, 8, 16, QChar('0')).toUpper());
+    QString sTargetMask("0x" + QString("%0").arg(spellInfo->targets, 8, 16, QChar('0')).toUpper());
+    QString sCreatureTypeMask("0x" + QString("%0").arg(spellInfo->targetCreatureType, 8, 16, QChar('0')).toUpper());
+    QString sFormMask("0x" + QString("%0").arg(spellInfo->stances, 8, 16, QChar('0')).toUpper());
+    QString sIF("0x" + QString("%0").arg(spellInfo->interruptFlags, 8, 16, QChar('0')).toUpper());
+    QString sAIF("0x" + QString("%0").arg(spellInfo->auraInterruptFlags, 8, 16, QChar('0')).toUpper());
+    QString sCIF("0x" + QString("%0").arg(spellInfo->channelInterruptFlags, 8, 16, QChar('0')).toUpper());
 
     QByteArray byteArray[3];
     QBuffer buffer[3];
@@ -880,577 +843,400 @@ void SWObject::showInfo(const Spell::entry* spellInfo, QSW::Pages pageId)
     buffer[2].open(QIODevice::WriteOnly);
     QImage(":/qsw/resources/borderHover.png").save(&buffer[2], "PNG");
 
-    html.append(QString("<div class='b-tooltip_icon'>"
-                        "<style>"
-                        "div.icon { width: 68px; height: 68px; background: url(\"data:image/png;base64," + byteArray[0].toBase64() + "\") no-repeat center; }"
-                        "div.icon div { background: url(\"data:image/png;base64," + byteArray[1].toBase64() + "\") no-repeat center;}"
-                        "div.icon div div:hover { background: url(\"data:image/png;base64," + byteArray[2].toBase64() + "\") no-repeat center; }"
-                        "div.icon div div {width: 68px; height: 68px;}"
-                        "</style>"
-                        "<div class='icon'><div><div>"
-                        "</div></div></div>"
-                        "</div>"));
+    QVariantHash values;
+    values["icon1"] = byteArray[0].toBase64().data();
+    values["icon2"] = byteArray[1].toBase64().data();
+    values["icon3"] = byteArray[2].toBase64().data();
 
-    html.append("<div class='b-tooltip_body'>");
+    values["id"] = spellInfo->id;
+    values["name"] = spellInfo->name();
+    values["rank"] = spellInfo->rank();
+    values["nameWithRank"] = spellInfo->nameWithRank();
+    values["description"] = getDescription(spellInfo->description(), spellInfo);
+    values["tooltip"] = getDescription(spellInfo->toolTip(), spellInfo);
 
-    if (!sRank.isEmpty())
-        sName.append(QString(" (%0)").arg(sRank));
-
-    html.append(QString("<b>Id:</b> %0<br />")
-        .arg(spellInfo->id));
-
-    html.append(QString("<b>Name:</b> %0<br />")
-        .arg(sName));
-
-    if (!sDescription.isEmpty())
-        html.append(QString("<b>Description:</b> %0<br />").arg(getDescription(sDescription, spellInfo)));
-
-    if (!sToolTip.isEmpty())
-        html.append(QString("<b>ToolTip:</b> %0<br />").arg(getDescription(sToolTip, spellInfo)));
-
-    html.append("</div>");
-
-    quint32 parentId = getParentSpellId(spellInfo->id);
-    if (parentId)
+    if (const Spell::entry* parentInfo = Spell::getRecord(getParentSpellId(spellInfo->id), true))
     {
-        if (const Spell::entry* parentInfo = Spell::getRecord(parentId, true))
-        {
-            QString sParentName(parentInfo->name());
-            QString sParentRank(parentInfo->rank());
-
-            if (!sParentRank.isEmpty())
-                sParentName.append(" (" + sParentRank + ")");
-
-            html.append(QString("<div class='b-vlink'><b>Parent spell:</b> <a href='http://spellwork/%0' class='blue_link'>%0 - %1</a></div>")
-                .arg(parentId)
-                .arg(sParentName));
-        }
+        values["parentId"] = parentInfo->id;
+        values["parentName"] = parentInfo->nameWithRank();
     }
 
-    html.append("<div class='b-box-title'>General info</div>"
-                "<div class='b-box-body'>"
-                "<div class='b-box'>"
-                "<ul>");
+    values["modalNextSpell"] = spellInfo->modalNextSpell;
+    values["categoryId"] = spellInfo->category;
+    values["spellIconId"] = spellInfo->spellIconId;
+    values["activeIconId"] = spellInfo->activeIconId;
+    values["spellVisual1"] = spellInfo->spellVisual[0];
+    values["spellVisual2"] = spellInfo->spellVisual[1];
 
-     if (spellInfo->modalNextSpell)
-        html.append(QString("<li>ModalNextSpell: %0</li>")
-            .arg(spellInfo->modalNextSpell));
+    values["spellFamilyId"] = spellInfo->spellFamilyName;
+    values["spellFamilyName"] = m_enums->getSpellFamilies()[spellInfo->spellFamilyName];
+    values["spellFamilyFlags"] = sSpellFamilyFlags;
 
-    html.append(QString("<li>Category = %0, SpellIconId = %1, ActiveIconId = %2, SpellVisual = (%3, %4)</li>")
-        .arg(spellInfo->category)
-        .arg(spellInfo->spellIconId)
-        .arg(spellInfo->activeIconId)
-        .arg(spellInfo->spellVisual[0])
-        .arg(spellInfo->spellVisual[1]));
+    values["spellSchoolId"] = spellInfo->school;
+    values["spellSchoolName"] = m_enums->getSchools()[spellInfo->school];
 
-    html.append(QString("<li>SpellFamilyName = %0, SpellFamilyFlags = 0x%1</li>")
-        .arg(m_enums->getSpellFamilies()[spellInfo->spellFamilyName])
-        .arg(sSpellFamilyFlags.toUpper()));
+    values["damageClassId"] = spellInfo->damageClass;
+    values["damageClassName"] = m_enums->getDamageClasses()[spellInfo->damageClass];
 
-    html.append(QString("<li>SpellSchool = %0 (%1)</li>")
-        .arg(spellInfo->school)
-        .arg(m_enums->getSchools()[spellInfo->school]));
-
-    html.append(QString("<li>DamageClass = %0 (%1)</li>")
-        .arg(spellInfo->damageClass)
-        .arg(m_enums->getDamageClasses()[spellInfo->damageClass]));
-
-    html.append(QString("<li>PreventionType = %0 (%1)</li>")
-        .arg(spellInfo->preventionType)
-        .arg(m_enums->getPreventionTypes()[spellInfo->preventionType]));
-
-    html.append("</ul></div></div>");
+    values["preventionTypeId"] = spellInfo->preventionType;
+    values["preventionTypeName"] = m_enums->getPreventionTypes()[spellInfo->preventionType];
 
     if (spellInfo->attributes || spellInfo->attributesEx1 || spellInfo->attributesEx2 ||
         spellInfo->attributesEx3 || spellInfo->attributesEx4)
     {
-        html.append("<div class='b-box-title'>Attributes</div>"
-                    "<div class='b-box-body'>"
-                    "<div class='b-box'>"
-                    "<ul>");
+        values["hasAttributes"] = true;
 
         if (spellInfo->attributes)
-            html.append(QString("<li>Attributes: 0x%0 (%1)</li>")
-                .arg(sAttributes.toUpper())
-                .arg(containAttributes(spellInfo, TYPE_ATTR)));
+        {
+            values["attr"] = sAttributes;
+            values["attrNames"] = containAttributes(spellInfo, TYPE_ATTR);
+        }
 
         if (spellInfo->attributesEx1)
-            html.append(QString("<li>AttributesEx1: 0x%0 (%1)</li>")
-                .arg(sAttributesEx1.toUpper())
-                .arg(containAttributes(spellInfo, TYPE_ATTR_EX1)));
+        {
+            values["attrEx1"] = sAttributesEx1;
+            values["attrEx1Names"] = containAttributes(spellInfo, TYPE_ATTR_EX1);
+        }
 
         if (spellInfo->attributesEx2)
-            html.append(QString("<li>AttributesEx2: 0x%0 (%1)</li>")
-                .arg(sAttributesEx2.toUpper())
-                .arg(containAttributes(spellInfo, TYPE_ATTR_EX2)));
+        {
+            values["attrEx2"] = sAttributesEx2;
+            values["attrEx2Names"] = containAttributes(spellInfo, TYPE_ATTR_EX2);
+        }
 
         if (spellInfo->attributesEx3)
-            html.append(QString("<li>AttributesEx3: 0x%0 (%1)</li>")
-                .arg(sAttributesEx3.toUpper())
-                .arg(containAttributes(spellInfo, TYPE_ATTR_EX3)));
+        {
+            values["attrEx3"] = sAttributesEx3;
+            values["attrEx3Names"] = containAttributes(spellInfo, TYPE_ATTR_EX3);
+        }
 
         if (spellInfo->attributesEx4)
-            html.append(QString("<li>AttributesEx4: 0x%0 (%1)</li>")
-                .arg(sAttributesEx4.toUpper())
-                .arg(containAttributes(spellInfo, TYPE_ATTR_EX4)));
-
-        html.append("</ul>"
-	                "</div>"
-                    "</div>");
+        {
+            values["attrEx4"] = sAttributesEx4;
+            values["attrEx4Names"] = containAttributes(spellInfo, TYPE_ATTR_EX4);
+        }
     }
 
-    html.append("<div class='b-box-title'>Advanced info</div>"
-                "<div class='b-box-body'>"
-                "<div class='b-box'>"
-                "<ul>");
-
     if (spellInfo->targets)
-        html.append(QString("<li>Targets Mask = 0x%0 (%1)</li>")
-            .arg(sTargetMask.toUpper())
-            .arg(containAttributes(spellInfo, TYPE_TARGETS)));
+    {
+        values["targets"] = sTargetMask;
+        values["targetsNames"] = containAttributes(spellInfo, TYPE_TARGETS);
+    }
 
     if (spellInfo->targetCreatureType)
-        html.append(QString("<li>Creature Type Mask = 0x%0 (%1)</li>")
-            .arg(sCreatureTypeMask.toUpper())
-            .arg(containAttributes(spellInfo, TYPE_CREATURE)));
+    {
+        values["creatureType"] = sCreatureTypeMask;
+        values["creatureTypeNames"] = containAttributes(spellInfo, TYPE_CREATURE);
+    }
 
     if (spellInfo->stances)
-        html.append(QString("<li>Stances: 0x%0 (%1)</li>")
-            .arg(sFormMask.toUpper())
-            .arg(containAttributes(spellInfo, TYPE_FORMS)));
+    {
+        values["stances"] = sFormMask;
+        values["stancesNames"] = containAttributes(spellInfo, TYPE_FORMS);
+    }
 
     if (spellInfo->stancesNot)
-        html.append(QString("<li>Stances not: 0x%0 (%1)</li>")
-            .arg(sFormMask.toUpper())
-            .arg(containAttributes(spellInfo, TYPE_FORMS_NOT)));
+    {
+        values["stancesNot"] = sFormMask;
+        values["stancesNotNames"] = containAttributes(spellInfo, TYPE_FORMS_NOT);
+    }
 
-    appendSkillInfo(spellInfo);
-    html.append(QString("<li>Spell Level = %0, BaseLevel %1, MaxLevel %2, MaxTargetLevel %3</li>")
-        .arg(spellInfo->spellLevel)
-        .arg(spellInfo->baseLevel)
-        .arg(spellInfo->maxLevel)
-        .arg(spellInfo->maxTargetLevel));
+    for (quint32 i = 0; i < SkillLineAbility::getHeader()->recordCount; ++i)
+    {
+        const SkillLineAbility::entry* skillInfo = SkillLineAbility::getRecord(i);
+        if (skillInfo->id && skillInfo->spellId == spellInfo->id)
+        {
+            if (const SkillLine::entry* skill = SkillLine::getRecord(skillInfo->skillId, true))
+            {
+                values["skillId"] = skill->id;
+                values["skillName"] = skill->name();
+                values["reqSkillValue"] = skillInfo->requiredSkillValue;
+                values["forwardSpellId"] = skillInfo->forwardSpellId;
+                values["minSkillValue"] = skillInfo->minValue;
+                values["maxSkillValue"] = skillInfo->maxValue;
+                values["charPoints1"] = skillInfo->charPoints[0];
+                values["charPoints2"] = skillInfo->charPoints[1];
+            }
+            break;
+        }
+    }
+
+    values["spellLevel"] = spellInfo->spellLevel;
+    values["baseLevel"] = spellInfo->baseLevel;
+    values["maxLevel"] = spellInfo->maxLevel;
+    values["maxTargetLevel"] = spellInfo->maxTargetLevel;
 
     if (spellInfo->equippedItemClass != -1)
     {
-        html.append(QString("<li>EquippedItemClass = %0 (%1)</li>")
-            .arg(spellInfo->equippedItemClass)
-            .arg(m_enums->getItemClasses()[spellInfo->equippedItemClass]));
+        values["equipItemClass"] = spellInfo->equippedItemClass;
+        values["equipItemClassName"] = m_enums->getItemClasses()[spellInfo->equippedItemClass];
 
         if (spellInfo->equippedItemSubClassMask)
         {
-            html.append("<ul>");
-            QString sItemSubClassMask(QString("%0").arg(spellInfo->equippedItemSubClassMask, 8, 16, QChar('0')));
+            QString sItemSubClassMask("0x" + QString("%0").arg(spellInfo->equippedItemSubClassMask, 8, 16, QChar('0')).toUpper());
+            values["equipItemSubClassMask"] = sItemSubClassMask;
+
             switch (spellInfo->equippedItemClass)
             {
                 case 2: // WEAPON
-                html.append(QString("<li>SubClass mask 0x%0 (%1)</li>")
-                    .arg(sItemSubClassMask.toUpper())
-                    .arg(containAttributes(spellInfo, TYPE_ITEM_WEAPON)));
+                    values["equipItemSubClassMaskNames"] = containAttributes(spellInfo, TYPE_ITEM_WEAPON);
                     break;
                 case 4: // ARMOR
-                html.append(QString("<li>SubClass mask 0x%0 (%1)</li>")
-                    .arg(sItemSubClassMask.toUpper())
-                    .arg(containAttributes(spellInfo, TYPE_ITEM_ARMOR)));
+                    values["equipItemSubClassMaskNames"] = containAttributes(spellInfo, TYPE_ITEM_ARMOR);
                     break;
                 case 15: // MISC
-                html.append(QString("<li>SubClass mask 0x%0 (%1)</li>")
-                    .arg(sItemSubClassMask.toUpper())
-                    .arg(containAttributes(spellInfo, TYPE_ITEM_MISC)));
+                    values["equipItemSubClassMaskNames"] = containAttributes(spellInfo, TYPE_ITEM_MISC);
                     break;
+                default: break;
             }
-
-            html.append("</ul>");
         }
 
         if (spellInfo->equippedItemInventoryTypeMask)
         {
-            QString sItemInventoryMask(QString("%0").arg(spellInfo->equippedItemInventoryTypeMask, 8, 16, QChar('0')));
-            html.append(QString("<li>InventoryType mask = 0x%0 (%1)</li>")
-                .arg(sItemInventoryMask.toUpper())
-                .arg(containAttributes(spellInfo, TYPE_ITEM_INVENTORY)));
+            QString sItemInventoryMask("0x" + QString("%0").arg(spellInfo->equippedItemInventoryTypeMask, 8, 16, QChar('0')).toUpper());
+            values["equipItemInvTypeMask"] = sItemInventoryMask;
+            values["equipItemInvTypeMaskNames"] = containAttributes(spellInfo, TYPE_ITEM_INVENTORY);
         }
     }
 
-    html.append(QString("<li>Category = %0</li>")
-        .arg(spellInfo->category));
+    values["categoryId"] = spellInfo->category;
+    values["dispelId"] = spellInfo->dispel;
+    values["dispelName"] = m_enums->getDispelTypes()[spellInfo->dispel];
+    values["mechanicId"] = spellInfo->mechanic;
+    values["mechanicName"] = m_enums->getMechanics()[spellInfo->mechanic];
 
-    html.append(QString("<li>DispelType = %0 (%1)</li>")
-        .arg(spellInfo->dispel)
-        .arg(m_enums->getDispelTypes()[spellInfo->dispel]));
-
-    html.append(QString("<li>Mechanic = %0 (%1)</li>")
-        .arg(spellInfo->mechanic)
-        .arg(m_enums->getMechanics()[spellInfo->mechanic]));
-
-    appendRangeInfo(spellInfo);
+    if (const SpellRange::entry* range = SpellRange::getRecord(spellInfo->rangeIndex, true))
+    {
+        values["rangeId"] = range->id;
+        values["rangeName"] = range->name();
+        values["minRange"] = range->minRange;
+        values["maxRange"] = range->maxRange;
+    }
 
     if (spellInfo->speed)
-        html.append(QString("<li>Speed: %0</li>")
-            .arg(spellInfo->speed, 0, 'f', 2));
+        values["speed"] = QString("%0").arg(spellInfo->speed, 0, 'f', 2);
 
-    if (spellInfo->stackAmount)
-        html.append(QString("<li>Stackable up to %0</li>")
-            .arg(spellInfo->stackAmount));
+    values["stackAmount"] = spellInfo->stackAmount;
 
-    appendCastTimeInfo(spellInfo);
-
-    if (spellInfo->recoveryTime || spellInfo->categoryRecoveryTime || spellInfo->startRecoveryCategory)
+    if (const SpellCastTimes::entry* castInfo = SpellCastTimes::getRecord(spellInfo->castingTimeIndex, true))
     {
-        html.append(QString("<li>RecoveryTime: %0 ms, CategoryRecoveryTime: %1 ms</li>")
-            .arg(spellInfo->recoveryTime)
-            .arg(spellInfo->categoryRecoveryTime));
-
-        html.append(QString("<li>StartRecoveryCategory = %0, StartRecoveryTime = %1 ms</li>")
-            .arg(spellInfo->startRecoveryCategory)
-            .arg(float(spellInfo->startRecoveryTime), 0, 'f', 2));
+        values["castTimeId"] = castInfo->id;
+        values["castTimeValue"] = QString("%0").arg(float(castInfo->castTime) / 1000, 0, 'f', 2);
     }
 
-    appendDurationInfo(spellInfo);
+    values["recoveryInfo"] = spellInfo->recoveryTime || spellInfo->categoryRecoveryTime || spellInfo->startRecoveryCategory;
 
-    if (spellInfo->manaCost || spellInfo->manaCostPercentage)
+    values["recoveryTime"] = spellInfo->recoveryTime;
+    values["categoryRecoveryTime"] = spellInfo->categoryRecoveryTime;
+
+    values["startRecoveryCategory"] = spellInfo->startRecoveryCategory;
+    values["startRecoveryTime"] = QString("%0").arg(float(spellInfo->startRecoveryTime), 0, 'f', 2);
+
+    if (const SpellDuration::entry* durationInfo = SpellDuration::getRecord(spellInfo->durationIndex, true))
     {
-        if (spellInfo->manaCost)
-        {
-            html.append(QString("<li>Power Type = %0, Cost %1")
-                .arg(m_enums->getPowers()[spellInfo->powerType])
-                .arg(spellInfo->manaCost));
-        }
-        else if (spellInfo->manaCostPercentage)
-        {
-            html.append(QString("<li>Power Type = %0, Cost %1% of base mana")
-                .arg(m_enums->getPowers()[spellInfo->powerType])
-                .arg(spellInfo->manaCostPercentage));
-        }
-
-        if (spellInfo->manaCostPerlevel)
-            html.append(QString(" + lvl * %0")
-                .arg(spellInfo->manaCostPerlevel));
-
-        if (spellInfo->manaPerSecond)
-            html.append(QString(" + %0 Per Second")
-                .arg(spellInfo->manaPerSecond));
-
-        if (spellInfo->manaPerSecondPerLevel)
-            html.append(QString(" + lvl * %0")
-                .arg(spellInfo->manaPerSecondPerLevel));
-
-        html.append("</li>");
+        values["durationId"] = durationInfo->id;
+        values["durationBase"] = durationInfo->duration;
+        values["durationPerLevel"] = durationInfo->durationPerLevel;
+        values["durationMax"] = durationInfo->maxDuration;
     }
 
-    html.append(QString("<li>Interrupt Flags: 0x%0, AuraIF 0x%1, ChannelIF 0x%2</li>")
-        .arg(sIF.toUpper())
-        .arg(sAIF.toUpper())
-        .arg(sCIF.toUpper()));
+    values["costInfo"] = spellInfo->manaCost || spellInfo->manaCostPercentage;
+    values["powerTypeId"] = spellInfo->powerType;
+    values["powerTypeName"] = m_enums->getPowers()[spellInfo->powerType];
+    values["manaCost"] = spellInfo->manaCost;
+    values["manaCostPercentage"] = spellInfo->manaCostPercentage;
+    values["manaCostPerLevel"] = spellInfo->manaCostPerlevel;
+    values["manaPerSecond"] = spellInfo->manaPerSecond;
+    values["manaPerSecondPerLevel"] =spellInfo->manaPerSecondPerLevel;
+
+    values["interruptFlags"] = sIF;
+    values["auraInterruptFlags"] = sAIF;
+    values["channelInterruptFlags"] = sCIF;
 
     if (spellInfo->casterAuraState)
-        html.append(QString("<li>CasterAuraState = %0 (%1)</li>")
-            .arg(spellInfo->casterAuraState)
-            .arg(m_enums->getAuraStates()[spellInfo->casterAuraState]));
+    {
+        values["casterAuraState"] = spellInfo->casterAuraState;
+        values["casterAuraStateName"] = m_enums->getAuraStates()[spellInfo->casterAuraState];
+    }
 
     if (spellInfo->targetAuraState)
-        html.append(QString("<li>TargetAuraState = %0 (%1)</li>")
-            .arg(spellInfo->targetAuraState)
-            .arg(m_enums->getAuraStates()[spellInfo->targetAuraState]));
+    {
+        values["targetAuraState"] = spellInfo->targetAuraState;
+        values["targetAuraStateName"] = m_enums->getAuraStates()[spellInfo->targetAuraState];
+    }
 
-    if (spellInfo->requiresSpellFocus)
-        html.append(QString("<li>Requires Spell Focus %0</li>")
-            .arg(spellInfo->requiresSpellFocus));
+    values["reqSpellFocus"] = spellInfo->requiresSpellFocus;
+
+    values["procChance"] = spellInfo->procChance;
+    values["procCharges"] = spellInfo->procCharges;
 
     if (spellInfo->procFlags)
     {
-        QString sProcFlags(QString("%0").arg(spellInfo->procFlags, 8, 16, QChar('0')));
-        html.append(QString("<li><b>Proc flag 0x%0, chance = %1, charges - %2</b></li>")
-            .arg(sProcFlags.toUpper())
-            .arg(spellInfo->procChance)
-            .arg(spellInfo->procCharges));
+        QString sProcFlags("0x" + QString("%0").arg(spellInfo->procFlags, 8, 16, QChar('0')).toUpper());
+        values["procFlags"] = sProcFlags;
 
-        appendProcInfo(spellInfo);
+        quint8 i = 0;
+        quint64 proc = spellInfo->procFlags;
+
+        QVariantList procNames;
+        while (proc != 0)
+        {
+            if ((proc & 1) != 0) {
+                QVariantHash procName;
+                procName["name"] = ProcFlagDesc[i];
+                procNames.append(procName);
+            }
+            ++i;
+            proc >>= 1;
+        }
+
+        values["procNames"] = procNames;
     }
-    else
+
+    QVariantList effectList;
+    for (quint8 eff = 0; eff < MAX_EFFECT_INDEX; ++eff)
     {
-        html.append(QString("<li>Chance = %0, charges - %1</li>")
-            .arg(spellInfo->procChance)
-            .arg(spellInfo->procCharges));
+        QVariantHash effectValues;
+        effectValues["index"] = eff;
+        effectValues["id"] = spellInfo->effect[eff];
+        effectValues["name"] = m_enums->getSpellEffects()[spellInfo->effect[eff]];
+
+        effectValues["basePoints"] = spellInfo->effectBasePoints[eff] + 1;
+
+        if (spellInfo->effectRealPointsPerLevel[eff])
+            effectValues["perLevelPoints"] = QString("%0").arg(spellInfo->effectRealPointsPerLevel[eff], 0, 'f', 2);
+
+        if (spellInfo->effectDieSides[eff] > 1)
+            effectValues["dieSidesPoints"] = spellInfo->effectBasePoints[eff] + 1 + spellInfo->effectDieSides[eff];
+
+        if (spellInfo->effectPointsPerComboPoint[eff])
+            effectValues["perComboPoints"] = QString("%0").arg(spellInfo->effectPointsPerComboPoint[eff], 0, 'f', 2);
+
+        if (spellInfo->damageMultiplier[eff] != 1.0f)
+            effectValues["damageMultiplier"] = QString("%0").arg(spellInfo->damageMultiplier[eff], 0, 'f', 2);
+
+        if (spellInfo->effectMultipleValue[eff])
+            effectValues["multipleValue"] = QString("%0").arg(spellInfo->effectMultipleValue[eff], 0, 'f', 2);
+
+        effectValues["targetA"] = spellInfo->effectImplicitTargetA[eff];
+        effectValues["targetB"] = spellInfo->effectImplicitTargetB[eff];
+        effectValues["targetNameA"] = m_enums->getTargets()[spellInfo->effectImplicitTargetA[eff]];
+        effectValues["targetNameB"] = m_enums->getTargets()[spellInfo->effectImplicitTargetB[eff]];
+
+        quint32 misc = spellInfo->effectMiscValue[eff];
+        effectValues["miscValue"] = misc;
+        effectValues["amplitude"] = spellInfo->effectAmplitude[eff];
+        effectValues["auraId"] = spellInfo->effectApplyAuraName[eff];
+        effectValues["auraName"] = m_enums->getSpellAuras()[spellInfo->effectApplyAuraName[eff]];
+
+        switch (spellInfo->effectApplyAuraName[eff])
+        {
+            case 29:
+                effectValues["mods"] = m_enums->getUnitMods()[misc];
+                break;
+            case 107:
+            case 108:
+                effectValues["mods"] = m_enums->getSpellMods()[misc];
+                break;
+            default:
+                effectValues["mods"] = misc;
+                break;
+        }
+
+        if (const SpellRadius::entry* spellRadius = SpellRadius::getRecord(spellInfo->effectRadiusIndex[eff], true))
+            effectValues["radiusValue"] = QString("%0").arg(spellRadius->radius, 0, 'f', 2);
+
+        if (const Spell::entry* triggerSpell = Spell::getRecord(spellInfo->effectTriggerSpell[eff], true))
+        {
+            effectValues["triggerId"] = triggerSpell->id;
+            effectValues["triggerName"] = triggerSpell->nameWithRank();
+            effectValues["triggerDescription"] = getDescription(triggerSpell->description(), triggerSpell);
+            effectValues["triggerToolTip"] = getDescription(triggerSpell->toolTip(), triggerSpell);
+            effectValues["triggerProcChance"] = triggerSpell->procChance;
+            effectValues["triggerProcCharges"] = triggerSpell->procCharges;
+
+            if (triggerSpell->procFlags)
+            {
+                effectValues["triggerProcFlags"] = triggerSpell->procCharges;
+
+                quint8 i = 0;
+                quint64 proc = triggerSpell->procFlags;
+
+                QVariantList procNames;
+                while (proc != 0)
+                {
+                    if ((proc & 1) != 0) {
+                        QVariantHash procName;
+                        procName["name"] = ProcFlagDesc[i];
+                        procNames.append(procName);
+                    }
+                    ++i;
+                    proc >>= 1;
+                }
+
+                effectValues["triggerProcNames"] = procNames;
+            }
+        }
+
+        effectValues["chainTarget"] = spellInfo->effectChainTarget[eff];
+
+        effectValues["mechanicId"] = spellInfo->effectMechanic[eff];
+        effectValues["mechanicName"] = m_enums->getMechanics()[spellInfo->effectMechanic[eff]];
+
+        if (spellInfo->effectItemType[eff] != 0)
+        {
+            QString sEffectItemType("0x" + QString("%0").arg(spellInfo->effectItemType[eff], 8, 16, QChar('0')).toUpper());
+            effectValues["itemType"] = sEffectItemType;
+
+            if (spellInfo->effect[eff] == 6)
+            {
+                QVariantList affectList;
+                for (quint32 i = 0; i < Spell::getHeader()->recordCount; ++i)
+                {
+                    if (const Spell::entry* t_spellInfo = Spell::getRecord(i))
+                    {
+                        bool hasSkill = false;
+                        if ((t_spellInfo->spellFamilyName == spellInfo->spellFamilyName) &&
+                            (t_spellInfo->spellFamilyFlags & spellInfo->effectItemType[eff]))
+                        {
+                            for (quint32 sk = 0; sk < SkillLineAbility::getHeader()->recordCount; ++sk)
+                            {
+                                const SkillLineAbility::entry* skillInfo = SkillLineAbility::getRecord(sk);
+                                if (skillInfo && skillInfo->spellId == t_spellInfo->id && skillInfo->skillId > 0)
+                                {
+                                    hasSkill = true;
+                                    break;
+                                }
+                            }
+
+                            QVariantHash affectValues;
+                            affectValues["id"] = t_spellInfo->id;
+                            affectValues["name"] = t_spellInfo->nameWithRank();
+                            affectValues["hasSkill"] = hasSkill;
+                            affectList.append(affectValues);
+                        }
+                    }
+                }
+                effectValues["affectInfo"] = affectList;
+            }
+        }
+        effectList.append(effectValues);
     }
 
-    html.append("</ul></div></div>");
+    values["effect"] = effectList;
+    values["style"] = m_styleCss;
 
-    appendSpellEffectInfo(spellInfo);
+    Mustache::Renderer renderer;
+    Mustache::QtVariantContext context(values);
 
-    html.append("</body></html>");
+    QString html;
+    QTextStream stream(&html);
+    stream << renderer.render(m_templateHtml, &context);
 
-    // Formatting for debug
+    html.replace("\n", "");
     html.replace("><", ">\n<");
 
     m_form->getPage(pageId)->setInfo(html, spellInfo->id);
-}
-
-void SWObject::appendRangeInfo(Spell::entry const* spellInfo)
-{
-    if (const SpellRange::entry* range = SpellRange::getRecord(spellInfo->rangeIndex, true))
-    {
-        html.append(QString("<li>SpellRange (Id %0) \"%1\"</li>"
-                            "<ul><li>MinRange = %2</li>"
-                            "<li>MaxRange = %3</li></ul>")
-            .arg(range->id)
-            .arg(range->name())
-            .arg(range->minRange)
-            .arg(range->maxRange));
-    }
-}
-
-void SWObject::appendProcInfo(Spell::entry const* spellInfo)
-{
-    quint8 i = 0;
-    quint64 proc = spellInfo->procFlags;
-
-    html.append("<ul>");
-    while (proc != 0)
-    {
-        if ((proc & 1) != 0)
-            html.append(QString("<li>%0</li>").arg(ProcFlagDesc[i]));
-        ++i;
-        proc >>= 1;
-    }
-    html.append("</ul>");
-}
-
-void SWObject::appendSpellEffectInfo(Spell::entry const* spellInfo)
-{
-    html.append("<div class='b-box-title'>Effects</div>"
-                "<div class='b-box-body'>"
-                "<div class='b-box'>");
-
-    for (quint8 eff = 0; eff < MAX_EFFECT_INDEX; ++eff)
-    {
-        if (!spellInfo->effect[eff])
-        {
-            html.append(QString("<div class='b-effect_name'>Effect %0:</div>"
-                                "<ul>"
-		                        "<li>NO EFFECT</li>"
-		                        "</ul>").arg(eff));
-        }
-        else
-        {
-            QString _BasePoints(QString("<li>BasePoints = %0").arg(spellInfo->effectBasePoints[eff] + 1));
-
-            QString _RealPoints;
-            if (spellInfo->effectRealPointsPerLevel[eff] != 0)
-                _RealPoints = QString(" + Level * %0").arg(spellInfo->effectRealPointsPerLevel[eff], 0, 'f', 2);
-
-            QString _DieSides;
-            if (1 < spellInfo->effectDieSides[eff])
-            {
-                if (spellInfo->effectRealPointsPerLevel[eff] != 0)
-                    _DieSides = QString(" to %0 + lvl * %1")
-                        .arg(spellInfo->effectBasePoints[eff] + 1 + spellInfo->effectDieSides[eff])
-                        .arg(spellInfo->effectRealPointsPerLevel[eff], 0, 'f', 2);
-                else
-                    _DieSides = QString(" to %0").arg(spellInfo->effectBasePoints[eff] + 1 + spellInfo->effectDieSides[eff]);
-            }
-
-            QString _PointsPerCombo;
-            if (spellInfo->effectPointsPerComboPoint[eff] != 0)
-                _PointsPerCombo = QString(" + combo * %0").arg(spellInfo->effectPointsPerComboPoint[eff], 0, 'f', 2);
-
-            QString _DamageMultiplier;
-            if (spellInfo->damageMultiplier[eff] != 1.0f)
-                _DamageMultiplier = QString(" * %0").arg(spellInfo->damageMultiplier[eff], 0, 'f', 2);
-
-            QString _Multiple;
-            if (spellInfo->effectMultipleValue[eff] != 0)
-                _Multiple = QString(", Multiple = %0").arg(spellInfo->effectMultipleValue[eff], 0, 'f', 2);
-
-            QString _Result = _BasePoints + _RealPoints + _DieSides + _PointsPerCombo + _DamageMultiplier + _Multiple + "</li>";
-
-            html.append(QString("<div class='b-effect_name'>Effect %0:</div>"
-                                "<ul>").arg(eff));
-
-            html.append(QString("<li>Id: %0 (%1)</li>")
-                .arg(spellInfo->effect[eff])
-                .arg(m_enums->getSpellEffects()[spellInfo->effect[eff]]));
-
-            html.append(_Result);
-
-            html.append(QString("<li>Targets (%0, %1) (%2, %3)</li>")
-                .arg(spellInfo->effectImplicitTargetA[eff])
-                .arg(spellInfo->effectImplicitTargetB[eff])
-                .arg(m_enums->getTargets()[spellInfo->effectImplicitTargetA[eff]])
-                .arg(m_enums->getTargets()[spellInfo->effectImplicitTargetB[eff]]));
-
-            appendAuraInfo(spellInfo, eff);
-
-            appendRadiusInfo(spellInfo, eff);
-
-            appendTriggerInfo(spellInfo, eff);
-
-            if (spellInfo->effectChainTarget[eff] != 0)
-                html.append(QString("<li>EffectChainTarget = %0</li>").arg(spellInfo->effectChainTarget[eff]));
-
-            if (spellInfo->effectMechanic[eff] != 0)
-            {
-                html.append(QString("<li>Effect Mechanic = %0 (%1)</li>")
-                    .arg(spellInfo->effectMechanic[eff])
-                    .arg(m_enums->getMechanics()[spellInfo->effectMechanic[eff]]));
-            }
-
-            if (spellInfo->effectItemType[eff] != 0)
-            {
-                QString sEffectItemType(QString("%0").arg(spellInfo->effectItemType[eff], 8, 16, QChar('0')));
-                html.append(QString("<li>EffectItemType = 0x%0</li>").arg(sEffectItemType.toUpper()));
-
-                if (spellInfo->effect[eff] == 6)
-                {
-                    html.append("<ul>");
-                    for (quint32 i = 0; i < Spell::getHeader()->recordCount; ++i)
-                    {
-                        if (const Spell::entry* t_spellInfo = Spell::getRecord(i))
-                        {
-                            bool hasSkill = false;
-                            if ((t_spellInfo->spellFamilyName == spellInfo->spellFamilyName) &&
-                                (t_spellInfo->spellFamilyFlags & spellInfo->effectItemType[eff]))
-                            {
-                                QString sName(t_spellInfo->name());
-                                QString sRank(t_spellInfo->rank());
-
-                                if (!sRank.isEmpty())
-                                    sName.append(" (" + sRank + ")");
-
-                                for (quint32 sk = 0; sk < SkillLineAbility::getHeader()->recordCount; ++sk)
-                                {
-                                    const SkillLineAbility::entry* skillInfo = SkillLineAbility::getRecord(sk);
-                                    if (skillInfo && skillInfo->spellId == t_spellInfo->id && skillInfo->skillId > 0)
-                                    {
-                                        hasSkill = true;
-                                        html.append(QString("<li><a href='http://spellwork/%1' class='blue_link'>+ %1 - %2</a></li>")
-                                            .arg(t_spellInfo->id)
-                                            .arg(sName));
-                                        break;
-                                    }
-                                }
-
-                                if (!hasSkill)
-                                {
-                                    html.append(QString("<li><a href='http://spellwork/%1' class='red_link'>- %1 - %2</a></li>")
-                                        .arg(t_spellInfo->id)
-                                        .arg(sName));
-                                }
-                            }
-                        }
-                    }
-                    html.append("</ul>");
-                }
-            }
-            html.append("</ul>");
-        }
-    }
-    html.append("</div></div>");
-}
-
-void SWObject::appendTriggerInfo(Spell::entry const* spellInfo, quint8 index)
-{
-    quint32 trigger = spellInfo->effectTriggerSpell[index];
-    if (trigger != 0)
-    {
-        if (const Spell::entry* triggerSpell = Spell::getRecord(trigger, true))
-        {
-            QString sName(triggerSpell->name());
-            QString sRank(triggerSpell->rank());
-
-            if (!sRank.isEmpty())
-                sName.append(" (" + sRank + ")");
-
-            html.append(QString("<li><b>Trigger spell:</b> <a href='http://spellwork/%0' class='blue_link'>%0 - %1</a>. Chance = %2</li>")
-                .arg(trigger)
-                .arg(sName)
-                .arg(triggerSpell->procChance));
-
-                QString sDescription(triggerSpell->description());
-                QString sTooltip(triggerSpell->toolTip());
-
-                html.append("<ul>");
-
-                if (!sDescription.isEmpty())
-                    html.append(QString("<li>Description: %0</li>").arg(getDescription(sDescription, triggerSpell)));
-
-                if (!sTooltip.isEmpty())
-                    html.append(QString("<li>ToolTip: %0</li>").arg(getDescription(sTooltip, triggerSpell)));
-
-                if (triggerSpell->procFlags != 0)
-                {
-                    html.append(QString("<li>Charges - %0</li>").arg(triggerSpell->procCharges));
-                    html.append("<hr style='margin: 0 25px;'>");
-                    appendProcInfo(triggerSpell);
-                }
-
-                html.append("</ul>");
-        }
-        else
-        {
-            html.append(QString("<li>Trigger spell: %0 Not found</li>").arg(trigger));
-        }
-    }
-}
-
-void SWObject::appendRadiusInfo(Spell::entry const* spellInfo, quint8 index)
-{
-    quint16 rIndex = spellInfo->effectRadiusIndex[index];
-    if (rIndex != 0)
-    {
-        if (const SpellRadius::entry* spellRadius = SpellRadius::getRecord(rIndex, true))
-        {
-            html.append(QString("<li>Radius (Id %0) %1</li>")
-                .arg(rIndex)
-                .arg(spellRadius->radius, 0, 'f', 2));
-        }
-        else
-            html.append(QString("<li>Radius (Id %0) Not found</li>").arg(rIndex));
-    }
-}
-
-void SWObject::appendAuraInfo(Spell::entry const* spellInfo, quint8 index)
-{
-    QString sAura(m_enums->getSpellAuras()[spellInfo->effectApplyAuraName[index]]);
-    quint32 misc = spellInfo->effectMiscValue[index];
-
-    if (spellInfo->effectApplyAuraName[index] == 0)
-    {
-        if (spellInfo->effectMiscValue[index] != 0)
-            html.append(QString("<li>EffectMiscValue = %0</li>").arg(spellInfo->effectMiscValue[index]));
-
-        if (spellInfo->effectAmplitude[index] != 0)
-            html.append(QString("<li>EffectAmplitude = %0</li>").arg(spellInfo->effectAmplitude[index]));
-
-        return;
-    }
-
-    QString _BaseAuraInfo;
-    _BaseAuraInfo = QString("<li>Aura Id %0 (%1), value = %2, misc = %3 ")
-        .arg(spellInfo->effectApplyAuraName[index])
-        .arg(sAura)
-        .arg(spellInfo->effectBasePoints[index] + 1)
-        .arg(misc);
-
-    QString _SpecialAuraInfo;
-    switch (spellInfo->effectApplyAuraName[index])
-    {
-        case 29:
-            _SpecialAuraInfo = QString("(%0").arg(m_enums->getUnitMods()[misc]);
-            break;
-        case 107:
-        case 108:
-            _SpecialAuraInfo = QString("(%0").arg(m_enums->getSpellMods()[misc]);
-            break;
-        // todo: more case
-        default:
-            _SpecialAuraInfo = QString("(%0").arg(misc);
-            break;
-    }
-
-    QString _Periodic = QString("), periodic = %0").arg(spellInfo->effectAmplitude[index]);
-    QString _Result = _BaseAuraInfo + _SpecialAuraInfo + _Periodic;
-    html.append(_Result + "</li>");
 }
 
 QString SWObject::containAttributes(Spell::entry const* spellInfo, MaskType type)
@@ -1683,59 +1469,6 @@ QString SWObject::containAttributes(Spell::entry const* spellInfo, MaskType type
         break;
     }
     return str;
-}
-
-void SWObject::appendSkillInfo(Spell::entry const* spellInfo)
-{
-    for (quint32 i = 0; i < SkillLineAbility::getHeader()->recordCount; ++i)
-    {
-        const SkillLineAbility::entry* skillInfo = SkillLineAbility::getRecord(i);
-        if (skillInfo->id && skillInfo->spellId == spellInfo->id)
-        {
-            if (const SkillLine::entry* skill = SkillLine::getRecord(skillInfo->skillId, true))
-            {
-                html.append(QString("<li>Skill (Id %0) \"%1\"</li>"
-                    "<ul><li>ReqSkillValue = %2</li>"
-                    "<li>Forward Spell = %3</li>"
-                    "<li>MinMaxValue (%4, %5)</li>"
-                    "<li>CharacterPoints (%6, %7)</li></ul>")
-                    .arg(skill->id)
-                    .arg(skill->name())
-                    .arg(skillInfo->requiredSkillValue)
-                    .arg(skillInfo->forwardSpellId)
-                    .arg(skillInfo->minValue)
-                    .arg(skillInfo->maxValue)
-                    .arg(skillInfo->charPoints[0])
-                    .arg(skillInfo->charPoints[1]));
-            }
-            else
-                html.append(QString("<li>Skill (Id %0) (not found)</li>")
-                    .arg(skillInfo->skillId));
-            break;
-        }
-    }
-}
-
-void SWObject::appendCastTimeInfo(Spell::entry const* spellInfo)
-{
-    if (const SpellCastTimes::entry* castInfo = SpellCastTimes::getRecord(spellInfo->castingTimeIndex, true))
-    {
-        html.append(QString("<li>CastingTime (Id %0) = %1</li>")
-            .arg(castInfo->id)
-            .arg(float(castInfo->castTime) / 1000, 0, 'f', 2));
-    }
-}
-
-void SWObject::appendDurationInfo(Spell::entry const* spellInfo)
-{
-    if (const SpellDuration::entry* durationInfo = SpellDuration::getRecord(spellInfo->durationIndex, true))
-    {
-        html.append(QString("<li>Duration: ID (%0)  base: %1, per level: %2, max: %3</li>")
-            .arg(durationInfo->id)
-            .arg(durationInfo->duration)
-            .arg(durationInfo->durationPerLevel)
-            .arg(durationInfo->maxDuration));
-    }
 }
 
 void SWObject::compare()

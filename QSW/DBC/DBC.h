@@ -23,7 +23,7 @@ class DBCFile
         template <typename T>
         const T* getEntry(quint32 id) const
         {
-            return (id > m_maxId ? nullptr : getRecord<T>(m_indexes[id]));
+            return (id > m_maxId || id != m_minId && m_indexes[id] == 0 ? nullptr : getRecord<T>(m_indexes[id]));
         }
 
         template <typename T>
@@ -43,6 +43,7 @@ class DBCFile
         const char *m_strings;
         quint32 *m_indexes;
         quint32 m_maxId;
+        quint32 m_minId;
 };
 
 #endif

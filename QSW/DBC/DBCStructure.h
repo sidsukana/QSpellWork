@@ -180,6 +180,7 @@ namespace Spell
         const QString description() const;
         const QString rank() const;
         const QString toolTip() const;
+        const QString nameWithRank() const;
 
         quint32 getAmplitude() const
         {

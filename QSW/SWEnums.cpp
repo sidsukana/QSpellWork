@@ -14,7 +14,7 @@ SWEnums::~SWEnums()
 
 void SWEnums::loadEnums()
 {
-    QFile xmlFile("Enums.xml");
+    QFile xmlFile("data/enums.xml");
     xmlFile.open(QIODevice::ReadOnly);
     m_xmlData.setContent(&xmlFile);
     xmlFile.close();

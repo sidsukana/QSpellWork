@@ -45,16 +45,6 @@ class SWObject : public QObject
         void compare();
         QList<QEvent*> search();
 
-        void appendSkillInfo(const Spell::entry* spellInfo);
-        void appendCastTimeInfo(const Spell::entry* spellInfo);
-        void appendDurationInfo(const Spell::entry* spellInfo);
-        void appendRangeInfo(const Spell::entry* spellInfo);
-        void appendSpellEffectInfo(const Spell::entry* spellInfo);
-        void appendAuraInfo(const Spell::entry* spellInfo, quint8 index);
-        void appendRadiusInfo(const Spell::entry* spellInfo, quint8 index);
-        void appendTriggerInfo(const Spell::entry* spellInfo, quint8 index);
-        void appendProcInfo(const Spell::entry *spellInfo);
-
         QString containAttributes(const Spell::entry* spellInfo, MaskType type);
         QString getDescription(QString str, const Spell::entry* spellInfo);
         QString getSpellIconName(quint32 iconId);
@@ -73,10 +63,12 @@ class SWObject : public QObject
         SWEnums* m_enums;
 
         QMetaEnum m_metaEnum;
-        QString html;
 
         bool m_regExp;
         quint8 m_type;
+
+        QByteArray m_templateHtml;
+        QByteArray m_styleCss;
 };
 
 namespace Converter

@@ -1,0 +1,190 @@
+<html>
+<head>
+<style type="text/css">{{style}}</style>
+</head>
+<body>
+<div class='b-tooltip_icon'>
+<style>div.icon { width: 68px; height: 68px; background: url("data:image/png;base64,{{icon1}}") no-repeat center; }div.icon div { background: url("data:image/png;base64,{{icon2}}") no-repeat center;}div.icon div div:hover { background: url("data:image/png;base64,{{icon3}}") no-repeat center; }div.icon div div {width: 68px; height: 68px;}</style>
+<div class='icon'>
+<div>
+<div>
+</div>
+</div>
+</div>
+</div>
+<div class='b-tooltip_body'>
+<b>Id:</b> {{id}}</br>
+<b>Name:</b> {{nameWithRank}}</br>
+{{#description}}<b>Description:</b> {{description}}</br>{{/description}}
+{{#tooltip}}<b>ToolTip:</b> {{tooltip}}</br>{{/tooltip}}
+</div>
+{{#parentId}}
+<div class='b-vlink'>
+<b>Parent spell:</b> <a href='http://spellwork/{{parentId}}' class='blue_link'>{{parentId}} - {{parentName}}</a>
+</div>
+{{/parentId}}
+<div class='b-box-title'>General info</div>
+<div class='b-box-body'>
+<div class='b-box'>
+<ul>
+{{#modalNextSpell}}<li>ModalNextSpell: {{modalNextSpell}}</li>{{/modalNextSpell}}
+<li>Category: {{categoryId}}, SpellIconId: {{spellIconId}}, ActiveIconId: {{activeIconId}}, SpellVisual: ({{spellVisual1}}, {{spellVisual2}})</li>
+<li>SpellFamilyName: {{spellFamilyId}} ({{spellFamilyName}}), SpellFamilyFlags: {{spellFamilyFlags}}</li>
+<li>SpellSchool: {{spellSchoolId}} ({{spellSchoolName}})</li>
+<li>DamageClass: {{damageClassId}} ({{damageClassName}})</li>
+<li>PreventionType: {{preventionTypeId}} ({{preventionTypeName}})</li>
+</ul>
+</div>
+</div>
+{{#hasAttributes}}
+<div class='b-box-title'>Attributes</div>
+<div class='b-box-body'>
+<div class='b-box'>
+<ul>
+{{#attr}}<li>Attributes: {{attr}} ({{attrNames}})</li>{{/attr}}
+{{#attrEx1}}<li>AttributesEx1: {{attrEx1}} ({{attrEx1Names}})</li>{{/attrEx1}}
+{{#attrEx2}}<li>AttributesEx2: {{attrEx2}} ({{attrEx2Names}})</li>{{/attrEx2}}
+{{#attrEx3}}<li>AttributesEx3: {{attrEx3}} ({{attrEx3Names}})</li>{{/attrEx3}}
+{{#attrEx4}}<li>AttributesEx4: {{attrEx4}} ({{attrEx4Names}})</li>{{/attrEx4}}
+</ul>
+</div>
+</div>
+{{/hasAttributes}}
+<div class='b-box-title'>Advanced info</div>
+<div class='b-box-body'>
+<div class='b-box'>
+<ul>
+{{#targetsRaw}}<li>TargetsMask: {{targets}} ({{targetsNames}})</li>{{/targetsRaw}}
+{{#creatureTypeRaw}}<li>CreatureTypeMask: {{creatureType}} ({{creatureTypeNames}})</li>{{/creatureTypeRaw}}
+{{#stancesRaw}}<li>StancesMask: {{stances}} ({{stancesNames}})</li>{{/stancesRaw}}
+{{#stancesNotRaw}}<li>StancesNotMask: {{stancesNot}} ({{stancesNotNames}})</li>{{/stancesNotRaw}}
+{{#skillId}}
+<li>Skill: {{skillId}} ({{skillName}})</li>
+<ul>
+<li>ReqSkillValue: {{reqSkillValue}}</li>
+<li>ForwardSpell: {{forwardSpellId}}</li>
+<li>MinMaxValue: ({{minSkillValue}}, {{maxSkillValue}})</li>
+<li>CharacterPoints: ({{charPoints1}}, {{charPoints2}})</li>
+</ul>
+{{/skillId}}
+<li>SpellLevel: {{spellLevel}}, BaseLevel: {{baseLevel}}, MaxLevel: {{maxLevel}}, MaxTargetLevel: {{maxTargetLevel}}</li>
+{{#equipItemClass}}
+<li>EquippedItemClass: {{equipItemClass}} ({{equipItemClassName}})</li>
+{{#equipItemSubClassMask}}
+<ul>
+<li>EquippedItemSubClassMask: {{equipItemSubClassMask}} ({{equipItemSubClassMaskNames}})</li>
+</ul>
+{{/equipItemSubClassMask}}
+{{#equipItemInventoryTypeMask}}
+<li>EquippedInventoryTypeMask: {{equipItemInventoryTypeMask}} ({{equipItemInventoryTypeMaskNames}})</li>
+{{/equipItemInventoryTypeMask}}
+{{/equipItemClass}}
+<li>Category: {{categoryId}}</li>
+<li>DispelType: {{dispelId}} ({{dispelName}})</li>
+<li>Mechanic: {{mechanicId}} ({{mechanicName}})</li>
+{{#rangeId}}
+<li>SpellRange: {{rangeId}} ({{rangeName}})</li>
+<ul>
+<li>MinRange: {{minRange}}</li>
+<li>MaxRange: {{maxRange}}</li>
+</ul>
+{{/rangeId}}
+{{#speed}}<li>Speed: {{speed}}</li>{{/speed}}
+{{#stackAmount}}<li>StackAmount {{stackAmount}}</li>{{/stackAmount}}
+{{#castTimeId}}<li>CastingTime: {{castTimeId}} ({{castTimeValue}})</li>{{/castTimeId}}
+{{#recoveryInfo}}
+<li>RecoveryTime: {{recoveryTime}} ms, CategoryRecoveryTime: {{categoryRecoveryTime}} ms</li>
+<li>StartRecoveryCategory: {{startRecoveryCategory}}, StartRecoveryTime: {{startRecoveryTime}} ms</li>
+{{/recoveryInfo}}
+{{#durationId}}<li>Duration: {{durationId}}, base: {{durationBase}}, perLevel: {{durationPerLevel}}, max: {{durationMax}}</li>{{/durationId}}
+{{#costInfo}}
+<li>PowerType: {{powerTypeId}} ({{powerTypeName}})
+{{#manaCost}}, Cost: {{manaCost}}{{/manaCost}}
+{{#manaCostPercentage}}, Cost: {{manaCostPercentage}}% of base mana{{/manaCostPercentage}}
+{{#manaCostPerLevel}} + lvl * {{manaCostPerLevel}}{{/manaCostPerLevel}}
+{{#manaPerSecond}} + {{manaPerSecond}} perSecond{{/manaPerSecond}}
+{{#manaPerSecondPerLevel}} + lvl * {{manaPerSecondPerLevel}}{{/manaPerSecondPerLevel}}
+</li>
+{{/costInfo}}
+<li>InterruptFlags: {{interruptFlags}}, AuraIF: {{auraInterruptFlags}}, ChannelIF: {{channelInterruptFlags}}</li>
+{{#casterAuraState}}<li>CasterAuraState: {{casterAuraState}} ({{casterAuraStateName}})</li>{{/casterAuraState}}
+{{#targetAuraState}}<li>TargetAuraState: {{targetAuraState}} ({{targetAuraStateName}})</li>{{/targetAuraState}}
+{{#reqSpellFocus}}<li>RequiresSpellFocus: {{reqSpellFocus}}</li>{{/reqSpellFocus}}
+{{#procFlags}}
+<li><b>ProcFlags: {{procFlags}}, Chance: {{procChance}}, Charges: {{procCharges}}</b></li>
+<ul>
+{{#procNames}}
+<li>{{name}}</li>
+{{/procNames}}
+</ul>
+{{/procFlags}}
+{{^procFlags}}
+<li>Chance: {{procChance}}, Charges: {{procCharges}}</li>
+{{/procFlags}}
+</ul>
+</div>
+</div>
+<div class='b-box-title'>Effects</div>
+<div class='b-box-body'>
+<div class='b-box'>
+{{#effect}}
+<div class='b-effect_name'>Effect {{index}}:</div>
+<ul>
+{{#id}}
+<li>Id: {{id}} ({{name}})</li>
+<li>BasePoints: {{basePoints}}
+{{#perLevelPoints}} + Level * {{perLevelPoints}}{{/perLevelPoints}}
+{{#dieSidesPoints}} to {{dieSidesPoints}}{{#perLevelPoints}} + Level * {{perLevelPoints}}{{/perLevelPoints}}{{/dieSidesPoints}}
+{{#perComboPoints}} + combo * {{perComboPoints}}{{/perComboPoints}}
+{{#damageMultiplier}} * {{damageMultiplier}}{{/damageMultiplier}}
+{{#multipleValue}}, Multiple: {{multipleValue}}{{/multipleValue}}</li>
+<li>Targets: ({{targetA}}, {{targetB}}) ({{targetNameA}}, {{targetNameB}})</li>
+{{#auraId}}
+<li>Aura: {{auraId}} ({{auraName}}), value: {{basePoints}}, misc: {{miscValue}} ({{mods}}), periodic: {{amplitude}}</li>
+{{/auraId}}
+{{^auraId}}
+{{#miscValue}}<li>EffectMiscValue: {{miscValue}}</li>{{/miscValue}}
+{{#amplitude}}<li>EffectAmplitude: {{amplitude}}</li>{{/amplitude}}
+{{/auraId}}
+{{#radiusId}}<li>Radius: {{radiusId}} ({{radiusValue}})</li>{{/radiusId}}
+{{#triggerId}}
+<li><b>Trigger spell:</b> <a href='http://spellwork/{{triggerId}}' class='blue_link'>{{triggerId}} - {{triggerName}}</a></li>
+<ul>
+{{#triggerDescription}}<li>Description: {{triggerDescription}}</li>{{/triggerDescription}}
+{{#triggerToolTip}}<li>ToolTip: {{triggerToolTip}}</li>{{/triggerToolTip}}
+{{#triggerProcFlags}}
+<li><b>ProcFlags: {{triggerProcFlags}}, Chance: {{triggerProcChance}}, Charges: {{triggerProcCharges}}</b></li>
+<ul>
+{{#triggerProcNames}}
+<li>{{name}}</li>
+{{/triggerProcNames}}
+</ul>
+{{/triggerProcFlags}}
+{{^triggerProcFlags}}
+<li>Chance: {{triggerProcChance}}, Charges: {{triggerProcCharges}}</li>
+{{/triggerProcFlags}}
+</ul>
+{{/triggerId}}
+{{#chainTarget}}<li>EffectChainTarget: {{chainTarget}}</li>{{/chainTarget}}
+{{#mechanicId}}<li>EffectMechanic: {{mechanicId}} ({{mechanicName}})</li>{{/mechanicId}}
+{{#itemType}}<li>EffectItemType: {{itemType}}</li>{{/itemType}}
+{{#affectInfo}}
+<ul>
+{{#hasSkill}}
+<li><a href='http://spellwork/{{id}}' class='blue_link'>+ {{id}} - {{name}}</a></li>
+{{/hasSkill}}
+{{^hasSkill}}
+<li><a href='http://spellwork/{{id}}' class='red_link'>+ {{id}} - {{name}}</a></li>
+{{/hasSkill}}
+</ul>
+{{/affectInfo}}
+{{/id}}
+{{^id}}
+<li>NO EFFECT</li>
+{{/id}}
+</ul>
+{{/effect}}
+</div>
+</div>
+</body>
+</html>
