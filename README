@@ -3,3 +3,7 @@ QSW - is a SpellWork project application written on C++ language with using Qt5 
 Thanks to:
     Chestr aka DiSlord - for the idea and released source of original SpellWork.
     LordJZ and Konstantin - for source of C# SpellWork.
+
+NOTE:
+    If you run QSW and get an error "Not found msvcr140.dll or msvcrp140.dll",
+    you need to install Microsoft Visual C + + 2015 Redistributable Package

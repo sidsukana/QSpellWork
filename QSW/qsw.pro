@@ -6,11 +6,14 @@
 
 QT += core gui xml qml widgets webenginewidgets webengine webenginecore concurrent
 
-TARGET = qsw
+TARGET = QSW
 TEMPLATE = app
 CONFIG -= debug_and_release
 CONFIG += c++11
 DEFINES += __STORMLIB_SELF__
+
+INCLUDEPATH += $$PWD/mpq/StormLib
+DEPENDPATH += $$PWD/mpq/StormLib
 
 win32:RC_ICONS += resources/mangos.ico
 
@@ -94,31 +97,110 @@ RESOURCES += \
     qsw.qrc \
     wov/wov.qrc
 
-INCLUDEPATH += $$PWD/mpq/StormLib
-DEPENDPATH += $$PWD/mpq/StormLib
+win32:RELEASE_LIBS += \
+    $(QTDIR)/bin/libEGL.dll \
+    $(QTDIR)/bin/libGLESv2.dll \
+    $(QTDIR)/bin/Qt5Core.dll \
+    $(QTDIR)/bin/Qt5Gui.dll \
+    $(QTDIR)/bin/Qt5Network.dll \
+    $(QTDIR)/bin/Qt5Qml.dll \
+    $(QTDIR)/bin/Qt5Quick.dll \
+    $(QTDIR)/bin/Qt5WebChannel.dll \
+    $(QTDIR)/bin/Qt5WebEngine.dll \
+    $(QTDIR)/bin/Qt5WebEngineCore.dll \
+    $(QTDIR)/bin/Qt5WebEngineWidgets.dll \
+    $(QTDIR)/bin/Qt5Widgets.dll \
+    $(QTDIR)/bin/Qt5Xml.dll
+
+win32:DEBUG_LIBS += \
+    $(QTDIR)/bin/libEGLd.dll \
+    $(QTDIR)/bin/libGLESv2d.dll \
+    $(QTDIR)/bin/Qt5Cored.dll \
+    $(QTDIR)/bin/Qt5Guid.dll \
+    $(QTDIR)/bin/Qt5Networkd.dll \
+    $(QTDIR)/bin/Qt5Qmld.dll \
+    $(QTDIR)/bin/Qt5Quickd.dll \
+    $(QTDIR)/bin/Qt5WebChanneld.dll \
+    $(QTDIR)/bin/Qt5WebEngined.dll \
+    $(QTDIR)/bin/Qt5WebEngineCored.dll \
+    $(QTDIR)/bin/Qt5WebEngineWidgetsd.dll \
+    $(QTDIR)/bin/Qt5Widgetsd.dll \
+    $(QTDIR)/bin/Qt5Xmld.dll
+
+defineTest(copyToDestdir) {
+    files = $$1
+
+    for(FILE, files) {
+
+        DDIR = $$DESTDIR\\$$2
+
+        win32:FILE ~= s,/,\\,g
+        win32:DDIR ~= s,/,\\,g
+
+        QMAKE_POST_LINK += $$QMAKE_COPY $$quote($$FILE) $$quote($$DDIR) $$escape_expand(\\n\\t)
+    }
+
+    export(QMAKE_POST_LINK)
+}
+
+defineTest(createDir) {
+
+    DIR = $$1
+    win32:DIR ~= s,/,\\,g
+    QMAKE_POST_LINK += $$sprintf($$QMAKE_MKDIR_CMD, $$DIR) $$escape_expand(\\n\\t) #$$QMAKE_MKDIR_CMD $$quote($$DIR) $$escape_expand(\\n\\t)
+    export(QMAKE_POST_LINK)
+}
+
+defineTest(copyDirToDestdir) {
+
+    DIR = $$1
+    DDIR = $$DESTDIR\\$$2
+
+    win32:DIR ~= s,/,\\,g
+    win32:DDIR ~= s,/,\\,g
+
+    QMAKE_POST_LINK += $$sprintf($$QMAKE_MKDIR_CMD, $$DDIR) $$escape_expand(\\n\\t)# $$QMAKE_MKDIR_CMD $$quote($$DDIR) $$escape_expand(\\n\\t)
+    QMAKE_POST_LINK += $$QMAKE_COPY_DIR $$quote($$DIR) $$quote($$DDIR) $$escape_expand(\\n\\t)
+
+    export(QMAKE_POST_LINK)
+}
 
 win32: {
     contains(QT_ARCH, i386) {
-        message("32-bit")
-        CONFIG(debug, debug|release) {
-            LIBS += -L$$PWD/mpq/StormLib/Win32/Debug -lStormLib
-            LIBS += -L$$PWD/blp/squish/Win32/Debug -lsquish
-            DLLDESTDIR = $$OUT_PWD/../bin/Win32/Debug/
-        } else {
-            LIBS += -L$$PWD/mpq/StormLib/Win32/Release/ -lStormLib
-            LIBS += -L$$PWD/blp/squish/Win32/Release/ -lsquish
-            DLLDESTDIR = $$OUT_PWD/../bin/Win32/Release/
-        }
+        PLATFORM = "Win32"
     } else {
-        message("64-bit")
-        CONFIG(debug, debug|release) {
-            LIBS += -L$$PWD/mpq/StormLib/x64/Debug/ -lStormLib
-            LIBS += -L$$PWD/blp/squish/x64/Debug/ -lsquish
-            DLLDESTDIR = $$OUT_PWD/../bin/x64/Debug/
-        } else {
-            LIBS += -L$$PWD/mpq/StormLib/x64/Release/ -lStormLib
-            LIBS += -L$$PWD/blp/squish/x64/Release/ -lsquish
-            DLLDESTDIR = $$OUT_PWD/../bin/x64/Release/
-        }
+        PLATFORM = "x64"
+    }
+    CONFIG(debug, debug|release) {
+        BUILDTYPE = "Debug"
+    } else {
+        BUILDTYPE = "Release"
+    }
+
+    LIBS += -L$$PWD/mpq/StormLib/$$PLATFORM/$$BUILDTYPE/ -lStormLib
+    LIBS += -L$$PWD/blp/squish/$$PLATFORM/$$BUILDTYPE/ -lsquish
+    DLLDESTDIR = $$OUT_PWD/bin/$$PLATFORM/$$BUILDTYPE
+    DESTDIR = $$DLLDESTDIR
+
+    copyToDestdir($$PWD/mpq/StormLib/$$PLATFORM/$$BUILDTYPE/StormLib.dll)
+    copyDirToDestdir($$PWD/data, data)
+
+    createDir($$DESTDIR/imageformats)
+    createDir($$DESTDIR/platforms)
+
+    CONFIG(debug, debug|release) {
+        copyToDestdir($$DEBUG_LIBS)
+        copyToDestdir($(QTDIR)/plugins/imageformats/qicod.dll, imageformats)
+        copyToDestdir($(QTDIR)/plugins/imageformats/qjpegd.dll, imageformats)
+        copyToDestdir($(QTDIR)/plugins/platforms/qminimald.dll, platforms)
+        copyToDestdir($(QTDIR)/plugins/platforms/qwindowsd.dll, platforms)
+        copyToDestdir($(QTDIR)/plugins/platforms/qoffscreend.dll, platforms)
+    } else {
+        copyToDestdir($$RELEASE_LIBS)
+        copyToDestdir($(QTDIR)/plugins/imageformats/qico.dll, imageformats)
+        copyToDestdir($(QTDIR)/plugins/imageformats/qjpeg.dll, imageformats)
+        copyToDestdir($(QTDIR)/plugins/platforms/qminimal.dll, platforms)
+        copyToDestdir($(QTDIR)/plugins/platforms/qwindows.dll, platforms)
+        copyToDestdir($(QTDIR)/plugins/platforms/qoffscreen.dll, platforms)
     }
 }

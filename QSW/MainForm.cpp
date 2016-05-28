@@ -440,6 +440,8 @@ void MainForm::slotRegExp()
 void MainForm::slotWov()
 {
     WovWidget* wov = new WovWidget();
+    wov->setWindowIcon(QIcon(":/qsw/resources/mangos.ico"));
+    wov->setWindowTitle("WoW object view");
     wov->show();
 }
 
