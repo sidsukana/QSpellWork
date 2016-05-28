@@ -39,14 +39,14 @@
      <x>10</x>
      <y>10</y>
      <width>301</width>
-     <height>44</height>
+     <height>46</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
      <widget class="QLabel" name="label">
       <property name="text">
-       <string>Директория WoW 1.12.x:</string>
+       <string>Please select the WoW 1.12.x directory:</string>
       </property>
      </widget>
     </item>

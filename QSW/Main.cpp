@@ -10,9 +10,6 @@
 
 int main(int argc, char *argv[])
 {
-    // temporary sulution for ATI cards (QTBUG-49954)
-    QCoreApplication::setAttribute(Qt::AA_UseOpenGLES);
-
     QApplication app(argc, argv);
 
     MPQ::gameDir() = QDir::fromNativeSeparators(QSW::settings().value("Directories/WoW1", "").toString());
@@ -50,6 +47,10 @@ int main(int argc, char *argv[])
     form.move(frameRect.topLeft());
 
     form.show();
+
+    for (quint8 i = 0; i < 3; ++i) {
+        QObject::connect(&app, SIGNAL(aboutToQuit()), form.getBrowser(i), SLOT(deleteLater()));
+    }
 
     return app.exec();
 }
