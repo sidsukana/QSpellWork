@@ -7,6 +7,7 @@
 #include <QMessageBox>
 #include <QPropertyAnimation>
 #include <QClipboard>
+#include <QShortcut>
 
 #include "MainForm.h"
 #include "AboutForm.h"
@@ -53,17 +54,8 @@ MainForm::MainForm(QWidget* parent)
     mainToolBar->addSeparator();
     m_actionAbout = mainToolBar->addAction(QIcon(":/qsw/resources/information.png"), "About");
 
-    QAction* selectedAction = new QAction(this);
-    selectedAction->setShortcut(QKeySequence::MoveToPreviousLine);
-    selectedAction->setVisible(false);
-    SpellList->addAction(selectedAction);
-    connect(selectedAction, SIGNAL(triggered()), this, SLOT(slotPrevRow()));
-
-    selectedAction = new QAction(this);
-    selectedAction->setShortcut(QKeySequence::MoveToNextLine);
-    selectedAction->setVisible(false);
-    SpellList->addAction(selectedAction);
-    connect(selectedAction, SIGNAL(triggered()), this, SLOT(slotNextRow()));
+    QShortcut* shortcut = new QShortcut(QKeySequence(QKeySequence::MoveToPreviousLine), this, SLOT(slotPrevRow()));
+    shortcut = new QShortcut(QKeySequence(QKeySequence::MoveToNextLine), this, SLOT(slotNextRow()));
 
     QAction* copyAction = new QAction("Copy all", this);
     connect(copyAction, SIGNAL(triggered()), this, SLOT(slotCopyAll()));
@@ -211,18 +203,26 @@ void MainForm::saveSettings()
 
 void MainForm::slotPrevRow()
 {
+    if (!SpellList->hasFocus())
+        return;
+
     SpellList->selectRow(SpellList->currentIndex().row() - 1);
 
     QVariant var = SpellList->model()->data(SpellList->model()->index(SpellList->currentIndex().row(), 0));
     m_sw->showInfo(Spell::getRecord(var.toInt(), true));
+    SpellList->setFocus();
 }
 
 void MainForm::slotNextRow()
 {
+    if (!SpellList->hasFocus())
+        return;
+
     SpellList->selectRow(SpellList->currentIndex().row() + 1);
 
     QVariant var = SpellList->model()->data(SpellList->model()->index(SpellList->currentIndex().row(), 0));
     m_sw->showInfo(Spell::getRecord(var.toInt(), true));
+    SpellList->setFocus();
 }
 
 void MainForm::slotCopyAll()
@@ -496,6 +496,7 @@ void MainForm::slotSearchFromList(const QModelIndex &index)
 {
     QVariant var = SpellList->model()->data(SpellList->model()->index(index.row(), 0));
     m_sw->showInfo(Spell::getRecord(var.toInt(), true));
+    SpellList->setFocus();
 }
 
 bool MainForm::event(QEvent* ev)
