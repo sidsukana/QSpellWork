@@ -56,14 +56,14 @@ MainForm::MainForm(QWidget* parent)
     QAction* selectedAction = new QAction(this);
     selectedAction->setShortcut(QKeySequence::MoveToPreviousLine);
     selectedAction->setVisible(false);
-    connect(selectedAction, SIGNAL(triggered()), this, SLOT(slotPrevRow()));
     SpellList->addAction(selectedAction);
+    connect(selectedAction, SIGNAL(triggered()), this, SLOT(slotPrevRow()));
 
     selectedAction = new QAction(this);
     selectedAction->setShortcut(QKeySequence::MoveToNextLine);
     selectedAction->setVisible(false);
-    connect(selectedAction, SIGNAL(triggered()), this, SLOT(slotNextRow()));
     SpellList->addAction(selectedAction);
+    connect(selectedAction, SIGNAL(triggered()), this, SLOT(slotNextRow()));
 
     QAction* copyAction = new QAction("Copy all", this);
     connect(copyAction, SIGNAL(triggered()), this, SLOT(slotCopyAll()));

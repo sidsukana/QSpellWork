@@ -130,6 +130,9 @@
                <height>0</height>
               </size>
              </property>
+             <property name="focusPolicy">
+              <enum>Qt::WheelFocus</enum>
+             </property>
              <property name="contextMenuPolicy">
               <enum>Qt::ActionsContextMenu</enum>
              </property>
