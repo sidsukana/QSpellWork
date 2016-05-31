@@ -134,7 +134,8 @@ QList<QEvent*> SWObject::search()
             for (Enumerator::const_iterator itr2 = itr->begin(); itr2 != itr->end(); ++itr2)
                 engine.globalObject().setProperty(itr2.value(), qreal(itr2.key()));
 
-        QJSValue script = engine.evaluate("(function() { return (" + m_form->getFilterText() + "); })");
+        QString text = m_form->getFilterText();
+        QJSValue script = engine.evaluate(text.contains("function()") ? "(" + text + ")" : "(function() { return (" + text + "); })");
 
         for (quint32 i = 0; i < Spell::getHeader()->recordCount; ++i)
         {
