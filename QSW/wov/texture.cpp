@@ -1,6 +1,5 @@
 #include <QDebug>
 #include <QDir>
-#include <QStringList>
 
 #include "texture.h"
 #include "mpq/MPQ.h"
@@ -20,7 +19,7 @@
 #  define GL_TEXTURE_MAX_LEVEL              0x813D
 #endif
 
-Texture::Texture() : m_dirty(false), m_texture(0)
+Texture::Texture() : m_dirty(false), m_texture(0), m_context(nullptr), m_funcs(nullptr)
 {
 }
 
@@ -84,15 +83,21 @@ quint32 * Texture::readPalettedTexture(quint32 width, quint32 height, const char
 
 void Texture::create()
 {
+    if (!m_context) {
+        m_context = new QOpenGLContext(this);
+        m_context->create();
+    }
+
+    if (!m_funcs)
+        m_funcs = m_context->functions();
+
     if (!m_texture)
-        glGenTextures(1, &m_texture);
+        m_funcs->glGenTextures(1, &m_texture);
 
-    initializeOpenGLFunctions();
+    m_funcs->glBindTexture(GL_TEXTURE_2D, m_texture);
 
-    glBindTexture(GL_TEXTURE_2D, m_texture);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    m_funcs->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    m_funcs->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     quint32 width = m_header->width;
     quint32 height = m_header->height;
@@ -120,14 +125,14 @@ void Texture::create()
         if (m_header->compression == 1) {
             quint32 *data = readPalettedTexture(width, height, m_data.data() + m_header->mipmapOffset[i]);
 
-            glTexImage2D(GL_TEXTURE_2D, i, GL_RGBA, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
+            m_funcs->glTexImage2D(GL_TEXTURE_2D, i, GL_RGBA, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
 
             delete[] data;
         } else {
-            glCompressedTexImage2D(GL_TEXTURE_2D, i, internalFormat, width, height, 0, m_header->mipmapLength[i], m_data.data() + m_header->mipmapOffset[i]);
+            m_funcs->glCompressedTexImage2D(GL_TEXTURE_2D, i, internalFormat, width, height, 0, m_header->mipmapLength[i], m_data.data() + m_header->mipmapOffset[i]);
         }
 
-        if (glGetError() == GL_INVALID_VALUE) {
+        if (m_funcs->glGetError() == GL_INVALID_VALUE) {
             qDebug() << "Texture loading failed";
             qDebug() << "\tcompression" << m_header->compression;
             qDebug() << "\talpha depth" << m_header->alphaDepth;
@@ -148,7 +153,7 @@ void Texture::create()
             height = 1;
     }
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, i ? i - 1 : 0);
+    m_funcs->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, i ? i - 1 : 0);
 
     m_dirty = false;
 }
@@ -158,5 +163,5 @@ void Texture::bind()
     if (m_dirty)
         create();
 
-    glBindTexture(GL_TEXTURE_2D, m_texture);
+    m_funcs->glBindTexture(GL_TEXTURE_2D, m_texture);
 }

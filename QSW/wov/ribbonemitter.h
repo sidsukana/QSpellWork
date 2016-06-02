@@ -1,6 +1,7 @@
 #ifndef RIBBON_EMITTER_H
 #define RIBBON_EMITTER_H
 
+#include <QObject>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLBuffer>
 #include <QOpenGLFunctions>
@@ -16,8 +17,9 @@ struct Ribbon
     QVector3D up;
 };
 
-class RibbonEmitter : public QOpenGLFunctions
+class RibbonEmitter : public QObject
 {
+    Q_OBJECT
 public:
     RibbonEmitter(const M2RibbonEmitter &emitter, const quint32 *sequences, const QByteArray &data);
 
@@ -47,6 +49,9 @@ private:
     QOpenGLBuffer *m_vertexBuffer;
 
     bool m_initialized;
+
+    QOpenGLContext* m_context;
+    QOpenGLFunctions* m_funcs;
 };
 
 #endif

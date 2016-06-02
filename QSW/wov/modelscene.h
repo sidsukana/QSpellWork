@@ -13,7 +13,7 @@ class QOpenGLBuffer;
 class Model;
 class CameraShake;
 
-class ModelScene : public QOpenGLWidget, public QOpenGLFunctions
+class ModelScene : public QOpenGLWidget
 {
     Q_OBJECT
     Q_PROPERTY(float rotationX READ rotationX WRITE setRotationX)
@@ -63,7 +63,7 @@ protected:
     void wheelEvent(QWheelEvent *event);
 
 private slots:
-    void update();
+    void updateScene();
 
 private:
     void renderGrid(int size, float step, MVP mvp);
@@ -88,6 +88,8 @@ private:
     QOpenGLShaderProgram *m_particleProgram;
 
     QOpenGLBuffer *m_gridBuffer;
+
+    QOpenGLFunctions* m_funcs;
 };
 
 #endif

@@ -21,7 +21,7 @@ ModelScene::ModelScene(QWidget *parent) : QOpenGLWidget(parent),
     setMouseTracking(true);
 
     QTimer *timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(update()));
+    connect(timer, SIGNAL(timeout()), this, SLOT(updateScene()));
     timer->start(0);
 }
 
@@ -98,12 +98,12 @@ void ModelScene::addCameraShake(quint32 id)
 
 void ModelScene::initializeGL()
 {
-    initializeOpenGLFunctions();
+    m_funcs = context()->functions();
 
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    m_funcs->glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-    glEnable(GL_DEPTH_TEST);
-    glDepthMask(GL_TRUE);
+    m_funcs->glEnable(GL_DEPTH_TEST);
+    m_funcs->glDepthMask(GL_TRUE);
 
     m_program = new QOpenGLShaderProgram();
     m_program->addShaderFromSourceFile(QOpenGLShader::Vertex, ":/shader.vs");
@@ -117,17 +117,17 @@ void ModelScene::initializeGL()
 
     const GLubyte white[3] = {255, 255, 255};
 
-    glBindTexture(GL_TEXTURE_2D, 0);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, white); 
+    m_funcs->glBindTexture(GL_TEXTURE_2D, 0);
+    m_funcs->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    m_funcs->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    m_funcs->glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, white);
 
     m_time.start();
 }
 
 void ModelScene::paintGL()
 {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+    m_funcs->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
     MVP mvp;
     mvp.projection.perspective(32.25, float(width()) / float(height()), 1.0, 100.0);
@@ -142,11 +142,11 @@ void ModelScene::paintGL()
     m_program->setUniformValue("light.ambient", QVector4D(0.5, 0.5, 0.5, 1.0));
     m_program->setUniformValue("light.diffuse", QVector4D(1.0, 1.0, 1.0, 1.0));
 
-    glEnable(GL_STENCIL_TEST);
-    glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+    m_funcs->glEnable(GL_STENCIL_TEST);
+    m_funcs->glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 
     for (int i = 0; i < m_models.size(); i++) {
-        glStencilFunc(GL_ALWAYS, i + 1, ~0);
+        m_funcs->glStencilFunc(GL_ALWAYS, i + 1, ~0);
 
         if (m_selection == i + 1)
             m_program->setUniformValue("light.ambient", QVector4D(1.0, 1.0, 1.0, 1.0));
@@ -156,9 +156,9 @@ void ModelScene::paintGL()
         m_models[i]->render(m_program, mvp);
     }
 
-    glDisable(GL_STENCIL_TEST);
+    m_funcs->glDisable(GL_STENCIL_TEST);
 
-    glReadPixels(m_mouseX, height() - m_mouseY, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &m_selection);
+    m_funcs->glReadPixels(m_mouseX, height() - m_mouseY, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &m_selection);
 
     m_program->release();
 
@@ -176,7 +176,7 @@ void ModelScene::paintGL()
 
 void ModelScene::resizeGL(int width, int height)
 {
-    glViewport(0, 0, width, height);
+    m_funcs->glViewport(0, 0, width, height);
 }
 
 void ModelScene::mousePressEvent(QMouseEvent *event)
@@ -202,7 +202,7 @@ void ModelScene::wheelEvent(QWheelEvent *event)
     emit wheelRotated(event);
 }
 
-void ModelScene::update()
+void ModelScene::updateScene()
 {
     int timeDelta = m_time.restart();
 
@@ -220,7 +220,7 @@ void ModelScene::update()
         }
     }
 
-    //updateGL();
+    update();
 }
 
 void ModelScene::renderGrid(int size, float step, MVP mvp)
@@ -266,7 +266,7 @@ void ModelScene::renderGrid(int size, float step, MVP mvp)
 
     m_particleProgram->setUniformValue("mvpMatrix", mvp.getMVPMatrix());
 
-    glBindTexture(GL_TEXTURE_2D, 0);
+    m_funcs->glBindTexture(GL_TEXTURE_2D, 0);
 
     m_gridBuffer->bind();
 
@@ -279,7 +279,7 @@ void ModelScene::renderGrid(int size, float step, MVP mvp)
     m_particleProgram->enableAttributeArray("texcoord");
     m_particleProgram->setAttributeBuffer("texcoord", GL_FLOAT, 7 * sizeof(float), 2, sizeof(ParticleVertex));
 
-    glDrawArrays(GL_LINES, 0, 4 * size);
+    m_funcs->glDrawArrays(GL_LINES, 0, 4 * size);
 
     m_particleProgram->disableAttributeArray("position");
     m_particleProgram->disableAttributeArray("color");

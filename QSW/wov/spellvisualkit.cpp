@@ -46,7 +46,7 @@ void SpellVisualKit::detach()
 
 void SpellVisualKit::addCameraShakes(ModelScene *scene)
 {
-    if (!scene || !m_kit->shakes)
+    if (!scene || !m_kit || !m_kit->shakes)
         return;
 
     const SpellEffectCameraShakesDBC::entry* shakes = SpellEffectCameraShakesDBC::getRecord(m_kit->shakes, true);
@@ -61,7 +61,7 @@ void SpellVisualKit::addCameraShakes(ModelScene *scene)
 
 bool SpellVisualKit::update(M2 *model)
 {
-    if (!model)
+    if (!model || !m_kit)
         return false;
 
     if (!m_model)

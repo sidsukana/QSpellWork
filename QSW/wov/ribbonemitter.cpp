@@ -12,7 +12,7 @@ RibbonEmitter::RibbonEmitter(const M2RibbonEmitter &emitter, const quint32 *sequ
       m_angle(emitter.angle),
       m_vertices(0),
       m_vertexBuffer(0),
-      m_initialized(false)
+      m_initialized(false), m_context(nullptr), m_funcs(nullptr)
 {
     const qint32 *textures = reinterpret_cast<const qint32 *>(data.data() + emitter.texturesOffset);
     for (quint32 i = 0; i < emitter.texturesCount; i++)
@@ -66,7 +66,14 @@ void RibbonEmitter::update(quint32 animation, quint32 time, QMatrix4x4 boneMatri
 
 void RibbonEmitter::initialize()
 {
-    initializeOpenGLFunctions();
+    if (!m_context)
+    {
+        m_context = new QOpenGLContext(this);
+        m_context->create();
+    }
+
+    if (!m_funcs)
+        m_funcs = m_context->functions();
 
     m_vertexBuffer = new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
     m_vertexBuffer->create();
@@ -97,22 +104,22 @@ void RibbonEmitter::render(QOpenGLShaderProgram *program, MVP viewProjection)
     program->enableAttributeArray("texcoord");
     program->setAttributeBuffer("texcoord", GL_FLOAT, 7 * sizeof(float), 2, sizeof(ParticleVertex));
 
-    glDisable(GL_CULL_FACE);
-    glDepthMask(GL_FALSE);
+    m_funcs->glDisable(GL_CULL_FACE);
+    m_funcs->glDepthMask(GL_FALSE);
 
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+    m_funcs->glEnable(GL_BLEND);
+    m_funcs->glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, 2 * m_ribbons.size());
+    m_funcs->glDrawArrays(GL_TRIANGLE_STRIP, 0, 2 * m_ribbons.size());
 
     program->disableAttributeArray("position");
     program->disableAttributeArray("color");
     program->disableAttributeArray("texcoord");
 
-    glDepthMask(GL_TRUE);
+    m_funcs->glDepthMask(GL_TRUE);
 
-    glDisable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    m_funcs->glDisable(GL_BLEND);
+    m_funcs->glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     m_vertexBuffer->release();
 }

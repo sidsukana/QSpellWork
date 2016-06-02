@@ -51,7 +51,7 @@ ParticleEmitter::ParticleEmitter(const M2ParticleEmitter &emitter, const quint32
       m_slowdown(emitter.slowdown),
       m_rotation(emitter.rotation),
       m_initialized(false),
-      m_vertexBuffer(0), m_indexBuffer(0)
+      m_vertexBuffer(0), m_indexBuffer(0), m_context(nullptr), m_funcs(nullptr)
 {
     if (m_rows == 0)
         m_rows = 1;
@@ -163,7 +163,14 @@ void ParticleEmitter::update(quint32 animation, quint32 time, float timeDelta, Q
 
 void ParticleEmitter::initialize()
 {
-    initializeOpenGLFunctions();
+    if (!m_context)
+    {
+        m_context = new QOpenGLContext(this);
+        m_context->create();
+    }
+
+    if (!m_funcs)
+        m_funcs = m_context->functions();
 
     m_vertexBuffer = new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
     m_vertexBuffer->create();
@@ -245,42 +252,42 @@ void ParticleEmitter::render(QOpenGLShaderProgram *program, MVP viewProjection)
     m_indexBuffer->bind();
     m_indexBuffer->allocate(indices, 6 * m_particles.size() * sizeof(quint16));
 
-    glDisable(GL_CULL_FACE);
-    glDepthMask(GL_FALSE);
+    m_funcs->glDisable(GL_CULL_FACE);
+    m_funcs->glDepthMask(GL_FALSE);
 
     switch (m_blending) {
         case 0:
-            glDisable(GL_BLEND);
-            glDisable(GL_ALPHA_TEST);
+            m_funcs->glDisable(GL_BLEND);
+            m_funcs->glDisable(GL_ALPHA_TEST);
             break;
         case 1:
-            glEnable(GL_BLEND);
-            glBlendFunc(GL_SRC_COLOR, GL_ONE);
-            glDisable(GL_ALPHA_TEST);
+            m_funcs->glEnable(GL_BLEND);
+            m_funcs->glBlendFunc(GL_SRC_COLOR, GL_ONE);
+            m_funcs->glDisable(GL_ALPHA_TEST);
             break;
         case 2:
-            glEnable(GL_BLEND);
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            glDisable(GL_ALPHA_TEST);
+            m_funcs->glEnable(GL_BLEND);
+            m_funcs->glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            m_funcs->glDisable(GL_ALPHA_TEST);
             break;
         case 3:
-            glDisable(GL_BLEND);
-            glEnable(GL_ALPHA_TEST);
+            m_funcs->glDisable(GL_BLEND);
+            m_funcs->glEnable(GL_ALPHA_TEST);
             break;
         case 4:
-            glEnable(GL_BLEND);
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-            glDisable(GL_ALPHA_TEST);
+            m_funcs->glEnable(GL_BLEND);
+            m_funcs->glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+            m_funcs->glDisable(GL_ALPHA_TEST);
             break;
     }
 
-    glDrawElements(GL_TRIANGLES, 6 * m_particles.size(), GL_UNSIGNED_SHORT, 0);
+    m_funcs->glDrawElements(GL_TRIANGLES, 6 * m_particles.size(), GL_UNSIGNED_SHORT, 0);
 
     program->disableAttributeArray("position");
     program->disableAttributeArray("color");
     program->disableAttributeArray("texcoord");
 
-    glDepthMask(GL_TRUE);
+    m_funcs->glDepthMask(GL_TRUE);
 
     m_vertexBuffer->release();
     m_indexBuffer->release();

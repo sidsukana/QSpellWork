@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QMatrix4x4>
 #include <QTimer>
-#include <QOpenGLFunctions_2_0>
+#include <QOpenGLFunctions>
 
 #include "m2structures.h"
 #include "texture.h"
@@ -14,7 +14,7 @@
 #include "particleemitter.h"
 #include "mvp.h"
 
-class M2 : public QObject, public QOpenGLFunctions_2_0
+class M2 : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(quint32 animation READ animation WRITE setAnimation)
@@ -72,7 +72,7 @@ private:
 
     QList<Bone> m_bones;
 
-    QList<Texture> m_textures;
+    QList<Texture*> m_textures;
     quint16 *m_textureLookup;
     qint16 *m_replaceableTextures;
 
@@ -91,8 +91,8 @@ private:
     QHash<quint32, M2Attachment *> m_attachments;
     QMultiHash<quint32, M2 *> m_attachedModels;
 
-    QList<RibbonEmitter> m_ribbonEmitters;
-    QList<ParticleEmitter> m_particleEmitters;
+    QList<RibbonEmitter*> m_ribbonEmitters;
+    QList<ParticleEmitter*> m_particleEmitters;
 
     quint32 *m_sequences;
 
@@ -107,6 +107,9 @@ private:
 
     QOpenGLBuffer *m_vertexBuffer;
     QOpenGLBuffer *m_indexBuffer;
+
+    QOpenGLContext* m_context;
+    QOpenGLFunctions* m_funcs;
 };
 
 #endif

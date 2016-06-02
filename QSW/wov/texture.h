@@ -1,6 +1,7 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
+#include <QObject>
 #include <QOpenGLFunctions>
 
 #define BLP_MAGIC "BLP2"
@@ -19,8 +20,9 @@ struct BLPHeader
     quint32 mipmapLength[16];
 };
 
-class Texture : public QOpenGLFunctions
+class Texture : public QObject
 {
+    Q_OBJECT
 public:
     Texture();
 
@@ -39,6 +41,9 @@ private:
     bool m_dirty;
 
     GLuint m_texture;
+
+    QOpenGLContext* m_context;
+    QOpenGLFunctions* m_funcs;
 };
 
 #endif

@@ -5,8 +5,6 @@
 #include "wovdbc.h"
 #include "mpq/MPQ.h"
 
-#include <QOpenGLFunctions_2_0>
-
 M2::M2(const QString &fileName)
     : m_loaded(false),
       m_initialized(false),
@@ -14,7 +12,9 @@ M2::M2(const QString &fileName)
       m_animation(0),
       m_time(0),
       m_animationState(-1),
-      m_animationOneshot(-1)
+      m_animationOneshot(-1),
+      m_context(nullptr),
+      m_funcs(nullptr)
 {
     m_data = MPQ::readFile(fileName);
 
@@ -57,10 +57,10 @@ M2::M2(const QString &fileName)
     for (quint32 i = 0; i < m_header->texturesCount; i++) {
         QString fileName(m_data.data() + textures[i].fileNameOffset);
 
-        m_textures << Texture();
+        m_textures << new Texture();
 
         if (textures[i].type == 0)
-            m_textures[i].load(fileName);
+            m_textures[i]->load(fileName);
     }
 
     m_textureAnimationLookup = reinterpret_cast<qint16 *>(m_data.data() + m_header->textureAnimationLookupOffset);
@@ -117,19 +117,22 @@ M2::M2(const QString &fileName)
     M2RibbonEmitter *ribbonEmitters = reinterpret_cast<M2RibbonEmitter *>(m_data.data() + m_header->ribbonEmittersOffset);
 
     for (quint32 i = 0; i < m_header->ribbonEmittersCount; i++)
-        m_ribbonEmitters << RibbonEmitter(ribbonEmitters[i], m_sequences, m_data);
+        m_ribbonEmitters << new RibbonEmitter(ribbonEmitters[i], m_sequences, m_data);
 
     M2ParticleEmitter *particleEmitters = reinterpret_cast<M2ParticleEmitter *>(m_data.data() + m_header->particleEmittersOffset);
 
     for (quint32 i = 0; i < m_header->particleEmittersCount; i++)
-        m_particleEmitters << ParticleEmitter(particleEmitters[i], m_sequences, m_data);
+        m_particleEmitters << new ParticleEmitter(particleEmitters[i], m_sequences, m_data);
 
     m_loaded = true;
 }
 
 void M2::initialize()
 {
-    initializeOpenGLFunctions();
+    m_context = new QOpenGLContext(this);
+    m_context->create();
+
+    m_funcs = m_context->functions();
 
     m_vertexBuffer = new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
     m_vertexBuffer->create();
@@ -213,56 +216,56 @@ void M2::render(QOpenGLShaderProgram *program, MVP mvp)
 
     bindBuffers(program);
 
-    glAlphaFunc(GL_GREATER, 0.3f);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    //glAlphaFunc(GL_GREATER, 0.3f);
+    m_funcs->glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     for (quint32 i = 0; i < m_views[0].textureUnitsCount; i++) {
         M2RenderFlags flags = m_renderFlags[m_textureUnits[i].renderFlagIndex];
 
         switch (flags.blending) {
             case BM_OPAQUE:
-                glDisable(GL_BLEND);
-                glDisable(GL_ALPHA_TEST);
+                m_funcs->glDisable(GL_BLEND);
+                m_funcs->glDisable(GL_ALPHA_TEST);
                 break;
             case BM_TRANSPARENT:
-                glDisable(GL_BLEND);
-                glEnable(GL_ALPHA_TEST);
+                m_funcs->glDisable(GL_BLEND);
+                m_funcs->glEnable(GL_ALPHA_TEST);
                 break;
             case BM_ALPHA_BLEND:
-                glEnable(GL_BLEND);
-                glDisable(GL_ALPHA_TEST);
+                m_funcs->glEnable(GL_BLEND);
+                m_funcs->glDisable(GL_ALPHA_TEST);
                 break;
             case BM_ADDITIVE:
-                glEnable(GL_BLEND);
-                glBlendFunc(GL_SRC_COLOR, GL_ONE);
-                glDisable(GL_ALPHA_TEST);
+                m_funcs->glEnable(GL_BLEND);
+                m_funcs->glBlendFunc(GL_SRC_COLOR, GL_ONE);
+                m_funcs->glDisable(GL_ALPHA_TEST);
                 break;
             case BM_ADDITIVE_ALPHA:
-                glEnable(GL_BLEND);
-                glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-                glDisable(GL_ALPHA_TEST);
+                m_funcs->glEnable(GL_BLEND);
+                m_funcs->glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+                m_funcs->glDisable(GL_ALPHA_TEST);
                 break;
             case BM_MODULATE:
             default:
-                glEnable(GL_BLEND);
-                glBlendFunc(GL_DST_COLOR, GL_SRC_COLOR);
-                glDisable(GL_ALPHA_TEST);
+                m_funcs->glEnable(GL_BLEND);
+                m_funcs->glBlendFunc(GL_DST_COLOR, GL_SRC_COLOR);
+                m_funcs->glDisable(GL_ALPHA_TEST);
                 break;
         }
 
         bool lighting = (flags.flags & RENDER_FLAG_UNLIT) == 0;
 
         if (flags.flags & RENDER_FLAG_TWO_SIDED)
-            glDisable(GL_CULL_FACE);
+            m_funcs->glDisable(GL_CULL_FACE);
         else
-            glEnable(GL_CULL_FACE);
+            m_funcs->glEnable(GL_CULL_FACE);
 
         if (flags.flags & RENDER_FLAG_NO_Z_WRITE)
-            glDepthMask(GL_FALSE);
+            m_funcs->glDepthMask(GL_FALSE);
         else
-            glDepthMask(GL_TRUE);
+            m_funcs->glDepthMask(GL_TRUE);
 
-        m_textures[m_textureLookup[m_textureUnits[i].textureIndex]].bind();
+        m_textures[m_textureLookup[m_textureUnits[i].textureIndex]]->bind();
 
         QMatrix4x4 textureMatrix;
 
@@ -302,13 +305,13 @@ void M2::render(QOpenGLShaderProgram *program, MVP mvp)
 
         quint32 submesh = m_textureUnits[i].submeshIndex;
 
-        glDrawElements(GL_TRIANGLES, m_submeshes[submesh].trianglesCount, GL_UNSIGNED_SHORT, (const GLvoid *)(m_submeshes[submesh].startingTriangle * sizeof(GLushort)));
+        m_funcs->glDrawElements(GL_TRIANGLES, m_submeshes[submesh].trianglesCount, GL_UNSIGNED_SHORT, (const GLvoid *)(m_submeshes[submesh].startingTriangle * sizeof(GLushort)));
     }
 
-    glDepthMask(GL_TRUE);
+    m_funcs->glDepthMask(GL_TRUE);
 
-    glAlphaFunc(GL_ALWAYS, 0.0f);
-    glBlendFunc(GL_ONE, GL_ZERO);
+    //glAlphaFunc(GL_ALWAYS, 0.0f);
+    m_funcs->glBlendFunc(GL_ONE, GL_ZERO);
 
     releaseBuffers(program);
 
@@ -318,21 +321,21 @@ void M2::render(QOpenGLShaderProgram *program, MVP mvp)
 void M2::renderParticles(QOpenGLShaderProgram *program, MVP viewProjection)
 {
     for (int i = 0; i < m_ribbonEmitters.size(); i++) {
-        qint32 texture = m_ribbonEmitters[i].getTextureId();
+        qint32 texture = m_ribbonEmitters[i]->getTextureId();
 
         if (texture != -1)
-            m_textures[texture].bind();
+            m_textures[texture]->bind();
 
-        m_ribbonEmitters[i].render(program, viewProjection);
+        m_ribbonEmitters[i]->render(program, viewProjection);
     }
 
     for (int i = 0; i < m_particleEmitters.size(); i++) {
-        qint16 texture = m_particleEmitters[i].getTextureId();
+        qint16 texture = m_particleEmitters[i]->getTextureId();
 
         if (texture != -1)
-            m_textures[texture].bind();
+            m_textures[texture]->bind();
 
-        m_particleEmitters[i].render(program, viewProjection);
+        m_particleEmitters[i]->render(program, viewProjection);
     }
 
     renderAttachmentsParticles(program, viewProjection);
@@ -397,21 +400,21 @@ void M2::update(int timeDelta, QMatrix4x4 model)
 void M2::updateEmitters(int timeDelta, QMatrix4x4 model)
 {
     for (int i = 0; i < m_ribbonEmitters.size(); i++) {
-        qint32 bone = m_ribbonEmitters[i].getBoneId();
+        qint32 bone = m_ribbonEmitters[i]->getBoneId();
         QMatrix4x4 boneMatrix;
         if (bone != -1)
             boneMatrix = m_bones[bone].getMatrix(m_animation, m_time, MVP());
 
-        m_ribbonEmitters[i].update(m_animation, m_time, model * boneMatrix);
+        m_ribbonEmitters[i]->update(m_animation, m_time, model * boneMatrix);
     }
 
     for (int i = 0; i < m_particleEmitters.size(); i++) {
-        qint16 bone = m_particleEmitters[i].getBoneId();
+        qint16 bone = m_particleEmitters[i]->getBoneId();
         QMatrix4x4 boneMatrix;
         if (bone != -1)
             boneMatrix = m_bones[bone].getMatrix(m_animation, m_time, MVP());
 
-        m_particleEmitters[i].update(m_animation, m_time, timeDelta / 1000.0f, model * boneMatrix);
+        m_particleEmitters[i]->update(m_animation, m_time, timeDelta / 1000.0f, model * boneMatrix);
     }
 }
 
@@ -503,7 +506,7 @@ void M2::setTexture(quint32 type, QString fileName)
     if (type >= m_header->textureReplaceCount || m_replaceableTextures[type] == -1)
         return;
 
-    m_textures[m_replaceableTextures[type]].load(fileName);
+    m_textures[m_replaceableTextures[type]]->load(fileName);
 }
 
 bool M2::attachModel(quint32 attachmentId, M2 *model)

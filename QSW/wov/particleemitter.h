@@ -1,6 +1,7 @@
 #ifndef PARTICLE_EMITTER_H
 #define PARTICLE_EMITTER_H
 
+#include <QObject>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLBuffer>
 #include <QOpenGLFunctions>
@@ -50,8 +51,9 @@ struct ParticleVertex
     float m_texcoord[2];
 };
 
-class ParticleEmitter : public QOpenGLFunctions
+class ParticleEmitter : public QObject
 {
+    Q_OBJECT
 public:
     ParticleEmitter(const M2ParticleEmitter &emitter, const quint32 *sequences, const QByteArray &data);
 
@@ -100,6 +102,9 @@ private:
 
     QOpenGLBuffer *m_vertexBuffer;
     QOpenGLBuffer *m_indexBuffer;
+
+    QOpenGLContext* m_context;
+    QOpenGLFunctions* m_funcs;
 };
 
 #endif
