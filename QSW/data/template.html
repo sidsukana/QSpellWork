@@ -18,11 +18,18 @@
 {{#description}}<b>Description:</b> {{description}}</br>{{/description}}
 {{#tooltip}}<b>ToolTip:</b> {{tooltip}}</br>{{/tooltip}}
 </div>
-{{#parentId}}
-<div class='b-vlink'>
-<b>Parent spell:</b> <a href='http://spellwork/{{parentId}}' class='blue_link'>{{parentId}} - {{parentName}}</a>
+{{#hasParents}}
+<div class='b-box-title'>Parent spells</div>
+<div class='b-box-body'>
+<div class='b-box'>
+<ul>
+{{#parentSpells}}
+<li><a href='http://spellwork/{{id}}' class='blue_link'>{{id}} - {{name}}</a></li>
+{{/parentSpells}}
+</ul>
 </div>
-{{/parentId}}
+</div>
+{{/hasParents}}
 <div class='b-box-title'>General info</div>
 <div class='b-box-body'>
 <div class='b-box'>

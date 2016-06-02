@@ -788,14 +788,28 @@ QString SWObject::getDescription(QString str, const Spell::entry* spellInfo)
     return str;
 }
 
-quint32 SWObject::getParentSpellId(quint32 triggerId)
+QVariantList SWObject::getParentSpells(quint32 triggerId)
 {
+    QVariantList parentSpells;
     for (quint32 i = 0; i < Spell::getHeader()->recordCount; ++i)
+    {
         if (const Spell::entry* spellInfo = Spell::getRecord(i))
+        {
+            QVariantHash parentSpell;
             for (quint8 eff = 0; eff < MAX_EFFECT_INDEX; ++eff)
+            {
                 if (spellInfo->effectTriggerSpell[eff] == triggerId)
-                    return spellInfo->id;
-    return 0;
+                {
+                    parentSpell["id"] = spellInfo->id;
+                    parentSpell["name"] = spellInfo->nameWithRank();
+                    parentSpells.append(parentSpell);
+                    break;
+                }
+            }
+        }
+    }
+
+    return parentSpells;
 }
 
 QString SWObject::getSpellIconName(quint32 iconId)
@@ -856,10 +870,11 @@ void SWObject::showInfo(const Spell::entry* spellInfo, QSW::Pages pageId)
     values["description"] = getDescription(spellInfo->description(), spellInfo);
     values["tooltip"] = getDescription(spellInfo->toolTip(), spellInfo);
 
-    if (const Spell::entry* parentInfo = Spell::getRecord(getParentSpellId(spellInfo->id), true))
+    QVariantList parentSpells = getParentSpells(spellInfo->id);
+    if (!parentSpells.isEmpty())
     {
-        values["parentId"] = parentInfo->id;
-        values["parentName"] = parentInfo->nameWithRank();
+        values["hasParents"] = !parentSpells.isEmpty();
+        values["parentSpells"] = parentSpells;
     }
 
     values["modalNextSpell"] = spellInfo->modalNextSpell;

@@ -41,7 +41,7 @@ class SWObject : public QObject
         ~SWObject() {}
 
         void showInfo(const Spell::entry* spellInfo, QSW::Pages pageId = QSW::PAGE_MAIN);
-        quint32 getParentSpellId(quint32 triggerId);
+        QVariantList getParentSpells(quint32 triggerId);
         void compare();
         QList<QEvent*> search();
 
