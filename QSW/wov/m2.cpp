@@ -5,7 +5,7 @@
 #include "wovdbc.h"
 #include "mpq/MPQ.h"
 
-M2::M2(const QString &fileName)
+M2::M2(const QString &fileName, QOpenGLFunctions* funcs)
     : m_loaded(false),
       m_initialized(false),
       m_animating(true),
@@ -13,8 +13,7 @@ M2::M2(const QString &fileName)
       m_time(0),
       m_animationState(-1),
       m_animationOneshot(-1),
-      m_context(nullptr),
-      m_funcs(nullptr)
+      m_funcs(funcs)
 {
     m_data = MPQ::readFile(fileName);
 
@@ -57,7 +56,7 @@ M2::M2(const QString &fileName)
     for (quint32 i = 0; i < m_header->texturesCount; i++) {
         QString fileName(m_data.data() + textures[i].fileNameOffset);
 
-        m_textures << new Texture();
+        m_textures << new Texture(m_funcs);
 
         if (textures[i].type == 0)
             m_textures[i]->load(fileName);
@@ -117,23 +116,18 @@ M2::M2(const QString &fileName)
     M2RibbonEmitter *ribbonEmitters = reinterpret_cast<M2RibbonEmitter *>(m_data.data() + m_header->ribbonEmittersOffset);
 
     for (quint32 i = 0; i < m_header->ribbonEmittersCount; i++)
-        m_ribbonEmitters << new RibbonEmitter(ribbonEmitters[i], m_sequences, m_data);
+        m_ribbonEmitters << new RibbonEmitter(ribbonEmitters[i], m_sequences, m_data, m_funcs);
 
     M2ParticleEmitter *particleEmitters = reinterpret_cast<M2ParticleEmitter *>(m_data.data() + m_header->particleEmittersOffset);
 
     for (quint32 i = 0; i < m_header->particleEmittersCount; i++)
-        m_particleEmitters << new ParticleEmitter(particleEmitters[i], m_sequences, m_data);
+        m_particleEmitters << new ParticleEmitter(particleEmitters[i], m_sequences, m_data, m_funcs);
 
     m_loaded = true;
 }
 
 void M2::initialize()
 {
-    m_context = new QOpenGLContext(this);
-    m_context->create();
-
-    m_funcs = m_context->functions();
-
     m_vertexBuffer = new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
     m_vertexBuffer->create();
     m_vertexBuffer->setUsagePattern(QOpenGLBuffer::StaticDraw);

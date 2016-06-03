@@ -19,7 +19,7 @@
 #  define GL_TEXTURE_MAX_LEVEL              0x813D
 #endif
 
-Texture::Texture() : m_dirty(false), m_texture(0), m_context(nullptr), m_funcs(nullptr)
+Texture::Texture(QOpenGLFunctions* funcs) : m_dirty(false), m_texture(0), m_funcs(funcs)
 {
 }
 
@@ -83,14 +83,6 @@ quint32 * Texture::readPalettedTexture(quint32 width, quint32 height, const char
 
 void Texture::create()
 {
-    if (!m_context) {
-        m_context = new QOpenGLContext(this);
-        m_context->create();
-    }
-
-    if (!m_funcs)
-        m_funcs = m_context->functions();
-
     if (!m_texture)
         m_funcs->glGenTextures(1, &m_texture);
 

@@ -27,7 +27,7 @@ T getValueAtLife(float life, float midpoint, T a, T b, T c)
     return min * (1.0f - t) + max * t;
 }
 
-ParticleEmitter::ParticleEmitter(const M2ParticleEmitter &emitter, const quint32 *sequences, const QByteArray &data)
+ParticleEmitter::ParticleEmitter(const M2ParticleEmitter &emitter, const quint32 *sequences, const QByteArray &data, QOpenGLFunctions *funcs)
     : m_flags(emitter.flags),
       m_position(emitter.position[0], emitter.position[1], emitter.position[2]),
       m_bone(emitter.bone),
@@ -51,7 +51,8 @@ ParticleEmitter::ParticleEmitter(const M2ParticleEmitter &emitter, const quint32
       m_slowdown(emitter.slowdown),
       m_rotation(emitter.rotation),
       m_initialized(false),
-      m_vertexBuffer(0), m_indexBuffer(0), m_context(nullptr), m_funcs(nullptr)
+      m_vertexBuffer(0), m_indexBuffer(0),
+      m_funcs(funcs)
 {
     if (m_rows == 0)
         m_rows = 1;
@@ -163,15 +164,6 @@ void ParticleEmitter::update(quint32 animation, quint32 time, float timeDelta, Q
 
 void ParticleEmitter::initialize()
 {
-    if (!m_context)
-    {
-        m_context = new QOpenGLContext(this);
-        m_context->create();
-    }
-
-    if (!m_funcs)
-        m_funcs = m_context->functions();
-
     m_vertexBuffer = new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
     m_vertexBuffer->create();
     m_vertexBuffer->setUsagePattern(QOpenGLBuffer::StreamDraw);

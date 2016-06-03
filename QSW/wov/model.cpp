@@ -16,7 +16,8 @@ void Model::addSpellVisualKit(quint32 id, bool oneshot)
         return;
 
     m_visualKits[id] = new SpellVisualKit(id, oneshot);
-    m_visualKits[id]->addCameraShakes(m_scene);
+    m_visualKits[id]->setScene(m_scene);
+    m_visualKits[id]->addCameraShakes();
 }
 
 void Model::removeSpellVisualKit(quint32 id)
@@ -99,7 +100,7 @@ void Model::update(int timeDelta)
         QTime time;
         time.start();
 
-        m_model = new M2(m_modelFileName);
+        m_model = new M2(m_modelFileName, m_scene->context()->functions());
 
         m_model->setAnimation(0);
 

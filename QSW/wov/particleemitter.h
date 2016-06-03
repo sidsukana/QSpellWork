@@ -55,7 +55,7 @@ class ParticleEmitter : public QObject
 {
     Q_OBJECT
 public:
-    ParticleEmitter(const M2ParticleEmitter &emitter, const quint32 *sequences, const QByteArray &data);
+    ParticleEmitter(const M2ParticleEmitter &emitter, const quint32 *sequences, const QByteArray &data, QOpenGLFunctions* funcs);
 
     void update(quint32 animation, quint32 time, float timeDelta, QMatrix4x4 boneMatrix);
     void render(QOpenGLShaderProgram *program, MVP viewProjection);
@@ -103,7 +103,6 @@ private:
     QOpenGLBuffer *m_vertexBuffer;
     QOpenGLBuffer *m_indexBuffer;
 
-    QOpenGLContext* m_context;
     QOpenGLFunctions* m_funcs;
 };
 

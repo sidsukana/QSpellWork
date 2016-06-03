@@ -15,7 +15,8 @@ ModelScene::ModelScene(QWidget *parent) : QOpenGLWidget(parent),
     m_distance(0.0f),
     m_program(0),
     m_particleProgram(0),
-    m_gridBuffer(0)
+    m_gridBuffer(0),
+    m_funcs(nullptr)
 {
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     setMouseTracking(true);

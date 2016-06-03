@@ -21,7 +21,7 @@ class RibbonEmitter : public QObject
 {
     Q_OBJECT
 public:
-    RibbonEmitter(const M2RibbonEmitter &emitter, const quint32 *sequences, const QByteArray &data);
+    RibbonEmitter(const M2RibbonEmitter &emitter, const quint32 *sequences, const QByteArray &data, QOpenGLFunctions* funcs);
 
     void update(quint32 animation, quint32 time, QMatrix4x4 boneMatrix);
     void render(QOpenGLShaderProgram *program, MVP viewProjection);
@@ -50,7 +50,6 @@ private:
 
     bool m_initialized;
 
-    QOpenGLContext* m_context;
     QOpenGLFunctions* m_funcs;
 };
 

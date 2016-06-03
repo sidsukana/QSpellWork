@@ -3,6 +3,7 @@
 
 #include <QObject>
 
+#include "modelscene.h"
 #include "mvp.h"
 
 class QOpenGLShaderProgram;

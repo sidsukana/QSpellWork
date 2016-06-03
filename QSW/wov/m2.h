@@ -21,7 +21,7 @@ class M2 : public QObject
     Q_PROPERTY(bool animating READ animating WRITE setAnimating)
 
 public:
-    explicit M2(const QString &fileName);
+    explicit M2(const QString &fileName, QOpenGLFunctions *funcs);
 
     void initialize();
     void render(QOpenGLShaderProgram *program, MVP mvp);
@@ -108,7 +108,6 @@ private:
     QOpenGLBuffer *m_vertexBuffer;
     QOpenGLBuffer *m_indexBuffer;
 
-    QOpenGLContext* m_context;
     QOpenGLFunctions* m_funcs;
 };
 

@@ -1,6 +1,6 @@
 #include "ribbonemitter.h"
 
-RibbonEmitter::RibbonEmitter(const M2RibbonEmitter &emitter, const quint32 *sequences, const QByteArray &data)
+RibbonEmitter::RibbonEmitter(const M2RibbonEmitter &emitter, const quint32 *sequences, const QByteArray &data, QOpenGLFunctions *funcs)
     : m_bone(emitter.bone),
       m_position(emitter.position[0], emitter.position[1], emitter.position[2]),
       m_color(emitter.color, sequences, data),
@@ -12,7 +12,8 @@ RibbonEmitter::RibbonEmitter(const M2RibbonEmitter &emitter, const quint32 *sequ
       m_angle(emitter.angle),
       m_vertices(0),
       m_vertexBuffer(0),
-      m_initialized(false), m_context(nullptr), m_funcs(nullptr)
+      m_initialized(false),
+      m_funcs(funcs)
 {
     const qint32 *textures = reinterpret_cast<const qint32 *>(data.data() + emitter.texturesOffset);
     for (quint32 i = 0; i < emitter.texturesCount; i++)
@@ -66,15 +67,6 @@ void RibbonEmitter::update(quint32 animation, quint32 time, QMatrix4x4 boneMatri
 
 void RibbonEmitter::initialize()
 {
-    if (!m_context)
-    {
-        m_context = new QOpenGLContext(this);
-        m_context->create();
-    }
-
-    if (!m_funcs)
-        m_funcs = m_context->functions();
-
     m_vertexBuffer = new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
     m_vertexBuffer->create();
     m_vertexBuffer->setUsagePattern(QOpenGLBuffer::StreamDraw);

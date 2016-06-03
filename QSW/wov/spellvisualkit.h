@@ -3,6 +3,7 @@
 
 #include <QHash>
 
+#include "modelscene.h"
 #include "wovdbc.h"
 
 class M2;
@@ -16,7 +17,9 @@ public:
     void attach(M2 *model);
     void detach();
 
-    void addCameraShakes(ModelScene *scene);
+    void setScene(ModelScene* scene) { m_scene = scene; }
+
+    void addCameraShakes();
 
     bool update(M2 *model);
 
@@ -29,6 +32,7 @@ private:
     M2 *m_model;
 
     QHash<quint32, M2 *> m_effects;
+    ModelScene* m_scene;
 };
 
 #endif

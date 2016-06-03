@@ -24,7 +24,7 @@ class Texture : public QObject
 {
     Q_OBJECT
 public:
-    Texture();
+    Texture(QOpenGLFunctions* funcs);
 
     bool load(const QString &fileName);
     void bind();
@@ -42,7 +42,6 @@ private:
 
     GLuint m_texture;
 
-    QOpenGLContext* m_context;
     QOpenGLFunctions* m_funcs;
 };
 

@@ -8,7 +8,8 @@
 SpellVisualKit::SpellVisualKit(quint32 id, bool oneshot)
     : m_kit(SpellVisualKitDBC::getRecord(id, true)),
       m_oneshot(oneshot),
-      m_model(0)
+      m_model(0),
+      m_scene(nullptr)
 {
 }
 
@@ -44,9 +45,9 @@ void SpellVisualKit::detach()
     m_model->setAnimation(0);
 }
 
-void SpellVisualKit::addCameraShakes(ModelScene *scene)
+void SpellVisualKit::addCameraShakes()
 {
-    if (!scene || !m_kit || !m_kit->shakes)
+    if (!m_scene || !m_kit || !m_kit->shakes)
         return;
 
     const SpellEffectCameraShakesDBC::entry* shakes = SpellEffectCameraShakesDBC::getRecord(m_kit->shakes, true);
@@ -55,7 +56,7 @@ void SpellVisualKit::addCameraShakes(ModelScene *scene)
 
     for (int i = 0; i < 3; i++) {
         if (shakes->shakes[i])
-            scene->addCameraShake(shakes->shakes[i]);
+            m_scene->addCameraShake(shakes->shakes[i]);
     }
 }
 
@@ -94,7 +95,7 @@ void SpellVisualKit::attachEffect(qint32 id, quint32 slot)
 
     QString modelName = QString(effectName->model()).replace(QRegExp(".md[xl]", Qt::CaseInsensitive), ".m2");
 
-    M2 *effect = new M2(modelName);
+    M2 *effect = new M2(modelName, m_scene->context()->functions());
     effect->setAnimation(0, m_oneshot);
     effect->setAnimation(158);
 
