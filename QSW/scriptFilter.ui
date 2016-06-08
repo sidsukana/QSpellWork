@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>advancedFilter</class>
- <widget class="QWidget" name="advancedFilter">
+ <class>scriptFilter</class>
+ <widget class="QWidget" name="scriptFilter">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -84,7 +84,7 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="0">
-       <widget class="ScriptEdit" name="textEdit">
+       <widget class="ScriptEdit" name="scriptEdit">
         <property name="acceptRichText">
          <bool>false</bool>
         </property>

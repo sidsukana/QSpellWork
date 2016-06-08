@@ -2,7 +2,7 @@
 #include <QLineEdit>
 #include <QMetaEnum>
 
-#include "SWModels.h"
+#include "models.h"
 #include "Alphanum.h"
 
 SpellListSortedModel::SpellListSortedModel(QObject *parent)
@@ -86,4 +86,78 @@ Qt::ItemFlags SpellListModel::flags(const QModelIndex &index) const
         return Qt::ItemIsEnabled;
 
     return QAbstractTableModel::flags(index);
+}
+
+ComboBoxModel::ComboBoxModel(QObject *parent)
+    : QAbstractItemModel(parent)
+{
+    m_items.clear();
+}
+
+void ComboBoxModel::clear()
+{
+    beginResetModel();
+    m_items.clear();
+    endResetModel();
+}
+
+QModelIndex ComboBoxModel::parent(const QModelIndex &index) const
+{
+    return QModelIndex();
+}
+
+QModelIndex ComboBoxModel::index(int row, int column, const QModelIndex &parent) const
+{
+    return createIndex(row, 0);
+}
+
+int ComboBoxModel::rowCount(const QModelIndex &parent) const
+{
+    Q_UNUSED(parent);
+    return m_items.size();
+}
+
+int ComboBoxModel::columnCount(const QModelIndex &parent) const
+{
+    Q_UNUSED(parent);
+    return 1;
+}
+
+QVariant ComboBoxModel::data(const QModelIndex &index, int role) const
+{
+    if (m_items.isEmpty())
+        return QVariant();
+
+    if (!index.isValid())
+        return QVariant();
+
+    if (index.row() >= m_items.size() || index.row() < 0)
+        return QVariant();
+
+    if (role == Qt::DisplayRole)
+        return m_items[index.row()].second;
+
+    if (role == Qt::UserRole)
+        return m_items[index.row()].first;
+
+    return QVariant();
+}
+
+void ComboBoxModel::setItems(ComboBoxHash items)
+{
+    m_items = items;
+    emit dataChanged(createIndex(0, 0), createIndex(items.size(), 0));
+}
+
+QVariant ComboBoxModel::headerData(int section, Qt::Orientation orientation, int role) const
+{
+    return QVariant();
+}
+
+Qt::ItemFlags ComboBoxModel::flags(const QModelIndex &index) const
+{
+    if (!index.isValid())
+        return Qt::ItemIsEnabled;
+
+    return QAbstractItemModel::flags(index);
 }

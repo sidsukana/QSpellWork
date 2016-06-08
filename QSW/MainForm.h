@@ -8,12 +8,14 @@
 #include <QIcon>
 #include <QStringListModel>
 
-#include "SWEnums.h"
+#include "events.h"
+#include "models.h"
+#include "shared.h"
 #include "SWObject.h"
 #include "Defines.h"
 
 #include "ui_main.h"
-#include "ui_advancedFilter.h"
+#include "ui_scriptFilter.h"
 
 class SWObject;
 class SpellListSortedModel;
@@ -38,13 +40,13 @@ public:
     Q_ENUMS(LocalesDBC)
 };
 
-class AdvancedFilterWidget : public QWidget, public Ui::advancedFilter
+class ScriptFilter : public QWidget, public Ui::scriptFilter
 {
     Q_OBJECT
 
     public:
-        AdvancedFilterWidget(QWidget* parent = nullptr);
-        ~AdvancedFilterWidget() {}
+        ScriptFilter(QWidget* parent = nullptr);
+        ~ScriptFilter() {}
 
         void addBookmark(QString str) {
             str =  str.trimmed();
@@ -135,9 +137,10 @@ class MainForm : public QMainWindow, public Ui::main
 
         bool isRegExp() const { return m_actionRegExp->isChecked(); }
         void setRegExp(bool enable) { m_actionRegExp->setChecked(enable); }
-        SWEnums* getEnums() const { return m_enums; }
-        QString getFilterText() const { return m_advancedFilterWidget->textEdit->toPlainText(); }
-        void setFilterText(QString str) { m_advancedFilterWidget->textEdit->setText(str); }
+        QString getFilterText() const { return m_scriptFilter->scriptEdit->toPlainText(); }
+        void setFilterText(QString str) { m_scriptFilter->scriptEdit->setText(str); }
+
+        ScriptFilter* getScriptFilter() const { return m_scriptFilter; }
 
         QWebEngineView* getBrowser(quint8 num) const
         {
@@ -155,13 +158,19 @@ class MainForm : public QMainWindow, public Ui::main
             return m_pages[pageId];
         }
 
+        void loadComboBoxes(EnumHash enums);
+        void loadCompleter(QStringList names);
+        void setLocale(quint8 locale);
+        void createModeButton();
+        void createPluginButton();
+
     signals:
         void signalSearch(quint8 type);
 
     private slots:
         void slotAbout();
-        void slotAdvancedFilter();
-        void slotAdvancedApply();
+        void slotScriptFilter();
+        void slotScriptApply();
         void slotFilterSearch();
         void slotButtonSearch();
         void slotCompareSearch();
@@ -177,31 +186,32 @@ class MainForm : public QMainWindow, public Ui::main
         void slotPrevRow();
         void slotNextRow();
         void slotCopyAll();
+        void slotChangeActivePlugin();
 
         bool event(QEvent* ev);
 
     private:
-        void loadComboBoxes();
-        void detectLocale();
-        void createModeButton();
-        void initializeCompleter();
-
-        SWEnums* m_enums;
 
         SpellListSortedModel* m_sortedModel;
         Ui::main m_ui;
         SWObject* m_sw;
         QToolButton* m_modeButton;
+        QToolButton* m_pluginButton;
         QAction* m_actionRegExp;
         QAction* m_actionAbout;
         QAction* m_actionSettings;
         QAction* m_actionWov;
 
-        typedef QList<QEvent*> EventList;
+        QVector<QFontComboBox*> m_comboBoxes;
+        QVector<ComboBoxModel*> m_comboBoxModels;
+
         typedef QFutureWatcher<EventList> SearchResultWatcher;
         SearchResultWatcher* m_watcher;
 
-        AdvancedFilterWidget* m_advancedFilterWidget;
+        QCompleter* m_completer;
+        QStringListModel* m_completerModel;
+
+        ScriptFilter* m_scriptFilter;
 
         QSWPage* m_pages[QSW::PAGE_MAX];
 };

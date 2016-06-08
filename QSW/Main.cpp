@@ -36,10 +36,8 @@ int main(int argc, char *argv[])
 
     MainForm form;
 
-    form.setWindowTitle(QString("Qt SpellWork for WoW %0 (%1) build %2")
-        .arg(QSW::CLIENT_VERSION)
-        .arg(QSW::CLIENT_BUILD)
-        .arg(QSW::QSW_BUILD));
+    form.setWindowTitle(QString("Qt SpellWork %0")
+        .arg(QSW::VERSION));
     
     // Set position to center about desktop widget
     QRect frameRect = form.frameGeometry();

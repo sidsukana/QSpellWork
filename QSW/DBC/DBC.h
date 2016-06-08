@@ -5,7 +5,7 @@
 
 #define DBC_MAGIC "WDBC"
 
-struct DBCFileHeader
+struct Q_DECL_EXPORT DBCFileHeader
 {
     char magic[4];
     quint32 recordCount;
@@ -14,7 +14,7 @@ struct DBCFileHeader
     quint32 stringBlockSize;
 };
 
-class DBCFile
+class Q_DECL_EXPORT DBCFile
 {
     public:
         explicit DBCFile(const QString &fileName);
@@ -34,6 +34,7 @@ class DBCFile
 
         const char* getStringBlock() const;
         const DBCFileHeader* getHeader() const { return m_header; }
+        const quint32 getIndex(quint32 id) const { return m_indexes[id]; }
 
     private:
 

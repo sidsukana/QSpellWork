@@ -5,7 +5,7 @@
 #include "squish/squish.h"
 #include "Defines.h"
 
-QImage BLP::getImage(const QString &fileName)
+QImage BLP::getBLP(const QString &fileName)
 {
     QString fn = QDir::fromNativeSeparators(fileName);
     QByteArray m_data = MPQ::readFile(fn);

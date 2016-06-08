@@ -2,9 +2,9 @@
 #define SCRIPTEDIT_H
 
 #include <QAbstractItemView>
+#include <QStringListModel>
 #include <QCompleter>
 #include <QKeyEvent>
-#include <QScrollBar>
 #include <QTextEdit>
 
 class ScriptEdit : public QTextEdit
@@ -15,7 +15,7 @@ class ScriptEdit : public QTextEdit
         ScriptEdit(QWidget *parent = nullptr);
         ~ScriptEdit();
 
-        QAbstractItemModel* setupModel();
+        void setupCompleter(QObject* metaSpell);
         QCompleter *completer() const;
 
     protected:
@@ -29,7 +29,9 @@ class ScriptEdit : public QTextEdit
         QString textUnderCursor() const;
 
     private:
-        QCompleter *m_completer;
+        QCompleter* m_completer;
+        QStringListModel* m_completerModel;
+
 };
 
 #endif

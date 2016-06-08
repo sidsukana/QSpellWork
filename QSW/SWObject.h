@@ -5,31 +5,18 @@
 #include <QJSEngine>
 #include <QJSValue>
 #include <QJSValueList>
+#include <QJsonObject>
 
 #include "MainForm.h"
-#include "SWEnums.h"
-#include "SWEvent.h"
+#include "shared.h"
+#include "events.h"
 #include "Defines.h"
-#include "dbc/DBCStructure.h"
 #include "blp/BLP.h"
 
-enum MaskType
-{
-    TYPE_ATTR,
-    TYPE_ATTR_EX1,
-    TYPE_ATTR_EX2,
-    TYPE_ATTR_EX3,
-    TYPE_ATTR_EX4,
-    TYPE_TARGETS,
-    TYPE_CREATURE,
-    TYPE_FORMS,
-    TYPE_FORMS_NOT,
-    TYPE_ITEM_WEAPON,
-    TYPE_ITEM_ARMOR,
-    TYPE_ITEM_MISC,
-    TYPE_ITEM_INVENTORY,
-    MAX_ATTR_TYPE
-};
+#include "plugins/spellinfo/interface.h"
+
+typedef QPair<QJsonObject, SpellInfoInterface*> SpellInfoPluginPair;
+typedef QHash<QString, SpellInfoPluginPair> SpellInfoPlugins;
 
 class MainForm;
 class SWObject : public QObject
@@ -40,15 +27,14 @@ class SWObject : public QObject
         SWObject(MainForm *form);
         ~SWObject() {}
 
-        void showInfo(const Spell::entry* spellInfo, QSW::Pages pageId = QSW::PAGE_MAIN);
-        QVariantList getParentSpells(quint32 triggerId);
-        void compare();
-        QList<QEvent*> search();
+        void loadPlugins();
+        void setActivePlugin(QString name);
+        SpellInfoPlugins getPlugins() const { return m_spellInfoPlugins; }
+        SpellInfoInterface* getActivePlugin() const { return m_activeSpellInfoPlugin; }
 
-        QString containAttributes(const Spell::entry* spellInfo, MaskType type);
-        QString getDescription(QString str, const Spell::entry* spellInfo);
-        QString getSpellIconName(quint32 iconId);
-        QImage getSpellIcon(quint32 iconId);
+        void showInfo(quint32 id, QSW::Pages pageId = QSW::PAGE_MAIN);
+        void compare();
+        EventList search();
 
         QMetaEnum getMetaEnum() { return m_metaEnum; }
         void setMetaEnum(const char* enumName);
@@ -60,7 +46,6 @@ class SWObject : public QObject
 
     private:
         MainForm *m_form;
-        SWEnums* m_enums;
 
         QMetaEnum m_metaEnum;
 
@@ -69,14 +54,9 @@ class SWObject : public QObject
 
         QByteArray m_templateHtml;
         QByteArray m_styleCss;
-};
 
-namespace Converter
-{
-    quint64 getULongLong(QString value);
-    qint64  getLongLong(QString value);
-    quint32 getULong(QString value);
-    qint32  getLong(QString value);
-}
+        SpellInfoPlugins m_spellInfoPlugins;
+        SpellInfoInterface* m_activeSpellInfoPlugin;
+};
 
 #endif // SWOBJECT_H

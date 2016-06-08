@@ -1,13 +1,9 @@
-#ifndef SW_MODELS_H
-#define SW_MODELS_H
+#ifndef MODELS_H
+#define MODELS_H
 
 #include <QStringList>
 #include <QAbstractTableModel>
 #include <QSortFilterProxyModel>
-
-#include "MainForm.h"
-
-class MainForm;
 
 class SpellListSortedModel : public QSortFilterProxyModel
 {
@@ -39,6 +35,31 @@ class SpellListModel : public QAbstractTableModel
         QList<QStringList> m_spellList;
 };
 
-Q_DECLARE_METATYPE(SpellListModel*);
+typedef QPair<qint32, QString> ComboBoxPair;
+typedef QHash<qint32, ComboBoxPair> ComboBoxHash;
+
+class ComboBoxModel : public QAbstractItemModel
+{
+    Q_OBJECT
+
+    public:
+        ComboBoxModel(QObject *parent = nullptr);
+
+        QModelIndex parent(const QModelIndex &index) const;
+        QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
+        int rowCount(const QModelIndex &parent) const;
+        int columnCount(const QModelIndex &parent) const;
+        QVariant data(const QModelIndex &index, int role) const;
+        QVariant headerData(int section, Qt::Orientation orientation, int role) const;
+        Qt::ItemFlags flags(const QModelIndex &index) const;
+        void setItems(ComboBoxHash items);
+        ComboBoxHash getItems() { return m_items; }
+        void clear();
+
+    private:
+        ComboBoxHash m_items;
+};
+
+Q_DECLARE_METATYPE(SpellListModel*)
 
 #endif

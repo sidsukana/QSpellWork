@@ -11,9 +11,7 @@ namespace QSW
     QSettings& settings();
 
     extern quint8 Locale;
-    extern QString CLIENT_VERSION;
-    extern QString QSW_BUILD;
-    extern QString CLIENT_BUILD;
+    extern QString VERSION;
 
     enum Pages
     {
@@ -23,10 +21,5 @@ namespace QSW
         PAGE_MAX        = 3
     };
 }
-
-extern QString ProcFlagDesc[];
-
-#define MAX_PROC 32 
-
 
 #endif // SWDEFINES_H

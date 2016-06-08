@@ -1,16 +1,15 @@
-#include <QStringListModel>
 #include <QMetaProperty>
 #include <QMetaObject>
+#include <QScrollBar>
 
 #include "ScriptEdit.h"
-#include "dbc/DBCStructure.h"
 
 ScriptEdit::ScriptEdit(QWidget *parent)
-    : QTextEdit(parent), m_completer(nullptr)
+    : QTextEdit(parent), m_completer(nullptr), m_completerModel(nullptr)
 {
-    m_completer = new QCompleter(parent);
-    m_completer->setModel(setupModel());
-    m_completer->setModelSorting(QCompleter::UnsortedModel);
+    m_completer = new QCompleter(this);
+    m_completerModel = new QStringListModel(m_completer);
+    m_completer->setModel(m_completerModel);
     m_completer->setCaseSensitivity(Qt::CaseInsensitive);
     m_completer->setWrapAround(false);
     m_completer->setWidget(this);
@@ -139,24 +138,23 @@ void ScriptEdit::keyPressEvent(QKeyEvent *e)
     m_completer->complete(cr);
 }
 
-QAbstractItemModel* ScriptEdit::setupModel()
+void ScriptEdit::setupCompleter(QObject* metaSpell)
 {
     QSet<QString> fields;
 
-    Spell::meta spell(nullptr);
-
-    qint32 propertyCount = spell.metaObject()->propertyCount();
-    qint32 methodCount = spell.metaObject()->methodCount();
+    qint32 propertyCount = metaSpell->metaObject()->propertyCount();
+    qint32 methodCount = metaSpell->metaObject()->methodCount();
 
     for (qint32 i = 1; i < propertyCount; ++i)
-        fields << spell.metaObject()->property(i).name();
+        fields << metaSpell->metaObject()->property(i).name();
 
     for (qint32 i = 0; i < methodCount; ++i)
     {
-        QString methodName = spell.metaObject()->method(i).methodSignature();
+        QString methodName = metaSpell->metaObject()->method(i).methodSignature();
         if (methodName.contains("(uchar)"))
             fields << methodName.replace("(uchar)", "(index)");
     }
 
-    return new QStringListModel(fields.toList(), m_completer);
+    m_completerModel->setStringList(fields.toList());
+    m_completerModel->sort(0);
 }

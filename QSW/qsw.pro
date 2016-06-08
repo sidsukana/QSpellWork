@@ -24,13 +24,10 @@ SOURCES += \
     MainForm.cpp \
     ScriptEdit.cpp \
     SettingsForm.cpp \
-    SWEnums.cpp \
-    SWModels.cpp \
     SWObject.cpp \
     WovWidget.cpp \
     blp/blp.cpp \
     dbc/DBC.cpp \
-    dbc/DBCStructure.cpp \
     mpq/MPQ.cpp \
     wov/bone.cpp \
     wov/camerashake.cpp \
@@ -46,7 +43,9 @@ SOURCES += \
     wov/textureanimation.cpp \
     Main.cpp \
     wov/wovdbc.cpp \
-    mustache/mustache.cpp
+    mustache/mustache.cpp \
+    shared.cpp \
+    models.cpp
 
 HEADERS  += \
     AboutForm.h \
@@ -55,14 +54,10 @@ HEADERS  += \
     MainForm.h \
     ScriptEdit.h \
     SettingsForm.h \
-    SWEnums.h \
-    SWEvent.h \
-    SWModels.h \
     SWObject.h \
     WovWidget.h \
     blp/blp.h \
     dbc/DBC.h \
-    dbc/DBCStructure.h \
     mpq/MPQ.h \
     wov/animatedvalue.h \
     wov/bone.h \
@@ -79,13 +74,16 @@ HEADERS  += \
     wov/texture.h \
     wov/textureanimation.h \
     wov/wovdbc.h \
-    mustache/mustache.h
+    mustache/mustache.h \
+    shared.h \
+    models.h \
+    events.h
 
 FORMS += \
     about.ui \
     main.ui \
     settings.ui \
-    advancedFilter.ui
+    scriptFilter.ui
 
 OTHER_FILES += \
     wov/particle.fs \

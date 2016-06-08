@@ -1,11 +1,13 @@
-#ifndef EVENT_H
-#define EVENT_H
+#ifndef EVENTS_H
+#define EVENTS_H
 
 #include <QEvent>
 #include <QVariant>
 #include <QVector>
 
-class Event : public QEvent, public QObject
+typedef QList<QEvent*> EventList;
+
+class Event : public QEvent
 {
     public:
         enum Events

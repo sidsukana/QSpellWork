@@ -8,7 +8,7 @@ AboutForm::AboutForm(QWidget *parent)
 
     QString versionString = label->text();
 
-    label->setText(versionString.arg(QSW::CLIENT_VERSION).arg(QSW::CLIENT_BUILD).arg(QSW::QSW_BUILD));
+    label->setText(versionString.arg(QSW::VERSION));
 
     connect(pushButton_2, SIGNAL(clicked()), qApp, SLOT(aboutQt()));
 

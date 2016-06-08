@@ -12,8 +12,6 @@
 #include "MainForm.h"
 #include "AboutForm.h"
 #include "SettingsForm.h"
-#include "SWModels.h"
-#include "Defines.h"
 #include "WovWidget.h"
 
 MainForm::MainForm(QWidget* parent)
@@ -24,11 +22,10 @@ MainForm::MainForm(QWidget* parent)
 
     setupUi(this);
 
-    m_advancedFilterWidget = new AdvancedFilterWidget(page);
-    gridLayout_4->addWidget(m_advancedFilterWidget, 0, 1, 2, 1);
-    m_advancedFilterWidget->hide();
+    m_scriptFilter = new ScriptFilter(page);
+    gridLayout_4->addWidget(m_scriptFilter, 0, 1, 2, 1);
+    m_scriptFilter->hide();
 
-    m_enums = new SWEnums();
     m_sw = new SWObject(this);
     m_watcher = new SearchResultWatcher();
     connect(m_watcher, SIGNAL(finished()), this, SLOT(slotSearchResult()));
@@ -37,13 +34,14 @@ MainForm::MainForm(QWidget* parent)
     m_sortedModel->setDynamicSortFilter(true);
     SpellList->setModel(m_sortedModel);
 
-    loadComboBoxes();
-    detectLocale();
+    setLocale(0);
     createModeButton();
-    initializeCompleter();
+    createPluginButton();
 
     mainToolBar->addSeparator();
     mainToolBar->addWidget(m_modeButton);
+    mainToolBar->addSeparator();
+    mainToolBar->addWidget(m_pluginButton);
     mainToolBar->addSeparator();
     m_actionRegExp = mainToolBar->addAction(QIcon(":/qsw/resources/regExp.png"), "<font color=red>Off</font>");
     m_actionRegExp->setCheckable(true);
@@ -61,7 +59,13 @@ MainForm::MainForm(QWidget* parent)
     connect(copyAction, SIGNAL(triggered()), this, SLOT(slotCopyAll()));
     SpellList->addAction(copyAction);
 
-    connect(adFilterButton, SIGNAL(clicked()), this, SLOT(slotAdvancedFilter()));
+    m_completer = new QCompleter(this);
+    m_completerModel = new QStringListModel(this);
+    m_completer->setModel(m_completerModel);
+    m_completer->setCaseSensitivity(Qt::CaseInsensitive);
+    findLine_e1->setCompleter(m_completer);
+
+    connect(adFilterButton, SIGNAL(clicked()), this, SLOT(slotScriptFilter()));
 
     // List search connection
     connect(SpellList, SIGNAL(clicked(QModelIndex)), this, SLOT(slotSearchFromList(QModelIndex)));
@@ -82,17 +86,19 @@ MainForm::MainForm(QWidget* parent)
     // Wov form connection
     connect(m_actionWov, SIGNAL(triggered()), this, SLOT(slotWov()));
 
-    // Filter search connections
-    connect(comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(slotFilterSearch()));
-    connect(comboBox_2, SIGNAL(currentIndexChanged(int)), this, SLOT(slotFilterSearch()));
-    connect(comboBox_3, SIGNAL(currentIndexChanged(int)), this, SLOT(slotFilterSearch()));
-    connect(comboBox_4, SIGNAL(currentIndexChanged(int)), this, SLOT(slotFilterSearch()));
-    connect(comboBox_5, SIGNAL(currentIndexChanged(int)), this, SLOT(slotFilterSearch()));
+    m_comboBoxes = { comboBox, comboBox_2, comboBox_3, comboBox_4, comboBox_5 };
+    m_comboBoxModels.resize(5);
+    for (quint8 i = 0; i < 5; ++i)
+    {
+        m_comboBoxModels[i] = new ComboBoxModel(this);
+        m_comboBoxes[i]->setModel(m_comboBoxModels[i]);
+        connect(m_comboBoxes[i], SIGNAL(currentIndexChanged(int)), this, SLOT(slotFilterSearch()));
+    }
 
     // Search connection
     connect(this, SIGNAL(signalSearch(quint8)), this, SLOT(slotSearch(quint8)));
 
-    connect(m_advancedFilterWidget->pushButton, SIGNAL(clicked()), this, SLOT(slotAdvancedApply()));
+    connect(m_scriptFilter->pushButton, SIGNAL(clicked()), this, SLOT(slotScriptApply()));
 
     connect(compareSpell_1, SIGNAL(returnPressed()), this, SLOT(slotCompareSearch()));
     connect(compareSpell_2, SIGNAL(returnPressed()), this, SLOT(slotCompareSearch()));
@@ -129,21 +135,21 @@ void MainForm::slotSettings()
     settingsForm.exec();
 }
 
-void MainForm::slotAdvancedFilter()
+void MainForm::slotScriptFilter()
 {
-    if (m_advancedFilterWidget->isVisible())
+    if (m_scriptFilter->isVisible())
     {
         webView1->show();
-        m_advancedFilterWidget->hide();
+        m_scriptFilter->hide();
     }
     else
     {
         webView1->hide();
-        m_advancedFilterWidget->show();
+        m_scriptFilter->show();
     }
 }
 
-void MainForm::slotAdvancedApply()
+void MainForm::slotScriptApply()
 {
     emit signalSearch(3);
 }
@@ -168,7 +174,7 @@ void MainForm::loadSettings()
     int size = QSW::settings().beginReadArray("Bookmarks");
     for (auto i = 0; i < size; ++i) {
         QSW::settings().setArrayIndex(i);
-        m_advancedFilterWidget->addBookmark(QSW::settings().value("filter").toString());
+        m_scriptFilter->addBookmark(QSW::settings().value("filter").toString());
     }
     QSW::settings().endArray();
     QSW::settings().endGroup();
@@ -191,7 +197,7 @@ void MainForm::saveSettings()
     QSW::settings().endGroup();
 
     QSW::settings().beginGroup("ScriptFilter");
-    QStringList bookmarks = m_advancedFilterWidget->getBookmarks();
+    QStringList bookmarks = m_scriptFilter->getBookmarks();
     QSW::settings().beginWriteArray("Bookmarks", bookmarks.size());
     for (auto i = 0; i < bookmarks.size(); ++i) {
         QSW::settings().setArrayIndex(i);
@@ -209,7 +215,7 @@ void MainForm::slotPrevRow()
     SpellList->selectRow(SpellList->currentIndex().row() - 1);
 
     QVariant var = SpellList->model()->data(SpellList->model()->index(SpellList->currentIndex().row(), 0));
-    m_sw->showInfo(Spell::getRecord(var.toInt(), true));
+    m_sw->showInfo(var.toInt());
     SpellList->setFocus();
 }
 
@@ -221,7 +227,7 @@ void MainForm::slotNextRow()
     SpellList->selectRow(SpellList->currentIndex().row() + 1);
 
     QVariant var = SpellList->model()->data(SpellList->model()->index(SpellList->currentIndex().row(), 0));
-    m_sw->showInfo(Spell::getRecord(var.toInt(), true));
+    m_sw->showInfo(var.toInt());
     SpellList->setFocus();
 }
 
@@ -237,23 +243,9 @@ void MainForm::slotCopyAll()
     clipboard->setText(str);
 }
 
-void MainForm::initializeCompleter()
+void MainForm::loadCompleter(QStringList names)
 {
-    QSet<QString> names;
-
-    for (quint32 i = 0; i < Spell::getHeader()->recordCount; ++i)
-    {
-        if (const Spell::entry* spellInfo = Spell::getRecord(i))
-        {
-            QString sName = spellInfo->name();
-            if (names.find(sName) == names.end())
-                names << sName;
-        }
-    }
-
-    QCompleter* completer = new QCompleter(names.toList(), this);
-    completer->setCaseSensitivity(Qt::CaseInsensitive);
-    findLine_e1->setCompleter(completer);
+    m_completerModel->setStringList(names);
 }
 
 void MainForm::createModeButton()
@@ -273,25 +265,44 @@ void MainForm::createModeButton()
     m_modeButton->addAction(actionCompare);
 }
 
-void MainForm::detectLocale()
+void MainForm::createPluginButton()
 {
-    if (const Spell::entry* spellInfo = Spell::getRecord(1, true))
+    m_pluginButton = new QToolButton(this);
+    m_pluginButton->setText("Plugins");
+    m_pluginButton->setPopupMode(QToolButton::InstantPopup);
+
+    SpellInfoPlugins plugins = m_sw->getPlugins();
+    for (SpellInfoPlugins::iterator itr = plugins.begin(); itr != plugins.end(); ++itr)
     {
-        m_sw->setMetaEnum("LocalesDBC");
-        for (quint8 i = 0; i < m_sw->getMetaEnum().keyCount(); ++i)
-        {
-            if (spellInfo->nameOffset[i])
-            {
-                QSW::Locale = i;
-                QLabel* label = new QLabel;
-                label->setText(QString("%0<b>DBC Locale: <font color=green>%1 </font><b>")
-                    .arg(QChar(QChar::Nbsp), 2, QChar(QChar::Nbsp))
-                    .arg(m_sw->getMetaEnum().valueToKey(m_sw->getMetaEnum().value(i))));
-                mainToolBar->addWidget(label);
-                break;
-            }
-        }
+        QAction* actionPlugin = new QAction(itr.value().first.value("fullName").toString(), this);
+        actionPlugin->setData(itr.key());
+        m_pluginButton->addAction(actionPlugin);
+        connect(actionPlugin, SIGNAL(triggered()), this, SLOT(slotChangeActivePlugin()));
     }
+}
+
+void MainForm::slotChangeActivePlugin()
+{
+    QAction* actionPlugin = static_cast<QAction*>(sender());
+    m_sw->setActivePlugin(actionPlugin->data().toString());
+}
+
+void MainForm::setLocale(quint8 locale)
+{
+    QLabel* label = mainToolBar->findChild<QLabel*>("localeLable");
+
+    if (!label)
+    {
+        label = new QLabel;
+        label->setObjectName("localeLable");
+        mainToolBar->addWidget(label);
+    }
+
+    QSW::Locale = locale;
+    m_sw->setMetaEnum("LocalesDBC");
+    label->setText(QString("%0<b>DBC Locale: <font color=green>%1 </font><b>")
+        .arg(QChar(QChar::Nbsp), 2, QChar(QChar::Nbsp))
+        .arg(m_sw->getMetaEnum().valueToKey(m_sw->getMetaEnum().value(locale))));
 }
 
 void MainForm::slotLinkClicked(const QUrl &url)
@@ -300,19 +311,19 @@ void MainForm::slotLinkClicked(const QUrl &url)
 
     qint32 id = url.toString().section('/', -1).toUInt();
 
-    m_sw->showInfo(Spell::getRecord(id, true), page->getPageId());
+    m_sw->showInfo(id, page->getPageId());
 
     switch (page->getPageId())
     {
         case QSW::PAGE_CLEFT:
         {
-            m_sw->showInfo(Spell::getRecord(getPage(QSW::PAGE_CRIGHT)->getSpellId(), true), QSW::PAGE_CRIGHT);
+            m_sw->showInfo(getPage(QSW::PAGE_CRIGHT)->getSpellId(), QSW::PAGE_CRIGHT);
             m_sw->compare();
             break;
         }
         case QSW::PAGE_CRIGHT:
         {
-            m_sw->showInfo(Spell::getRecord(getPage(QSW::PAGE_CLEFT)->getSpellId(), true), QSW::PAGE_CLEFT);
+            m_sw->showInfo(getPage(QSW::PAGE_CLEFT)->getSpellId(), QSW::PAGE_CLEFT);
             m_sw->compare();
             break;
         }
@@ -332,75 +343,46 @@ void MainForm::slotModeCompare()
     stackedWidget->setCurrentIndex(1);
 }
 
-void MainForm::loadComboBoxes()
+void MainForm::loadComboBoxes(EnumHash enums)
 {
-    comboBox->clear();
-    comboBox->setModel(new QStandardItemModel);
-    comboBox->insertItem(0, "SpellFamilyName", 0);
+    ComboBoxHash items;
 
-    EnumIterator itr(m_enums->getSpellFamilies());
     quint32 i = 0;
-    while (itr.hasNext())
-    {
-        ++i;
-        itr.next();
-        comboBox->insertItem(i, QString("(%0) %1")
-            .arg(itr.key(), 3, 10, QChar('0'))
-            .arg(itr.value()), itr.key());
-    }
+    items[i] = ComboBoxPair(-1, "SpellFamilyName");
+    Enumerator enumerator = enums["SpellFamily"];
+    for (auto itr = enumerator.begin(); itr != enumerator.end(); ++itr)
+        items[++i] = ComboBoxPair(itr.key(), QString("(%0) %1").arg(itr.key(), 3, 10, QChar('0')).arg(itr.value()));
+    m_comboBoxModels[0]->setItems(items);
 
-    comboBox_2->clear();
-    comboBox_2->setModel(new QStandardItemModel);
-    comboBox_2->insertItem(0, "Aura", 0);
+    i = 0;
+    items.clear();
+    items[i] = ComboBoxPair(-1, "SpellAura");
     
-    itr = EnumIterator(m_enums->getSpellAuras());
-    i = 0;
-    while (itr.hasNext())
-    {
-        ++i;
-        itr.next();
-        comboBox_2->insertItem(i, QString("(%0) %1")
-            .arg(itr.key(), 3, 10, QChar('0'))
-            .arg(itr.value()), itr.key());
-    }
+    enumerator = enums["SpellAura"];
+    for (auto itr = enumerator.begin(); itr != enumerator.end(); ++itr)
+        items[++i] = ComboBoxPair(itr.key(), QString("(%0) %1").arg(itr.key(), 3, 10, QChar('0')).arg(itr.value()));
+    m_comboBoxModels[1]->setItems(items);
 
-    comboBox_3->clear();
-    comboBox_3->setModel(new QStandardItemModel);
-    comboBox_3->insertItem(0, "Effect", 0);
+    i = 0;
+    items.clear();
+    items[i] = ComboBoxPair(-1, "SpellEffect");
     
-    itr = EnumIterator(m_enums->getSpellEffects());
+    enumerator = enums["SpellEffect"];
+    for (auto itr = enumerator.begin(); itr != enumerator.end(); ++itr)
+        items[++i] = ComboBoxPair(itr.key(), QString("(%0) %1").arg(itr.key(), 3, 10, QChar('0')).arg(itr.value()));
+    m_comboBoxModels[2]->setItems(items);
+
     i = 0;
-    while (itr.hasNext())
-    {
-        ++i;
-        itr.next();
-        comboBox_3->insertItem(i, QString("(%0) %1")
-            .arg(itr.key(), 3, 10, QChar('0'))
-            .arg(itr.value()), itr.key());
-    }
+    items.clear();
+    items[i] = ComboBoxPair(-1, "Target A");
 
-    comboBox_4->clear();
-    comboBox_4->setModel(new QStandardItemModel);
-    comboBox_4->insertItem(0, "Target A", 0);
+    enumerator = enums["Target"];
+    for (auto itr = enumerator.begin(); itr != enumerator.end(); ++itr)
+        items[++i] = ComboBoxPair(itr.key(), QString("(%0) %1").arg(itr.key(), 3, 10, QChar('0')).arg(itr.value()));
+    m_comboBoxModels[3]->setItems(items);
 
-    comboBox_5->clear();
-    comboBox_5->setModel(new QStandardItemModel);
-    comboBox_5->insertItem(0, "Target B", 0);
-
-    itr = EnumIterator(m_enums->getTargets());
-    i = 0;
-    while (itr.hasNext())
-    {
-        ++i;
-        itr.next();
-        comboBox_4->insertItem(i, QString("(%0) %1")
-            .arg(itr.key(), 3, 10, QChar('0'))
-            .arg(itr.value()), itr.key());
-
-        comboBox_5->insertItem(i, QString("(%0) %1")
-            .arg(itr.key(), 3, 10, QChar('0'))
-            .arg(itr.value()), itr.key());
-    }
+    items[0] = ComboBoxPair(-1, "Target B");
+    m_comboBoxModels[4]->setItems(items);
 }
 
 void MainForm::slotRegExp()
@@ -418,22 +400,17 @@ void MainForm::slotRegExp()
         m_actionRegExp->setText("<font color=red>Off</font>");
     }
 
-    m_sw->showInfo(Spell::getRecord(webView1->url().path().remove(0, 1).toInt(), true));
+    m_sw->showInfo(webView1->url().path().remove(0, 1).toInt());
 
-    bool compared[2] = { false, false };
-    if (const Spell::entry* spellInfo = Spell::getRecord(webView2->url().path().remove(0, 1).toInt(), true))
-    {
-        m_sw->showInfo(spellInfo, QSW::PAGE_CLEFT);
-        compared[0] = true;
-    }
+    quint32 id2 = webView2->url().path().remove(0, 1).toInt();
+    if (id2)
+        m_sw->showInfo(id2, QSW::PAGE_CLEFT);
 
-    if (const Spell::entry* spellInfo = Spell::getRecord(webView3->url().path().remove(0, 1).toInt(), true))
-    {
-        m_sw->showInfo(spellInfo, QSW::PAGE_CRIGHT);
-        compared[1] = true;
-    }
+    quint32 id3 = webView3->url().path().remove(0, 1).toInt();
+    if (id3)
+    m_sw->showInfo(id3, QSW::PAGE_CRIGHT);
 
-    if (compared[0] || compared[1])
+    if (id2 && id3)
         m_sw->compare();
 }
 
@@ -465,8 +442,8 @@ void MainForm::slotCompareSearch()
 {
     if (!compareSpell_1->text().isEmpty() && !compareSpell_2->text().isEmpty())
     {
-        m_sw->showInfo(Spell::getRecord(compareSpell_1->text().toInt(), true), QSW::PAGE_CLEFT);
-        m_sw->showInfo(Spell::getRecord(compareSpell_2->text().toInt(), true), QSW::PAGE_CRIGHT);
+        m_sw->showInfo(compareSpell_1->text().toInt(), QSW::PAGE_CLEFT);
+        m_sw->showInfo(compareSpell_2->text().toInt(), QSW::PAGE_CRIGHT);
         m_sw->compare();
     }
 }
@@ -495,7 +472,7 @@ void MainForm::slotSearchResult()
 void MainForm::slotSearchFromList(const QModelIndex &index)
 {
     QVariant var = SpellList->model()->data(SpellList->model()->index(index.row(), 0));
-    m_sw->showInfo(Spell::getRecord(var.toInt(), true));
+    m_sw->showInfo(var.toInt());
     SpellList->setFocus();
 }
 
@@ -506,7 +483,6 @@ bool MainForm::event(QEvent* ev)
         case Event::EVENT_SEND_MODEL:
             {
                 Event* m_ev = (Event*)ev;
-                m_sortedModel->sourceModel()->deleteLater();
                 m_sortedModel->setSourceModel(m_ev->getValue(0).value<SpellListModel*>());
                 SpellList->setColumnWidth(0, 40);
                 SpellList->setColumnWidth(1, 150);
@@ -516,7 +492,7 @@ bool MainForm::event(QEvent* ev)
         case Event::EVENT_SEND_SPELL:
             {
                 Event* m_ev = (Event*)ev;
-                m_sw->showInfo(Spell::getRecord(m_ev->getValue(0).toUInt(), true));
+                m_sw->showInfo(m_ev->getValue(0).toUInt());
                 return true;
             }
             break;
@@ -527,7 +503,7 @@ bool MainForm::event(QEvent* ev)
     return QWidget::event(ev);
 }
 
-AdvancedFilterWidget::AdvancedFilterWidget(QWidget* parent /* = nullptr */)
+ScriptFilter::ScriptFilter(QWidget* parent /* = nullptr */)
     : QWidget(parent)
 {
     setupUi(this);
@@ -541,17 +517,17 @@ AdvancedFilterWidget::AdvancedFilterWidget(QWidget* parent /* = nullptr */)
     listView->setModel(m_model);
 }
 
-void AdvancedFilterWidget::slotAdd()
+void ScriptFilter::slotAdd()
 {
-    addBookmark(textEdit->toPlainText());
+    addBookmark(scriptEdit->toPlainText());
 }
 
-void AdvancedFilterWidget::slotRemove()
+void ScriptFilter::slotRemove()
 {
     removeBookmark(listView->currentIndex().row());
 }
 
-void AdvancedFilterWidget::slotClear()
+void ScriptFilter::slotClear()
 {
     clearBookmarks();
 }
