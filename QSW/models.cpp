@@ -103,11 +103,14 @@ void ComboBoxModel::clear()
 
 QModelIndex ComboBoxModel::parent(const QModelIndex &index) const
 {
+    Q_UNUSED(index);
     return QModelIndex();
 }
 
 QModelIndex ComboBoxModel::index(int row, int column, const QModelIndex &parent) const
 {
+    Q_UNUSED(column);
+    Q_UNUSED(parent);
     return createIndex(row, 0);
 }
 
@@ -151,6 +154,9 @@ void ComboBoxModel::setItems(ComboBoxHash items)
 
 QVariant ComboBoxModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
+    Q_UNUSED(section);
+    Q_UNUSED(orientation);
+    Q_UNUSED(role);
     return QVariant();
 }
 
