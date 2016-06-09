@@ -12,28 +12,6 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    MPQ::gameDir() = QDir::fromNativeSeparators(QSW::settings().value("Directories/WoW1", "").toString());
-
-    bool hasGameDir = false;
-    if (!QSW::checkDir(MPQ::gameDir()))
-    {
-        while (!hasGameDir)
-        {
-            SettingsForm settingsForm;
-            if (settingsForm.exec() == QDialog::Accepted)
-            {
-                if (!QSW::checkDir(MPQ::gameDir()))
-                    QSW::settings().setValue("Directories/WoW1", "");
-                else hasGameDir = true;
-            }
-            else break;
-        }
-    }
-    else hasGameDir = true;
-
-    if (!hasGameDir)
-        return 0;
-
     MainForm form;
 
     form.setWindowTitle(QString("Qt SpellWork %0")

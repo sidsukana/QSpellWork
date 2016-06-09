@@ -2,7 +2,7 @@
 #include "structure.h"
 
 // SkillLine.dbc
-const DBCFile& SkillLine::getDbc()
+DBCFile& SkillLine::getDbc()
 {
     static DBCFile dbc("DBFilesClient/SkillLine.dbc");
     return dbc;
@@ -29,7 +29,7 @@ const QString SkillLine::entry::description() const
 }
 
 // SkillLineAbility.dbc
-const DBCFile& SkillLineAbility::getDbc()
+DBCFile& SkillLineAbility::getDbc()
 {
     static DBCFile dbc("DBFilesClient/SkillLineAbility.dbc");
     return dbc;
@@ -46,7 +46,7 @@ const SkillLineAbility::entry* SkillLineAbility::getRecord(quint32 id, bool real
 }
 
 // Spell.dbc
-const DBCFile& Spell::getDbc()
+DBCFile& Spell::getDbc()
 {
     static DBCFile dbc("DBFilesClient/Spell.dbc");
     return dbc;
@@ -97,7 +97,7 @@ qint32 Spell::entry::getTriggerDuration(quint8 index) const
 }
 
 // SpellCastTimes.dbc
-const DBCFile& SpellCastTimes::getDbc()
+DBCFile& SpellCastTimes::getDbc()
 {
     static DBCFile dbc("DBFilesClient/SpellCastTimes.dbc");
     return dbc;
@@ -114,7 +114,7 @@ const SpellCastTimes::entry* SpellCastTimes::getRecord(quint32 id, bool realId)
 }
 
 // SpellRadius.dbc
-const DBCFile& SpellRadius::getDbc()
+DBCFile& SpellRadius::getDbc()
 {
     static DBCFile dbc("DBFilesClient/SpellRadius.dbc");
     return dbc;
@@ -131,7 +131,7 @@ const SpellRadius::entry* SpellRadius::getRecord(quint32 id, bool realId)
 }
 
 // SpellRange.dbc
-const DBCFile& SpellRange::getDbc()
+DBCFile& SpellRange::getDbc()
 {
     static DBCFile dbc("DBFilesClient/SpellRange.dbc");
     return dbc;
@@ -158,7 +158,7 @@ const QString SpellRange::entry::shortName() const
 }
 
 // SpellDuration.dbc
-const DBCFile& SpellDuration::getDbc()
+DBCFile& SpellDuration::getDbc()
 {
     static DBCFile dbc("DBFilesClient/SpellDuration.dbc");
     return dbc;
@@ -175,7 +175,7 @@ const SpellDuration::entry* SpellDuration::getRecord(quint32 id, bool realId)
 }
 
 // SpellIcon.dbc
-const DBCFile& SpellIcon::getDbc()
+DBCFile& SpellIcon::getDbc()
 {
     static DBCFile dbc("DBFilesClient/SpellIcon.dbc");
     return dbc;

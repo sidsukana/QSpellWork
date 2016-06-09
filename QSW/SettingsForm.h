@@ -15,7 +15,6 @@ class SettingsForm : public QDialog, public Ui::settings
 
     public slots:
         void slotDir();
-        void slotAccept();
 
     private:
         Ui::settings ui;

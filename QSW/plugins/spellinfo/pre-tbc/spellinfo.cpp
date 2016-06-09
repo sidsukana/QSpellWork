@@ -51,8 +51,40 @@ QString ProcFlagDesc[] =
     "21 On trap activation"
 };
 
-void SpellInfo::init() const
+bool SpellInfo::init() const
 {
+    MPQ::mpqFiles() = QStringList({
+        "ruRU/patch-3.MPQ",		// custom ruRU locale by Maus Team
+        "patch-2.MPQ",
+        "patch.MPQ",
+        "dbc.MPQ",
+        "interface.MPQ"
+    });
+
+    if (!SkillLine::getDbc().load())
+        return false;
+
+    if (!SkillLineAbility::getDbc().load())
+        return false;
+
+    if (!SpellDuration::getDbc().load())
+        return false;
+
+    if (!SpellCastTimes::getDbc().load())
+        return false;
+
+    if (!SpellRadius::getDbc().load())
+        return false;
+
+    if (!SpellRange::getDbc().load())
+        return false;
+
+    if (!SpellIcon::getDbc().load())
+        return false;
+
+    if (!Spell::getDbc().load())
+        return false;
+
     QSet<QString> names;
     for (quint32 i = 0; i < Spell::getHeader()->recordCount; ++i) {
         if (const Spell::entry* spellInfo = Spell::getRecord(i)) {
@@ -74,7 +106,7 @@ void SpellInfo::init() const
         }
     }
 
-    //getEnums() = QSW::loadEnumFile(QString("plugins/spellinfo/pre-tbc.xml"));
+    return true;
 }
 
 QObject* SpellInfo::getMetaSpell(quint32 id, bool realId) const

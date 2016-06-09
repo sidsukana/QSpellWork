@@ -19,19 +19,33 @@ SWObject::SWObject(MainForm* form)
 
 void SWObject::setActivePlugin(QString name)
 {
-    QJsonObject metaData = m_spellInfoPlugins[name].first;
-    m_activeSpellInfoPlugin = m_spellInfoPlugins[name].second;
+    QJsonObject metaData;
 
-    m_activeSpellInfoPlugin->init();
+    if (!m_activeSpellInfoPluginName.isEmpty()) {
+        metaData = m_spellInfoPlugins[m_activeSpellInfoPluginName].first;
+        m_form->saveSettings(m_activeSpellInfoPluginName);
+    }
+
+    metaData = m_spellInfoPlugins[name].first;
+    m_form->loadSettings(name);
+
+    m_activeSpellInfoPlugin = m_spellInfoPlugins[name].second;
+    m_activeSpellInfoPluginName = name;
+
+    if (!m_activeSpellInfoPlugin->init()) {
+        qCritical("Plugin '%s' is not loaded!", qPrintable(name));
+        m_activeSpellInfoPlugin = nullptr;
+        return;
+    }
 
     QFile templateFile("plugins/spellinfo/" + metaData.value("htmlFile").toString());
-    if (templateFile.open(QIODevice::ReadOnly)) {
+    if (templateFile.open(QFile::ReadOnly)) {
         m_templateHtml = templateFile.readAll();
         templateFile.close();
     }
 
     QFile styleFile("plugins/spellinfo/" + metaData.value("cssFile").toString());
-    if (styleFile.open(QIODevice::ReadOnly)) {
+    if (styleFile.open(QFile::ReadOnly)) {
         m_styleCss = styleFile.readAll();
         styleFile.close();
     }
@@ -54,7 +68,8 @@ void SWObject::loadPlugins()
         if (plugin) {
             SpellInfoInterface* spellInfoPlugin = qobject_cast<SpellInfoInterface *>(plugin);
             if (spellInfoPlugin) {
-                m_spellInfoPlugins[pluginLoader.fileName()] = SpellInfoPluginPair(pluginLoader.metaData().value("MetaData").toObject(), spellInfoPlugin);
+                QJsonObject metaData = pluginLoader.metaData().value("MetaData").toObject();
+                m_spellInfoPlugins[metaData.value("name").toString()] = SpellInfoPluginPair(metaData, spellInfoPlugin);
             }
         }
     }

@@ -14,7 +14,7 @@ class SpellInfo : public QObject, SpellInfoInterface
 
     public:
 
-        void init() const;
+        bool init() const;
 
         quint32 getSpellsCount() const;
         QObject* getMetaSpell(quint32 id, bool realId = false) const;

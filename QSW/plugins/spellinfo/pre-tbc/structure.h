@@ -34,7 +34,7 @@ namespace SkillLine
         const QString description() const;
     };
 
-    const DBCFile& getDbc();
+    DBCFile& getDbc();
     const DBCFileHeader* getHeader();
     const entry* getRecord(quint32 id, bool realId = false);
 }
@@ -59,7 +59,7 @@ namespace SkillLineAbility
         quint32 requiredTrainPoints;                             // 14
     };
 
-    const DBCFile& getDbc();
+    DBCFile& getDbc();
     const DBCFileHeader* getHeader();
     const entry* getRecord(quint32 id, bool realId = false);
 }
@@ -74,7 +74,7 @@ namespace SpellDuration
         qint32     maxDuration;
     };
 
-    const DBCFile& getDbc();
+    DBCFile& getDbc();
     const DBCFileHeader* getHeader();
     const entry* getRecord(quint32 id, bool realId = false);
 }
@@ -89,7 +89,7 @@ namespace SpellCastTimes
         qint32     minCastTime;                                     // 3 unsure
     };
 
-    const DBCFile& getDbc();
+    DBCFile& getDbc();
     const DBCFileHeader* getHeader();
     const entry* getRecord(quint32 id, bool realId = false);
 }
@@ -104,7 +104,7 @@ namespace SpellRadius
         float      maxRadius;                                       // 3
     };
 
-    const DBCFile& getDbc();
+    DBCFile& getDbc();
     const DBCFileHeader* getHeader();
     const entry* getRecord(quint32 id, bool realId = false);
 }
@@ -126,7 +126,7 @@ namespace SpellRange
         const QString shortName() const;
     };
 
-    const DBCFile& getDbc();
+    DBCFile& getDbc();
     const DBCFileHeader* getHeader();
     const entry* getRecord(quint32 id, bool realId = false);
 }
@@ -141,7 +141,7 @@ namespace SpellIcon
         const QString iconPath() const;
     };
 
-    const DBCFile& getDbc();
+    DBCFile& getDbc();
     const DBCFileHeader* getHeader();
     const entry* getRecord(quint32 id, bool realId = false);
 }
@@ -283,7 +283,7 @@ namespace Spell
         qint32 getTriggerDuration(quint8 index) const;
     };
 
-    const DBCFile& getDbc();
+    DBCFile &getDbc();
     const DBCFileHeader* getHeader();
     const entry* getRecord(quint32 id, bool realId = false);
 

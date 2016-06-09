@@ -2,7 +2,6 @@
 #define SPELLINFO_INTERFACE_H
 
 #include <QObject>
-#include <QIcon>
 #include <QVariantHash>
 
 #include "../../shared.h"
@@ -12,7 +11,7 @@ class SpellInfoInterface
     public:
         virtual ~SpellInfoInterface() {}
 
-        virtual void init() const = 0;
+        virtual bool init() const = 0;
 
         virtual quint32 getSpellsCount() const = 0;
         virtual QObject* getMetaSpell(quint32 id, bool realId = false) const = 0;

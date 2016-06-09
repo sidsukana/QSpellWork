@@ -31,6 +31,7 @@ class SWObject : public QObject
         void setActivePlugin(QString name);
         SpellInfoPlugins getPlugins() const { return m_spellInfoPlugins; }
         SpellInfoInterface* getActivePlugin() const { return m_activeSpellInfoPlugin; }
+        QString getActivePluginName() const { return m_activeSpellInfoPluginName; }
 
         void showInfo(quint32 id, QSW::Pages pageId = QSW::PAGE_MAIN);
         void compare();
@@ -57,6 +58,7 @@ class SWObject : public QObject
 
         SpellInfoPlugins m_spellInfoPlugins;
         SpellInfoInterface* m_activeSpellInfoPlugin;
+        QString m_activeSpellInfoPluginName;
 };
 
 #endif // SWOBJECT_H

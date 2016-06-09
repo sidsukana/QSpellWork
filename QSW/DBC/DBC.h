@@ -20,6 +20,8 @@ class Q_DECL_EXPORT DBCFile
         explicit DBCFile(const QString &fileName);
         ~DBCFile();
 
+        bool load();
+
         template <typename T>
         const T* getEntry(quint32 id) const
         {
@@ -45,6 +47,7 @@ class Q_DECL_EXPORT DBCFile
         quint32 *m_indexes;
         quint32 m_maxId;
         quint32 m_minId;
+        QString m_fileName;
 };
 
 #endif

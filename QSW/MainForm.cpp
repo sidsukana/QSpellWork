@@ -132,7 +132,12 @@ MainForm::~MainForm()
 void MainForm::slotSettings()
 {
     SettingsForm settingsForm(this);
-    settingsForm.exec();
+
+    settingsForm.editDir->setText(MPQ::mpqDir());
+    if (settingsForm.exec() == QDialog::Accepted)
+        MPQ::mpqDir() = QDir::fromNativeSeparators(settingsForm.editDir->text());
+
+    saveSettings(m_sw->getActivePluginName());
 }
 
 void MainForm::slotScriptFilter()
@@ -154,12 +159,16 @@ void MainForm::slotScriptApply()
     emit signalSearch(3);
 }
 
-void MainForm::loadSettings()
+void MainForm::loadSettings(QString pluginName)
 {
-    QSW::settings().beginGroup("Global");
-    setRegExp(QSW::settings().value("RegExp", false).toBool());
-    QSW::settings().endGroup();
+    if (pluginName.isEmpty()) {
+        QSW::settings().beginGroup("Global");
+        QSW::settings().endGroup();
+        return;
+    }
 
+    QSW::settings().beginGroup("Plugin/" + pluginName);
+    MPQ::mpqDir() = QSW::settings().value("mpqDir", "").toString();
     QSW::settings().beginGroup("FastFilter");
     findLine_e1->setText(QSW::settings().value("IdOrName", "").toString());
     findLine_e3->setText(QSW::settings().value("Description", "").toString());
@@ -178,14 +187,19 @@ void MainForm::loadSettings()
     }
     QSW::settings().endArray();
     QSW::settings().endGroup();
+    QSW::settings().endGroup();
 }
 
-void MainForm::saveSettings()
+void MainForm::saveSettings(QString pluginName)
 {
-    QSW::settings().beginGroup("Global");
-    QSW::settings().setValue("RegExp", isRegExp());
-    QSW::settings().endGroup();
+    if (pluginName.isEmpty()) {
+        QSW::settings().beginGroup("Global");
+        QSW::settings().endGroup();
+        return;
+    }
 
+    QSW::settings().beginGroup("Plugin/" + pluginName);
+    QSW::settings().setValue("mpqDir", MPQ::mpqDir());
     QSW::settings().beginGroup("FastFilter");
     QSW::settings().setValue("IdOrName", findLine_e1->text());
     QSW::settings().setValue("Description", findLine_e3->text());
@@ -204,6 +218,7 @@ void MainForm::saveSettings()
         QSW::settings().setValue("filter", bookmarks.at(i));
     }
     QSW::settings().endArray();
+    QSW::settings().endGroup();
     QSW::settings().endGroup();
 }
 

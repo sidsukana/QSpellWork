@@ -1,22 +1,36 @@
+#include <QFile>
+
 #include "mpq/MPQ.h"
 #include "dbc/DBC.h"
 #include "Defines.h"
 
 DBCFile::DBCFile(const QString &fileName)
-    : m_header(nullptr), m_records(nullptr), m_strings(nullptr), m_indexes(nullptr), m_maxId(0)
+    : m_header(nullptr), m_records(nullptr), m_strings(nullptr),
+      m_indexes(nullptr), m_maxId(0), m_fileName(fileName)
 {
-    m_data = MPQ::readFile(fileName);
+
+}
+
+bool DBCFile::load()
+{
+    if (MPQ::mpqDir().isEmpty()) {
+        QFile file(m_fileName);
+        if (file.open(QFile::ReadOnly))
+            m_data = file.readAll();
+    } else {
+        m_data = MPQ::readFile(m_fileName);
+    }
 
     if (m_data.size() == 0) {
-        qCritical("Cannot load DBC '%s'", qPrintable(fileName));
-        return;
+        qCritical("Cannot load DBC '%s'", qPrintable(m_fileName));
+        return false;
     }
 
     m_header = reinterpret_cast<const DBCFileHeader *>(m_data.constData());
 
     if (qstrncmp(m_header->magic, DBC_MAGIC, 4) != 0) {
-        qCritical("File '%s' is not a valid DBC file!", qPrintable(fileName));
-        return;
+        qCritical("File '%s' is not a valid DBC file!", qPrintable(m_fileName));
+        return false;
     }
 
     m_records = m_data.constData() + sizeof(DBCFileHeader);
@@ -34,6 +48,8 @@ DBCFile::DBCFile(const QString &fileName)
         if (i == 0)
             m_minId = id;
     }
+
+    return true;
 }
 
 const char* DBCFile::getStringBlock() const

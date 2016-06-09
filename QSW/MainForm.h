@@ -132,8 +132,8 @@ class MainForm : public QMainWindow, public Ui::main
         MainForm(QWidget* parent = nullptr);
         ~MainForm();
 
-        void saveSettings();
-        void loadSettings();
+        void saveSettings(QString pluginName = QString());
+        void loadSettings(QString pluginName = QString());
 
         bool isRegExp() const { return m_actionRegExp->isChecked(); }
         void setRegExp(bool enable) { m_actionRegExp->setChecked(enable); }
