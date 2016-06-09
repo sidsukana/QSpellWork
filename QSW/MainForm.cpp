@@ -164,6 +164,10 @@ void MainForm::loadSettings(QString pluginName)
     if (pluginName.isEmpty()) {
         QSW::settings().beginGroup("Global");
         QSW::settings().endGroup();
+
+        pluginName = m_sw->getActivePluginName();
+        if (!pluginName.isEmpty())
+            loadSettings(pluginName);
         return;
     }
 
@@ -195,6 +199,10 @@ void MainForm::saveSettings(QString pluginName)
     if (pluginName.isEmpty()) {
         QSW::settings().beginGroup("Global");
         QSW::settings().endGroup();
+
+        pluginName = m_sw->getActivePluginName();
+        if (!pluginName.isEmpty())
+            saveSettings(pluginName);
         return;
     }
 
