@@ -4,6 +4,12 @@
 #include "dbc/DBC.h"
 #include "Defines.h"
 
+QString& DBC::dbcDir()
+{
+    static QString dbcDir;
+    return dbcDir;
+}
+
 DBCFile::DBCFile(const QString &fileName)
     : m_header(nullptr), m_records(nullptr), m_strings(nullptr),
       m_indexes(nullptr), m_maxId(0), m_fileName(fileName)
@@ -14,11 +20,11 @@ DBCFile::DBCFile(const QString &fileName)
 bool DBCFile::load()
 {
     if (MPQ::mpqDir().isEmpty()) {
-        QFile file(m_fileName);
+        QFile file(DBC::dbcDir() + m_fileName);
         if (file.open(QFile::ReadOnly))
             m_data = file.readAll();
     } else {
-        m_data = MPQ::readFile(m_fileName);
+        m_data = MPQ::readFile(DBC::dbcDir() + m_fileName);
     }
 
     if (m_data.size() == 0) {

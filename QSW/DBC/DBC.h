@@ -5,6 +5,11 @@
 
 #define DBC_MAGIC "WDBC"
 
+namespace DBC
+{
+    Q_DECL_EXPORT QString& dbcDir();
+}
+
 struct Q_DECL_EXPORT DBCFileHeader
 {
     char magic[4];
@@ -49,5 +54,6 @@ class Q_DECL_EXPORT DBCFile
         quint32 m_minId;
         QString m_fileName;
 };
+
 
 #endif

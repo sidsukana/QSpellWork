@@ -4,7 +4,7 @@
 // SkillLine.dbc
 DBCFile& SkillLine::getDbc()
 {
-    static DBCFile dbc("DBFilesClient/SkillLine.dbc");
+    static DBCFile dbc("SkillLine.dbc");
     return dbc;
 }
 
@@ -31,7 +31,7 @@ const QString SkillLine::entry::description() const
 // SkillLineAbility.dbc
 DBCFile& SkillLineAbility::getDbc()
 {
-    static DBCFile dbc("DBFilesClient/SkillLineAbility.dbc");
+    static DBCFile dbc("SkillLineAbility.dbc");
     return dbc;
 }
 
@@ -48,7 +48,7 @@ const SkillLineAbility::entry* SkillLineAbility::getRecord(quint32 id, bool real
 // Spell.dbc
 DBCFile& Spell::getDbc()
 {
-    static DBCFile dbc("DBFilesClient/Spell.dbc");
+    static DBCFile dbc("Spell.dbc");
     return dbc;
 }
 
@@ -99,7 +99,7 @@ qint32 Spell::entry::getTriggerDuration(quint8 index) const
 // SpellCastTimes.dbc
 DBCFile& SpellCastTimes::getDbc()
 {
-    static DBCFile dbc("DBFilesClient/SpellCastTimes.dbc");
+    static DBCFile dbc("SpellCastTimes.dbc");
     return dbc;
 }
 
@@ -116,7 +116,7 @@ const SpellCastTimes::entry* SpellCastTimes::getRecord(quint32 id, bool realId)
 // SpellRadius.dbc
 DBCFile& SpellRadius::getDbc()
 {
-    static DBCFile dbc("DBFilesClient/SpellRadius.dbc");
+    static DBCFile dbc("SpellRadius.dbc");
     return dbc;
 }
 
@@ -133,7 +133,7 @@ const SpellRadius::entry* SpellRadius::getRecord(quint32 id, bool realId)
 // SpellRange.dbc
 DBCFile& SpellRange::getDbc()
 {
-    static DBCFile dbc("DBFilesClient/SpellRange.dbc");
+    static DBCFile dbc("SpellRange.dbc");
     return dbc;
 }
 
@@ -160,7 +160,7 @@ const QString SpellRange::entry::shortName() const
 // SpellDuration.dbc
 DBCFile& SpellDuration::getDbc()
 {
-    static DBCFile dbc("DBFilesClient/SpellDuration.dbc");
+    static DBCFile dbc("SpellDuration.dbc");
     return dbc;
 }
 
@@ -177,7 +177,7 @@ const SpellDuration::entry* SpellDuration::getRecord(quint32 id, bool realId)
 // SpellIcon.dbc
 DBCFile& SpellIcon::getDbc()
 {
-    static DBCFile dbc("DBFilesClient/SpellIcon.dbc");
+    static DBCFile dbc("SpellIcon.dbc");
     return dbc;
 }
 

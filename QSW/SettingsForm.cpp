@@ -19,8 +19,5 @@ void SettingsForm::slotDir()
 {
     QString dir = QFileDialog::getExistingDirectory(this, "Set MPQ directory", editDir->text());
     if (!dir.isEmpty())
-    {
-        dir.append("/");
         editDir->setText(dir);
-    }
 }
