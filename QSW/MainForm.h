@@ -135,8 +135,6 @@ class MainForm : public QMainWindow, public Ui::main
         void saveSettings(QString pluginName = QString());
         void loadSettings(QString pluginName = QString());
 
-        bool isRegExp() const { return m_actionRegExp->isChecked(); }
-        void setRegExp(bool enable) { m_actionRegExp->setChecked(enable); }
         QString getFilterText() const { return m_scriptFilter->scriptEdit->toPlainText(); }
         void setFilterText(QString str) { m_scriptFilter->scriptEdit->setText(str); }
 
@@ -178,7 +176,6 @@ class MainForm : public QMainWindow, public Ui::main
         void slotSearchResult();
         void slotSearchFromList(const QModelIndex &index);
         void slotLinkClicked(const QUrl &url);
-        void slotRegExp();
         void slotWov();
         void slotSettings();
         void slotModeShow();
@@ -197,7 +194,6 @@ class MainForm : public QMainWindow, public Ui::main
         SWObject* m_sw;
         QToolButton* m_modeButton;
         QToolButton* m_pluginButton;
-        QAction* m_actionRegExp;
         QAction* m_actionAbout;
         QAction* m_actionSettings;
         QAction* m_actionWov;

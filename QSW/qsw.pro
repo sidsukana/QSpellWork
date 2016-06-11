@@ -181,7 +181,6 @@ win32: {
     DESTDIR = $$DLLDESTDIR
 
     copyToDestdir($$PWD/mpq/StormLib/$$PLATFORM/$$BUILDTYPE/StormLib.dll)
-    copyDirToDestdir($$PWD/data, data)
 
     createDir($$DESTDIR/imageformats)
     createDir($$DESTDIR/platforms)

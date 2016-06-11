@@ -12,7 +12,7 @@
 #include "mustache/mustache.h"
 
 SWObject::SWObject(MainForm* form)
-    : QObject(form), m_form(form), m_regExp(false), m_type(0), m_activeSpellInfoPlugin(nullptr)
+    : QObject(form), m_form(form), m_type(0), m_activeSpellInfoPlugin(nullptr)
 {
     loadPlugins();
 }

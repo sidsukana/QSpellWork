@@ -1,5 +1,33 @@
 <html>
 <head>
+<script>
+function toggleRegExp(event) {
+
+    event = event || window.event;
+
+    var el = event.target || event.srcElement;
+
+    var regexp = 0;
+    var noregexp = 0;
+
+    if (el.id.indexOf('RegExp') == -1) {
+        noregexp = el.style;
+        regexp = document.getElementById(el.id + 'RegExp').style;
+        
+    } else {
+        noregexp = document.getElementById(el.id.replace('RegExp','')).style;
+        regexp = el.style;
+    }
+    
+    if (regexp.display == 'none'){
+        noregexp.display = 'none';
+        regexp.display = 'block';
+    } else {
+        noregexp.display = 'block';
+        regexp.display = 'none';
+    } 
+}
+</script>
 <style type="text/css">{{style}}</style>
 </head>
 <body>
@@ -15,8 +43,10 @@
 <div class='b-tooltip_body'>
 <b>Id:</b> {{id}}</br>
 <b>Name:</b> {{nameWithRank}}</br>
-{{#description}}<b>Description:</b> {{description}}</br>{{/description}}
-{{#tooltip}}<b>ToolTip:</b> {{tooltip}}</br>{{/tooltip}}
+<div style="display:block;" id="desc" onClick="toggleRegExp(event)">{{#description}}<b>Description:</b> {{description}}</br>{{/description}}</div>
+<div style="display:none;" id="descRegExp" onClick="toggleRegExp(event)" >{{#descriptionRegExp}}<b>Description:</b> {{descriptionRegExp}}</br>{{/descriptionRegExp}}</div>
+<div style="display:block;" id="tooltip" onClick="toggleRegExp(event)">{{#tooltip}}<b>ToolTip:</b> {{tooltip}}</br>{{/tooltip}}</div>
+<div style="display:none;" id="tooltipRegExp" onClick="toggleRegExp(event)">{{#tooltipRegExp}}<b>ToolTip:</b> {{tooltipRegExp}}</br>{{/tooltipRegExp}}</div>
 </div>
 {{#hasParents}}
 <div class='b-box-title'>Parent spells</div>
@@ -157,8 +187,10 @@
 {{#triggerId}}
 <li><b>Trigger spell:</b> <a href='http://spellwork/{{triggerId}}' class='blue_link'>{{triggerId}} - {{triggerName}}</a></li>
 <ul>
-{{#triggerDescription}}<li>Description: {{triggerDescription}}</li>{{/triggerDescription}}
-{{#triggerToolTip}}<li>ToolTip: {{triggerToolTip}}</li>{{/triggerToolTip}}
+<div style="display:block;" id="tdesc" onClick="toggleRegExp(event)">{{#triggerDescription}}<b>Description:</b> {{triggerDescription}}</br>{{/triggerDescription}}</div>
+<div style="display:none;" id="tdescRegExp" onClick="toggleRegExp(event)">{{#triggerDescriptionRegExp}}<b>Description:</b> {{triggerDescriptionRegExp}}</br>{{/triggerDescriptionRegExp}}</div>
+<div style="display:block;" id="ttooltip" onClick="toggleRegExp(event)">{{#triggerToolTip}}<b>Description:</b> {{triggerToolTip}}</br>{{/triggerToolTip}}</div>
+<div style="display:none;" id="ttooltipRegExp" onClick="toggleRegExp(event)">{{#triggerToolTipRegExp}}<b>ToolTip:</b> {{triggerToolTipRegExp}}</br>{{/triggerToolTipRegExp}}</div>
 {{#triggerProcFlags}}
 <li><b>ProcFlags: {{triggerProcFlags}}, Chance: {{triggerProcChance}}, Charges: {{triggerProcCharges}}</b></li>
 <ul>

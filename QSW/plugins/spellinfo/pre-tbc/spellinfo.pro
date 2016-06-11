@@ -8,6 +8,22 @@ TARGET          = pre-tbc
 
 OTHER_FILES =
 
+defineTest(copyToDestdir) {
+    files = $$1
+
+    for(FILE, files) {
+
+        DDIR = $$DESTDIR\\$$2
+
+        win32:FILE ~= s,/,\\,g
+        win32:DDIR ~= s,/,\\,g
+
+        QMAKE_POST_LINK += $$QMAKE_COPY $$quote($$FILE) $$quote($$DDIR) $$escape_expand(\\n\\t)
+    }
+
+    export(QMAKE_POST_LINK)
+}
+
 win32: {
     contains(QT_ARCH, i386) {
         PLATFORM = "Win32"
@@ -21,11 +37,14 @@ win32: {
     }
 }
 DLLDESTDIR = $$PWD/../../../build-qsw/bin/$$PLATFORM/$$BUILDTYPE/plugins/spellinfo
+DESTDIR = $$DLLDESTDIR
+
+copyToDestdir($$PWD/pre-tbc.css)
+copyToDestdir($$PWD/pre-tbc.html)
+copyToDestdir($$PWD/pre-tbc.xml)
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../build-qsw/bin/Win32/Release/ -lQSW
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../build-qsw/bin/Win32/Debug/ -lQSW
 
 INCLUDEPATH += $$PWD/../../../
 DEPENDPATH += $$PWD/../../../
-
-RESOURCES +=

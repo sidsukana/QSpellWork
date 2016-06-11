@@ -43,9 +43,6 @@ MainForm::MainForm(QWidget* parent)
     mainToolBar->addSeparator();
     mainToolBar->addWidget(m_pluginButton);
     mainToolBar->addSeparator();
-    m_actionRegExp = mainToolBar->addAction(QIcon(":/qsw/resources/regExp.png"), "<font color=red>Off</font>");
-    m_actionRegExp->setCheckable(true);
-    mainToolBar->addSeparator();
     m_actionSettings = mainToolBar->addAction(QIcon(":/qsw/resources/cog.png"), "Settings");
     mainToolBar->addSeparator();
     m_actionWov = mainToolBar->addAction(QIcon(":/qsw/resources/wand.png"), "Wov");
@@ -76,9 +73,6 @@ MainForm::MainForm(QWidget* parent)
 
     // Menu connections
     connect(m_actionAbout, SIGNAL(triggered()), this, SLOT(slotAbout()));
-
-    // RegExp connection
-    connect(m_actionRegExp, SIGNAL(triggered()), this, SLOT(slotRegExp()));
 
     // Settings form connection
     connect(m_actionSettings, SIGNAL(triggered()), this, SLOT(slotSettings()));
@@ -411,35 +405,6 @@ void MainForm::loadComboBoxes(EnumHash enums)
 
     items[0] = ComboBoxPair(-1, "Target B");
     m_comboBoxModels[4]->setItems(items);
-}
-
-void MainForm::slotRegExp()
-{
-    if (isRegExp())
-    {
-        m_actionRegExp->setChecked(true);
-        m_actionRegExp->setIcon(QIcon(":/qsw/resources/regExp.png"));
-        m_actionRegExp->setText("<font color=green>On</font>");
-    }
-    else
-    {
-        m_actionRegExp->setChecked(false);
-        m_actionRegExp->setIcon(QIcon(":/qsw/resources/regExp.png"));
-        m_actionRegExp->setText("<font color=red>Off</font>");
-    }
-
-    m_sw->showInfo(webView1->url().path().remove(0, 1).toInt());
-
-    quint32 id2 = webView2->url().path().remove(0, 1).toInt();
-    if (id2)
-        m_sw->showInfo(id2, QSW::PAGE_CLEFT);
-
-    quint32 id3 = webView3->url().path().remove(0, 1).toInt();
-    if (id3)
-    m_sw->showInfo(id3, QSW::PAGE_CRIGHT);
-
-    if (id2 && id3)
-        m_sw->compare();
 }
 
 void MainForm::slotWov()

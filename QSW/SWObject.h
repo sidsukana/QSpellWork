@@ -50,7 +50,6 @@ class SWObject : public QObject
 
         QMetaEnum m_metaEnum;
 
-        bool m_regExp;
         quint8 m_type;
 
         QByteArray m_templateHtml;

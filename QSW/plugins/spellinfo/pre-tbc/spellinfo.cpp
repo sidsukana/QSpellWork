@@ -740,8 +740,10 @@ QVariantHash SpellInfo::getValues(quint32 id) const
     values["name"] = spellInfo->name();
     values["rank"] = spellInfo->rank();
     values["nameWithRank"] = spellInfo->nameWithRank();
-    values["description"] = getDescription(spellInfo->description(), spellInfo);
-    values["tooltip"] = getDescription(spellInfo->toolTip(), spellInfo);
+    values["description"] = spellInfo->description();
+    values["descriptionRegExp"] = getDescription(spellInfo->description(), spellInfo);
+    values["tooltip"] = spellInfo->toolTip();
+    values["tooltipRegExp"] = getDescription(spellInfo->toolTip(), spellInfo);
 
     QVariantList parentSpells = getParentSpells(spellInfo->id);
     if (!parentSpells.isEmpty())
@@ -1033,8 +1035,10 @@ QVariantHash SpellInfo::getValues(quint32 id) const
         {
             effectValues["triggerId"] = triggerSpell->id;
             effectValues["triggerName"] = triggerSpell->nameWithRank();
-            effectValues["triggerDescription"] = getDescription(triggerSpell->description(), triggerSpell);
-            effectValues["triggerToolTip"] = getDescription(triggerSpell->toolTip(), triggerSpell);
+            effectValues["triggerDescription"] = triggerSpell->description();
+            effectValues["triggerDescriptionRegExp"] = getDescription(triggerSpell->description(), triggerSpell);
+            effectValues["triggerToolTip"] = triggerSpell->toolTip();
+            effectValues["triggerToolTipRegExp"] = getDescription(triggerSpell->toolTip(), triggerSpell);
             effectValues["triggerProcChance"] = triggerSpell->procChance;
             effectValues["triggerProcCharges"] = triggerSpell->procCharges;
 
