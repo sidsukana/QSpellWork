@@ -19,43 +19,46 @@ SWObject::SWObject(MainForm* form)
 
 void SWObject::setActivePlugin(QString name)
 {
-    QJsonObject metaData;
+    m_activeSpellInfoPlugin = nullptr;
 
-    if (!m_activeSpellInfoPluginName.isEmpty()) {
-        metaData = m_spellInfoPlugins[m_activeSpellInfoPluginName].first;
+    // save current plugin settings
+    if (m_spellInfoPlugins.contains(m_activeSpellInfoPluginName)) {
         m_form->saveSettings(m_activeSpellInfoPluginName);
     }
 
-    metaData = m_spellInfoPlugins[name].first;
-    m_form->loadSettings(name);
+    // load new plugin
+    if (m_spellInfoPlugins.contains(name)) {
+        QJsonObject metaData = m_spellInfoPlugins[name].first;
+        m_form->loadSettings(name);
 
-    m_activeSpellInfoPlugin = m_spellInfoPlugins[name].second;
-    m_activeSpellInfoPluginName = name;
+        SpellInfoInterface* plugin = m_spellInfoPlugins[name].second;
+        m_activeSpellInfoPluginName = name;
 
-    if (!m_activeSpellInfoPlugin->init()) {
-        qCritical("Plugin '%s' is not loaded!", qPrintable(name));
-        m_activeSpellInfoPlugin = nullptr;
-        return;
+        if (!plugin->init()) {
+            qCritical("Plugin '%s' is not loaded!", qPrintable(name));
+            return;
+        }
+
+        QFile templateFile("plugins/spellinfo/" + metaData.value("htmlFile").toString());
+        if (templateFile.open(QFile::ReadOnly)) {
+            m_templateHtml = templateFile.readAll();
+            templateFile.close();
+        }
+
+        QFile styleFile("plugins/spellinfo/" + metaData.value("cssFile").toString());
+        if (styleFile.open(QFile::ReadOnly)) {
+            m_styleCss = styleFile.readAll();
+            styleFile.close();
+        }
+
+        plugin->getEnums() = QSW::loadEnumFile("plugins/spellinfo/" + metaData.value("xmlFile").toString());
+
+        m_form->getScriptFilter()->scriptEdit->setupCompleter(plugin->getMetaSpell(0));
+        m_form->loadComboBoxes(plugin->getEnums());
+        m_form->loadCompleter(plugin->getNames());
+        m_form->setLocale(plugin->getLocale());
+        m_activeSpellInfoPlugin = plugin;
     }
-
-    QFile templateFile("plugins/spellinfo/" + metaData.value("htmlFile").toString());
-    if (templateFile.open(QFile::ReadOnly)) {
-        m_templateHtml = templateFile.readAll();
-        templateFile.close();
-    }
-
-    QFile styleFile("plugins/spellinfo/" + metaData.value("cssFile").toString());
-    if (styleFile.open(QFile::ReadOnly)) {
-        m_styleCss = styleFile.readAll();
-        styleFile.close();
-    }
-
-    m_activeSpellInfoPlugin->getEnums() = QSW::loadEnumFile("plugins/spellinfo/" + metaData.value("xmlFile").toString());
-
-    m_form->getScriptFilter()->scriptEdit->setupCompleter(m_activeSpellInfoPlugin->getMetaSpell(0));
-    m_form->loadComboBoxes(m_activeSpellInfoPlugin->getEnums());
-    m_form->loadCompleter(m_activeSpellInfoPlugin->getNames());
-    m_form->setLocale(m_activeSpellInfoPlugin->getLocale());
 }
 
 void SWObject::loadPlugins()
