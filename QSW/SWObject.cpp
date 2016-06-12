@@ -12,7 +12,7 @@
 #include "mustache/mustache.h"
 
 SWObject::SWObject(MainForm* form)
-    : QObject(form), m_form(form), m_type(0), m_activeSpellInfoPlugin(nullptr)
+    : QObject(form), m_form(form), m_activeSpellInfoPlugin(nullptr)
 {
     loadPlugins();
 }
@@ -78,7 +78,7 @@ void SWObject::loadPlugins()
     }
 }
 
-EventList SWObject::search()
+EventList SWObject::search(quint8 type)
 {
     EventList eventList;
     if (!m_activeSpellInfoPlugin)
@@ -86,7 +86,7 @@ EventList SWObject::search()
 
     SpellListModel *model = new SpellListModel();
 
-    if (getType() == 1)
+    if (type == 1)
     {
         for (quint32 i = 0; i < m_activeSpellInfoPlugin->getSpellsCount(); ++i)
         {
@@ -133,7 +133,7 @@ EventList SWObject::search()
         ev->addValue(QVariant::fromValue(model));
         eventList << ev;
     }
-    else if (getType() == 3)
+    else if (type == 3)
     {
         QJSEngine engine;
 

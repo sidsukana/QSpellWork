@@ -35,13 +35,10 @@ class SWObject : public QObject
 
         void showInfo(quint32 id, QSW::Pages pageId = QSW::PAGE_MAIN);
         void compare();
-        EventList search();
+        EventList search(quint8 type);
 
         QMetaEnum getMetaEnum() { return m_metaEnum; }
         void setMetaEnum(const char* enumName);
-
-        quint8 getType() const { return m_type; }
-        void setType(quint8 type) { m_type = type; }
 
         MainForm* getForm() { return m_form; }
 
@@ -49,8 +46,6 @@ class SWObject : public QObject
         MainForm *m_form;
 
         QMetaEnum m_metaEnum;
-
-        quint8 m_type;
 
         QByteArray m_templateHtml;
         QByteArray m_styleCss;

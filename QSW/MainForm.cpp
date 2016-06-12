@@ -448,9 +448,7 @@ void MainForm::slotSearch(quint8 type)
     delete model;
     model = nullptr;
 
-    m_sw->setType(type);
-
-    m_watcher->setFuture(QtConcurrent::run<EventList, SWObject>(m_sw, &SWObject::search));
+    m_watcher->setFuture(QtConcurrent::run(m_sw, &SWObject::search, type));
 }
 
 void MainForm::slotSearchResult()
