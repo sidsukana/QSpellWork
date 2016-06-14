@@ -2,6 +2,7 @@
 #define DBC_H_
 
 #include <QString>
+#include <QList>
 
 #define DBC_MAGIC "WDBC"
 
@@ -19,18 +20,21 @@ struct Q_DECL_EXPORT DBCFileHeader
     quint32 stringBlockSize;
 };
 
+typedef QList<quint32> Indexes;
+
 class Q_DECL_EXPORT DBCFile
 {
     public:
         explicit DBCFile(const QString &fileName);
-        ~DBCFile();
+        ~DBCFile() {}
 
         bool load();
 
         template <typename T>
         const T* getEntry(quint32 id) const
         {
-            return (id > m_maxId || id != m_minId && m_indexes[id] == 0 ? nullptr : getRecord<T>(m_indexes[id]));
+            qint32 index = m_indexes.indexOf(id);
+            return (index == -1 ? nullptr : getRecord<T>(index));
         }
 
         template <typename T>
@@ -41,7 +45,7 @@ class Q_DECL_EXPORT DBCFile
 
         const char* getStringBlock() const;
         const DBCFileHeader* getHeader() const { return m_header; }
-        const quint32 getIndex(quint32 id) const { return m_indexes[id]; }
+        const quint32 getIndex(quint32 id) const { return m_indexes.indexOf(id); }
 
     private:
 
@@ -49,7 +53,7 @@ class Q_DECL_EXPORT DBCFile
         const DBCFileHeader *m_header;
         const char *m_records;
         const char *m_strings;
-        quint32 *m_indexes;
+        Indexes m_indexes;
         quint32 m_maxId;
         quint32 m_minId;
         QString m_fileName;

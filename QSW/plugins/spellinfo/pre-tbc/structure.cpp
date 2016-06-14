@@ -1,4 +1,3 @@
-#include "Defines.h"
 #include "structure.h"
 
 // SkillLine.dbc

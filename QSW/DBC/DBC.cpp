@@ -12,7 +12,7 @@ QString& DBC::dbcDir()
 
 DBCFile::DBCFile(const QString &fileName)
     : m_header(nullptr), m_records(nullptr), m_strings(nullptr),
-      m_indexes(nullptr), m_maxId(0), m_fileName(fileName)
+      m_maxId(0), m_fileName(fileName)
 {
 
 }
@@ -21,8 +21,10 @@ bool DBCFile::load()
 {
     if (MPQ::mpqDir().isEmpty()) {
         QFile file(DBC::dbcDir() + m_fileName);
-        if (file.open(QFile::ReadOnly))
+        if (file.open(QFile::ReadOnly)) {
             m_data = file.readAll();
+            file.close();
+        }
     } else {
         m_data = MPQ::readFile(DBC::dbcDir() + m_fileName);
     }
@@ -42,18 +44,11 @@ bool DBCFile::load()
     m_records = m_data.constData() + sizeof(DBCFileHeader);
     m_strings = m_records + m_header->recordCount * m_header->recordSize;
 
-    m_maxId = *reinterpret_cast<const quint32*>(m_records + m_header->recordSize * (m_header->recordCount - 1));
-
-    m_indexes = new quint32[m_maxId + 1];
-    memset(m_indexes, 0, (m_maxId + 1) * 4);
     for (quint32 i = 0; i < m_header->recordCount; ++i)
-    {
-        quint32 id = *reinterpret_cast<const quint32*>(m_records + m_header->recordSize * i);
-        m_indexes[id] = i;
+        m_indexes << *reinterpret_cast<const quint32*>(m_records + m_header->recordSize * i);
 
-        if (i == 0)
-            m_minId = id;
-    }
+    m_minId = *std::min_element(m_indexes.begin(), m_indexes.end());
+    m_maxId = *std::max_element(m_indexes.begin(), m_indexes.end());
 
     return true;
 }
@@ -61,10 +56,5 @@ bool DBCFile::load()
 const char* DBCFile::getStringBlock() const
 {
     return m_strings;
-}
-
-DBCFile::~DBCFile()
-{
-    delete[] m_indexes;
 }
 

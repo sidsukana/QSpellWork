@@ -130,8 +130,14 @@ void MainForm::slotSettings()
     settingsForm.editDir->setText(MPQ::mpqDir());
     settingsForm.dbcDir->setText(DBC::dbcDir());
     if (settingsForm.exec() == QDialog::Accepted) {
-        MPQ::mpqDir() = QDir::fromNativeSeparators(QDir::cleanPath(settingsForm.editDir->text())) + "/";
-        DBC::dbcDir() = QDir::fromNativeSeparators(QDir::cleanPath(settingsForm.dbcDir->text())) + "/";
+        MPQ::mpqDir() = "";
+        if (!settingsForm.editDir->text().isEmpty()) {
+            MPQ::mpqDir() = QDir::fromNativeSeparators(QDir::cleanPath(settingsForm.editDir->text())) + "/";
+        }
+        DBC::dbcDir() = "";
+        if (!settingsForm.dbcDir->text().isEmpty()) {
+            DBC::dbcDir() = QDir::fromNativeSeparators(QDir::cleanPath(settingsForm.dbcDir->text())) + "/";
+        }
     }
 
     saveSettings(m_sw->getActivePluginName());
