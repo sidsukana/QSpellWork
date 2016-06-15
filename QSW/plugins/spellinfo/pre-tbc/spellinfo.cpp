@@ -121,13 +121,6 @@ QStringList SpellInfo::getNames() const
     return m_names;
 }
 
-QString getSpellIconName(quint32 iconId)
-{
-    const SpellIcon::entry* iconInfo = SpellIcon::getRecord(iconId, true);
-
-    return (iconInfo ? iconInfo->iconPath().section('\\', -1) : QString(""));
-}
-
 QImage getSpellIcon(quint32 iconId)
 {
     const SpellIcon::entry* iconInfo = SpellIcon::getRecord(iconId, true);
