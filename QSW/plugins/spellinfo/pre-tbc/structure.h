@@ -253,16 +253,21 @@ namespace Spell
         {
             for (quint8 i = 0; i < MAX_EFFECT_INDEX; ++i)
                 if (effectAmplitude[i])
-                    return effectAmplitude[i];
+                    return quint32(effectAmplitude[i] / 1000);
 
             return 0;
+        }
+
+        quint32 getAmplitude(quint8 index) const
+        {
+            return quint32(effectAmplitude[index] / 1000);
         }
 
         qint32 getDuration() const
         {
             const SpellDuration::entry* durationInfo = SpellDuration::getRecord(durationIndex, true);
             if (durationInfo)
-                return durationInfo->duration;
+                return qint32(durationInfo->duration / 1000);
 
             return 0;
         }
@@ -277,7 +282,7 @@ namespace Spell
 
         quint32 getTicks(quint8 index) const
         {
-            return quint32(getDuration() / (effectAmplitude[index] ? quint32(effectAmplitude[index]) : getDuration()));
+            return quint32(getDuration() / (effectAmplitude[index] ? quint32(effectAmplitude[index] / 1000) : getDuration()));
         }
 
         qint32 getTriggerDuration(quint8 index) const;

@@ -566,12 +566,12 @@ void RegExpT(const Spell::entry* spellInfo, QRegExp rx, QString &str)
                 if (rx.cap(2) == QString("/"))
                 {
                     str.replace(rx.cap(0), QString("%0")
-                        .arg(quint32(quint32(tSpell->effectAmplitude[rx.cap(6).toInt()-1] / 1000) / rx.cap(3).toInt())));
+                        .arg(quint32(tSpell->getAmplitude(rx.cap(6).toInt()-1) / rx.cap(3).toInt())));
                 }
                 else if (rx.cap(2) == QString("*"))
                 {
                     str.replace(rx.cap(0), QString("%0")
-                        .arg(quint32(quint32(tSpell->effectAmplitude[rx.cap(6).toInt()-1] / 1000) * rx.cap(3).toInt())));
+                        .arg(quint32(tSpell->getAmplitude(rx.cap(6).toInt()-1) * rx.cap(3).toInt())));
                 }
             }
         }
@@ -580,12 +580,12 @@ void RegExpT(const Spell::entry* spellInfo, QRegExp rx, QString &str)
             if (rx.cap(2) == QString("/"))
             {
                 str.replace(rx.cap(0), QString("%0")
-                    .arg(quint32(quint32(spellInfo->effectAmplitude[rx.cap(6).toInt()-1] / 1000) / rx.cap(3).toInt())));
+                    .arg(quint32(spellInfo->getAmplitude(rx.cap(6).toInt()-1) / rx.cap(3).toInt())));
             }
             else if (rx.cap(2) == QString("*"))
             {
                 str.replace(rx.cap(0), QString("%0")
-                    .arg(quint32(quint32(spellInfo->effectAmplitude[rx.cap(6).toInt()-1] / 1000) * rx.cap(3).toInt())));
+                    .arg(quint32(spellInfo->getAmplitude(rx.cap(6).toInt()-1) * rx.cap(3).toInt())));
             }
         }
     }
@@ -595,9 +595,9 @@ void RegExpT(const Spell::entry* spellInfo, QRegExp rx, QString &str)
         if (const Spell::entry* tSpell = Spell::getRecord(rx.cap(4).toInt(), true))
         {
             if (tSpell->effectAmplitude[rx.cap(6).toInt()-1])
-                str.replace(rx.cap(0), QString("%0").arg(quint32(tSpell->effectAmplitude[rx.cap(6).toInt()-1] / 1000)));
+                str.replace(rx.cap(0), QString("%0").arg(tSpell->getAmplitude(rx.cap(6).toInt()-1)));
             else
-                str.replace(rx.cap(0), QString("%0").arg(quint32(tSpell->getAmplitude() / 1000)));
+                str.replace(rx.cap(0), QString("%0").arg(tSpell->getAmplitude()));
         }
     }
     else
