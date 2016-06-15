@@ -63,6 +63,8 @@ bool SpellInfo::init() const
         }
     }
 
+    qDeleteAll(m_metaSpells);
+    m_metaSpells.clear();
     QSet<QString> names;
     for (quint32 i = 0; i < Spell::getHeader()->recordCount; ++i) {
         if (const Spell::entry* spellInfo = Spell::getRecord(i)) {
