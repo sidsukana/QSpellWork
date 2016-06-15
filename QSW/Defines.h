@@ -7,7 +7,6 @@
 
 namespace QSW
 {
-    bool checkDir(const QString &dir);
     QSettings& settings();
 
     extern quint8 Locale;
