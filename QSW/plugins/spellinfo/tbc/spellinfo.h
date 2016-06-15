@@ -23,6 +23,7 @@ class SpellInfo : public QObject, SpellInfoInterface
 
         void setEnums(EnumHash enums);
 
+        QStringList getMPQFiles() const;
         quint32 getSpellsCount() const;
         QObject* getMetaSpell(quint32 id, bool realId = false) const;
         QVariantHash getValues(quint32 id) const;

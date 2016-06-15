@@ -6,8 +6,8 @@
 
 namespace MPQ
 {
-    Q_DECL_EXPORT QString& mpqDir();
-    Q_DECL_EXPORT QStringList& mpqFiles();
+    QString& mpqDir();
+    QStringList& mpqFiles();
     QByteArray readFile(const QString &fileName);
 }
 

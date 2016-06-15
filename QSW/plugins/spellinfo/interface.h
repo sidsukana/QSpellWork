@@ -15,6 +15,7 @@ class SpellInfoInterface
 
         virtual void setEnums(EnumHash enums) = 0;
 
+        virtual QStringList getMPQFiles() const = 0;
         virtual quint32 getSpellsCount() const = 0;
         virtual QObject* getMetaSpell(quint32 id, bool realId = false) const = 0;
         virtual QVariantHash getValues(quint32 id) const = 0;

@@ -30,14 +30,6 @@ QMap<quint32, QString> procFlags = {
 
 bool SpellInfo::init() const
 {
-    MPQ::mpqFiles() = QStringList({
-        "ruRU/patch-3.MPQ",		// custom ruRU locale by Maus Team
-        "patch-2.MPQ",
-        "patch.MPQ",
-        "dbc.MPQ",
-        "interface.MPQ"
-    });
-
     if (!SkillLine::getDbc().load())
         return false;
 
@@ -89,6 +81,18 @@ bool SpellInfo::init() const
 void SpellInfo::setEnums(EnumHash enums)
 {
     m_enums = enums;
+}
+
+QStringList SpellInfo::getMPQFiles() const
+{
+    static QStringList MPQs = QStringList({
+        "ruRU/patch-3.MPQ",		// custom ruRU locale by Maus Team
+        "patch-2.MPQ",
+        "patch.MPQ",
+        "dbc.MPQ",
+        "interface.MPQ"
+    });
+    return MPQs;
 }
 
 QObject* SpellInfo::getMetaSpell(quint32 id, bool realId) const

@@ -6,7 +6,6 @@
 
 #include "blp/BLP.h"
 #include "dbc/DBC.h"
-#include "mpq/MPQ.h"
 
 typedef QMap<qint64, QString> Enumerator;
 typedef QHash<QString, Enumerator> EnumHash;

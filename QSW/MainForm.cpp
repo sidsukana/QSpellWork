@@ -13,6 +13,7 @@
 #include "AboutForm.h"
 #include "SettingsForm.h"
 #include "WovWidget.h"
+#include "mpq/MPQ.h"
 
 MainForm::MainForm(QWidget* parent)
     : QMainWindow(parent)
