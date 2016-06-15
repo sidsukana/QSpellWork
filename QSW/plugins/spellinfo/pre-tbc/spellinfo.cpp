@@ -705,19 +705,6 @@ QVariantHash SpellInfo::getValues(quint32 id) const
     if (!spellInfo)
         return values;
 
-    QString sSpellFamilyFlags("0x" + QString("%0").arg(spellInfo->spellFamilyFlags, 16, 16, QChar('0')).toUpper());
-    QString sAttributes("0x" + QString("%0").arg(spellInfo->attributes, 8, 16, QChar('0')).toUpper());
-    QString sAttributesEx1("0x" + QString("%0").arg(spellInfo->attributesEx1, 8, 16, QChar('0')).toUpper());
-    QString sAttributesEx2("0x" + QString("%0").arg(spellInfo->attributesEx2, 8, 16, QChar('0')).toUpper());
-    QString sAttributesEx3("0x" + QString("%0").arg(spellInfo->attributesEx3, 8, 16, QChar('0')).toUpper());
-    QString sAttributesEx4("0x" + QString("%0").arg(spellInfo->attributesEx4, 8, 16, QChar('0')).toUpper());
-    QString sTargetMask("0x" + QString("%0").arg(spellInfo->targets, 8, 16, QChar('0')).toUpper());
-    QString sCreatureTypeMask("0x" + QString("%0").arg(spellInfo->targetCreatureType, 8, 16, QChar('0')).toUpper());
-    QString sFormMask("0x" + QString("%0").arg(spellInfo->stances, 8, 16, QChar('0')).toUpper());
-    QString sIF("0x" + QString("%0").arg(spellInfo->interruptFlags, 8, 16, QChar('0')).toUpper());
-    QString sAIF("0x" + QString("%0").arg(spellInfo->auraInterruptFlags, 8, 16, QChar('0')).toUpper());
-    QString sCIF("0x" + QString("%0").arg(spellInfo->channelInterruptFlags, 8, 16, QChar('0')).toUpper());
-
     QByteArray byteArray[3];
     QBuffer buffer[3];
     buffer[0].setBuffer(&byteArray[0]);
@@ -761,7 +748,7 @@ QVariantHash SpellInfo::getValues(quint32 id) const
 
     values["spellFamilyId"] = spellInfo->spellFamilyName;
     values["spellFamilyName"] = getEnums()["SpellFamily"][spellInfo->spellFamilyName];
-    values["spellFamilyFlags"] = sSpellFamilyFlags;
+    values["spellFamilyFlags"] = QString("0x" + QString("%0").arg(spellInfo->spellFamilyFlags, 16, 16, QChar('0')).toUpper());
 
     values["spellSchoolId"] = spellInfo->school;
     values["spellSchoolName"] = getEnums()["School"][spellInfo->school];
@@ -779,56 +766,56 @@ QVariantHash SpellInfo::getValues(quint32 id) const
 
         if (spellInfo->attributes)
         {
-            values["attr"] = sAttributes;
+            values["attr"] = QString("0x" + QString("%0").arg(spellInfo->attributes, 8, 16, QChar('0')).toUpper());
             values["attrNames"] = splitMask(spellInfo->attributes, getEnums()["Attributes"]);
         }
 
         if (spellInfo->attributesEx1)
         {
-            values["attrEx1"] = sAttributesEx1;
+            values["attrEx1"] = QString("0x" + QString("%0").arg(spellInfo->attributesEx1, 8, 16, QChar('0')).toUpper());
             values["attrEx1Names"] = splitMask(spellInfo->attributesEx1, getEnums()["AttributesEx1"]);
         }
 
         if (spellInfo->attributesEx2)
         {
-            values["attrEx2"] = sAttributesEx2;
+            values["attrEx2"] = QString("0x" + QString("%0").arg(spellInfo->attributesEx2, 8, 16, QChar('0')).toUpper());
             values["attrEx2Names"] = splitMask(spellInfo->attributesEx2, getEnums()["AttributesEx2"]);
         }
 
         if (spellInfo->attributesEx3)
         {
-            values["attrEx3"] = sAttributesEx3;
+            values["attrEx3"] = QString("0x" + QString("%0").arg(spellInfo->attributesEx3, 8, 16, QChar('0')).toUpper());
             values["attrEx3Names"] = splitMask(spellInfo->attributesEx3, getEnums()["AttributesEx3"]);
         }
 
         if (spellInfo->attributesEx4)
         {
-            values["attrEx4"] = sAttributesEx4;
+            values["attrEx4"] = QString("0x" + QString("%0").arg(spellInfo->attributesEx4, 8, 16, QChar('0')).toUpper());
             values["attrEx4Names"] = splitMask(spellInfo->attributesEx4, getEnums()["AttributesEx4"]);
         }
     }
 
     if (spellInfo->targets)
     {
-        values["targets"] = sTargetMask;
+        values["targets"] = QString("0x" + QString("%0").arg(spellInfo->targets, 8, 16, QChar('0')).toUpper());
         values["targetsNames"] = splitMask(spellInfo->targets, getEnums()["TargetFlag"]);
     }
 
     if (spellInfo->targetCreatureType)
     {
-        values["creatureType"] = sCreatureTypeMask;
+        values["creatureType"] = QString("0x" + QString("%0").arg(spellInfo->targetCreatureType, 8, 16, QChar('0')).toUpper());
         values["creatureTypeNames"] = splitMask(spellInfo->targetCreatureType, getEnums()["CreatureType"]);
     }
 
     if (spellInfo->stances)
     {
-        values["stances"] = sFormMask;
+        values["stances"] = QString("0x" + QString("%0").arg(spellInfo->stances, 8, 16, QChar('0')).toUpper());
         values["stancesNames"] = splitMask(spellInfo->stances, getEnums()["ShapeshiftForm"]);
     }
 
     if (spellInfo->stancesNot)
     {
-        values["stancesNot"] = sFormMask;
+        values["stancesNot"] = QString("0x" + QString("%0").arg(spellInfo->stancesNot, 8, 16, QChar('0')).toUpper());
         values["stancesNotNames"] = splitMask(spellInfo->stancesNot, getEnums()["ShapeshiftForm"]);
     }
 
@@ -864,8 +851,7 @@ QVariantHash SpellInfo::getValues(quint32 id) const
 
         if (spellInfo->equippedItemSubClassMask)
         {
-            QString sItemSubClassMask("0x" + QString("%0").arg(spellInfo->equippedItemSubClassMask, 8, 16, QChar('0')).toUpper());
-            values["equipItemSubClassMask"] = sItemSubClassMask;
+            values["equipItemSubClassMask"] = QString("0x" + QString("%0").arg(spellInfo->equippedItemSubClassMask, 8, 16, QChar('0')).toUpper());
 
             switch (spellInfo->equippedItemClass)
             {
@@ -884,8 +870,7 @@ QVariantHash SpellInfo::getValues(quint32 id) const
 
         if (spellInfo->equippedItemInventoryTypeMask)
         {
-            QString sItemInventoryMask("0x" + QString("%0").arg(spellInfo->equippedItemInventoryTypeMask, 8, 16, QChar('0')).toUpper());
-            values["equipItemInvTypeMask"] = sItemInventoryMask;
+            values["equipItemInvTypeMask"] = QString("0x" + QString("%0").arg(spellInfo->equippedItemInventoryTypeMask, 8, 16, QChar('0')).toUpper());
             values["equipItemInvTypeMaskNames"] = splitMask(spellInfo->equippedItemInventoryTypeMask, getEnums()["InventoryType"]);
         }
     }
@@ -940,9 +925,9 @@ QVariantHash SpellInfo::getValues(quint32 id) const
     values["manaPerSecond"] = spellInfo->manaPerSecond;
     values["manaPerSecondPerLevel"] =spellInfo->manaPerSecondPerLevel;
 
-    values["interruptFlags"] = sIF;
-    values["auraInterruptFlags"] = sAIF;
-    values["channelInterruptFlags"] = sCIF;
+    values["interruptFlags"] = QString("0x" + QString("%0").arg(spellInfo->interruptFlags, 8, 16, QChar('0')).toUpper());
+    values["auraInterruptFlags"] = QString("0x" + QString("%0").arg(spellInfo->auraInterruptFlags, 8, 16, QChar('0')).toUpper());
+    values["channelInterruptFlags"] = QString("0x" + QString("%0").arg(spellInfo->channelInterruptFlags, 8, 16, QChar('0')).toUpper());
 
     if (spellInfo->casterAuraState)
     {
@@ -963,8 +948,7 @@ QVariantHash SpellInfo::getValues(quint32 id) const
 
     if (spellInfo->procFlags)
     {
-        QString sProcFlags("0x" + QString("%0").arg(spellInfo->procFlags, 8, 16, QChar('0')).toUpper());
-        values["procFlags"] = sProcFlags;
+        values["procFlags"] = QString("0x" + QString("%0").arg(spellInfo->procFlags, 8, 16, QChar('0')).toUpper());
 
         QVariantList procNames;
         for (auto proc = procFlags.begin(); proc != procFlags.end(); ++proc) {
@@ -1066,8 +1050,7 @@ QVariantHash SpellInfo::getValues(quint32 id) const
 
         if (spellInfo->effectItemType[eff] != 0)
         {
-            QString sEffectItemType("0x" + QString("%0").arg(spellInfo->effectItemType[eff], 8, 16, QChar('0')).toUpper());
-            effectValues["itemType"] = sEffectItemType;
+            effectValues["itemType"] = QString("0x" + QString("%0").arg(spellInfo->effectItemType[eff], 8, 16, QChar('0')).toUpper());
 
             if (spellInfo->effect[eff] == 6)
             {
