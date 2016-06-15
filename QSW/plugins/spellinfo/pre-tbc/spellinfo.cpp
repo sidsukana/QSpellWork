@@ -62,33 +62,38 @@ bool SpellInfo::init() const
     if (!Spell::getDbc().load())
         return false;
 
+    if (const Spell::entry* spellInfo = Spell::getRecord(0)) {
+        for (quint8 i = 0; i < 8; ++i) {
+            if (spellInfo->nameOffset[i]) {
+                m_locale = i;
+                break;
+            }
+        }
+    }
+
     QSet<QString> names;
     for (quint32 i = 0; i < Spell::getHeader()->recordCount; ++i) {
         if (const Spell::entry* spellInfo = Spell::getRecord(i)) {
-            getMetaSpells().append(new Spell::meta(spellInfo));
+            m_metaSpells << new Spell::meta(spellInfo);
             QString name = spellInfo->name();
             if (names.find(name) == names.end())
                 names << name;
         }
     }
 
-    getNames() = names.toList();
-
-    if (const Spell::entry* spellInfo = Spell::getRecord(0)) {
-        for (quint8 i = 0; i < 8; ++i) {
-            if (spellInfo->nameOffset[i]) {
-                getLocale() = i;
-                break;
-            }
-        }
-    }
+    m_names = names.toList();
 
     return true;
 }
 
+void SpellInfo::setEnums(EnumHash enums)
+{
+    m_enums = enums;
+}
+
 QObject* SpellInfo::getMetaSpell(quint32 id, bool realId) const
 {
-    return realId ? getMetaSpells().at(Spell::getDbc().getIndex(id)) : getMetaSpells().at(id);
+    return realId ? m_metaSpells.at(Spell::getDbc().getIndex(id)) : m_metaSpells.at(id);
 }
 
 quint32 SpellInfo::getSpellsCount() const
@@ -96,27 +101,23 @@ quint32 SpellInfo::getSpellsCount() const
     return Spell::getHeader()->recordCount;
 }
 
-QObjectList& SpellInfo::getMetaSpells() const
+QObjectList SpellInfo::getMetaSpells() const
 {
-    static QObjectList m_metaSpells;
     return m_metaSpells;
 }
 
-EnumHash& SpellInfo::getEnums() const
+EnumHash SpellInfo::getEnums() const
 {
-    static EnumHash m_enums;
     return m_enums;
 }
 
-quint8& SpellInfo::getLocale() const
+quint8 SpellInfo::getLocale() const
 {
-    static quint8 m_locale;
     return m_locale;
 }
 
-QStringList& SpellInfo::getNames() const
+QStringList SpellInfo::getNames() const
 {
-    static QStringList m_names;
     return m_names;
 }
 

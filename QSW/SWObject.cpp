@@ -51,10 +51,11 @@ void SWObject::setActivePlugin(QString name)
             styleFile.close();
         }
 
-        plugin->getEnums() = QSW::loadEnumFile("plugins/spellinfo/" + metaData.value("xmlFile").toString());
+        EnumHash enums = QSW::loadEnumFile("plugins/spellinfo/" + metaData.value("xmlFile").toString());
+        plugin->setEnums(enums);
 
         m_form->getScriptFilter()->scriptEdit->setupCompleter(plugin->getMetaSpell(0));
-        m_form->loadComboBoxes(plugin->getEnums());
+        m_form->loadComboBoxes(enums);
         m_form->loadCompleter(plugin->getNames());
         m_form->setLocale(plugin->getLocale());
         m_activeSpellInfoPlugin = plugin;

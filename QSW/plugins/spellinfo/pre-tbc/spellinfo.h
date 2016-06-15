@@ -6,6 +6,11 @@
 
 #include "../interface.h"
 
+static quint8 m_locale = 0;
+static EnumHash m_enums;
+static QStringList m_names;
+static QObjectList m_metaSpells;
+
 class SpellInfo : public QObject, SpellInfoInterface
 {
     Q_OBJECT
@@ -16,14 +21,15 @@ class SpellInfo : public QObject, SpellInfoInterface
 
         bool init() const;
 
+        void setEnums(EnumHash enums);
+
         quint32 getSpellsCount() const;
         QObject* getMetaSpell(quint32 id, bool realId = false) const;
         QVariantHash getValues(quint32 id) const;
-
-        QObjectList& getMetaSpells() const;
-        EnumHash& getEnums() const;
-        quint8& getLocale() const;
-        QStringList& getNames() const;
+        QObjectList getMetaSpells() const;
+        EnumHash getEnums() const;
+        quint8 getLocale() const;
+        QStringList getNames() const;
 };
 
 #endif // SPELLINFO_H

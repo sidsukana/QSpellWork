@@ -326,7 +326,6 @@ void MainForm::setLocale(quint8 locale)
         mainToolBar->addWidget(label);
     }
 
-    QSW::Locale = locale;
     m_sw->setMetaEnum("LocalesDBC");
     label->setText(QString("%0<b>DBC Locale: <font color=green>%1 </font><b>")
         .arg(QChar(QChar::Nbsp), 2, QChar(QChar::Nbsp))

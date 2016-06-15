@@ -9,7 +9,6 @@ namespace QSW
 {
     QSettings& settings();
 
-    extern quint8 Locale;
     extern QString VERSION;
 
     enum Pages

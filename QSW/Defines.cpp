@@ -7,5 +7,4 @@ QSettings& QSW::settings()
     return m_settings;
 }
 
-quint8 QSW::Locale = 0;
 QString QSW::VERSION = "2.0.0";

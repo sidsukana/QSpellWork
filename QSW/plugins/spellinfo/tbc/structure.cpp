@@ -1,4 +1,5 @@
 #include "structure.h"
+#include "spellinfo.h"
 
 // SkillLine.dbc
 DBCFile& SkillLine::getDbc()
@@ -19,12 +20,12 @@ const SkillLine::entry* SkillLine::getRecord(quint32 id, bool realId)
 
 const QString SkillLine::entry::name() const
 {
-    return QString::fromUtf8(getDbc().getStringBlock() + quint32(nameOffset[0]));
+    return QString::fromUtf8(getDbc().getStringBlock() + quint32(nameOffset[m_locale]));
 }
 
 const QString SkillLine::entry::description() const
 {
-    return QString::fromUtf8(getDbc().getStringBlock() + quint32(descriptionOffset[0]));
+    return QString::fromUtf8(getDbc().getStringBlock() + quint32(descriptionOffset[m_locale]));
 }
 
 // SkillLineAbility.dbc
@@ -63,22 +64,22 @@ const Spell::entry* Spell::getRecord(quint32 id, bool realId)
 
 const QString Spell::entry::name() const
 {
-    return QString::fromUtf8(getDbc().getStringBlock() + quint32(nameOffset[0]));
+    return QString::fromUtf8(getDbc().getStringBlock() + quint32(nameOffset[m_locale]));
 }
 
 const QString Spell::entry::description() const
 {
-    return QString::fromUtf8(getDbc().getStringBlock() + quint32(descriptionOffset[0]));
+    return QString::fromUtf8(getDbc().getStringBlock() + quint32(descriptionOffset[m_locale]));
 }
 
 const QString Spell::entry::rank() const
 {
-    return QString::fromUtf8(getDbc().getStringBlock() + quint32(rankOffset[0]));
+    return QString::fromUtf8(getDbc().getStringBlock() + quint32(rankOffset[m_locale]));
 }
 
 const QString Spell::entry::toolTip() const
 {
-    return QString::fromUtf8(getDbc().getStringBlock() + quint32(toolTipOffset[0]));
+    return QString::fromUtf8(getDbc().getStringBlock() + quint32(toolTipOffset[m_locale]));
 }
 
 const QString Spell::entry::nameWithRank() const
@@ -148,12 +149,12 @@ const SpellRange::entry* SpellRange::getRecord(quint32 id, bool realId)
 
 const QString SpellRange::entry::name() const
 {
-    return QString::fromUtf8(getDbc().getStringBlock() + quint32(nameOffset[0]));
+    return QString::fromUtf8(getDbc().getStringBlock() + quint32(nameOffset[m_locale]));
 }
 
 const QString SpellRange::entry::shortName() const
 {
-    return QString::fromUtf8(getDbc().getStringBlock() + quint32(shortNameOffset[0]));
+    return QString::fromUtf8(getDbc().getStringBlock() + quint32(shortNameOffset[m_locale]));
 }
 
 // SpellDuration.dbc

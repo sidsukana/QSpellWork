@@ -34,7 +34,8 @@ public:
         zhCN,
         zhTW,
         esES,
-        esMX
+        esMX,
+        ruRU
     };
 
     Q_ENUMS(LocalesDBC)
