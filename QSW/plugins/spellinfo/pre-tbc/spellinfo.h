@@ -6,10 +6,7 @@
 
 #include "../interface.h"
 
-static quint8 m_locale = 0;
-static EnumHash m_enums;
-static QStringList m_names;
-static QObjectList m_metaSpells;
+extern quint8 m_locale;
 
 class SpellInfo : public QObject, SpellInfoInterface
 {

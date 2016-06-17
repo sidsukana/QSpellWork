@@ -3,6 +3,11 @@
 #include <QBuffer>
 #include <QSet>
 
+quint8 m_locale = 0;
+EnumHash m_enums;
+QStringList m_names;
+QObjectList m_metaSpells;
+
 QMap<quint32, QString> procFlags = {
     { 0x00000001, "00 Killed by aggressor that receive experience or honor" },
     { 0x00000002, "01 Kill that yields experience or honor" },
