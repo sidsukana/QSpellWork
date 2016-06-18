@@ -3,6 +3,7 @@
 #include <QResource>
 #include <QDir>
 #include <QPluginLoader>
+#include <QMessageBox>
 
 #include "SWObject.h"
 #include "models.h"
@@ -42,6 +43,7 @@ void SWObject::setActivePlugin(QString name)
         MPQ::mpqFiles() = mpqFiles;
         if (!plugin->init()) {
             qCritical("Plugin '%s' is not loaded!", qPrintable(name));
+            QMessageBox::warning(m_form, "Warning", "Please check directories settings!", QMessageBox::StandardButton::Ok);
             return;
         }
 
