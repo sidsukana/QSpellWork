@@ -96,9 +96,9 @@ void SpellInfo::setEnums(EnumHash enums)
 QStringList SpellInfo::getMPQFiles() const
 {
     static QStringList MPQs = QStringList({
-        "enUS/patch-enUS-2.MPQ",
-        "enUS/patch-enUS.MPQ",
-        "enUS/locale-enUS.MPQ"
+        "%locale%/patch-%locale%-2.MPQ",
+        "%locale%/patch-%locale%.MPQ",
+        "%locale%/locale-%locale%.MPQ"
     });
     return MPQs;
 }

@@ -7,6 +7,7 @@
 namespace MPQ
 {
     QString& mpqDir();
+    QString& localeDir();
     QStringList& mpqFiles();
     QByteArray readFile(const QString &fileName);
 }

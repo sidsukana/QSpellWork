@@ -128,14 +128,17 @@ void MainForm::slotSettings()
 {
     SettingsForm settingsForm(this);
 
-    settingsForm.editDir->setText(MPQ::mpqDir());
+    settingsForm.mpqDir->setText(MPQ::mpqDir());
     settingsForm.dbcDir->setText(DBC::dbcDir());
+    settingsForm.mpqLocale->addItem(MPQ::localeDir());
     if (settingsForm.exec() == QDialog::Accepted) {
         MPQ::mpqDir() = "";
-        if (!settingsForm.editDir->text().isEmpty()) {
-            MPQ::mpqDir() = QDir::fromNativeSeparators(QDir::cleanPath(settingsForm.editDir->text())) + "/";
-        }
+        MPQ::localeDir() = "";
         DBC::dbcDir() = "";
+        if (!settingsForm.mpqDir->text().isEmpty()) {
+            MPQ::mpqDir() = QDir::fromNativeSeparators(QDir::cleanPath(settingsForm.mpqDir->text())) + "/";
+            MPQ::localeDir() = settingsForm.mpqLocale->itemText(settingsForm.mpqLocale->currentIndex());
+        }
         if (!settingsForm.dbcDir->text().isEmpty()) {
             DBC::dbcDir() = QDir::fromNativeSeparators(QDir::cleanPath(settingsForm.dbcDir->text())) + "/";
         }
@@ -177,6 +180,7 @@ void MainForm::loadSettings(QString pluginName)
 
     QSW::settings().beginGroup("Plugin/" + pluginName);
     MPQ::mpqDir() = QSW::settings().value("mpqDir", "").toString();
+    MPQ::localeDir() = QSW::settings().value("mpqLocaleDir", "").toString();
     DBC::dbcDir() = QSW::settings().value("dbcDir", "").toString();
     QSW::settings().beginGroup("FastFilter");
     findLine_e1->setText(QSW::settings().value("IdOrName", "").toString());
@@ -213,6 +217,7 @@ void MainForm::saveSettings(QString pluginName)
 
     QSW::settings().beginGroup("Plugin/" + pluginName);
     QSW::settings().setValue("mpqDir", MPQ::mpqDir());
+    QSW::settings().setValue("mpqLocaleDir", MPQ::localeDir());
     QSW::settings().setValue("dbcDir", DBC::dbcDir());
     QSW::settings().beginGroup("FastFilter");
     QSW::settings().setValue("IdOrName", findLine_e1->text());

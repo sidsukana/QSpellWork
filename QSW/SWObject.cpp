@@ -35,7 +35,11 @@ void SWObject::setActivePlugin(QString name)
         SpellInfoInterface* plugin = m_spellInfoPlugins[name].second;
         m_activeSpellInfoPluginName = name;
 
-        MPQ::mpqFiles() = plugin->getMPQFiles();
+        QStringList mpqFiles;
+        foreach (QString mpq, plugin->getMPQFiles()) {
+            mpqFiles << mpq.replace("%locale%", MPQ::localeDir());
+        }
+        MPQ::mpqFiles() = mpqFiles;
         if (!plugin->init()) {
             qCritical("Plugin '%s' is not loaded!", qPrintable(name));
             return;

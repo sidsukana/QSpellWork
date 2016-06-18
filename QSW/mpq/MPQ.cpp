@@ -9,6 +9,12 @@ QString& MPQ::mpqDir()
     return mpqDir;
 }
 
+QString& MPQ::localeDir()
+{
+    static QString localeDir;
+    return localeDir;
+}
+
 QStringList& MPQ::mpqFiles()
 {
     static QStringList mpqFiles;

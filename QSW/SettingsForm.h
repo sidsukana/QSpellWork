@@ -14,7 +14,9 @@ class SettingsForm : public QDialog, public Ui::settings
         ~SettingsForm() {}
 
     public slots:
-        void slotDir();
+        void slotEditMPQ();
+        void slotMPQ();
+        void slotDBC();
 
     private:
         Ui::settings ui;
