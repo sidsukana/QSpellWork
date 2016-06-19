@@ -8,9 +8,8 @@
 #include <QJsonObject>
 
 #include "MainForm.h"
-#include "shared.h"
+#include "qsw.h"
 #include "events.h"
-#include "Defines.h"
 #include "blp/BLP.h"
 
 #include "plugins/spellinfo/interface.h"

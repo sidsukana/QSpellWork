@@ -8,9 +8,9 @@ DBCFile& SkillLine::getDbc()
     return dbc;
 }
 
-const DBCFileHeader* SkillLine::getHeader()
-{ 
-    return getDbc().getHeader();
+quint32 SkillLine::getRecordCount()
+{
+    return getDbc().getRecordCount();
 }
 
 const SkillLine::entry* SkillLine::getRecord(quint32 id, bool realId)
@@ -20,17 +20,17 @@ const SkillLine::entry* SkillLine::getRecord(quint32 id, bool realId)
 
 const QString SkillLine::entry::name() const
 {
-    return QString::fromUtf8(getDbc().getStringBlock() + quint32(nameOffset[m_locale]));
+    return getDbc().getString(nameOffset[m_locale]);
 }
 
 const QString SkillLine::entry::description() const
 {
-    return QString::fromUtf8(getDbc().getStringBlock() + quint32(descriptionOffset[m_locale]));
+    return getDbc().getString(descriptionOffset[m_locale]);
 }
 
 const QString SkillLine::entry::verb() const
 {
-    return QString::fromUtf8(getDbc().getStringBlock() + quint32(verbOffset[m_locale]));
+    return getDbc().getString(verbOffset[m_locale]);
 }
 
 // SkillLineAbility.dbc
@@ -40,9 +40,9 @@ DBCFile& SkillLineAbility::getDbc()
     return dbc;
 }
 
-const DBCFileHeader* SkillLineAbility::getHeader()
-{ 
-    return getDbc().getHeader();
+quint32 SkillLineAbility::getRecordCount()
+{
+    return getDbc().getRecordCount();
 }
 
 const SkillLineAbility::entry* SkillLineAbility::getRecord(quint32 id, bool realId)
@@ -57,9 +57,9 @@ DBCFile& Spell::getDbc()
     return dbc;
 }
 
-const DBCFileHeader* Spell::getHeader()
+quint32 Spell::getRecordCount()
 {
-    return getDbc().getHeader();
+    return getDbc().getRecordCount();
 }
 
 const Spell::entry* Spell::getRecord(quint32 id, bool realId)
@@ -69,22 +69,22 @@ const Spell::entry* Spell::getRecord(quint32 id, bool realId)
 
 const QString Spell::entry::name() const
 {
-    return QString::fromUtf8(getDbc().getStringBlock() + quint32(nameOffset[m_locale]));
+    return getDbc().getString(nameOffset[m_locale]);
 }
 
 const QString Spell::entry::description() const
 {
-    return QString::fromUtf8(getDbc().getStringBlock() + quint32(descriptionOffset[m_locale]));
+    return getDbc().getString(descriptionOffset[m_locale]);
 }
 
 const QString Spell::entry::rank() const
 {
-    return QString::fromUtf8(getDbc().getStringBlock() + quint32(rankOffset[m_locale]));
+    return getDbc().getString(rankOffset[m_locale]);
 }
 
 const QString Spell::entry::toolTip() const
 {
-    return QString::fromUtf8(getDbc().getStringBlock() + quint32(toolTipOffset[m_locale]));
+    return getDbc().getString(toolTipOffset[m_locale]);
 }
 
 const QString Spell::entry::nameWithRank() const
@@ -108,9 +108,9 @@ DBCFile& SpellCastTimes::getDbc()
     return dbc;
 }
 
-const DBCFileHeader* SpellCastTimes::getHeader()
-{ 
-    return getDbc().getHeader();
+quint32 SpellCastTimes::getRecordCount()
+{
+    return getDbc().getRecordCount();
 }
 
 const SpellCastTimes::entry* SpellCastTimes::getRecord(quint32 id, bool realId)
@@ -125,9 +125,9 @@ DBCFile& SpellRadius::getDbc()
     return dbc;
 }
 
-const DBCFileHeader* SpellRadius::getHeader()
-{ 
-    return getDbc().getHeader();
+quint32 SpellRadius::getRecordCount()
+{
+    return getDbc().getRecordCount();
 }
 
 const SpellRadius::entry* SpellRadius::getRecord(quint32 id, bool realId)
@@ -142,9 +142,9 @@ DBCFile& SpellRange::getDbc()
     return dbc;
 }
 
-const DBCFileHeader* SpellRange::getHeader()
-{ 
-    return getDbc().getHeader();
+quint32 SpellRange::getRecordCount()
+{
+    return getDbc().getRecordCount();
 }
 
 const SpellRange::entry* SpellRange::getRecord(quint32 id, bool realId)
@@ -154,12 +154,12 @@ const SpellRange::entry* SpellRange::getRecord(quint32 id, bool realId)
 
 const QString SpellRange::entry::name() const
 {
-    return QString::fromUtf8(getDbc().getStringBlock() + quint32(nameOffset[m_locale]));
+    return getDbc().getString(nameOffset[m_locale]);
 }
 
 const QString SpellRange::entry::shortName() const
 {
-    return QString::fromUtf8(getDbc().getStringBlock() + quint32(shortNameOffset[m_locale]));
+    return getDbc().getString(shortNameOffset[m_locale]);
 }
 
 // SpellDuration.dbc
@@ -169,9 +169,9 @@ DBCFile &SpellDuration::getDbc()
     return dbc;
 }
 
-const DBCFileHeader* SpellDuration::getHeader()
-{ 
-    return getDbc().getHeader();
+quint32 SpellDuration::getRecordCount()
+{
+    return getDbc().getRecordCount();
 }
 
 const SpellDuration::entry* SpellDuration::getRecord(quint32 id, bool realId)
@@ -186,9 +186,9 @@ DBCFile& SpellIcon::getDbc()
     return dbc;
 }
 
-const DBCFileHeader* SpellIcon::getHeader()
-{ 
-    return getDbc().getHeader();
+quint32 SpellIcon::getRecordCount()
+{
+    return getDbc().getRecordCount();
 }
 
 const SpellIcon::entry* SpellIcon::getRecord(quint32 id, bool realId)
@@ -198,5 +198,5 @@ const SpellIcon::entry* SpellIcon::getRecord(quint32 id, bool realId)
 
 const QString SpellIcon::entry::iconPath() const
 {
-    return QString::fromUtf8(getDbc().getStringBlock() + quint32(iconPathOffset));
+    return getDbc().getString(iconPathOffset);
 }

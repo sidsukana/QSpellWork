@@ -3,15 +3,16 @@
 
 #include <QString>
 #include <QList>
+#include "qsw_export.h"
 
 #define DBC_MAGIC "WDBC"
 
 namespace DBC
 {
-    Q_DECL_EXPORT QString& dbcDir();
+    QString& dbcDir();
 }
 
-struct Q_DECL_EXPORT DBCFileHeader
+struct DBCFileHeader
 {
     char magic[4];
     quint32 recordCount;
@@ -22,7 +23,7 @@ struct Q_DECL_EXPORT DBCFileHeader
 
 typedef QList<quint32> Indexes;
 
-class Q_DECL_EXPORT DBCFile
+class QSW_EXPORT DBCFile
 {
     public:
         explicit DBCFile(const QString &fileName);
@@ -43,9 +44,9 @@ class Q_DECL_EXPORT DBCFile
             return reinterpret_cast<const T*>(m_records + m_header->recordSize * id);
         }
 
-        const char* getStringBlock() const;
-        const DBCFileHeader* getHeader() const { return m_header; }
+        const quint32 getRecordCount() const { return m_header->recordCount; }
         const quint32 getIndex(quint32 id) const { return m_indexes.indexOf(id); }
+        const QString getString(quint32 offset) const { return QString::fromUtf8(m_strings + offset); }
 
     private:
 

@@ -10,9 +10,8 @@
 
 #include "events.h"
 #include "models.h"
-#include "shared.h"
+#include "qsw.h"
 #include "SWObject.h"
-#include "Defines.h"
 
 #include "ui_main.h"
 #include "ui_scriptFilter.h"

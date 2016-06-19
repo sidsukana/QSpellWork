@@ -3,7 +3,6 @@
 #include "BLP.h"
 #include "mpq/MPQ.h"
 #include "squish/squish.h"
-#include "Defines.h"
 
 QImage BLP::getBLP(const QString &fileName)
 {

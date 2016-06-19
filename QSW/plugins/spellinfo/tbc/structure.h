@@ -1,10 +1,9 @@
 #ifndef DBCSTRUCTURE_H_
 #define DBCSTRUCTURE_H_
 
-#include <QMetaType>
 #include <QObject>
 
-#include "../../../shared.h"
+#include "../../../qsw.h"
 
 #define MAX_SPELL_REAGENTS 8
 #define MAX_SPELL_TOTEMS   2
@@ -35,7 +34,7 @@ namespace SkillLine
     };
 
     DBCFile& getDbc();
-    const DBCFileHeader* getHeader();
+    quint32 getRecordCount();
     const entry* getRecord(quint32 id, bool realId = false);
 }
 
@@ -60,7 +59,7 @@ namespace SkillLineAbility
     };
 
     DBCFile& getDbc();
-    const DBCFileHeader* getHeader();
+    quint32 getRecordCount();
     const entry* getRecord(quint32 id, bool realId = false);
 }
 
@@ -75,7 +74,7 @@ namespace SpellDuration
     };
 
     DBCFile &getDbc();
-    const DBCFileHeader* getHeader();
+    quint32 getRecordCount();
     const entry* getRecord(quint32 id, bool realId = false);
 }
 
@@ -90,7 +89,7 @@ namespace SpellCastTimes
     };
 
     DBCFile& getDbc();
-    const DBCFileHeader* getHeader();
+    quint32 getRecordCount();
     const entry* getRecord(quint32 id, bool realId = false);
 }
 
@@ -105,7 +104,7 @@ namespace SpellRadius
     };
 
     DBCFile& getDbc();
-    const DBCFileHeader* getHeader();
+    quint32 getRecordCount();
     const entry* getRecord(quint32 id, bool realId = false);
 }
 
@@ -127,7 +126,7 @@ namespace SpellRange
     };
 
     DBCFile& getDbc();
-    const DBCFileHeader* getHeader();
+    quint32 getRecordCount();
     const entry* getRecord(quint32 id, bool realId = false);
 }
 
@@ -142,7 +141,7 @@ namespace SpellIcon
     };
 
     DBCFile& getDbc();
-    const DBCFileHeader* getHeader();
+    quint32 getRecordCount();
     const entry* getRecord(quint32 id, bool realId = false);
 }
 
@@ -297,7 +296,7 @@ namespace Spell
     };
 
     DBCFile &getDbc();
-    const DBCFileHeader* getHeader();
+    quint32 getRecordCount();
     const entry* getRecord(quint32 id, bool realId = false);
 
     class meta : public QObject

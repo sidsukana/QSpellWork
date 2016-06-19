@@ -74,7 +74,7 @@ bool SpellInfo::init() const
     qDeleteAll(m_metaSpells);
     m_metaSpells.clear();
     QSet<QString> names;
-    for (quint32 i = 0; i < Spell::getHeader()->recordCount; ++i) {
+    for (quint32 i = 0; i < Spell::getRecordCount(); ++i) {
         if (const Spell::entry* spellInfo = Spell::getRecord(i)) {
             m_metaSpells << new Spell::meta(spellInfo);
             QString name = spellInfo->name();
@@ -111,7 +111,7 @@ QObject* SpellInfo::getMetaSpell(quint32 id, bool realId) const
 
 quint32 SpellInfo::getSpellsCount() const
 {
-    return Spell::getHeader()->recordCount;
+    return Spell::getRecordCount();
 }
 
 QObjectList SpellInfo::getMetaSpells() const
@@ -144,7 +144,7 @@ QImage getSpellIcon(quint32 iconId)
 QVariantList getParentSpells(quint32 triggerId)
 {
     QVariantList parentSpells;
-    for (quint32 i = 0; i < Spell::getHeader()->recordCount; ++i)
+    for (quint32 i = 0; i < Spell::getRecordCount(); ++i)
     {
         if (const Spell::entry* spellInfo = Spell::getRecord(i))
         {
@@ -845,7 +845,7 @@ QVariantHash SpellInfo::getValues(quint32 id) const
         values["stancesNotNames"] = splitMask(spellInfo->stancesNot, getEnums()["ShapeshiftForm"]);
     }
 
-    for (quint32 i = 0; i < SkillLineAbility::getHeader()->recordCount; ++i)
+    for (quint32 i = 0; i < SkillLineAbility::getRecordCount(); ++i)
     {
         const SkillLineAbility::entry* skillInfo = SkillLineAbility::getRecord(i);
         if (skillInfo->id && skillInfo->spellId == spellInfo->id)
@@ -1153,7 +1153,7 @@ QVariantHash SpellInfo::getValues(quint32 id) const
             if (spellInfo->effect[eff] == 6)
             {
                 QVariantList affectList;
-                for (quint32 i = 0; i < Spell::getHeader()->recordCount; ++i)
+                for (quint32 i = 0; i < Spell::getRecordCount(); ++i)
                 {
                     if (const Spell::entry* t_spellInfo = Spell::getRecord(i))
                     {
@@ -1163,7 +1163,7 @@ QVariantHash SpellInfo::getValues(quint32 id) const
                              (t_spellInfo->spellFamilyFlags[1] & ClassMask[1]) ||
                              (t_spellInfo->spellFamilyFlags[2] & ClassMask[2])))
                         {
-                            for (quint32 sk = 0; sk < SkillLineAbility::getHeader()->recordCount; ++sk)
+                            for (quint32 sk = 0; sk < SkillLineAbility::getRecordCount(); ++sk)
                             {
                                 const SkillLineAbility::entry* skillInfo = SkillLineAbility::getRecord(sk);
                                 if (skillInfo && skillInfo->spellId == t_spellInfo->id && skillInfo->skillId > 0)

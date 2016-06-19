@@ -5,7 +5,7 @@
 
 #include "MainForm.h"
 #include "SettingsForm.h"
-#include "Defines.h"
+#include "qsw.h"
 #include "mpq/MPQ.h"
 
 int main(int argc, char *argv[])

@@ -1,7 +1,14 @@
 #include <QDomDocument>
 #include <QFile>
 
-#include "shared.h"
+#include "qsw.h"
+
+QSettings& QSW::settings()
+{
+    static QSettings m_settings("QSW.ini", QSettings::IniFormat);
+    m_settings.sync();
+    return m_settings;
+}
 
 EnumHash QSW::loadEnumFile(QString fileName)
 {

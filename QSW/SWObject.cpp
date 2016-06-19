@@ -7,7 +7,6 @@
 
 #include "SWObject.h"
 #include "models.h"
-#include "Defines.h"
 #include "blp/BLP.h"
 #include "mpq/MPQ.h"
 

@@ -2,7 +2,6 @@
 
 #include "mpq/MPQ.h"
 #include "dbc/DBC.h"
-#include "Defines.h"
 
 QString& DBC::dbcDir()
 {
@@ -10,11 +9,10 @@ QString& DBC::dbcDir()
     return dbcDir;
 }
 
-DBCFile::DBCFile(const QString &fileName)
-    : m_header(nullptr), m_records(nullptr), m_strings(nullptr),
-      m_maxId(0), m_fileName(fileName)
+DBCFile::DBCFile(const QString &fileName) :
+    m_header(nullptr), m_records(nullptr), m_strings(nullptr),
+    m_maxId(0), m_fileName(fileName)
 {
-
 }
 
 bool DBCFile::load()
@@ -51,10 +49,5 @@ bool DBCFile::load()
     m_maxId = *std::max_element(m_indexes.begin(), m_indexes.end());
 
     return true;
-}
-
-const char* DBCFile::getStringBlock() const
-{
-    return m_strings;
 }
 

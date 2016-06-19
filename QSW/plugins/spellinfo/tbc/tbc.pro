@@ -6,8 +6,6 @@ SOURCES         = spellinfo.cpp \
     structure.cpp
 TARGET          = tbc
 
-OTHER_FILES =
-
 defineTest(copyToDestdir) {
     files = $$1
 

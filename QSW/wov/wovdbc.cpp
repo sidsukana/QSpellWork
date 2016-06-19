@@ -5,13 +5,8 @@
 // AnimationData.dbc
 const DBCFile& AnimationDataDBC::getDbc()
 {
-    static DBCFile dbc("DBFilesClient/AnimationData.dbc");
+    static DBCFile dbc("AnimationData.dbc");
     return dbc;
-}
-
-const DBCFileHeader* AnimationDataDBC::getHeader()
-{
-    return getDbc().getHeader();
 }
 
 const AnimationDataDBC::entry* AnimationDataDBC::getRecord(quint32 id, bool realId)
@@ -21,19 +16,14 @@ const AnimationDataDBC::entry* AnimationDataDBC::getRecord(quint32 id, bool real
 
 const QString AnimationDataDBC::entry::name() const
 {
-    return QString::fromUtf8(getDbc().getStringBlock() + quint32(nameOffset));
+    return getDbc().getString(nameOffset);
 }
 
 // CameraShakes.dbc
 const DBCFile& CameraShakesDBC::getDbc()
 {
-    static DBCFile dbc("DBFilesClient/CameraShakes.dbc");
+    static DBCFile dbc("CameraShakes.dbc");
     return dbc;
-}
-
-const DBCFileHeader* CameraShakesDBC::getHeader()
-{
-    return getDbc().getHeader();
 }
 
 const CameraShakesDBC::entry* CameraShakesDBC::getRecord(quint32 id, bool realId)
@@ -44,13 +34,8 @@ const CameraShakesDBC::entry* CameraShakesDBC::getRecord(quint32 id, bool realId
 // CreatureDisplayInfo.dbc
 const DBCFile& CreatureDisplayInfoDBC::getDbc()
 {
-    static DBCFile dbc("DBFilesClient/CreatureDisplayInfo.dbc");
+    static DBCFile dbc("CreatureDisplayInfo.dbc");
     return dbc;
-}
-
-const DBCFileHeader* CreatureDisplayInfoDBC::getHeader()
-{
-    return getDbc().getHeader();
 }
 
 const CreatureDisplayInfoDBC::entry* CreatureDisplayInfoDBC::getRecord(quint32 id, bool realId)
@@ -60,29 +45,24 @@ const CreatureDisplayInfoDBC::entry* CreatureDisplayInfoDBC::getRecord(quint32 i
 
 const QString CreatureDisplayInfoDBC::entry::skin1() const
 {
-    return QString::fromUtf8(getDbc().getStringBlock() + quint32(skin1Offset));
+    return getDbc().getString(skin1Offset);
 }
 
 const QString CreatureDisplayInfoDBC::entry::skin2() const
 {
-    return QString::fromUtf8(getDbc().getStringBlock() + quint32(skin2Offset));
+    return getDbc().getString(skin2Offset);
 }
 
 const QString CreatureDisplayInfoDBC::entry::skin3() const
 {
-    return QString::fromUtf8(getDbc().getStringBlock() + quint32(skin3Offset));
+    return getDbc().getString(skin3Offset);
 }
 
 // CreatureModelData.dbc
 const DBCFile& CreatureModelDataDBC::getDbc()
 {
-    static DBCFile dbc("DBFilesClient/CreatureModelData.dbc");
+    static DBCFile dbc("CreatureModelData.dbc");
     return dbc;
-}
-
-const DBCFileHeader* CreatureModelDataDBC::getHeader()
-{
-    return getDbc().getHeader();
 }
 
 const CreatureModelDataDBC::entry* CreatureModelDataDBC::getRecord(quint32 id, bool realId)
@@ -92,19 +72,14 @@ const CreatureModelDataDBC::entry* CreatureModelDataDBC::getRecord(quint32 id, b
 
 const QString CreatureModelDataDBC::entry::model() const
 {
-    return QString::fromUtf8(getDbc().getStringBlock() + quint32(modelOffset));
+    return getDbc().getString(modelOffset);
 }
 
 // SpellEffectCameraShakes.dbc
 const DBCFile& SpellEffectCameraShakesDBC::getDbc()
 {
-    static DBCFile dbc("DBFilesClient/SpellEffectCameraShakes.dbc");
+    static DBCFile dbc("SpellEffectCameraShakes.dbc");
     return dbc;
-}
-
-const DBCFileHeader* SpellEffectCameraShakesDBC::getHeader()
-{
-    return getDbc().getHeader();
 }
 
 const SpellEffectCameraShakesDBC::entry* SpellEffectCameraShakesDBC::getRecord(quint32 id, bool realId)
@@ -115,13 +90,8 @@ const SpellEffectCameraShakesDBC::entry* SpellEffectCameraShakesDBC::getRecord(q
 // SpellVisual.dbc
 const DBCFile& SpellVisualDBC::getDbc()
 {
-    static DBCFile dbc("DBFilesClient/SpellVisual.dbc");
+    static DBCFile dbc("SpellVisual.dbc");
     return dbc;
-}
-
-const DBCFileHeader* SpellVisualDBC::getHeader()
-{
-    return getDbc().getHeader();
 }
 
 const SpellVisualDBC::entry* SpellVisualDBC::getRecord(quint32 id, bool realId)
@@ -132,13 +102,8 @@ const SpellVisualDBC::entry* SpellVisualDBC::getRecord(quint32 id, bool realId)
 // SpellVisualKit.dbc
 const DBCFile& SpellVisualKitDBC::getDbc()
 {
-    static DBCFile dbc("DBFilesClient/SpellVisualKit.dbc");
+    static DBCFile dbc("SpellVisualKit.dbc");
     return dbc;
-}
-
-const DBCFileHeader* SpellVisualKitDBC::getHeader()
-{
-    return getDbc().getHeader();
 }
 
 const SpellVisualKitDBC::entry* SpellVisualKitDBC::getRecord(quint32 id, bool realId)
@@ -149,13 +114,8 @@ const SpellVisualKitDBC::entry* SpellVisualKitDBC::getRecord(quint32 id, bool re
 // SpellVisualEffectName.dbc
 const DBCFile& SpellVisualEffectNameDBC::getDbc()
 {
-    static DBCFile dbc("DBFilesClient/SpellVisualEffectName.dbc");
+    static DBCFile dbc("SpellVisualEffectName.dbc");
     return dbc;
-}
-
-const DBCFileHeader* SpellVisualEffectNameDBC::getHeader()
-{
-    return getDbc().getHeader();
 }
 
 const SpellVisualEffectNameDBC::entry* SpellVisualEffectNameDBC::getRecord(quint32 id, bool realId)
@@ -165,10 +125,10 @@ const SpellVisualEffectNameDBC::entry* SpellVisualEffectNameDBC::getRecord(quint
 
 const QString SpellVisualEffectNameDBC::entry::name() const
 {
-    return QString::fromUtf8(getDbc().getStringBlock() + quint32(nameOffset));
+    return getDbc().getString(nameOffset);
 }
 
 const QString SpellVisualEffectNameDBC::entry::model() const
 {
-    return QString::fromUtf8(getDbc().getStringBlock() + quint32(modelOffset));
+    return getDbc().getString(modelOffset);
 }

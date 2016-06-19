@@ -2,7 +2,6 @@
 #include <QDir>
 
 #include "SettingsForm.h"
-#include "Defines.h"
 #include "mpq/MPQ.h"
 
 SettingsForm::SettingsForm(QWidget *parent)

@@ -2,6 +2,7 @@
 #define BLP_H
 
 #include <QImage>
+#include "qsw_export.h"
 
 #define BLP_MAGIC "BLP2"
 
@@ -21,7 +22,7 @@ struct BLPHeader
 
 namespace BLP
 {
-    Q_DECL_EXPORT QImage getBLP(const QString &fileName);
+    QSW_EXPORT QImage getBLP(const QString &fileName);
 }
 
 #endif

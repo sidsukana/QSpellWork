@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QVariantHash>
 
-#include "../../shared.h"
+#include "../../qsw.h"
 
 class SpellInfoInterface
 {

@@ -10,7 +10,7 @@ TARGET = QSW
 TEMPLATE = app
 CONFIG -= debug_and_release
 CONFIG += c++11
-DEFINES += __STORMLIB_SELF__
+DEFINES += __STORMLIB_SELF__ QSW_LIB
 
 INCLUDEPATH += $$PWD/mpq/StormLib
 DEPENDPATH += $$PWD/mpq/StormLib
@@ -20,7 +20,6 @@ win32:RC_ICONS += resources/mangos.ico
 SOURCES += \
     AboutForm.cpp \
     Alphanum.cpp \
-    Defines.cpp \
     MainForm.cpp \
     ScriptEdit.cpp \
     SettingsForm.cpp \
@@ -44,13 +43,12 @@ SOURCES += \
     Main.cpp \
     wov/wovdbc.cpp \
     mustache/mustache.cpp \
-    shared.cpp \
-    models.cpp
+    models.cpp \
+    qsw.cpp
 
 HEADERS  += \
     AboutForm.h \
     Alphanum.h \
-    Defines.h \
     MainForm.h \
     ScriptEdit.h \
     SettingsForm.h \
@@ -75,9 +73,9 @@ HEADERS  += \
     wov/textureanimation.h \
     wov/wovdbc.h \
     mustache/mustache.h \
-    shared.h \
     models.h \
-    events.h
+    events.h \
+    qsw.h
 
 FORMS += \
     about.ui \

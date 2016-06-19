@@ -4,9 +4,7 @@ HEADERS         = spellinfo.h \
     structure.h
 SOURCES         = spellinfo.cpp \
     structure.cpp
-TARGET          = wotlk
-
-OTHER_FILES =
+TARGET          = pre-tbc
 
 defineTest(copyToDestdir) {
     files = $$1
@@ -39,9 +37,9 @@ win32: {
 DLLDESTDIR = $$PWD/../../../build-qsw/bin/$$PLATFORM/$$BUILDTYPE/plugins/spellinfo
 DESTDIR = $$DLLDESTDIR
 
-copyToDestdir($$PWD/wotlk.css)
-copyToDestdir($$PWD/wotlk.html)
-copyToDestdir($$PWD/wotlk.xml)
+copyToDestdir($$PWD/pre-tbc.css)
+copyToDestdir($$PWD/pre-tbc.html)
+copyToDestdir($$PWD/pre-tbc.xml)
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../build-qsw/bin/Win32/Release/ -lQSW
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../build-qsw/bin/Win32/Debug/ -lQSW

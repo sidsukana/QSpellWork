@@ -11,7 +11,7 @@ extern quint8 m_locale;
 class SpellInfo : public QObject, SpellInfoInterface
 {
     Q_OBJECT
-    Q_PLUGIN_METADATA(IID SpellInfoInterface_iid FILE "spellinfo.json")
+    Q_PLUGIN_METADATA(IID SpellInfoInterface_iid FILE "pre-tbc.json")
     Q_INTERFACES(SpellInfoInterface)
 
     public:

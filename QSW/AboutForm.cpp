@@ -1,5 +1,5 @@
 #include "AboutForm.h"
-#include "Defines.h"
+#include "qsw.h"
 
 AboutForm::AboutForm(QWidget *parent)
     : QDialog(parent)
