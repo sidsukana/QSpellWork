@@ -708,23 +708,13 @@ QVariantHash SpellInfo::getValues(quint32 id) const
     if (!spellInfo)
         return values;
 
-    QByteArray byteArray[3];
-    QBuffer buffer[3];
-    buffer[0].setBuffer(&byteArray[0]);
-    buffer[0].open(QIODevice::WriteOnly);
-    getSpellIcon(spellInfo->spellIconId).save(&buffer[0], "PNG");
+    QByteArray iconData;
+    QBuffer buffer;
+    buffer.setBuffer(&iconData);
+    buffer.open(QIODevice::WriteOnly);
+    getSpellIcon(spellInfo->spellIconId).save(&buffer, "PNG");
 
-    buffer[1].setBuffer(&byteArray[1]);
-    buffer[1].open(QIODevice::WriteOnly);
-    QImage(":/qsw/resources/border.png").save(&buffer[1], "PNG");
-
-    buffer[2].setBuffer(&byteArray[2]);
-    buffer[2].open(QIODevice::WriteOnly);
-    QImage(":/qsw/resources/borderHover.png").save(&buffer[2], "PNG");
-
-    values["icon1"] = byteArray[0].toBase64().data();
-    values["icon2"] = byteArray[1].toBase64().data();
-    values["icon3"] = byteArray[2].toBase64().data();
+    values["icon"] = iconData.toBase64().data();
 
     values["id"] = spellInfo->id;
     values["name"] = spellInfo->name();
