@@ -1064,7 +1064,7 @@ QVariantHash SpellInfo::getValues(quint32 id) const
         effectValues["targetNameA"] = getEnums()["Target"][spellInfo->effectImplicitTargetA[eff]];
         effectValues["targetNameB"] = getEnums()["Target"][spellInfo->effectImplicitTargetB[eff]];
 
-        quint32 miscA = spellInfo->effectMiscValueA[eff];
+        qint32 miscA = spellInfo->effectMiscValueA[eff];
         effectValues["miscValueA"] = miscA;
         effectValues["amplitude"] = spellInfo->effectAmplitude[eff];
         effectValues["auraId"] = spellInfo->effectApplyAuraName[eff];
