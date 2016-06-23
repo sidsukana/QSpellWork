@@ -1,5 +1,5 @@
-#ifndef SWOBJECT_H
-#define SWOBJECT_H
+#ifndef SPELLWORK_H
+#define SPELLWORK_H
 
 #include <QMetaEnum>
 #include <QJSEngine>
@@ -18,13 +18,13 @@ typedef QPair<QJsonObject, SpellInfoInterface*> SpellInfoPluginPair;
 typedef QHash<QString, SpellInfoPluginPair> SpellInfoPlugins;
 
 class MainForm;
-class SWObject : public QObject
+class SpellWork : public QObject
 {
     Q_OBJECT
 
     public:
-        SWObject(MainForm *form);
-        ~SWObject() {}
+        SpellWork(MainForm *form);
+        ~SpellWork() {}
 
         void loadPlugins();
         void setActivePlugin(QString name);
@@ -54,4 +54,4 @@ class SWObject : public QObject
         QString m_activeSpellInfoPluginName;
 };
 
-#endif // SWOBJECT_H
+#endif // SPELLWORK_H

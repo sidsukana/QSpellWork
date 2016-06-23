@@ -12,7 +12,7 @@
 #include "MainForm.h"
 #include "AboutForm.h"
 #include "SettingsForm.h"
-#include "WovWidget.h"
+#include "wov/wov.h"
 #include "mpq/MPQ.h"
 
 MainForm::MainForm(QWidget* parent)
@@ -27,7 +27,7 @@ MainForm::MainForm(QWidget* parent)
     gridLayout_4->addWidget(m_scriptFilter, 0, 1, 2, 1);
     m_scriptFilter->hide();
 
-    m_sw = new SWObject(this);
+    m_sw = new SpellWork(this);
     m_watcher = new SearchResultWatcher();
     connect(m_watcher, SIGNAL(finished()), this, SLOT(slotSearchResult()));
 
@@ -459,7 +459,7 @@ void MainForm::slotSearch(quint8 type)
     delete model;
     model = nullptr;
 
-    m_watcher->setFuture(QtConcurrent::run(m_sw, &SWObject::search, type));
+    m_watcher->setFuture(QtConcurrent::run(m_sw, &SpellWork::search, type));
 }
 
 void MainForm::slotSearchResult()

@@ -23,8 +23,6 @@ SOURCES += \
     MainForm.cpp \
     ScriptEdit.cpp \
     SettingsForm.cpp \
-    SWObject.cpp \
-    WovWidget.cpp \
     blp/blp.cpp \
     dbc/DBC.cpp \
     mpq/MPQ.cpp \
@@ -44,7 +42,9 @@ SOURCES += \
     wov/wovdbc.cpp \
     mustache/mustache.cpp \
     models.cpp \
-    qsw.cpp
+    qsw.cpp \
+    spellwork.cpp \
+    wov/wov.cpp
 
 HEADERS  += \
     AboutForm.h \
@@ -52,8 +52,6 @@ HEADERS  += \
     MainForm.h \
     ScriptEdit.h \
     SettingsForm.h \
-    SWObject.h \
-    WovWidget.h \
     blp/blp.h \
     dbc/DBC.h \
     mpq/MPQ.h \
@@ -75,7 +73,9 @@ HEADERS  += \
     mustache/mustache.h \
     models.h \
     events.h \
-    qsw.h
+    qsw.h \
+    spellwork.h \
+    wov/wov.h
 
 FORMS += \
     about.ui \

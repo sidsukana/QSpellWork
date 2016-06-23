@@ -11,12 +11,12 @@
 #include "events.h"
 #include "models.h"
 #include "qsw.h"
-#include "SWObject.h"
+#include "spellwork.h"
 
 #include "ui_main.h"
 #include "ui_scriptFilter.h"
 
-class SWObject;
+class SpellWork;
 class SpellListSortedModel;
 
 class Enums : public QObject
@@ -191,7 +191,7 @@ class MainForm : public QMainWindow, public Ui::main
 
         SpellListSortedModel* m_sortedModel;
         Ui::main m_ui;
-        SWObject* m_sw;
+        SpellWork* m_sw;
         QToolButton* m_modeButton;
         QToolButton* m_pluginButton;
         QAction* m_actionAbout;

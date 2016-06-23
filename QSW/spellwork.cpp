@@ -5,20 +5,20 @@
 #include <QPluginLoader>
 #include <QMessageBox>
 
-#include "SWObject.h"
+#include "spellwork.h"
 #include "models.h"
 #include "blp/BLP.h"
 #include "mpq/MPQ.h"
 
 #include "mustache/mustache.h"
 
-SWObject::SWObject(MainForm* form)
+SpellWork::SpellWork(MainForm* form)
     : QObject(form), m_form(form), m_activeSpellInfoPlugin(nullptr)
 {
     loadPlugins();
 }
 
-void SWObject::setActivePlugin(QString name)
+void SpellWork::setActivePlugin(QString name)
 {
     m_activeSpellInfoPlugin = nullptr;
 
@@ -69,7 +69,7 @@ void SWObject::setActivePlugin(QString name)
     }
 }
 
-void SWObject::loadPlugins()
+void SpellWork::loadPlugins()
 {
     QDir pluginsDir(qApp->applicationDirPath());
     pluginsDir.cd("plugins/spellinfo");
@@ -86,7 +86,7 @@ void SWObject::loadPlugins()
     }
 }
 
-EventList SWObject::search(quint8 type)
+EventList SpellWork::search(quint8 type)
 {
     EventList eventList;
     if (!m_activeSpellInfoPlugin)
@@ -264,12 +264,12 @@ EventList SWObject::search(quint8 type)
     return eventList;
 }
 
-void SWObject::setMetaEnum(const char* enumName)
+void SpellWork::setMetaEnum(const char* enumName)
 {
     m_metaEnum = Enums::staticMetaObject.enumerator(Enums::staticMetaObject.indexOfEnumerator(enumName));
 }
 
-void SWObject::showInfo(quint32 id, QSW::Pages pageId)
+void SpellWork::showInfo(quint32 id, QSW::Pages pageId)
 {
     QVariantHash values = m_activeSpellInfoPlugin->getValues(id);
     values["style"] = m_styleCss;
@@ -287,7 +287,7 @@ void SWObject::showInfo(quint32 id, QSW::Pages pageId)
     m_form->getPage(pageId)->setInfo(html, id);
 }
 
-void SWObject::compare()
+void SpellWork::compare()
 {
     QStringList list1 = m_form->getPage(QSW::PAGE_CLEFT)->getSourceHtml().split("\n");
     QStringList list2 = m_form->getPage(QSW::PAGE_CRIGHT)->getSourceHtml().split("\n");
