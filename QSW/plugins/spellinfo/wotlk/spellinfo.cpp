@@ -106,7 +106,15 @@ QStringList SpellInfo::getMPQFiles() const
 
 QObject* SpellInfo::getMetaSpell(quint32 id, bool realId) const
 {
-    return realId ? m_metaSpells.at(Spell::getDbc().getIndex(id)) : m_metaSpells.at(id);
+    if (!realId)
+        return m_metaSpells.at(id);
+
+    quint32 index = Spell::getDbc().getIndex(id);
+
+    if (index != -1)
+        return m_metaSpells.at(index);
+
+    return nullptr;
 }
 
 quint32 SpellInfo::getSpellsCount() const
