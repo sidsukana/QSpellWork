@@ -93,13 +93,13 @@ void SpellInfo::setEnums(EnumHash enums)
     m_enums = enums;
 }
 
-QStringList SpellInfo::getMPQFiles() const
+MPQList SpellInfo::getMPQFiles() const
 {
-    static QStringList MPQs = QStringList({
-        "%locale%/patch-%locale%-2.MPQ",
-        "%locale%/patch-%locale%.MPQ",
-        "%locale%/locale-%locale%.MPQ"
-    });
+    static MPQList MPQs = {
+        MPQPair("%locale%/patch-%locale%-2.MPQ", {}),
+        MPQPair("%locale%/patch-%locale%.MPQ", {}),
+        MPQPair("%locale%/locale-%locale%.MPQ", {})
+    };
     return MPQs;
 }
 

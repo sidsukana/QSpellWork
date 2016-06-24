@@ -90,15 +90,15 @@ void SpellInfo::setEnums(EnumHash enums)
     m_enums = enums;
 }
 
-QStringList SpellInfo::getMPQFiles() const
+MPQList SpellInfo::getMPQFiles() const
 {
-    static QStringList MPQs = QStringList({
-        "ruRU/patch-3.MPQ",		// custom ruRU locale by Maus Team
-        "patch-2.MPQ",
-        "patch.MPQ",
-        "dbc.MPQ",
-        "interface.MPQ"
-    });
+    static MPQList MPQs {
+        MPQPair("ruRU/patch-3.MPQ", {}),  // custom ruRU locale by Maus Team
+        MPQPair("patch-2.MPQ", {}),
+        MPQPair("patch.MPQ", {}),
+        MPQPair("dbc.MPQ", {}),
+        MPQPair("interface.MPQ", {})
+    };
     return MPQs;
 }
 
