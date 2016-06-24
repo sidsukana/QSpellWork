@@ -15,38 +15,63 @@ QString& MPQ::localeDir()
     return localeDir;
 }
 
-QStringList& MPQ::mpqFiles()
+MPQList &MPQ::mpqFiles()
 {
-    static QStringList mpqFiles;
+    static MPQList mpqFiles;
     return mpqFiles;
 }
 
-HANDLE getHandle(const QString &mpq)
+void MPQ::setMpqFiles(const MPQList& files)
+{
+    MPQ::mpqFiles().clear();
+    for (auto file = files.begin(); file != files.end(); ++file) {
+        QString mpq = file->first;
+        QStringList patches = file->second;
+        QStringList mpqPatches;
+        foreach (QString patch, patches) {
+            mpqPatches << patch.replace("%locale%", MPQ::localeDir());
+        }
+        mpq = mpq.replace("%locale%", MPQ::localeDir());
+        mpqFiles() << MPQPair(mpq, mpqPatches);
+
+    }
+}
+
+HANDLE getHandle(const QString &mpq, const QStringList& patches)
 {
     static QHash<QString, HANDLE> archives;
 
-    if (archives.contains(mpq))
-        return archives[mpq];
-    else {
+    if (!archives.contains(mpq)) {
+
         HANDLE hMPQ;
 
-        if (!SFileOpenArchive(mpq.toUtf8().constData(), 0, STREAM_FLAG_READ_ONLY, &hMPQ)) {
+        QString tmpq = MPQ::mpqDir() + mpq;
+        if (!SFileOpenArchive(tmpq.toUtf8().constData(), 0, STREAM_FLAG_READ_ONLY, &hMPQ)) {
             qCritical("Cannot open archive '%s'", qPrintable(mpq));
             hMPQ = 0;
         }
 
+        foreach (QString patch, patches) {
+            tmpq = MPQ::mpqDir() + patch;
+            if (!SFileOpenPatchArchive(hMPQ, tmpq.toUtf8().constData(), nullptr, 0)) {
+                qCritical("Cannot open patch archive '%s'", qPrintable(patch));
+            }
+        }
+
         return (archives[mpq] = hMPQ);
     }
+
+    return archives[mpq];
+
 }
 
 QByteArray MPQ::readFile(const QString &fileName)
 {
     HANDLE hMPQ = 0;
 
-    for (QStringList::iterator mpq = mpqFiles().begin(); mpq != mpqFiles().end(); ++mpq) {
-        QString path = mpqDir() + *mpq;
+    for (auto mpq = mpqFiles().begin(); mpq != mpqFiles().end(); ++mpq) {
 
-        hMPQ = getHandle(path);
+        hMPQ = getHandle(mpq->first, mpq->second);
 
         if (hMPQ && SFileHasFile(hMPQ, fileName.toUtf8().constData()))
             break;
