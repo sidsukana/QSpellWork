@@ -128,9 +128,6 @@ void MainForm::slotSettings()
 {
     SettingsForm settingsForm(this);
 
-    settingsForm.mpqDir->setText(MPQ::mpqDir());
-    settingsForm.dbcDir->setText(DBC::dbcDir());
-    settingsForm.mpqLocale->addItem(MPQ::localeDir());
     if (settingsForm.exec() == QDialog::Accepted) {
         MPQ::mpqDir() = "";
         MPQ::localeDir() = "";

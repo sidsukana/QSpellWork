@@ -3,6 +3,7 @@
 
 #include "SettingsForm.h"
 #include "mpq/MPQ.h"
+#include "dbc/DBC.h"
 
 SettingsForm::SettingsForm(QWidget *parent)
     : QDialog(parent)
@@ -12,6 +13,13 @@ SettingsForm::SettingsForm(QWidget *parent)
     connect(mpqDir, SIGNAL(editingFinished()), this, SLOT(slotEditMPQ()));
     connect(mpqButton, SIGNAL(clicked()), this, SLOT(slotMPQ()));
     connect(dbcButton, SIGNAL(clicked()), this, SLOT(slotDBC()));
+
+    mpqDir->setText(MPQ::mpqDir());
+    dbcDir->setText(DBC::dbcDir());
+
+    slotEditMPQ();
+
+    mpqLocale->setCurrentIndex(mpqLocale->findText(MPQ::localeDir()));
 
     show();
 }
@@ -26,7 +34,10 @@ void SettingsForm::slotEditMPQ()
             mpqLocale->clear();
             QStringList localeDirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
             foreach (QString str, localeDirs) {
-                mpqLocale->addItem(str.section("\\", -1));
+                QString localeDir = str.section("\\", -1);
+                if (localeDir.size() == 4) {
+                    mpqLocale->addItem(localeDir);
+                }
             }
             mpqLocale->addItem("");
         }
@@ -45,7 +56,10 @@ void SettingsForm::slotMPQ()
         mpqLocale->clear();
         QStringList localeDirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
         foreach (QString str, localeDirs) {
-            mpqLocale->addItem(str.section("\\", -1));
+            QString localeDir = str.section("\\", -1);
+            if (localeDir.size() == 4) {
+                mpqLocale->addItem(localeDir);
+            }
         }
         mpqLocale->addItem("");
     }

@@ -93,7 +93,7 @@ void SpellInfo::setEnums(EnumHash enums)
 MPQList SpellInfo::getMPQFiles() const
 {
     static MPQList MPQs {
-        MPQPair("ruRU/patch-3.MPQ", {}),  // custom ruRU locale by Maus Team
+        MPQPair("%locale%/patch-3.MPQ", {}),  // custom ruRU locale by Maus Team
         MPQPair("patch-2.MPQ", {}),
         MPQPair("patch.MPQ", {}),
         MPQPair("dbc.MPQ", {}),
