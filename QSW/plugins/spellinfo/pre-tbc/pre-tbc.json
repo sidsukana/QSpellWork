@@ -1,7 +1,7 @@
 {
     "name" : "pre-tbc",
     "fullName" : "WoW 1.12.x",
-    "version" : "1.0.0",
+    "version" : "1.0.1",
     "htmlFile" : "pre-tbc.html",
     "cssFile" : "pre-tbc.css",
     "xmlFile" : "pre-tbc.xml"

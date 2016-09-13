@@ -33,16 +33,13 @@ win32: {
     } else {
         BUILDTYPE = "Release"
     }
+
+    LIBS += -L$$PWD/../../../../build-qsw/bin/$$PLATFORM/$$BUILDTYPE/ -lQSW
+
+    DLLDESTDIR = $$PWD/../../../../build-qsw/bin/$$PLATFORM/$$BUILDTYPE/plugins/spellinfo
+    DESTDIR = $$DLLDESTDIR
+
+    copyToDestdir($$PWD/$$quote($$TARGET).css)
+    copyToDestdir($$PWD/$$quote($$TARGET).html)
+    copyToDestdir($$PWD/$$quote($$TARGET).xml)
 }
-DLLDESTDIR = $$PWD/../../../build-qsw/bin/$$PLATFORM/$$BUILDTYPE/plugins/spellinfo
-DESTDIR = $$DLLDESTDIR
-
-copyToDestdir($$PWD/wotlk.css)
-copyToDestdir($$PWD/wotlk.html)
-copyToDestdir($$PWD/wotlk.xml)
-
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../build-qsw/bin/Win32/Release/ -lQSW
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../build-qsw/bin/Win32/Debug/ -lQSW
-
-INCLUDEPATH += $$PWD/../../../
-DEPENDPATH += $$PWD/../../../

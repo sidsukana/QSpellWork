@@ -1,7 +1,7 @@
 {
     "name" : "tbc",
     "fullName" : "WoW 2.4.3",
-    "version" : "1.0.0",
+    "version" : "1.0.1",
     "htmlFile" : "tbc.html",
     "cssFile" : "tbc.css",
     "xmlFile" : "tbc.xml"

@@ -754,28 +754,32 @@ namespace Spell
         bool hasAura(quint32 auraId)
         {
             for (quint8 i = 0; i < m_info->getEffectCount(); ++i)
-                return (m_info->getEffectApplyAuraName(i) == auraId);
+                if (m_info->getEffectApplyAuraName(i) == auraId)
+                    return true;
             return false;
         }
 
         bool hasEffect(quint32 effectId)
         {
             for (quint8 i = 0; i < m_info->getEffectCount(); ++i)
-                return (m_info->getEffectId(i) == effectId);
+                if (m_info->getEffectId(i) == effectId)
+                    return true;
             return false;
         }
 
         bool hasTargetA(quint32 targetId)
         {
             for (quint8 i = 0; i < m_info->getEffectCount(); ++i)
-                return (m_info->getEffectImplicitTargetA(i) == targetId);
+                if (m_info->getEffectImplicitTargetA(i) == targetId)
+                    return true;
             return false;
         }
 
         bool hasTargetB(quint32 targetId)
         {
             for (quint8 i = 0; i < m_info->getEffectCount(); ++i)
-                return (m_info->getEffectImplicitTargetB(i) == targetId);
+                if (m_info->getEffectImplicitTargetB(i) == targetId)
+                    return true;
             return false;
         }
 
