@@ -190,7 +190,7 @@
         <value value="SPELL_ATTR_HIDE_IN_COMBAT_LOG" key="0x00000100" />
         <value value="SPELL_ATTR_TARGET_MAINHAND_ITEM" key="0x00000200" />
         <value value="SPELL_ATTR_ON_NEXT_SWING_2" key="0x00000400" />
-        <value value="SPELL_ATTR_UNK11" key="0x00000800" />
+        <value value="SPELL_ATTR_TRIGGERS_A_SPELL" key="0x00000800" />
         <value value="SPELL_ATTR_DAYTIME_ONLY" key="0x00001000" />
         <value value="SPELL_ATTR_NIGHT_ONLY" key="0x00002000" />
         <value value="SPELL_ATTR_INDOORS_ONLY" key="0x00004000" />
@@ -264,7 +264,7 @@
         <value value="SPELL_ATTR_EX2_UNK14" key="0x00004000" />
         <value value="SPELL_ATTR_EX2_UNK15" key="0x00008000" />
         <value value="SPELL_ATTR_EX2_TAME_BEAST" key="0x00010000" />
-        <value value="SPELL_ATTR_EX2_UNK17" key="0x00020000" />
+        <value value="SPELL_ATTR_EX2_NOT_RESET_AUTO_ACTIONS" key="0x00020000" />
         <value value="SPELL_ATTR_EX2_REQ_DEAD_PET" key="0x00040000" />
         <value value="SPELL_ATTR_EX2_NOT_NEED_SHAPESHIFT" key="0x00080000" />
         <value value="SPELL_ATTR_EX2_FACING_TARGETS_BACK" key="0x00100000" />
@@ -285,7 +285,7 @@
         <value value="SPELL_ATTR_EX3_UNK1" key="0x00000002" />
         <value value="SPELL_ATTR_EX3_UNK2" key="0x00000004" />
         <value value="SPELL_ATTR_EX3_UNK3" key="0x00000008" />
-        <value value="SPELL_ATTR_EX3_UNK4" key="0x00000010" />
+        <value value="SPELL_ATTR_EX3_IGNORE_RESURRECTION_TIMER" key="0x00000010" />
         <value value="SPELL_ATTR_EX3_UNK5" key="0x00000020" />
         <value value="SPELL_ATTR_EX3_UNK6" key="0x00000040" />
         <value value="SPELL_ATTR_EX3_STACK_FOR_DIFF_CASTERS" key="0x00000080" />
@@ -308,14 +308,14 @@
         <value value="SPELL_ATTR_EX3_REQ_OFFHAND" key="0x01000000" />
         <value value="SPELL_ATTR_EX3_UNK25" key="0x02000000" />
         <value value="SPELL_ATTR_EX3_UNK26" key="0x04000000" />
-        <value value="SPELL_ATTR_EX3_DRAIN_SOUL" key="0x08000000" />
+        <value value="SPELL_ATTR_EX3_UNK27" key="0x08000000" />
         <value value="SPELL_ATTR_EX3_UNK28" key="0x10000000" />
         <value value="SPELL_ATTR_EX3_UNK29" key="0x20000000" />
-        <value value="SPELL_ATTR_EX3_UNK30" key="0x40000000" />
+        <value value="SPELL_ATTR_EX3_DONT_DISPLAY_RANGE" key="0x40000000" />
         <value value="SPELL_ATTR_EX3_UNK31" key="0x80000000" />
     </AttributesEx3>
     <AttributesEx4>
-        <value value="SPELL_ATTR_EX4_UNK0" key="0x00000001" />
+        <value value="SPELL_ATTR_EX4_IGNORE_RESISTANCES" key="0x00000001" />
         <value value="SPELL_ATTR_EX4_UNK1" key="0x00000002" />
         <value value="SPELL_ATTR_EX4_UNK2" key="0x00000004" />
         <value value="SPELL_ATTR_EX4_UNK3" key="0x00000008" />
@@ -329,7 +329,7 @@
         <value value="SPELL_ATTR_EX4_UNK11" key="0x00000800" />
         <value value="SPELL_ATTR_EX4_UNK12" key="0x00001000" />
         <value value="SPELL_ATTR_EX4_UNK13" key="0x00002000" />
-        <value value="SPELL_ATTR_EX4_UNK14" key="0x00004000" />
+        <value value="SPELL_ATTR_EX4_DAMAGE_DOESNT_BREAK_AURAS" key="0x00004000" />
         <value value="SPELL_ATTR_EX4_UNK15" key="0x00008000" />
         <value value="SPELL_ATTR_EX4_NOT_USABLE_IN_ARENA" key="0x00010000" />
         <value value="SPELL_ATTR_EX4_USABLE_IN_ARENA" key="0x00020000" />
@@ -359,8 +359,8 @@
         <value value="SPELL_ATTR_EX5_UNK7" key="0x00000080" />
         <value value="SPELL_ATTR_EX5_UNK8" key="0x00000100" />
         <value value="SPELL_ATTR_EX5_START_PERIODIC_AT_APPLY" key="0x00000200" />
-        <value value="SPELL_ATTR_EX5_UNK10" key="0x00000400" />
-        <value value="SPELL_ATTR_EX5_UNK11" key="0x00000800" />
+        <value value="SPELL_ATTR_EX5_HIDE_DURATION" key="0x00000400" />
+        <value value="SPELL_ATTR_EX5_ALLOW_TARGET_OF_TARGET_AS_TARGET" key="0x00000800" />
         <value value="SPELL_ATTR_EX5_UNK12" key="0x00001000" />
         <value value="SPELL_ATTR_EX5_HASTE_AFFECT_DURATION" key="0x00002000" />
         <value value="SPELL_ATTR_EX5_UNK14" key="0x00004000" />
@@ -368,7 +368,7 @@
         <value value="SPELL_ATTR_EX5_MOD_ALL_DAMAGE" key="0x00010000" />
         <value value="SPELL_ATTR_EX5_USABLE_WHILE_FEARED" key="0x00020000" />
         <value value="SPELL_ATTR_EX5_USABLE_WHILE_CONFUSED" key="0x00040000" />
-        <value value="SPELL_ATTR_EX5_UNK19" key="0x00080000" />
+        <value value="SPELL_ATTR_EX5_DONT_TURN_DURING_CAST" key="0x00080000" />
         <value value="SPELL_ATTR_EX5_UNK20" key="0x00100000" />
         <value value="SPELL_ATTR_EX5_UNK21" key="0x00200000" />
         <value value="SPELL_ATTR_EX5_UNK22" key="0x00400000" />
@@ -385,7 +385,7 @@
     <AttributesEx6>
         <value value="SPELL_ATTR_EX6_DONT_DISPLAY_COOLDOWN" key="0x00000001" />
         <value value="SPELL_ATTR_EX6_ONLY_IN_ARENA" key="0x00000002" />
-        <value value="SPELL_ATTR_EX6_UNK2" key="0x00000004" />
+        <value value="SPELL_ATTR_EX6_IGNORE_CASTER_AURAS" key="0x00000004" />
         <value value="SPELL_ATTR_EX6_UNK3" key="0x00000008" />
         <value value="SPELL_ATTR_EX6_UNK4" key="0x00000010" />
         <value value="SPELL_ATTR_EX6_UNK5" key="0x00000020" />
