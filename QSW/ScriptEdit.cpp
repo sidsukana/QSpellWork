@@ -153,6 +153,10 @@ void ScriptEdit::setupCompleter(QObject* metaSpell)
         QString methodName = metaSpell->metaObject()->method(i).methodSignature();
         if (methodName.contains("(uchar)"))
             fields << methodName.replace("(uchar)", "(index)");
+        else if (methodName.contains("(uint)"))
+            fields << methodName.replace("(uint)", "(id)");
+        else if (methodName.contains("(qulonglong)"))
+            fields << methodName.replace("(qulonglong)", "(flags)");
     }
 
     m_completerModel->setStringList(fields.toList());

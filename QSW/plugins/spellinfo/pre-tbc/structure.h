@@ -427,6 +427,8 @@ namespace Spell
             return false;
         }
 
+        bool isFitToFamilyMask(quint64 flags) { return !!(m_info->spellFamilyFlags & flags); }
+
         private:
 
         const entry* m_info;
