@@ -409,7 +409,7 @@
               <bool>false</bool>
              </property>
              <property name="text">
-              <string>Advanced filter &gt;&gt;</string>
+              <string>Scripted filter &gt;&gt;</string>
              </property>
              <property name="checkable">
               <bool>true</bool>
