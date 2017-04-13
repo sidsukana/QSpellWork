@@ -1140,6 +1140,7 @@ QVariantHash SpellInfo::getValues(quint32 id) const
 
         effectValues["miscValueB"] = spellInfo->getEffectMiscValueB(eff);
 
+        effectValues["radiusId"] = spellInfo->getEffectRadiusIndex(eff);
         if (const SpellRadius::entry* spellRadius = SpellRadius::getRecord(spellInfo->getEffectRadiusIndex(eff), true))
             effectValues["radiusValue"] = QString("%0").arg(spellRadius->radius, 0, 'f', 2);
 
