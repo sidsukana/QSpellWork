@@ -1,4 +1,4 @@
-QSW - is a SpellWork project application written on C++ language with using Qt5 GUI framework.
+QSpellWork - an application for viewing information about spells in World of Warcraft. Written on C++ language with using Qt5 GUI framework. 
 
 Thanks to:
     Chestr aka DiSlord - for the idea and released source of original SpellWork.
