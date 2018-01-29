@@ -46,14 +46,14 @@ HANDLE getHandle(const QString &mpq, const QStringList& patches)
         HANDLE hMPQ;
 
         QString tmpq = MPQ::mpqDir() + mpq;
-        if (!SFileOpenArchive(tmpq.toUtf8().constData(), 0, STREAM_FLAG_READ_ONLY, &hMPQ)) {
+        if (!SFileOpenArchive((const TCHAR*)(tmpq.toUtf8().constData()), 0, STREAM_FLAG_READ_ONLY, &hMPQ)) {
             qCritical("Cannot open archive '%s'", qPrintable(mpq));
             hMPQ = 0;
         }
 
         foreach (QString patch, patches) {
             tmpq = MPQ::mpqDir() + patch;
-            if (!SFileOpenPatchArchive(hMPQ, tmpq.toUtf8().constData(), nullptr, 0)) {
+            if (!SFileOpenPatchArchive(hMPQ, (const TCHAR*)(tmpq.toUtf8().constData()), nullptr, 0)) {
                 qCritical("Cannot open patch archive '%s'", qPrintable(patch));
             }
         }
