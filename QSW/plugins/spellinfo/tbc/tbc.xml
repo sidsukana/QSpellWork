@@ -230,7 +230,7 @@
         <value value="SPELL_ATTR_EX_CHANNEL_TRACK_TARGET" key="0x00004000" />
         <value value="SPELL_ATTR_EX_DISPEL_AURAS_ON_IMMUNITY" key="0x00008000" />
         <value value="SPELL_ATTR_EX_UNAFFECTED_BY_SCHOOL_IMMUNE" key="0x00010000" />
-        <value value="SPELL_ATTR_EX_UNK17" key="0x00020000" />
+        <value value="SPELL_ATTR_EX_UNAUTOCASTABLE_BY_CHARMED" key="0x00020000" />
         <value value="SPELL_ATTR_EX_UNK18" key="0x00040000" />
         <value value="SPELL_ATTR_EX_CANT_TARGET_SELF" key="0x00080000" />
         <value value="SPELL_ATTR_EX_REQ_TARGET_COMBO_POINTS" key="0x00100000" />
@@ -277,27 +277,27 @@
         <value value="SPELL_ATTR_EX2_UNK27" key="0x08000000" />
         <value value="SPELL_ATTR_EX2_UNK28" key="0x10000000" />
         <value value="SPELL_ATTR_EX2_CANT_CRIT" key="0x20000000" />
-        <value value="SPELL_ATTR_EX2_UNK30" key="0x40000000" />
+        <value value="SPELL_ATTR_EX2_TRIGGERED_CAN_TRIGGER_PROC" key="0x40000000" />
         <value value="SPELL_ATTR_EX2_FOOD_BUFF" key="0x80000000" />
     </AttributesEx2>
     <AttributesEx3>
         <value value="SPELL_ATTR_EX3_UNK0" key="0x00000001" />
         <value value="SPELL_ATTR_EX3_UNK1" key="0x00000002" />
         <value value="SPELL_ATTR_EX3_UNK2" key="0x00000004" />
-        <value value="SPELL_ATTR_EX3_UNK3" key="0x00000008" />
+        <value value="SPELL_ATTR_EX3_BLOCKABLE_SPELL" key="0x00000008" />
         <value value="SPELL_ATTR_EX3_IGNORE_RESURRECTION_TIMER" key="0x00000010" />
         <value value="SPELL_ATTR_EX3_UNK5" key="0x00000020" />
         <value value="SPELL_ATTR_EX3_UNK6" key="0x00000040" />
         <value value="SPELL_ATTR_EX3_STACK_FOR_DIFF_CASTERS" key="0x00000080" />
         <value value="SPELL_ATTR_EX3_TARGET_ONLY_PLAYER" key="0x00000100" />
-        <value value="SPELL_ATTR_EX3_UNK9" key="0x00000200" />
+        <value value="SPELL_ATTR_EX3_TRIGGERED_CAN_TRIGGER_SPECIAL" key="0x00000200" />
         <value value="SPELL_ATTR_EX3_MAIN_HAND" key="0x00000400" />
         <value value="SPELL_ATTR_EX3_BATTLEGROUND" key="0x00000800" />
         <value value="SPELL_ATTR_EX3_CAST_ON_DEAD" key="0x00001000" />
         <value value="SPELL_ATTR_EX3_DONT_DISPLAY_CHANNEL_BAR" key="0x00002000" />
         <value value="SPELL_ATTR_EX3_IS_HONORLESS_TARGET" key="0x00004000" />
         <value value="SPELL_ATTR_EX3_UNK15" key="0x00008000" />
-        <value value="SPELL_ATTR_EX3_UNK16" key="0x00010000" />
+        <value value="SPELL_ATTR_EX3_CANT_TRIGGER_PROC" key="0x00010000" />
         <value value="SPELL_ATTR_EX3_NO_INITIAL_AGGRO" key="0x00020000" />
         <value value="SPELL_ATTR_EX3_CANT_MISS" key="0x00040000" />
         <value value="SPELL_ATTR_EX3_UNK19" key="0x00080000" />
@@ -307,10 +307,10 @@
         <value value="SPELL_ATTR_EX3_UNK23" key="0x00800000" />
         <value value="SPELL_ATTR_EX3_REQ_OFFHAND" key="0x01000000" />
         <value value="SPELL_ATTR_EX3_UNK25" key="0x02000000" />
-        <value value="SPELL_ATTR_EX3_UNK26" key="0x04000000" />
+        <value value="SPELL_ATTR_EX3_CAN_PROC_FROM_TRIGGERED_SPECIAL" key="0x04000000" />
         <value value="SPELL_ATTR_EX3_UNK27" key="0x08000000" />
         <value value="SPELL_ATTR_EX3_UNK28" key="0x10000000" />
-        <value value="SPELL_ATTR_EX3_UNK29" key="0x20000000" />
+        <value value="SPELL_ATTR_EX3_NO_DONE_BONUS" key="0x20000000" />
         <value value="SPELL_ATTR_EX3_DONT_DISPLAY_RANGE" key="0x40000000" />
         <value value="SPELL_ATTR_EX3_UNK31" key="0x80000000" />
     </AttributesEx3>
@@ -320,7 +320,7 @@
         <value value="SPELL_ATTR_EX4_UNK2" key="0x00000004" />
         <value value="SPELL_ATTR_EX4_UNK3" key="0x00000008" />
         <value value="SPELL_ATTR_EX4_UNK4" key="0x00000010" />
-        <value value="SPELL_ATTR_EX4_UNAUTOCASTABLE" key="0x00000020" />
+        <value value="SPELL_ATTR_EX4_UNK5" key="0x00000020" />
         <value value="SPELL_ATTR_EX4_NOT_STEALABLE" key="0x00000040" />
         <value value="SPELL_ATTR_EX4_CAN_CAST_WHILE_CASTING" key="0x00000080" />
         <value value="SPELL_ATTR_EX4_STACK_DOT_MODIFIER" key="0x00000100" />
@@ -361,7 +361,7 @@
         <value value="SPELL_ATTR_EX5_START_PERIODIC_AT_APPLY" key="0x00000200" />
         <value value="SPELL_ATTR_EX5_HIDE_DURATION" key="0x00000400" />
         <value value="SPELL_ATTR_EX5_ALLOW_TARGET_OF_TARGET_AS_TARGET" key="0x00000800" />
-        <value value="SPELL_ATTR_EX5_UNK12" key="0x00001000" />
+        <value value="SPELL_ATTR_EX5_CLEAVE_FRONT_TARGET" key="0x00001000" />
         <value value="SPELL_ATTR_EX5_HASTE_AFFECT_DURATION" key="0x00002000" />
         <value value="SPELL_ATTR_EX5_UNK14" key="0x00004000" />
         <value value="SPELL_ATTR_EX5_UNK15" key="0x00008000" />
@@ -380,7 +380,7 @@
         <value value="SPELL_ATTR_EX5_DONT_SHOW_AURA_IF_NOT_SELF_CAST" key="0x10000000" />
         <value value="SPELL_ATTR_EX5_UNK29" key="0x20000000" />
         <value value="SPELL_ATTR_EX5_UNK30" key="0x40000000" />
-        <value value="SPELL_ATTR_EX5_UNK31" key="0x80000000" />
+        <value value="SPELL_ATTR_EX5_USE_PHYSICAL_HIT_CHANCE" key="0x80000000" />
     </AttributesEx5>
     <AttributesEx6>
         <value value="SPELL_ATTR_EX6_DONT_DISPLAY_COOLDOWN" key="0x00000001" />
@@ -417,11 +417,11 @@
         <value value="SPELL_ATTR_EX6_UNK31" key="0x80000000" />
     </AttributesEx6>
     <Target>
-        <value value="NO_TARGET" key="0" />
+        <value value="TARGET_NONE" key="0" />
         <value value="TARGET_SELF" key="1" />
         <value value="TARGET_RANDOM_ENEMY_CHAIN_IN_AREA" key="2" />
         <value value="TARGET_RANDOM_FRIEND_CHAIN_IN_AREA" key="3" />
-        <value value="TARGET_4" key="4" />
+        <value value="TARGET_RANDOM_UNIT_CHAIN_IN_AREA" key="4" />
         <value value="TARGET_PET" key="5" />
         <value value="TARGET_CHAIN_DAMAGE" key="6" />
         <value value="TARGET_AREAEFFECT_INSTANT" key="7" />
@@ -468,15 +468,15 @@
         <value value="TARGET_DYNAMIC_OBJECT_BEHIND" key="48" />
         <value value="TARGET_DYNAMIC_OBJECT_LEFT_SIDE" key="49" />
         <value value="TARGET_DYNAMIC_OBJECT_RIGHT_SIDE" key="50" />
-        <value value="TARGET_51" key="51" />
+        <value value="TARGET_AREAEFFECT_GO_AROUND_SOURCE" key="51" />
         <value value="TARGET_AREAEFFECT_GO_AROUND_DEST" key="52" />
         <value value="TARGET_CURRENT_ENEMY_COORDINATES" key="53" />
         <value value="TARGET_LARGE_FRONTAL_CONE" key="54" />
-        <value value="TARGET_55" key="55" />
+        <value value="TARGET_DEST_CASTER_FRONT_LEAP" key="55" />
         <value value="TARGET_ALL_RAID_AROUND_CASTER" key="56" />
         <value value="TARGET_SINGLE_FRIEND_2" key="57" />
         <value value="TARGET_58" key="58" />
-        <value value="TARGET_59" key="59" />
+        <value value="TARGET_FRIENDLY_FRONTAL_CONE" key="59" />
         <value value="TARGET_NARROW_FRONTAL_CONE" key="60" />
         <value value="TARGET_AREAEFFECT_PARTY_AND_CLASS" key="61" />
         <value value="TARGET_62" key="62" />
@@ -491,8 +491,8 @@
         <value value="TARGET_71" key="71" />
         <value value="TARGET_RANDOM_NEARBY_LOC" key="72" />
         <value value="TARGET_RANDOM_CIRCUMFERENCE_POINT" key="73" />
-        <value value="TARGET_74" key="74" />
-        <value value="TARGET_75" key="75" />
+        <value value="TARGET_RANDOM_DEST_LOC" key="74" />
+        <value value="TARGET_RANDOM_CIRCUMFERENCE_AROUND_TARGET" key="75" />
         <value value="TARGET_DYNAMIC_OBJECT_COORDINATES" key="76" />
         <value value="TARGET_SINGLE_ENEMY" key="77" />
         <value value="TARGET_POINT_AT_NORTH" key="78" />
@@ -649,7 +649,7 @@
         <value value="TARGET_FLAG_OBJECT" key="0x00800" />
         <value value="TARGET_FLAG_TRADE_ITEM" key="0x01000" />
         <value value="TARGET_FLAG_STRING" key="0x02000" />
-        <value value="TARGET_FLAG_GAMEOBJECT_ITEM" key="0x04000" />
+        <value value="TARGET_FLAG_UNK1" key="0x04000" />
         <value value="TARGET_FLAG_CORPSE" key="0x08000" />
         <value value="TARGET_FLAG_UNK2" key="0x10000" />
     </TargetFlag>
@@ -719,8 +719,8 @@
         <value value="SPELL_EFFECT_POWER_BURN" key="62" />
         <value value="SPELL_EFFECT_THREAT" key="63" />
         <value value="SPELL_EFFECT_TRIGGER_SPELL" key="64" />
-        <value value="SPELL_EFFECT_65" key="65" />
-        <value value="SPELL_EFFECT_66" key="66" />
+        <value value="SPELL_EFFECT_HEALTH_FUNNEL" key="65" />
+        <value value="SPELL_EFFECT_POWER_FUNNEL" key="66" />
         <value value="SPELL_EFFECT_HEAL_MAX_HEALTH" key="67" />
         <value value="SPELL_EFFECT_INTERRUPT_CAST" key="68" />
         <value value="SPELL_EFFECT_DISTRACT" key="69" />
@@ -786,25 +786,25 @@
         <value value="SPELL_EFFECT_APPLY_AREA_AURA_ENEMY" key="129" />
         
         <value value="SPELL_EFFECT_REDIRECT_THREAT" key="130" />
-        <value value="SPELL_EFFECT_131" key="131" />
+        <value value="SPELL_EFFECT_PLAY_SOUND" key="131" />
         <value value="SPELL_EFFECT_PLAY_MUSIC" key="132" />
         <value value="SPELL_EFFECT_UNLEARN_SPECIALIZATION" key="133" />
-        <value value="SPELL_EFFECT_KILL_CREDIT2" key="134" />
+        <value value="SPELL_EFFECT_KILL_CREDIT_GROUP" key="134" />
         <value value="SPELL_EFFECT_CALL_PET" key="135" />
         <value value="SPELL_EFFECT_HEAL_PCT" key="136" />
         <value value="SPELL_EFFECT_ENERGIZE_PCT" key="137" />
         <value value="SPELL_EFFECT_LEAP_BACK" key="138" />
         <value value="SPELL_EFFECT_CLEAR_QUEST" key="139" />
         <value value="SPELL_EFFECT_FORCE_CAST" key="140" />
-        <value value="SPELL_EFFECT_141" key="141" />
+        <value value="SPELL_EFFECT_FORCE_CAST_WITH_VALUE" key="141" />
         <value value="SPELL_EFFECT_TRIGGER_SPELL_WITH_VALUE" key="142" />
         <value value="SPELL_EFFECT_APPLY_AREA_AURA_OWNER" key="143" />
-        <value value="SPELL_EFFECT_144" key="144" />
+        <value value="SPELL_EFFECT_KNOCKBACK_FROM_POSITION" key="144" />
         <value value="SPELL_EFFECT_145" key="145" />
         <value value="SPELL_EFFECT_146" key="146" />
         <value value="SPELL_EFFECT_QUEST_FAIL" key="147" />
         <value value="SPELL_EFFECT_148" key="148" />
-        <value value="SPELL_EFFECT_149" key="149" />
+        <value value="SPELL_EFFECT_CHARGE2" key="149" />
         <value value="SPELL_EFFECT_150" key="150" />
         <value value="SPELL_EFFECT_TRIGGER_SPELL_2" key="151" />
         <value value="SPELL_EFFECT_152" key="152" />
@@ -1058,7 +1058,7 @@
         <value value="SPELL_AURA_COMPREHEND_LANGUAGE" key="244" />
         <value value="SPELL_AURA_MOD_DURATION_OF_MAGIC_EFFECTS" key="245" />
         <value value="SPELL_AURA_MOD_DURATION_OF_EFFECTS_BY_DISPEL" key="246" />
-        <value value="SPELL_AURA_247" key="247" />
+        <value value="SPELL_AURA_MIRROR_IMAGE" key="247" />
         <value value="SPELL_AURA_MOD_COMBAT_RESULT_CHANCE" key="248" />
         <value value="SPELL_AURA_249" key="249" />
         <value value="SPELL_AURA_MOD_INCREASE_HEALTH_2" key="250" />
