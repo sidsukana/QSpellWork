@@ -22,18 +22,12 @@ void SpellWork::setActivePlugin(QString name)
 {
     m_activeSpellInfoPlugin = nullptr;
 
-    // save current plugin settings
-    if (m_spellInfoPlugins.contains(m_activeSpellInfoPluginName)) {
-        m_form->saveSettings(m_activeSpellInfoPluginName);
-    }
-
     // load new plugin
     if (m_spellInfoPlugins.contains(name)) {
-        QJsonObject metaData = m_spellInfoPlugins[name].first;
-        m_form->loadSettings(name);
 
         SpellInfoInterface* plugin = m_spellInfoPlugins[name].second;
         m_activeSpellInfoPluginName = name;
+        m_form->loadSettings();
 
         MPQ::setMpqFiles(plugin->getMPQFiles());
 
@@ -42,6 +36,8 @@ void SpellWork::setActivePlugin(QString name)
             QMessageBox::warning(m_form, "Warning", "Please check directories settings!", QMessageBox::StandardButton::Ok);
             return;
         }
+
+        QJsonObject metaData = m_spellInfoPlugins[name].first;
 
         QFile templateFile("plugins/spellinfo/" + metaData.value("htmlFile").toString());
         if (templateFile.open(QFile::ReadOnly)) {

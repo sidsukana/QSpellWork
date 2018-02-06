@@ -54,6 +54,10 @@ class ScriptFilter : public QWidget, public Ui::scriptFilter
                 m_bookmarks << str;
             m_model->setStringList(m_bookmarks);
         }
+        void addBookmarks(QStringList bookmarks) {
+            m_bookmarks = bookmarks;
+            m_model->setStringList(m_bookmarks);
+        }
 
         void removeBookmark(int index) {
             if (index < m_bookmarks.size())
@@ -132,9 +136,6 @@ class MainForm : public QMainWindow, public Ui::main
         MainForm(QWidget* parent = nullptr);
         ~MainForm();
 
-        void saveSettings(QString pluginName = QString());
-        void loadSettings(QString pluginName = QString());
-
         QString getFilterText() const { return m_scriptFilter->scriptEdit->toPlainText(); }
         void setFilterText(QString str) { m_scriptFilter->scriptEdit->setText(str); }
 
@@ -161,6 +162,10 @@ class MainForm : public QMainWindow, public Ui::main
         void setLocale(quint8 locale);
         void createModeButton();
         void createPluginButton();
+
+    public slots:
+        void saveSettings();
+        void loadSettings();
 
     signals:
         void signalSearch(quint8 type);

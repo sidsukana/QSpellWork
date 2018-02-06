@@ -115,13 +115,16 @@ MainForm::MainForm(QWidget* parent)
 
     getPage(QSW::PAGE_MAIN)->setInfo(QString("Load time: %0 ms").arg(m_time.elapsed()));
 
+    // Save settings on exit
+    connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(saveSettings()));
+
     // Load settings at end
     loadSettings();
 }
 
 MainForm::~MainForm()
 {
-    saveSettings();
+
 }
 
 void MainForm::slotSettings()
@@ -141,7 +144,7 @@ void MainForm::slotSettings()
         }
     }
 
-    saveSettings(m_sw->getActivePluginName());
+    saveSettings();
 }
 
 void MainForm::slotScriptFilter()
@@ -163,79 +166,79 @@ void MainForm::slotScriptApply()
     emit signalSearch(3);
 }
 
-void MainForm::loadSettings(QString pluginName)
+void MainForm::loadSettings()
 {
-    if (pluginName.isEmpty()) {
+    QString pluginName = m_sw->getActivePluginName();
+
+    if (pluginName.isEmpty())
+    {
         QSW::settings().beginGroup("Global");
+        pluginName = QSW::settings().value("lastActivePlugin", QString()).toString();
         QSW::settings().endGroup();
 
-        pluginName = m_sw->getActivePluginName();
         if (!pluginName.isEmpty())
-            loadSettings(pluginName);
+        {
+            m_sw->setActivePlugin(pluginName);
+        }
         return;
     }
 
-    QSW::settings().beginGroup("Plugin/" + pluginName);
-    MPQ::mpqDir() = QSW::settings().value("mpqDir", "").toString();
-    MPQ::localeDir() = QSW::settings().value("mpqLocaleDir", "").toString();
-    DBC::dbcDir() = QSW::settings().value("dbcDir", "").toString();
-    QSW::settings().beginGroup("FastFilter");
-    findLine_e1->setText(QSW::settings().value("IdOrName", "").toString());
-    findLine_e3->setText(QSW::settings().value("Description", "").toString());
-    comboBox->setCurrentIndex(QSW::settings().value("SpellFamilyIndex", 0).toInt());
-    comboBox_2->setCurrentIndex(QSW::settings().value("EffectIndex", 0).toInt());
-    comboBox_3->setCurrentIndex(QSW::settings().value("AuraIndex", 0).toInt());
-    comboBox_4->setCurrentIndex(QSW::settings().value("TargetAIndex", 0).toInt());
-    comboBox_5->setCurrentIndex(QSW::settings().value("TargetBIndex", 0).toInt());
-    QSW::settings().endGroup();
+    if (!pluginName.isEmpty())
+    {
+        QSW::settings().beginGroup("Plugin/" + pluginName);
 
-    QSW::settings().beginGroup("ScriptFilter");
-    int size = QSW::settings().beginReadArray("Bookmarks");
-    for (auto i = 0; i < size; ++i) {
-        QSW::settings().setArrayIndex(i);
-        m_scriptFilter->addBookmark(QSW::settings().value("filter").toString());
+        MPQ::mpqDir() = QSW::settings().value("mpqDir", "").toString();
+        MPQ::localeDir() = QSW::settings().value("mpqLocaleDir", "").toString();
+        DBC::dbcDir() = QSW::settings().value("dbcDir", "").toString();
+        QSW::settings().beginGroup("FastFilter");
+        findLine_e1->setText(QSW::settings().value("IdOrName", "").toString());
+        findLine_e3->setText(QSW::settings().value("Description", "").toString());
+        comboBox->setCurrentIndex(QSW::settings().value("SpellFamilyIndex", 0).toInt());
+        comboBox_2->setCurrentIndex(QSW::settings().value("EffectIndex", 0).toInt());
+        comboBox_3->setCurrentIndex(QSW::settings().value("AuraIndex", 0).toInt());
+        comboBox_4->setCurrentIndex(QSW::settings().value("TargetAIndex", 0).toInt());
+        comboBox_5->setCurrentIndex(QSW::settings().value("TargetBIndex", 0).toInt());
+        QSW::settings().endGroup();
+
+        QSW::settings().beginGroup("ScriptFilter");
+        m_scriptFilter->addBookmarks(QSW::settings().value("Bookmarks").toStringList());
+        QSW::settings().endGroup();
+        QSW::settings().endGroup();
     }
-    QSW::settings().endArray();
-    QSW::settings().endGroup();
-    QSW::settings().endGroup();
 }
 
-void MainForm::saveSettings(QString pluginName)
+void MainForm::saveSettings()
 {
-    if (pluginName.isEmpty()) {
+    QString pluginName = m_sw->getActivePluginName();
+
+    if (!pluginName.isEmpty())
+    {
         QSW::settings().beginGroup("Global");
+        QSW::settings().setValue("lastActivePlugin", pluginName);
         QSW::settings().endGroup();
 
-        pluginName = m_sw->getActivePluginName();
-        if (!pluginName.isEmpty())
-            saveSettings(pluginName);
-        return;
+        QSW::settings().beginGroup("Plugin/" + pluginName);
+        QSW::settings().setValue("mpqDir", MPQ::mpqDir());
+        QSW::settings().setValue("mpqLocaleDir", MPQ::localeDir());
+        QSW::settings().setValue("dbcDir", DBC::dbcDir());
+        QSW::settings().beginGroup("FastFilter");
+        QSW::settings().setValue("IdOrName", findLine_e1->text());
+        QSW::settings().setValue("Description", findLine_e3->text());
+        QSW::settings().setValue("SpellFamilyIndex", comboBox->currentIndex());
+        QSW::settings().setValue("EffectIndex", comboBox_2->currentIndex());
+        QSW::settings().setValue("AuraIndex", comboBox_3->currentIndex());
+        QSW::settings().setValue("TargetAIndex", comboBox_4->currentIndex());
+        QSW::settings().setValue("TargetBIndex", comboBox_5->currentIndex());
+        QSW::settings().endGroup();
+
+        QSW::settings().beginGroup("ScriptFilter");
+        QStringList bookmarks = m_scriptFilter->getBookmarks();
+        QSW::settings().setValue("Bookmarks", bookmarks);
+        QSW::settings().endGroup();
+        QSW::settings().endGroup();
     }
 
-    QSW::settings().beginGroup("Plugin/" + pluginName);
-    QSW::settings().setValue("mpqDir", MPQ::mpqDir());
-    QSW::settings().setValue("mpqLocaleDir", MPQ::localeDir());
-    QSW::settings().setValue("dbcDir", DBC::dbcDir());
-    QSW::settings().beginGroup("FastFilter");
-    QSW::settings().setValue("IdOrName", findLine_e1->text());
-    QSW::settings().setValue("Description", findLine_e3->text());
-    QSW::settings().setValue("SpellFamilyIndex", comboBox->currentIndex());
-    QSW::settings().setValue("EffectIndex", comboBox_2->currentIndex());
-    QSW::settings().setValue("AuraIndex", comboBox_3->currentIndex());
-    QSW::settings().setValue("TargetAIndex", comboBox_4->currentIndex());
-    QSW::settings().setValue("TargetBIndex", comboBox_5->currentIndex());
-    QSW::settings().endGroup();
-
-    QSW::settings().beginGroup("ScriptFilter");
-    QStringList bookmarks = m_scriptFilter->getBookmarks();
-    QSW::settings().beginWriteArray("Bookmarks", bookmarks.size());
-    for (auto i = 0; i < bookmarks.size(); ++i) {
-        QSW::settings().setArrayIndex(i);
-        QSW::settings().setValue("filter", bookmarks.at(i));
-    }
-    QSW::settings().endArray();
-    QSW::settings().endGroup();
-    QSW::settings().endGroup();
+    QSW::settings().sync();
 }
 
 void MainForm::slotPrevRow()
@@ -315,6 +318,10 @@ void MainForm::createPluginButton()
 void MainForm::slotChangeActivePlugin()
 {
     QAction* actionPlugin = static_cast<QAction*>(sender());
+
+    // save current plugin settings
+    saveSettings();
+
     m_sw->setActivePlugin(actionPlugin->data().toString());
 }
 

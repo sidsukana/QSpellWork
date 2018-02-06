@@ -44,7 +44,8 @@ SOURCES += \
     models.cpp \
     qsw.cpp \
     spellwork.cpp \
-    wov/wov.cpp
+    wov/wov.cpp \
+    settings.cpp
 
 HEADERS  += \
     AboutForm.h \
@@ -75,7 +76,8 @@ HEADERS  += \
     events.h \
     qsw.h \
     spellwork.h \
-    wov/wov.h
+    wov/wov.h \
+    settings.h
 
 FORMS += \
     about.ui \

@@ -9,6 +9,8 @@
 #include "dbc/DBC.h"
 #include "mpq/MPQ.h"
 
+#include "settings.h"
+
 typedef QMap<qint64, QString> Enumerator;
 typedef QHash<QString, Enumerator> EnumHash;
 typedef QMapIterator<qint64, QString> EnumIterator;
@@ -25,7 +27,7 @@ namespace QSW {
         PAGE_MAX        = 3
     };
 
-    QSettings& settings();
+    QJsonSettings& settings();
     EnumHash loadEnumFile(QString fileName);
 }
 

@@ -3,10 +3,9 @@
 
 #include "qsw.h"
 
-QSettings& QSW::settings()
+QJsonSettings &QSW::settings()
 {
-    static QSettings m_settings("QSW.ini", QSettings::IniFormat);
-    m_settings.sync();
+    static QJsonSettings m_settings(QStringLiteral("config.json"), jsonFormat);
     return m_settings;
 }
 
