@@ -43,10 +43,10 @@ function toggleRegExp(event) {
 <div class='b-tooltip_body'>
 <b>Id:</b> {{id}}</br>
 <b>Name:</b> {{nameWithRank}}</br>
-<div style="display:block;" id="desc" onClick="toggleRegExp(event)">{{#description}}<b>Description:</b> {{description}}</br>{{/description}}</div>
-<div style="display:none;" id="descRegExp" onClick="toggleRegExp(event)" >{{#descriptionRegExp}}<b>Description:</b> {{descriptionRegExp}}</br>{{/descriptionRegExp}}</div>
-<div style="display:block;" id="tooltip" onClick="toggleRegExp(event)">{{#tooltip}}<b>ToolTip:</b> {{tooltip}}</br>{{/tooltip}}</div>
-<div style="display:none;" id="tooltipRegExp" onClick="toggleRegExp(event)">{{#tooltipRegExp}}<b>ToolTip:</b> {{tooltipRegExp}}</br>{{/tooltipRegExp}}</div>
+<div style="display:block;" id="desc" ondblclick="toggleRegExp(event)">{{#description}}<b>Description:</b> {{description}}</br>{{/description}}</div>
+<div style="display:none;" id="descRegExp" ondblclick="toggleRegExp(event)" >{{#descriptionRegExp}}<b>Description:</b> {{descriptionRegExp}}</br>{{/descriptionRegExp}}</div>
+<div style="display:block;" id="tooltip" ondblclick="toggleRegExp(event)">{{#tooltip}}<b>ToolTip:</b> {{tooltip}}</br>{{/tooltip}}</div>
+<div style="display:none;" id="tooltipRegExp" ondblclick="toggleRegExp(event)">{{#tooltipRegExp}}<b>ToolTip:</b> {{tooltipRegExp}}</br>{{/tooltipRegExp}}</div>
 </div>
 {{#hasParents}}
 <div class='b-box-title'>Parent spells</div>
