@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT += core gui xml qml widgets webenginewidgets webengine webenginecore concurrent
+QT += core gui qml widgets webenginewidgets webengine webenginecore concurrent
 
 TARGET = QSW
 TEMPLATE = app

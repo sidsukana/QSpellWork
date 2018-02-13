@@ -1,5 +1,4 @@
-#ifndef QSW_H
-#define QSW_H
+#pragma once
 
 #include <QMap>
 #include <QHash>
@@ -30,5 +29,3 @@ namespace QSW {
     QJsonSettings& settings();
     EnumHash loadEnumFile(QString fileName);
 }
-
-#endif // QSW_H
