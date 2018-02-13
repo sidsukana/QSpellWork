@@ -4,5 +4,5 @@
     "version" : "1.0.1",
     "htmlFile" : "pre-tbc.html",
     "cssFile" : "pre-tbc.css",
-    "xmlFile" : "pre-tbc.xml"
+    "jsonFile" : "pre-tbc-enums.json"
 }

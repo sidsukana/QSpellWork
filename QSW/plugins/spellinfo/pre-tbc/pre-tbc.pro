@@ -41,5 +41,5 @@ win32: {
 
     copyToDestdir($$PWD/$$quote($$TARGET).css)
     copyToDestdir($$PWD/$$quote($$TARGET).html)
-    copyToDestdir($$PWD/$$quote($$TARGET).xml)
+    copyToDestdir($$PWD/$$quote($$TARGET)-enums.json)
 }

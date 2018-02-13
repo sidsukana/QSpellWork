@@ -51,7 +51,7 @@ void SpellWork::setActivePlugin(QString name)
             styleFile.close();
         }
 
-        EnumHash enums = QSW::loadEnumFile("plugins/spellinfo/" + metaData.value("xmlFile").toString());
+        EnumHash enums = QSW::loadEnumFile("plugins/spellinfo/" + metaData.value("jsonFile").toString());
         plugin->setEnums(enums);
 
         m_form->getScriptFilter()->scriptEdit->setupCompleter(plugin->getMetaSpell(0));
