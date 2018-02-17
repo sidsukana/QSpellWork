@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT += core gui xml qml widgets webenginewidgets webengine webenginecore concurrent
+QT += core gui xml qml widgets webenginewidgets webengine webenginecore concurrent sql
 
 TARGET = QSW
 TEMPLATE = app
@@ -45,7 +45,9 @@ SOURCES += \
     qsw.cpp \
     spellwork.cpp \
     wov/wov.cpp \
-    settings.cpp
+    settings.cpp \
+    datasource.cpp \
+    dataformat.cpp
 
 HEADERS  += \
     AboutForm.h \
@@ -77,7 +79,9 @@ HEADERS  += \
     qsw.h \
     spellwork.h \
     wov/wov.h \
-    settings.h
+    settings.h \
+    datasource.h \
+    dataformat.h
 
 FORMS += \
     about.ui \
