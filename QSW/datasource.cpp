@@ -7,9 +7,8 @@
 #include <QDebug>
 
 #include <QDataStream>
-DBCSource::DBCSource(const QString &fileName) :
-    _header(nullptr), _strings(nullptr),
-    _minId(0), _maxId(0), _fileName(fileName)
+DBCSource::DBCSource(QSharedPointer<FormatSource> format) :
+    _format(format), _header(nullptr), _strings(nullptr), _minId(0), _maxId(0)
 {
 }
 
@@ -24,11 +23,11 @@ QVariantHash DBCSource::getRecord(quint32 id) const
     return _data.value(id);
 }
 
-bool DBCSource::load(FormatSource&& format)
+bool DBCSource::load()
 {
     if (MPQ::mpqDir().isEmpty())
     {
-        QFile file(DBC::dbcDir() + _fileName);
+        QFile file(DBC::dbcDir() + _format->name);
         if (file.open(QFile::ReadOnly))
         {
             _rawData = file.readAll();
@@ -37,12 +36,12 @@ bool DBCSource::load(FormatSource&& format)
     }
     else
     {
-        _rawData = MPQ::readFile(DBC::dbcDir() + _fileName);
+        _rawData = MPQ::readFile(DBC::dbcDir() + _format->name);
     }
 
     if (_rawData.size() == 0)
     {
-        qCritical() << "Cannot load DBC " << _fileName;
+        qCritical() << "Cannot load DBC " << _format->name;
         return false;
     }
 
@@ -50,7 +49,7 @@ bool DBCSource::load(FormatSource&& format)
 
     if (qstrncmp(_header->magic, DBC_MAGIC, 4) != 0)
     {
-        qCritical() << "File " << _fileName << " is not a valid DBC file!";
+        qCritical() << "File " << _format->name << " is not a valid DBC file!";
         return false;
     }
 
@@ -74,7 +73,7 @@ bool DBCSource::load(FormatSource&& format)
 
         for (quint32 j = 0; j < _header->fieldCount; ++j)
         {
-            FormatField field = format.fields.at(j);
+            FormatField field = _format->fields.at(j);
             if (!field.load)
             {
                 stream.skipRawData(4);
@@ -103,7 +102,7 @@ bool DBCSource::load(FormatSource&& format)
                 case FormatType::TypeString:
                 {
                     stream >> value.uvalue;;
-                    record[field.name] = QString::fromUtf8(_strings + value.uvalue);
+                    record[field.name] = value.uvalue;//QString::fromUtf8(_strings + value.uvalue);
                     break;
                 }
                 default:
@@ -129,48 +128,79 @@ bool DBCSource::load(FormatSource&& format)
     return true;
 }
 
-SQLSource::SQLSource(const QString &tableName) :
-    _recordCount(0), _minId(0), _maxId(0), _tableName(tableName)
+SQLSource::SQLSource(QSharedPointer<FormatSource> format) :
+    _format(format), _recordCount(0), _minId(0), _maxId(0), _strings({QString()})
 {
+}
+
+SQLSource::~SQLSource()
+{
+    qDebug() << "Destroyed!";
 }
 
 QVariantHash SQLSource::getEntry(quint32 id) const
 {
-    qint32 index = _indexes.indexOf(id);
-    return (index == -1 ? QVariantHash() : getRecord(index));
+    //qint32 index = _indexes.indexOf(id);
+    return QVariantHash();//(index == -1 ? QVariantHash() : getRecord(index));
 }
 
 QVariantHash SQLSource::getRecord(quint32 id) const
 {
+    return QVariantHash();//_data.value(id);
+}
+
+SourceRecord* SQLSource::getEntry2(quint32 id) const
+{
+    qint32 index = _indexes.indexOf(id);
+    return (index == -1 ? nullptr : getRecord2(index));
+}
+
+SourceRecord* SQLSource::getRecord2(quint32 id) const
+{
     return _data.value(id);
 }
 
-bool SQLSource::load(FormatSource &&format)
+bool SQLSource::load()
 {
     QSqlDatabase db = QSqlDatabase::database();
-    QSqlQuery query = db.exec(QString("SELECT * FROM %0 ORDER BY 1 ASC").arg(_tableName));
+    QSqlQuery query = db.exec(QString("SELECT * FROM %0 ORDER BY 1 ASC").arg(_format->name));
 
     _recordCount = query.size();
 
     if (!_recordCount)
     {
-        qCritical() << "Cannot load SQL table " << _tableName;
+        qCritical() << "Cannot load SQL table " << _format->name;
         return false;
     }
 
     while (query.next())
     {
         QVariantHash record;
-        for (qint32 i = 0; i < format.fields.size(); ++i)
+        for (qint32 i = 0; i < _format->fields.size(); ++i)
         {
-            FormatField field = format.fields.at(i);
+            FormatField field = _format->fields.at(i);
             if (!field.load)
             {
                 continue;
             }
-            record[field.name] = query.value(i);
+
+            if (field.type == FormatType::TypeString)
+            {
+                QString str = query.value(i).toString();
+                qint32 strIdx = _strings.indexOf(str);
+                if (strIdx == -1)
+                {
+                    strIdx = _strings.size();
+                    _strings << str;
+                }
+                record[field.name] = strIdx;
+            }
+            else
+            {
+                record[field.name] = query.value(i);
+            }
         }
-        _data[query.at()] = record;
+        _data[query.at()] = new SourceRecord(this, record);
         _indexes << query.value(0).toUInt();
     }
 

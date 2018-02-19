@@ -21,9 +21,9 @@ DataFormat::DataFormat(const QString& fileName)
         for (auto itr = formatObject.begin(); itr != formatObject.end(); ++itr)
         {
             QJsonObject sourceObject = itr.value().toObject();
-            FormatSource formatSource;
-            formatSource.type = sourceObject.value("type").toInt();
-            formatSource.name = sourceObject.value("name").toString();
+            QSharedPointer<FormatSource> formatSource =  QSharedPointer<FormatSource>(new FormatSource());
+            formatSource->type = sourceObject.value("type").toInt();
+            formatSource->name = sourceObject.value("name").toString();
 
             QJsonArray fieldsArray = sourceObject.value("fields").toArray();
 
@@ -34,7 +34,12 @@ DataFormat::DataFormat(const QString& fileName)
                 formatField.type = fieldObject.value("type").toInt();
                 formatField.name = fieldObject.value("name").toString();
                 formatField.load = fieldObject.value("load").toBool();
-                formatSource.fields << formatField;
+                formatSource->fields << formatField;
+
+                if (formatField.type == FormatType::TypeString)
+                {
+                    formatSource->stringFields << formatField.name;
+                }
             }
             _data[itr.key()] = formatSource;
         }

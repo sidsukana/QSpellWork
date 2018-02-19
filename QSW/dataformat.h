@@ -3,6 +3,7 @@
 #include <QObject>
 #include <QVariantHash>
 #include <QJsonObject>
+#include <QSharedPointer>
 
 enum FormatType
 {
@@ -26,6 +27,9 @@ struct FormatSource
     quint8 type;
     QString name;
     QList<FormatField> fields;
+    QStringList stringFields;
+
+    bool isString(const QString& name) const { return stringFields.contains(name); }
 };
 
 class DataFormat
@@ -36,17 +40,17 @@ class DataFormat
 
         quint8 getSourceType(const QString& name) const
         {
-            return _data.value(name).type;
+            return _data.value(name)->type;
         }
 
         QString getSourceName(const QString& name) const
         {
-            return _data.value(name).name;
+            return _data.value(name)->name;
         }
 
         QList<FormatField> getSourceFields(const QString& name) const
         {
-            return _data.value(name).fields;
+            return _data.value(name)->fields;
         }
 
         QStringList getSourceList() const
@@ -54,12 +58,12 @@ class DataFormat
             return _data.keys();
         }
 
-        FormatSource getSourceFormat(const QString& name) const
+        QSharedPointer<FormatSource> getSourceFormat(const QString& name) const
         {
             return _data.value(name);
         }
 
     private:
         QString _fileName;
-        QHash<QString, FormatSource> _data;
+        QHash<QString, QSharedPointer<FormatSource>> _data;
 };
