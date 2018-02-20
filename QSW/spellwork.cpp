@@ -274,8 +274,8 @@ void SpellWork::showInfo(quint32 id, QSW::Pages pageId)
     QTextStream stream(&html);
     stream << renderer.render(m_templateHtml, &context);
 
-    html.replace("\n", "");
-    html.replace("><", ">\n<");
+    html = html.simplified();
+    html.replace("> <", ">\n<");
 
     m_form->getPage(pageId)->setInfo(html, id);
 }
