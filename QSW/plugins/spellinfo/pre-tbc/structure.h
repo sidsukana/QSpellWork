@@ -1,5 +1,4 @@
-#ifndef DBCSTRUCTURE_H_
-#define DBCSTRUCTURE_H_
+#pragma once
 
 #include <QObject>
 
@@ -23,10 +22,12 @@ namespace SkillLine
         quint32 id;                                          // 0 index
         qint32  categoryId;                                  // 1 index from SkillLineCategory.dbc
         quint32 skillCostId;                                 // 2 not used
-        quint32 nameOffset[8];                               // 3-10
-        quint32 nameFlags;                                   // 11 string flags, not used
-        quint32 descriptionOffset[8];                        // 12-19, not used
-        quint32 descriptionFlags;                            // 20 string flags, not used
+        quint32 nameOffset;                                  // 3
+        quint32 nameLocalizedOffset[7];                      // 4-10 always empty, not used
+        quint32 nameFlags;                                   // 11 not used
+        quint32 descriptionOffset;                           // 12
+        quint32 descriptionLocalizedOffset[7];               // 13-19 always empty, not used
+        quint32 descriptionFlags;                            // 20 not used
         quint32 spellIcon;                                   // 21
 
         const QString name() const;
@@ -116,10 +117,12 @@ namespace SpellRange
         float       minRange;                                        // 1
         float       maxRange;                                        // 2
         quint32     flags;                                           // 3
-        quint32     nameOffset[8];                                   // 4-11 unused
-        quint32     nameFlags;                                       // 12 unused
-        quint32     shortNameOffset[8];                              // 13-20 unused
-        quint32     shortNameFlags;                                  // 21 unused
+        quint32     nameOffset;                                      // 4
+        quint32     nameLocalizedOffset[7];                          // 5-11 always empty, not used
+        quint32     nameFlags;                                       // 12 not used
+        quint32     shortNameOffset;                                 // 13
+        quint32     shortNameLocalizeOffset[7];                      // 14-20 always empty, not used
+        quint32     shortNameFlags;                                  // 21 not used
 
         const QString name() const;
         const QString shortName() const;
@@ -219,14 +222,18 @@ namespace Spell
         quint32    spellIconId;                                     // 117
         quint32    activeIconId;                                    // 118
         quint32    spellPriority;                                   // 119
-        quint32    nameOffset[8];                                   // 120-127
-        quint32    nameFlag;                                        // 128
-        quint32    rankOffset[8];                                   // 129-136
-        quint32    rankFlags;                                       // 137
-        quint32    descriptionOffset[8];                            // 138-145 not used
-        quint32    descriptionFlags;                                // 146     not used
-        quint32    toolTipOffset[8];                                // 147-154 not used
-        quint32    toolTipFlags;                                    // 155     not used
+        quint32    nameOffset;                                      // 120
+        quint32    nameLocalizedOffset[7];                          // 121-127 always empty, not used
+        quint32    nameFlag;                                        // 128 not used
+        quint32    rankOffset;                                      // 129
+        quint32    rankLocalizedOffset[7];                          // 130-136 always empty, not used
+        quint32    rankFlags;                                       // 137 not used
+        quint32    descriptionOffset;                               // 138
+        quint32    descriptionLocalizedOffset[7];                   // 139-145 always empty, not used
+        quint32    descriptionFlags;                                // 146 not used
+        quint32    toolTipOffset;                                   // 147
+        quint32    toolTipLocalizedOffset[7];                       // 148-154 always empty, not used
+        quint32    toolTipFlags;                                    // 155 not used
         quint32    manaCostPercentage;                              // 156
         quint32    startRecoveryCategory;                           // 157
         quint32    startRecoveryTime;                               // 158
@@ -509,6 +516,4 @@ namespace Spell
 #pragma pack()
 #else
 #pragma pack(pop)
-#endif
-
 #endif

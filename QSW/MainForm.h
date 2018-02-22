@@ -19,27 +19,6 @@
 class SpellWork;
 class SpellListSortedModel;
 
-class Enums : public QObject
-{
-    Q_OBJECT
-public:
-
-    enum LocalesDBC
-    {
-        enUS,
-        koKR,
-        frFR,
-        deDE,
-        zhCN,
-        zhTW,
-        esES,
-        esMX,
-        ruRU
-    };
-
-    Q_ENUMS(LocalesDBC)
-};
-
 class ScriptFilter : public QWidget, public Ui::scriptFilter
 {
     Q_OBJECT
@@ -157,9 +136,9 @@ class MainForm : public QMainWindow, public Ui::main
             return m_pages[pageId];
         }
 
+        void setLocale(QString locale);
         void loadComboBoxes(EnumHash enums);
         void loadCompleter(QStringList names);
-        void setLocale(quint8 locale);
         void createModeButton();
         void createPluginButton();
 

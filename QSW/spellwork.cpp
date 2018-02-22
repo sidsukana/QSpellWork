@@ -57,7 +57,7 @@ void SpellWork::setActivePlugin(QString name)
         m_form->getScriptFilter()->scriptEdit->setupCompleter(plugin->getMetaSpell(0));
         m_form->loadComboBoxes(enums);
         m_form->loadCompleter(plugin->getNames());
-        m_form->setLocale(plugin->getLocale());
+        m_form->setLocale(MPQ::localeDir());
         m_activeSpellInfoPlugin = plugin;
     }
 }
@@ -255,11 +255,6 @@ EventList SpellWork::search(quint8 type)
     }
 
     return eventList;
-}
-
-void SpellWork::setMetaEnum(const char* enumName)
-{
-    m_metaEnum = Enums::staticMetaObject.enumerator(Enums::staticMetaObject.indexOfEnumerator(enumName));
 }
 
 void SpellWork::showInfo(quint32 id, QSW::Pages pageId)

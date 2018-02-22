@@ -3,7 +3,6 @@
 #include <QBuffer>
 #include <QSet>
 
-quint8 m_locale = 0;
 EnumHash m_enums;
 QStringList m_names;
 QObjectList m_metaSpells;
@@ -58,15 +57,6 @@ bool SpellInfo::init() const
 
     if (!Spell::getDbc().load())
         return false;
-
-    if (const Spell::entry* spellInfo = Spell::getRecord(0)) {
-        for (quint8 i = 0; i < 8; ++i) {
-            if (spellInfo->nameOffset[i]) {
-                m_locale = i;
-                break;
-            }
-        }
-    }
 
     qDeleteAll(m_metaSpells);
     m_metaSpells.clear();
@@ -132,11 +122,6 @@ QObjectList SpellInfo::getMetaSpells() const
 EnumHash SpellInfo::getEnums() const
 {
     return m_enums;
-}
-
-quint8 SpellInfo::getLocale() const
-{
-    return m_locale;
 }
 
 QStringList SpellInfo::getNames() const

@@ -20,12 +20,12 @@ const SkillLine::entry* SkillLine::getRecord(quint32 id, bool realId)
 
 const QString SkillLine::entry::name() const
 {
-    return getDbc().getString(nameOffset[m_locale]);
+    return getDbc().getString(nameOffset);
 }
 
 const QString SkillLine::entry::description() const
 {
-    return getDbc().getString(descriptionOffset[m_locale]);
+    return getDbc().getString(descriptionOffset);
 }
 
 // SkillLineAbility.dbc
@@ -64,22 +64,22 @@ const Spell::entry* Spell::getRecord(quint32 id, bool realId)
 
 const QString Spell::entry::name() const
 {
-    return getDbc().getString(nameOffset[m_locale]);
+    return getDbc().getString(nameOffset);
 }
 
 const QString Spell::entry::description() const
 {
-    return getDbc().getString(descriptionOffset[m_locale]);
+    return getDbc().getString(descriptionOffset);
 }
 
 const QString Spell::entry::rank() const
 {
-    return getDbc().getString(rankOffset[m_locale]);
+    return getDbc().getString(rankOffset);
 }
 
 const QString Spell::entry::toolTip() const
 {
-    return getDbc().getString(toolTipOffset[m_locale]);
+    return getDbc().getString(toolTipOffset);
 }
 
 const QString Spell::entry::nameWithRank() const
@@ -149,12 +149,12 @@ const SpellRange::entry* SpellRange::getRecord(quint32 id, bool realId)
 
 const QString SpellRange::entry::name() const
 {
-    return getDbc().getString(nameOffset[m_locale]);
+    return getDbc().getString(nameOffset);
 }
 
 const QString SpellRange::entry::shortName() const
 {
-    return getDbc().getString(shortNameOffset[m_locale]);
+    return getDbc().getString(shortNameOffset);
 }
 
 // SpellDuration.dbc

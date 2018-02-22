@@ -35,7 +35,7 @@ MainForm::MainForm(QWidget* parent)
     m_sortedModel->setDynamicSortFilter(true);
     SpellList->setModel(m_sortedModel);
 
-    setLocale(0);
+    setLocale(MPQ::localeDir());
     createModeButton();
     createPluginButton();
 
@@ -325,7 +325,7 @@ void MainForm::slotChangeActivePlugin()
     m_sw->setActivePlugin(actionPlugin->data().toString());
 }
 
-void MainForm::setLocale(quint8 locale)
+void MainForm::setLocale(QString locale)
 {
     QLabel* label = mainToolBar->findChild<QLabel*>("localeLable");
 
@@ -336,10 +336,11 @@ void MainForm::setLocale(quint8 locale)
         mainToolBar->addWidget(label);
     }
 
-    m_sw->setMetaEnum("LocalesDBC");
-    label->setText(QString("%0<b>DBC Locale: <font color=green>%1 </font><b>")
+    locale = locale.isEmpty() ? QStringLiteral("enUS") : locale;
+
+    label->setText(QString("%0<b>Locale: <font color=green>%1 </font><b>")
         .arg(QChar(QChar::Nbsp), 2, QChar(QChar::Nbsp))
-        .arg(m_sw->getMetaEnum().valueToKey(m_sw->getMetaEnum().value(locale))));
+        .arg(locale));
 }
 
 void MainForm::slotLinkClicked(const QUrl &url)
