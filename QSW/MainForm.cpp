@@ -8,6 +8,7 @@
 #include <QPropertyAnimation>
 #include <QClipboard>
 #include <QShortcut>
+#include <QSqlError>
 
 #include "MainForm.h"
 #include "AboutForm.h"
@@ -129,18 +130,51 @@ MainForm::~MainForm()
 
 void MainForm::slotSettings()
 {
-    SettingsForm settingsForm(this);
+    QSharedPointer<SettingsForm> settingsForm = QSharedPointer<SettingsForm>(new SettingsForm(this));
 
-    if (settingsForm.exec() == QDialog::Accepted) {
+    connect(settingsForm->buttonConnect, &QPushButton::clicked, [=](){
+        if (QSW::database().isOpen())
+        {
+            QSW::database().close();
+            settingsForm->buttonConnect->setText("Connect");
+        }
+        else
+        {
+            QSW::database().setHostName(settingsForm->hostname->text());
+            QSW::database().setPort(settingsForm->port->text().toUInt());
+            QSW::database().setUserName(settingsForm->username->text());
+            QSW::database().setPassword(settingsForm->password->text());
+            QSW::database().setDatabaseName(settingsForm->database->text());
+
+            if (QSW::database().open())
+            {
+                settingsForm->buttonConnect->setText("Disconnect");
+            }
+            else
+            {
+                qDebug() << QSW::database().lastError().text();
+            }
+        }
+    });
+
+    // Database
+    settingsForm->buttonConnect->setText(QSW::database().isOpen() ? "Disconnect" : "Connect");
+    settingsForm->hostname->setText(QSW::database().hostName());
+    settingsForm->port->setText(QString::number(QSW::database().port()));
+    settingsForm->username->setText(QSW::database().userName());
+    settingsForm->password->setText(QSW::database().password());
+    settingsForm->database->setText(QSW::database().databaseName());
+
+    if (settingsForm->exec() == QDialog::Accepted) {
         MPQ::mpqDir() = "";
         MPQ::localeDir() = "";
         DBC::dbcDir() = "";
-        if (!settingsForm.mpqDir->text().isEmpty()) {
-            MPQ::mpqDir() = QDir::fromNativeSeparators(QDir::cleanPath(settingsForm.mpqDir->text())) + "/";
-            MPQ::localeDir() = settingsForm.mpqLocale->itemText(settingsForm.mpqLocale->currentIndex());
+        if (!settingsForm->mpqDir->text().isEmpty()) {
+            MPQ::mpqDir() = QDir::fromNativeSeparators(QDir::cleanPath(settingsForm->mpqDir->text())) + "/";
+            MPQ::localeDir() = settingsForm->mpqLocale->itemText(settingsForm->mpqLocale->currentIndex());
         }
-        if (!settingsForm.dbcDir->text().isEmpty()) {
-            DBC::dbcDir() = QDir::fromNativeSeparators(QDir::cleanPath(settingsForm.dbcDir->text())) + "/";
+        if (!settingsForm->dbcDir->text().isEmpty()) {
+            DBC::dbcDir() = QDir::fromNativeSeparators(QDir::cleanPath(settingsForm->dbcDir->text())) + "/";
         }
     }
 
@@ -190,6 +224,16 @@ void MainForm::loadSettings()
         MPQ::mpqDir() = QSW::settings().value("mpqDir", "").toString();
         MPQ::localeDir() = QSW::settings().value("mpqLocaleDir", "").toString();
         DBC::dbcDir() = QSW::settings().value("dbcDir", "").toString();
+
+        QSW::settings().beginGroup("Database");
+        QSW::database().setHostName(QSW::settings().value("hostname").toString());
+        QSW::database().setPort(QSW::settings().value("port").toUInt());
+        QSW::database().setUserName(QSW::settings().value("username").toString());
+        QSW::database().setPassword(QSW::settings().value("password").toString());
+        QSW::database().setDatabaseName(QSW::settings().value("database").toString());
+        QSW::database().open();
+        QSW::settings().endGroup();
+
         QSW::settings().beginGroup("FastFilter");
         findLine_e1->setText(QSW::settings().value("IdOrName", "").toString());
         findLine_e3->setText(QSW::settings().value("Description", "").toString());
@@ -221,6 +265,18 @@ void MainForm::saveSettings()
         QSW::settings().setValue("mpqDir", MPQ::mpqDir());
         QSW::settings().setValue("mpqLocaleDir", MPQ::localeDir());
         QSW::settings().setValue("dbcDir", DBC::dbcDir());
+
+        if (QSW::database().isOpen())
+        {
+            QSW::settings().beginGroup("Database");
+            QSW::settings().setValue("hostname", QSW::database().hostName());
+            QSW::settings().setValue("port", QSW::database().port());
+            QSW::settings().setValue("username", QSW::database().userName());
+            QSW::settings().setValue("password", QSW::database().password());
+            QSW::settings().setValue("database", QSW::database().databaseName());
+            QSW::settings().endGroup();
+        }
+
         QSW::settings().beginGroup("FastFilter");
         QSW::settings().setValue("IdOrName", findLine_e1->text());
         QSW::settings().setValue("Description", findLine_e3->text());

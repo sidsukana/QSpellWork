@@ -3,6 +3,7 @@
 #include <QMap>
 #include <QHash>
 #include <QSettings>
+#include <QSqlDatabase>
 
 #include "blp/BLP.h"
 #include "dbc/DBC.h"
@@ -28,4 +29,5 @@ namespace QSW {
 
     QJsonSettings& settings();
     EnumHash loadEnumFile(QString fileName);
+    QSqlDatabase& database();
 }

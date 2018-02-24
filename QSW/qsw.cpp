@@ -52,3 +52,9 @@ EnumHash QSW::loadEnumFile(QString fileName)
 
    return enums;
 }
+
+QSqlDatabase& QSW::database()
+{
+    static QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL", "qsw");
+    return db;
+}

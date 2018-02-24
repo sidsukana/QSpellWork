@@ -71,3 +71,4 @@ void SettingsForm::slotDBC()
     if (!dir.isEmpty())
         dbcDir->setText(dir);
 }
+

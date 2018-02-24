@@ -1,5 +1,4 @@
-#ifndef SETTINGS_FORM_H
-#define SETTINGS_FORM_H
+#pragma once
 
 #include <QDialog>
 
@@ -21,5 +20,3 @@ class SettingsForm : public QDialog, public Ui::settings
     private:
         Ui::settings ui;
 };
-
-#endif // SETTINGS_FORM_H
