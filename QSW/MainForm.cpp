@@ -213,6 +213,7 @@ void MainForm::loadSettings()
         if (!pluginName.isEmpty())
         {
             m_sw->setActivePlugin(pluginName);
+            updatePlguinButton();
         }
         return;
     }
@@ -365,9 +366,18 @@ void MainForm::createPluginButton()
     for (SpellInfoPlugins::iterator itr = plugins.begin(); itr != plugins.end(); ++itr)
     {
         QAction* actionPlugin = new QAction(itr.value().first.value("fullName").toString(), this);
+        actionPlugin->setCheckable(true);
         actionPlugin->setData(itr.key());
         m_pluginButton->addAction(actionPlugin);
         connect(actionPlugin, SIGNAL(triggered()), this, SLOT(slotChangeActivePlugin()));
+    }
+}
+
+void MainForm::updatePlguinButton()
+{
+    for (QAction* action : m_pluginButton->actions())
+    {
+        action->setChecked(action->data().toString() == m_sw->getActivePluginName());
     }
 }
 
@@ -379,6 +389,7 @@ void MainForm::slotChangeActivePlugin()
     saveSettings();
 
     m_sw->setActivePlugin(actionPlugin->data().toString());
+    updatePlguinButton();
 }
 
 void MainForm::setLocale(QString locale)

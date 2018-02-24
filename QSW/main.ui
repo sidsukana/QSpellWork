@@ -278,7 +278,7 @@
                    <bool>false</bool>
                   </property>
                   <property name="currentIndex">
-                   <number>162</number>
+                   <number>103</number>
                   </property>
                   <property name="maxVisibleItems">
                    <number>20</number>
@@ -307,7 +307,7 @@
                    <bool>false</bool>
                   </property>
                   <property name="currentIndex">
-                   <number>162</number>
+                   <number>103</number>
                   </property>
                   <property name="maxVisibleItems">
                    <number>20</number>
@@ -335,7 +335,7 @@
                    <bool>false</bool>
                   </property>
                   <property name="currentIndex">
-                   <number>162</number>
+                   <number>103</number>
                   </property>
                   <property name="maxVisibleItems">
                    <number>20</number>
@@ -360,7 +360,7 @@
                    <bool>false</bool>
                   </property>
                   <property name="currentIndex">
-                   <number>162</number>
+                   <number>103</number>
                   </property>
                   <property name="maxVisibleItems">
                    <number>20</number>
@@ -385,7 +385,7 @@
                    <bool>false</bool>
                   </property>
                   <property name="currentIndex">
-                   <number>162</number>
+                   <number>103</number>
                   </property>
                   <property name="maxVisibleItems">
                    <number>20</number>
@@ -523,6 +523,9 @@
           </property>
           <property name="layoutDirection">
            <enum>Qt::LeftToRight</enum>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
           </property>
          </widget>
         </item>

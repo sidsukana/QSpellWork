@@ -141,6 +141,7 @@ class MainForm : public QMainWindow, public Ui::main
         void loadCompleter(QStringList names);
         void createModeButton();
         void createPluginButton();
+        void updatePlguinButton();
 
     public slots:
         void saveSettings();
