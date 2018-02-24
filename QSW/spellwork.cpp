@@ -2,6 +2,7 @@
 #include <QThread>
 #include <QResource>
 #include <QDir>
+#include <QDirIterator>
 #include <QPluginLoader>
 #include <QMessageBox>
 #include <QSqlQuery>
@@ -49,19 +50,22 @@ void SpellWork::setActivePlugin(QString name)
 
         QJsonObject metaData = m_spellInfoPlugins[name].first;
 
-        QFile templateFile("plugins/spellinfo/" + metaData.value("htmlFile").toString());
-        if (templateFile.open(QFile::ReadOnly)) {
+        QString filePathTemplate = QString("plugins/spellinfo/%0/%1").arg(name);
+        QFile templateFile(filePathTemplate.arg(metaData.value("htmlFile").toString()));
+        if (templateFile.open(QFile::ReadOnly))
+        {
             m_templateHtml = templateFile.readAll();
             templateFile.close();
         }
 
-        QFile styleFile("plugins/spellinfo/" + metaData.value("cssFile").toString());
-        if (styleFile.open(QFile::ReadOnly)) {
+        QFile styleFile(filePathTemplate.arg(metaData.value("cssFile").toString()));
+        if (styleFile.open(QFile::ReadOnly))
+        {
             m_styleCss = styleFile.readAll();
             styleFile.close();
         }
 
-        EnumHash enums = QSW::loadEnumFile("plugins/spellinfo/" + metaData.value("enumsFile").toString());
+        EnumHash enums = QSW::loadEnumFile(filePathTemplate.arg(metaData.value("enumsFile").toString()));
         plugin->setEnums(enums);
 
         m_form->getScriptFilter()->scriptEdit->setupCompleter(plugin->getMetaSpell(0));
@@ -76,12 +80,19 @@ void SpellWork::loadPlugins()
 {
     QDir pluginsDir(qApp->applicationDirPath());
     pluginsDir.cd("plugins/spellinfo");
-    foreach (QString fileName, pluginsDir.entryList(QDir::Files)) {
-        QPluginLoader pluginLoader(pluginsDir.absoluteFilePath(fileName));
+    pluginsDir.setNameFilters({"*.dll"});
+
+    QDirIterator itr(pluginsDir, QDirIterator::Subdirectories);
+
+    while (itr.hasNext())
+    {
+        QPluginLoader pluginLoader(itr.next());
         QObject *plugin = pluginLoader.instance();
-        if (plugin) {
+        if (plugin)
+        {
             SpellInfoInterface* spellInfoPlugin = qobject_cast<SpellInfoInterface *>(plugin);
-            if (spellInfoPlugin) {
+            if (spellInfoPlugin)
+            {
                 QJsonObject metaData = pluginLoader.metaData().value("MetaData").toObject();
                 m_spellInfoPlugins[metaData.value("name").toString()] = SpellInfoPluginPair(metaData, spellInfoPlugin);
             }

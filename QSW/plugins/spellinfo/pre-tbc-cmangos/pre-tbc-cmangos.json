@@ -1,7 +1,7 @@
 {
-    "name" : "pre-tbc",
-    "fullName" : "WoW 1.12.x",
-    "version" : "1.0.1",
+    "name" : "pre-tbc-cmangos",
+    "fullName" : "WoW 1.12.x (CMaNGOS)",
+    "version" : "1.0.0",
     "htmlFile" : "template.html",
     "cssFile" : "template.css",
     "enumsFile" : "enums.json"
