@@ -1,0 +1,61 @@
+#
+# NOTE! Don't add files that are generated in specific
+# subdirectories here. Add them in the ".gitignore" file
+# in that subdirectory instead.
+#
+# NOTE! Please use 'git-ls-files -i --exclude-standard'
+# command after changing this file, to see if there are
+# any tracked files which get ignored after the change.
+#
+# Normal rules
+#
+.*
+*.o
+*.o.*
+*.a
+*.so
+*.so.dbg
+*.bin
+*.gz
+moc_*.cpp
+qrc_*.cpp
+moc_*.h
+ui_*.h
+*.obj
+
+Makefile*
+
+build*/*
+
+#
+# Top-level generic files
+#
+!.gitignore
+
+
+#
+# Git stuff
+#
+# stgit directories
+patches-*
+
+#
+# VS binaries output
+#
+bin/*
+
+#
+# VS temporary files
+#
+*.pdb
+*.ncb
+*.suo
+*.sdf
+*.opensdf
+*.sln.cache
+*.vsp
+ipch
+*.user
+*.opendb
+*.VC.db
+

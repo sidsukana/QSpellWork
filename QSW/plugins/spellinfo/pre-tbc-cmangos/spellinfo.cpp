@@ -329,6 +329,25 @@ QString splitMask(quint32 mask, Enumerator enumerator)
     return str;
 }
 
+QVariantList splitMaskToList(quint32 mask, Enumerator enumerator)
+{
+    QVariantList flags;
+    EnumIterator itr(enumerator);
+    while (itr.hasNext())
+    {
+        itr.next();
+        if (mask & itr.key())
+        {
+            QVariantHash flag;
+            flag["name"] = itr.value();
+            flag["value"] = QString("0x" + QString("%0").arg(itr.key(), 8, 16, QChar('0')).toUpper());
+            flags.append(flag);
+        }
+    }
+
+    return flags;
+}
+
 void RegExpU(const Spell::entry* spellInfo, QRegExp rx, QString &str)
 {
     if (!rx.cap(4).isEmpty())
@@ -908,31 +927,31 @@ QVariantHash SpellInfo::getValues(quint32 id) const
         if (spellInfo->attributes)
         {
             values["attr"] = QString("0x" + QString("%0").arg(spellInfo->attributes, 8, 16, QChar('0')).toUpper());
-            values["attrNames"] = splitMask(spellInfo->attributes, getEnums()["Attributes"]);
+            values["attrNames"] = splitMaskToList(spellInfo->attributes, getEnums()["Attributes"]);
         }
 
         if (spellInfo->attributesEx1)
         {
             values["attrEx1"] = QString("0x" + QString("%0").arg(spellInfo->attributesEx1, 8, 16, QChar('0')).toUpper());
-            values["attrEx1Names"] = splitMask(spellInfo->attributesEx1, getEnums()["AttributesEx1"]);
+            values["attrEx1Names"] = splitMaskToList(spellInfo->attributesEx1, getEnums()["AttributesEx1"]);
         }
 
         if (spellInfo->attributesEx2)
         {
             values["attrEx2"] = QString("0x" + QString("%0").arg(spellInfo->attributesEx2, 8, 16, QChar('0')).toUpper());
-            values["attrEx2Names"] = splitMask(spellInfo->attributesEx2, getEnums()["AttributesEx2"]);
+            values["attrEx2Names"] = splitMaskToList(spellInfo->attributesEx2, getEnums()["AttributesEx2"]);
         }
 
         if (spellInfo->attributesEx3)
         {
             values["attrEx3"] = QString("0x" + QString("%0").arg(spellInfo->attributesEx3, 8, 16, QChar('0')).toUpper());
-            values["attrEx3Names"] = splitMask(spellInfo->attributesEx3, getEnums()["AttributesEx3"]);
+            values["attrEx3Names"] = splitMaskToList(spellInfo->attributesEx3, getEnums()["AttributesEx3"]);
         }
 
         if (spellInfo->attributesEx4)
         {
             values["attrEx4"] = QString("0x" + QString("%0").arg(spellInfo->attributesEx4, 8, 16, QChar('0')).toUpper());
-            values["attrEx4Names"] = splitMask(spellInfo->attributesEx4, getEnums()["AttributesEx4"]);
+            values["attrEx4Names"] = splitMaskToList(spellInfo->attributesEx4, getEnums()["AttributesEx4"]);
         }
     }
 
@@ -1069,19 +1088,19 @@ QVariantHash SpellInfo::getValues(quint32 id) const
     if (spellInfo->interruptFlags)
     {
         values["interruptFlags"] = QString("0x" + QString("%0").arg(spellInfo->interruptFlags, 8, 16, QChar('0')).toUpper());
-        values["interruptFlagsNames"] = splitMask(spellInfo->interruptFlags, getEnums()["SpellInterruptFlags"]);
+        values["interruptFlagsNames"] = splitMaskToList(spellInfo->interruptFlags, getEnums()["SpellInterruptFlags"]);
     }
 
     if (spellInfo->auraInterruptFlags)
     {
         values["auraInterruptFlags"] = QString("0x" + QString("%0").arg(spellInfo->auraInterruptFlags, 8, 16, QChar('0')).toUpper());
-        values["auraInterruptFlagsNames"] = splitMask(spellInfo->auraInterruptFlags, getEnums()["SpellAuraInterruptFlags"]);
+        values["auraInterruptFlagsNames"] = splitMaskToList(spellInfo->auraInterruptFlags, getEnums()["SpellAuraInterruptFlags"]);
     }
 
     if (spellInfo->channelInterruptFlags)
     {
         values["channelInterruptFlags"] = QString("0x" + QString("%0").arg(spellInfo->channelInterruptFlags, 8, 16, QChar('0')).toUpper());
-        values["channelInterruptFlagsNames"] = splitMask(spellInfo->channelInterruptFlags, getEnums()["SpellChannelInterruptFlags"]);
+        values["channelInterruptFlagsNames"] = splitMaskToList(spellInfo->channelInterruptFlags, getEnums()["SpellChannelInterruptFlags"]);
     }
 
     if (spellInfo->casterAuraState)
