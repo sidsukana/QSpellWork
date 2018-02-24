@@ -15,7 +15,7 @@ extern QStringList m_modifiedStrings;
 class SpellInfo : public QObject, SpellInfoInterface
 {
     Q_OBJECT
-    Q_PLUGIN_METADATA(IID SpellInfoInterface_iid FILE "pre-tbc-cmangos.json")
+    Q_PLUGIN_METADATA(IID SpellInfoInterface_iid FILE "tbc-cmangos.json")
     Q_INTERFACES(SpellInfoInterface)
 
     public:

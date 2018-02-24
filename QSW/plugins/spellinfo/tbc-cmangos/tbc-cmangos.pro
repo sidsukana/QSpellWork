@@ -5,7 +5,7 @@ HEADERS         = spellinfo.h \
     structure.h
 SOURCES         = spellinfo.cpp \
     structure.cpp
-TARGET          = tbc
+TARGET          = tbc-cmangos
 
 defineTest(copyToDestdir) {
     files = $$1

@@ -33,6 +33,9 @@ QMap<quint32, QString> procFlags = {
     { 0x00080000, "19 Taken periodic damage" },
     { 0x00100000, "20 Taken any damage" },
     { 0x00200000, "21 On trap activation" },
+    { 0x00400000, "22 Taken off-hand melee attacks" },
+    { 0x00800000, "23 Successful off-hand melee attacks" },
+    { 0x01000000, "24 Unknown flag 24" }
 };
 
 bool SpellInfo::init() const
@@ -114,7 +117,7 @@ void SpellInfo::setModifiedSqlDataResult(quint8 queryIndex, QSqlQuery& query)
             m_internalSpells.append(id);
             m_metaSpells.append(new Spell::meta(spell));
 
-            QString str = query.value(117).toString();
+            QString str = query.value(124).toString();
             qint32 index = m_modifiedStrings.indexOf(str);
             spell->nameOffset = index != -1 ? index : m_modifiedStrings.size();
             m_modifiedStrings.append(str);
@@ -122,7 +125,7 @@ void SpellInfo::setModifiedSqlDataResult(quint8 queryIndex, QSqlQuery& query)
             if (!m_names.contains(str))
                 m_names.append(str);
 
-            str = query.value(125).toString();
+            str = query.value(140).toString();
             index = m_modifiedStrings.indexOf(str);
             spell->rankOffset = m_modifiedStrings.size();
             m_modifiedStrings.append(str);
@@ -139,95 +142,104 @@ void SpellInfo::setModifiedSqlDataResult(quint8 queryIndex, QSqlQuery& query)
         }
 
         spell->id = id;
-        spell->school = query.value(1).toUInt();
-        spell->category = query.value(2).toUInt();
-        spell->dispel = query.value(3).toUInt();
-        spell->mechanic = query.value(4).toUInt();
-        spell->attributes = query.value(5).toUInt();
-        spell->attributesEx1 = query.value(6).toUInt();
-        spell->attributesEx2 = query.value(7).toUInt();
-        spell->attributesEx3 = query.value(8).toUInt();
-        spell->attributesEx4 = query.value(9).toUInt();
-        spell->stances = query.value(10).toUInt();
-        spell->stancesNot = query.value(11).toUInt();
-        spell->targets = query.value(12).toUInt();
-        spell->targetCreatureType = query.value(13).toUInt();
-        spell->requiresSpellFocus = query.value(14).toUInt();
-        spell->casterAuraState = query.value(15).toUInt();
-        spell->targetAuraState = query.value(16).toUInt();
-        spell->castingTimeIndex = query.value(17).toUInt();
-        spell->recoveryTime = query.value(18).toUInt();
-        spell->categoryRecoveryTime = query.value(19).toUInt();
-        spell->interruptFlags = query.value(20).toUInt();
-        spell->auraInterruptFlags = query.value(21).toUInt();
-        spell->channelInterruptFlags = query.value(22).toUInt();
-        spell->procFlags = query.value(23).toUInt();
-        spell->procChance = query.value(24).toUInt();
-        spell->procCharges = query.value(25).toUInt();
-        spell->maxLevel = query.value(26).toUInt();
-        spell->baseLevel = query.value(27).toUInt();
-        spell->spellLevel = query.value(28).toUInt();
-        spell->durationIndex = query.value(29).toUInt();
-        spell->powerType = query.value(30).toInt();
-        spell->manaCost = query.value(31).toUInt();
-        spell->manaCostPerlevel = query.value(32).toUInt();
-        spell->manaPerSecond = query.value(33).toUInt();
-        spell->manaPerSecondPerLevel = query.value(34).toUInt();
-        spell->rangeIndex = query.value(35).toUInt();
-        spell->speed = query.value(36).toFloat();
-        spell->stackAmount = query.value(37).toFloat();
+        spell->category = query.value(1).toUInt();
+        spell->dispel = query.value(2).toUInt();
+        spell->mechanic = query.value(3).toUInt();
+        spell->attributes = query.value(4).toUInt();
+        spell->attributesEx1 = query.value(5).toUInt();
+        spell->attributesEx2 = query.value(6).toUInt();
+        spell->attributesEx3 = query.value(7).toUInt();
+        spell->attributesEx4 = query.value(8).toUInt();
+        spell->attributesEx5 = query.value(9).toUInt();
+        spell->attributesEx6 = query.value(10).toUInt();
+        spell->stances = query.value(11).toUInt();
+        spell->stancesNot = query.value(12).toUInt();
+        spell->targets = query.value(13).toUInt();
+        spell->targetCreatureType = query.value(14).toUInt();
+        spell->requiresSpellFocus = query.value(15).toUInt();
+        spell->facingCasterFlags = query.value(16).toUInt();
+        spell->casterAuraState = query.value(17).toUInt();
+        spell->targetAuraState = query.value(18).toUInt();
+        spell->casterAuraStateNot = query.value(19).toUInt();
+        spell->targetAuraStateNot = query.value(20).toUInt();
+        spell->castingTimeIndex = query.value(21).toUInt();
+        spell->recoveryTime = query.value(22).toUInt();
+        spell->categoryRecoveryTime = query.value(23).toUInt();
+        spell->interruptFlags = query.value(24).toUInt();
+        spell->auraInterruptFlags = query.value(25).toUInt();
+        spell->channelInterruptFlags = query.value(26).toUInt();
+        spell->procFlags = query.value(27).toUInt();
+        spell->procChance = query.value(28).toUInt();
+        spell->procCharges = query.value(29).toUInt();
+        spell->maxLevel = query.value(30).toUInt();
+        spell->baseLevel = query.value(31).toUInt();
+        spell->spellLevel = query.value(32).toUInt();
+        spell->durationIndex = query.value(33).toUInt();
+        spell->powerType = query.value(34).toInt();
+        spell->manaCost = query.value(35).toUInt();
+        spell->manaCostPerlevel = query.value(36).toUInt();
+        spell->manaPerSecond = query.value(37).toUInt();
+        spell->manaPerSecondPerLevel = query.value(38).toUInt();
+        spell->rangeIndex = query.value(39).toUInt();
+        spell->speed = query.value(40).toFloat();
+        spell->stackAmount = query.value(41).toFloat();
 
         for (quint8 i = 0; i < MAX_SPELL_TOTEMS; ++i)
         {
-            spell->totem[i] = query.value(38 + i).toUInt();
+            spell->totem[i] = query.value(42 + i).toUInt();
+            spell->totemCategory[i] = query.value(168 + i).toUInt();
         }
 
         for (quint8 i = 0; i < MAX_SPELL_REAGENTS; ++i)
         {
-            spell->reagent[i] = query.value(40 + i).toInt();
-            spell->reagentCount[i] = query.value(48 + i).toUInt();
+            spell->reagent[i] = query.value(44 + i).toInt();
+            spell->reagentCount[i] = query.value(52 + i).toUInt();
         }
 
-        spell->equippedItemClass = query.value(56).toInt();
-        spell->equippedItemSubClassMask = query.value(57).toInt();
-        spell->equippedItemInventoryTypeMask = query.value(58).toInt();
+        spell->equippedItemClass = query.value(60).toInt();
+        spell->equippedItemSubClassMask = query.value(61).toInt();
+        spell->equippedItemInventoryTypeMask = query.value(62).toInt();
 
         for (quint8 i = 0; i < MAX_EFFECT_INDEX; ++i)
         {
-            spell->effect[i] = query.value(59 + i).toUInt();
-            spell->effectDieSides[i] = query.value(62 + i).toUInt();
-            spell->effectBaseDice[i] = query.value(65 + i).toUInt();
-            spell->effectDicePerLevel[i] = query.value(68 + i).toFloat();
-            spell->effectRealPointsPerLevel[i] = query.value(71 + i).toFloat();
-            spell->effectBasePoints[i] = query.value(74 + i).toInt();
-            spell->effectMechanic[i] = query.value(77 + i).toUInt();
-            spell->effectImplicitTargetA[i] = query.value(80 + i).toUInt();
-            spell->effectImplicitTargetB[i] = query.value(83 + i).toUInt();
-            spell->effectRadiusIndex[i] = query.value(86 + i).toUInt();
-            spell->effectApplyAuraName[i] = query.value(89 + i).toUInt();
-            spell->effectAmplitude[i] = query.value(92 + i).toUInt();
-            spell->effectMultipleValue[i] = query.value(95 + i).toFloat();
-            spell->effectChainTarget[i] = query.value(98 + i).toUInt();
-            spell->effectItemType[i] = query.value(101 + i).toUInt();
-            spell->effectMiscValue[i] = query.value(104 + i).toInt();
-            spell->effectTriggerSpell[i] = query.value(107 + i).toUInt();
-            spell->effectPointsPerComboPoint[i] = query.value(110 + i).toFloat();
-            spell->damageMultiplier[i] = query.value(135 + i).toFloat();
+            spell->effect[i] = query.value(63 + i).toUInt();
+            spell->effectDieSides[i] = query.value(66 + i).toUInt();
+            spell->effectBaseDice[i] = query.value(69 + i).toUInt();
+            spell->effectDicePerLevel[i] = query.value(72 + i).toFloat();
+            spell->effectRealPointsPerLevel[i] = query.value(75 + i).toFloat();
+            spell->effectBasePoints[i] = query.value(78 + i).toInt();
+            spell->effectMechanic[i] = query.value(81 + i).toUInt();
+            spell->effectImplicitTargetA[i] = query.value(84 + i).toUInt();
+            spell->effectImplicitTargetB[i] = query.value(87 + i).toUInt();
+            spell->effectRadiusIndex[i] = query.value(90 + i).toUInt();
+            spell->effectApplyAuraName[i] = query.value(93 + i).toUInt();
+            spell->effectAmplitude[i] = query.value(96 + i).toUInt();
+            spell->effectMultipleValue[i] = query.value(99 + i).toFloat();
+            spell->effectChainTarget[i] = query.value(102 + i).toUInt();
+            spell->effectItemType[i] = query.value(105 + i).toUInt();
+            spell->effectMiscValueA[i] = query.value(108 + i).toInt();
+            spell->effectMiscValueB[i] = query.value(111 + i).toInt();
+            spell->effectTriggerSpell[i] = query.value(114 + i).toUInt();
+            spell->effectPointsPerComboPoint[i] = query.value(117 + i).toFloat();
+            spell->damageMultiplier[i] = query.value(165 + i).toFloat();
         }
 
-        spell->spellVisual = query.value(113).toUInt();
-        spell->spellIconId = query.value(114).toUInt();
-        spell->activeIconId = query.value(115).toUInt();
-        spell->spellPriority = query.value(116).toUInt();
-        spell->manaCostPercentage = query.value(133).toUInt();
-        spell->startRecoveryCategory = query.value(134).toUInt();
-        spell->startRecoveryTime = query.value(135).toUInt();
-        spell->maxTargetLevel = query.value(136).toUInt();
-        spell->spellFamilyName = query.value(137).toUInt();
-        spell->spellFamilyFlags = query.value(138).toLongLong();
-        spell->maxAffectedTargets = query.value(139).toUInt();
-        spell->damageClass = query.value(140).toUInt();
-        spell->preventionType = query.value(141).toUInt();
+        spell->spellVisual = query.value(120).toUInt();
+        spell->spellIconId = query.value(121).toUInt();
+        spell->activeIconId = query.value(122).toUInt();
+        spell->spellPriority = query.value(123).toUInt();
+        spell->manaCostPercentage = query.value(156).toUInt();
+        spell->startRecoveryCategory = query.value(157).toUInt();
+        spell->startRecoveryTime = query.value(158).toUInt();
+        spell->maxTargetLevel = query.value(159).toUInt();
+        spell->spellFamilyName = query.value(160).toUInt();
+        spell->spellFamilyFlags = query.value(161).toLongLong();
+        spell->maxAffectedTargets = query.value(162).toUInt();
+        spell->damageClass = query.value(163).toUInt();
+        spell->preventionType = query.value(164).toUInt();
+        
+        spell->areaId = query.value(170).toUInt();
+        spell->schoolMask = query.value(171).toUInt();
     }
 }
 
@@ -238,16 +250,10 @@ void SpellInfo::setEnums(EnumHash enums)
 
 MPQList SpellInfo::getMPQFiles() const
 {
-    static MPQList MPQs {
-        // <begin> custom ruRU locale by Maus Team
-        MPQPair("%locale%/patch-3.MPQ", {}),
-        MPQPair("%locale%/patch-2.MPQ", {}),
-        MPQPair("%locale%/patch-1.MPQ", {}),
-        // <end>
-        MPQPair("patch-2.MPQ", {}),
-        MPQPair("patch.MPQ", {}),
-        MPQPair("dbc.MPQ", {}),
-        MPQPair("interface.MPQ", {})
+    static MPQList MPQs = {
+        MPQPair("%locale%/patch-%locale%-2.MPQ", {}),
+        MPQPair("%locale%/patch-%locale%.MPQ", {}),
+        MPQPair("%locale%/locale-%locale%.MPQ", {})
     };
     return MPQs;
 }
@@ -408,12 +414,12 @@ void RegExpQ(const Spell::entry* spellInfo, QRegExp rx, QString &str)
                 if (rx.cap(2) == QString("/"))
                 {
                     str.replace(rx.cap(0), QString("%0")
-                        .arg(abs(qint32(tSpell->effectMiscValue[rx.cap(6).toInt()-1] / rx.cap(3).toInt()))));
+                        .arg(abs(qint32(tSpell->effectMiscValueA[rx.cap(6).toInt()-1] / rx.cap(3).toInt()))));
                 }
                 else if (rx.cap(2) == QString("*"))
                 {
                     str.replace(rx.cap(0), QString("%0")
-                        .arg(abs(qint32(tSpell->effectMiscValue[rx.cap(6).toInt()-1] * rx.cap(3).toInt()))));
+                        .arg(abs(qint32(tSpell->effectMiscValueA[rx.cap(6).toInt()-1] * rx.cap(3).toInt()))));
                 }
             }
         }
@@ -422,12 +428,12 @@ void RegExpQ(const Spell::entry* spellInfo, QRegExp rx, QString &str)
             if (rx.cap(2) == QString("/"))
             {
                 str.replace(rx.cap(0), QString("%0")
-                    .arg(abs(qint32(spellInfo->effectMiscValue[rx.cap(6).toInt()-1] / rx.cap(3).toInt()))));
+                    .arg(abs(qint32(spellInfo->effectMiscValueA[rx.cap(6).toInt()-1] / rx.cap(3).toInt()))));
             }
             else if (rx.cap(2) == QString("*"))
             {
                 str.replace(rx.cap(0), QString("%0")
-                    .arg(abs(qint32(spellInfo->effectMiscValue[rx.cap(6).toInt()-1] * rx.cap(3).toInt()))));
+                    .arg(abs(qint32(spellInfo->effectMiscValueA[rx.cap(6).toInt()-1] * rx.cap(3).toInt()))));
             }
         }
     }
@@ -436,13 +442,13 @@ void RegExpQ(const Spell::entry* spellInfo, QRegExp rx, QString &str)
         if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
         {
             str.replace(rx.cap(0), QString("%0")
-                .arg(abs(tSpell->effectMiscValue[rx.cap(6).toInt()-1])));
+                .arg(abs(tSpell->effectMiscValueA[rx.cap(6).toInt()-1])));
         }
     }
     else
     {
         str.replace(rx.cap(0), QString("%0")
-            .arg(abs(spellInfo->effectMiscValue[rx.cap(6).toInt()-1])));
+            .arg(abs(spellInfo->effectMiscValueA[rx.cap(6).toInt()-1])));
     }
 }
 
@@ -828,9 +834,6 @@ void RegExpE(const Spell::entry* spellInfo, QRegExp rx, QString &str)
 
 QString getDescription(QString str, const Spell::entry* spellInfo)
 {
-    //if (!m_form->isRegExp())
-    //    return str;
-
     QRegExp rx("\\$+(([/,*])?([0-9]*);)?([d+\\;)(\\d*)?([1-9]*)([A-z])([1-3]*)(([A-z, ]*)\\:([A-z, ]*)\\;)?");
     while (str.contains(rx))
     {
@@ -908,8 +911,8 @@ QVariantHash SpellInfo::getValues(quint32 id) const
     values["spellFamilyName"] = getEnums()["SpellFamily"][spellInfo->spellFamilyName];
     values["spellFamilyFlags"] = QString("0x" + QString("%0").arg(spellInfo->spellFamilyFlags, 16, 16, QChar('0')).toUpper());
 
-    values["spellSchoolId"] = spellInfo->school;
-    values["spellSchoolName"] = getEnums()["School"][spellInfo->school];
+    values["spellSchoolMask"] = spellInfo->schoolMask;
+    values["spellSchoolMaskNames"] = splitMask(spellInfo->schoolMask, getEnums()["SchoolMask"]);
 
     values["damageClassId"] = spellInfo->damageClass;
     values["damageClassName"] = getEnums()["DamageClass"][spellInfo->damageClass];
@@ -918,7 +921,7 @@ QVariantHash SpellInfo::getValues(quint32 id) const
     values["preventionTypeName"] = getEnums()["PreventionType"][spellInfo->preventionType];
 
     if (spellInfo->attributes || spellInfo->attributesEx1 || spellInfo->attributesEx2 ||
-        spellInfo->attributesEx3 || spellInfo->attributesEx4)
+        spellInfo->attributesEx3 || spellInfo->attributesEx4 || spellInfo->attributesEx5 || spellInfo->attributesEx6)
     {
         values["hasAttributes"] = true;
 
@@ -950,6 +953,18 @@ QVariantHash SpellInfo::getValues(quint32 id) const
         {
             values["attrEx4"] = QString("0x" + QString("%0").arg(spellInfo->attributesEx4, 8, 16, QChar('0')).toUpper());
             values["attrEx4Names"] = splitMaskToList(spellInfo->attributesEx4, getEnums()["AttributesEx4"]);
+        }
+
+        if (spellInfo->attributesEx5)
+        {
+            values["attrEx5"] = QString("0x" + QString("%0").arg(spellInfo->attributesEx5, 8, 16, QChar('0')).toUpper());
+            values["attrEx5Names"] = splitMaskToList(spellInfo->attributesEx5, getEnums()["AttributesEx5"]);
+        }
+
+        if (spellInfo->attributesEx6)
+        {
+            values["attrEx6"] = QString("0x" + QString("%0").arg(spellInfo->attributesEx6, 8, 16, QChar('0')).toUpper());
+            values["attrEx6Names"] = splitMaskToList(spellInfo->attributesEx6, getEnums()["AttributesEx6"]);
         }
     }
 
@@ -1113,7 +1128,20 @@ QVariantHash SpellInfo::getValues(quint32 id) const
         values["targetAuraStateName"] = getEnums()["AuraState"][spellInfo->targetAuraState];
     }
 
+    if (spellInfo->casterAuraStateNot)
+    {
+        values["casterAuraStateNot"] = spellInfo->casterAuraStateNot;
+        values["casterAuraStateNotName"] = getEnums()["AuraState"][spellInfo->casterAuraStateNot];
+    }
+
+    if (spellInfo->targetAuraStateNot)
+    {
+        values["targetAuraStateNot"] = spellInfo->targetAuraStateNot;
+        values["targetAuraStateNotName"] = getEnums()["AuraState"][spellInfo->targetAuraStateNot];
+    }
+
     values["reqSpellFocus"] = spellInfo->requiresSpellFocus;
+    values["facingCasterFlags"] = spellInfo->facingCasterFlags;
 
     values["procChance"] = spellInfo->procChance;
     values["procCharges"] = spellInfo->procCharges;
@@ -1164,8 +1192,8 @@ QVariantHash SpellInfo::getValues(quint32 id) const
         effectValues["targetNameA"] = getEnums()["Target"][spellInfo->effectImplicitTargetA[eff]];
         effectValues["targetNameB"] = getEnums()["Target"][spellInfo->effectImplicitTargetB[eff]];
 
-        qint32 misc = spellInfo->effectMiscValue[eff];
-        effectValues["miscValue"] = misc;
+        qint32 miscA = spellInfo->effectMiscValueA[eff];
+        effectValues["miscValueA"] = miscA;
         effectValues["amplitude"] = spellInfo->effectAmplitude[eff];
         effectValues["auraId"] = spellInfo->effectApplyAuraName[eff];
         effectValues["auraName"] = getEnums()["SpellAura"][spellInfo->effectApplyAuraName[eff]];
@@ -1173,16 +1201,18 @@ QVariantHash SpellInfo::getValues(quint32 id) const
         switch (spellInfo->effectApplyAuraName[eff])
         {
             case 29:
-                effectValues["mods"] = getEnums()["UnitMod"][misc];
+                effectValues["mods"] = getEnums()["UnitMod"][miscA];
                 break;
             case 107:
             case 108:
-                effectValues["mods"] = getEnums()["SpellMod"][misc];
+                effectValues["mods"] = getEnums()["SpellMod"][miscA];
                 break;
             default:
-                effectValues["mods"] = misc;
+                effectValues["mods"] = miscA;
                 break;
         }
+
+        effectValues["miscValueB"] = spellInfo->effectMiscValueB[eff];
 
         effectValues["radiusId"] = spellInfo->effectRadiusIndex[eff];
         if (const SpellRadius::entry* spellRadius = SpellRadius::getRecord(spellInfo->effectRadiusIndex[eff], true))

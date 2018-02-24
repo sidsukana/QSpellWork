@@ -3,10 +3,12 @@
 #include <QBuffer>
 #include <QSet>
 
-quint8 m_locale = 0;
 EnumHash m_enums;
 QStringList m_names;
 QObjectList m_metaSpells;
+Indexes m_metaSpellIndexes;
+Indexes m_internalSpells;
+QStringList m_modifiedStrings;
 
 QMap<quint32, QString> procFlags = {
     { 0x00000001, "00 Killed by aggressor that receive experience or honor" },
@@ -62,20 +64,13 @@ bool SpellInfo::init() const
     if (!Spell::getDbc().load())
         return false;
 
-    if (const Spell::entry* spellInfo = Spell::getRecord(0)) {
-        for (quint8 i = 0; i < 16; ++i) {
-            if (spellInfo->nameOffset[i]) {
-                m_locale = i;
-                break;
-            }
-        }
-    }
-
     qDeleteAll(m_metaSpells);
     m_metaSpells.clear();
     QSet<QString> names;
-    for (quint32 i = 0; i < Spell::getRecordCount(); ++i) {
-        if (const Spell::entry* spellInfo = Spell::getRecord(i)) {
+    for (quint32 i = 0; i < Spell::getRecordCount(); ++i)
+    {
+        if (const Spell::entry* spellInfo = Spell::getRecord(i))
+        {
             m_metaSpells << new Spell::meta(spellInfo);
             QString name = spellInfo->name();
             if (names.find(name) == names.end())
@@ -83,7 +78,9 @@ bool SpellInfo::init() const
         }
     }
 
+    m_metaSpellIndexes = Spell::getDbc().getIndexes();
     m_names = names.toList();
+    m_modifiedStrings.clear();
 
     return true;
 }
@@ -105,20 +102,12 @@ MPQList SpellInfo::getMPQFiles() const
 
 QObject* SpellInfo::getMetaSpell(quint32 id, bool realId) const
 {
-    if (!realId)
-        return m_metaSpells.at(id);
-
-    quint32 index = Spell::getDbc().getIndex(id);
-
-    if (index != -1)
-        return m_metaSpells.at(index);
-
-    return nullptr;
+    return Spell::getMetaSpell(id, realId);
 }
 
 quint32 SpellInfo::getSpellsCount() const
 {
-    return Spell::getRecordCount();
+    return Spell::getMetaSpellCount();
 }
 
 QObjectList SpellInfo::getMetaSpells() const
@@ -129,11 +118,6 @@ QObjectList SpellInfo::getMetaSpells() const
 EnumHash SpellInfo::getEnums() const
 {
     return m_enums;
-}
-
-quint8 SpellInfo::getLocale() const
-{
-    return m_locale;
 }
 
 QStringList SpellInfo::getNames() const
@@ -151,9 +135,9 @@ QImage getSpellIcon(quint32 iconId)
 QVariantList getParentSpells(quint32 triggerId)
 {
     QVariantList parentSpells;
-    for (quint32 i = 0; i < Spell::getRecordCount(); ++i)
+    for (quint32 i = 0; i < Spell::getMetaSpellCount(); ++i)
     {
-        if (const Spell::entry* spellInfo = Spell::getRecord(i))
+        if (const Spell::entry* spellInfo = Spell::getMetaRecord(i))
         {
             QVariantHash parentSpell;
             for (quint8 eff = 0; eff < MAX_EFFECT_INDEX; ++eff)
@@ -191,11 +175,30 @@ QString splitMask(quint32 mask, Enumerator enumerator)
     return str;
 }
 
+QVariantList splitMaskToList(quint32 mask, Enumerator enumerator)
+{
+    QVariantList flags;
+    EnumIterator itr(enumerator);
+    while (itr.hasNext())
+    {
+        itr.next();
+        if (mask & itr.key())
+        {
+            QVariantHash flag;
+            flag["name"] = itr.value();
+            flag["value"] = QString("0x" + QString("%0").arg(itr.key(), 8, 16, QChar('0')).toUpper());
+            flags.append(flag);
+        }
+    }
+
+    return flags;
+}
+
 void RegExpU(const Spell::entry* spellInfo, QRegExp rx, QString &str)
 {
     if (!rx.cap(4).isEmpty())
     {
-        if (const Spell::entry* tSpell = Spell::getRecord(rx.cap(4).toInt(), true))
+        if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
         {
             str.replace(rx.cap(0), QString("%0")
                 .arg(tSpell->stackAmount));
@@ -212,7 +215,7 @@ void RegExpH(const Spell::entry* spellInfo, QRegExp rx, QString &str)
 {
     if (!rx.cap(4).isEmpty())
     {
-        if (const Spell::entry* tSpell = Spell::getRecord(rx.cap(4).toInt(), true))
+        if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
         {
             str.replace(rx.cap(0), QString("%0")
                 .arg(tSpell->procChance));
@@ -229,7 +232,7 @@ void RegExpV(const Spell::entry* spellInfo, QRegExp rx, QString &str)
 {
     if (!rx.cap(4).isEmpty())
     {
-        if (const Spell::entry* tSpell = Spell::getRecord(rx.cap(4).toInt(), true))
+        if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
         {
             str.replace(rx.cap(0), QString("%0")
                 .arg(tSpell->maxTargetLevel));
@@ -248,7 +251,7 @@ void RegExpQ(const Spell::entry* spellInfo, QRegExp rx, QString &str)
     {
         if (!rx.cap(4).isEmpty())
         {
-            if (const Spell::entry* tSpell = Spell::getRecord(rx.cap(4).toInt(), true))
+            if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
             {
                 if (rx.cap(2) == QString("/"))
                 {
@@ -278,7 +281,7 @@ void RegExpQ(const Spell::entry* spellInfo, QRegExp rx, QString &str)
     }
     else if (!rx.cap(4).isEmpty())
     {
-        if (const Spell::entry* tSpell = Spell::getRecord(rx.cap(4).toInt(), true))
+        if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
         {
             str.replace(rx.cap(0), QString("%0")
                 .arg(abs(tSpell->effectMiscValueA[rx.cap(6).toInt()-1])));
@@ -295,7 +298,7 @@ void RegExpI(const Spell::entry* spellInfo, QRegExp rx, QString &str)
 {
     if (!rx.cap(4).isEmpty())
     {
-        if (const Spell::entry* tSpell = Spell::getRecord(rx.cap(4).toInt(), true))
+        if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
         {
             if (tSpell->maxAffectedTargets != 0)
             {
@@ -329,7 +332,7 @@ void RegExpB(const Spell::entry* spellInfo, QRegExp rx, QString &str)
         if (!rx.cap(4).isEmpty())
         {
 
-            if (const Spell::entry* tSpell = Spell::getRecord(rx.cap(4).toInt(), true))
+            if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
             {
                 if (rx.cap(2) == QString("/"))
                 {
@@ -359,7 +362,7 @@ void RegExpB(const Spell::entry* spellInfo, QRegExp rx, QString &str)
     }
     else if (!rx.cap(4).isEmpty())
     {
-        if (const Spell::entry* tSpell = Spell::getRecord(rx.cap(4).toInt(), true))
+        if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
         {
             str.replace(rx.cap(0), QString("%0")
                 .arg(abs(qint32(tSpell->effectPointsPerComboPoint[rx.cap(6).toInt()-1]))));
@@ -378,7 +381,7 @@ void RegExpA(const Spell::entry* spellInfo, QRegExp rx, QString &str)
     {
         if (!rx.cap(4).isEmpty())
         {
-            if (const Spell::entry * tSpell = Spell::getRecord(rx.cap(4).toInt(), true))
+            if (const Spell::entry * tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
             {
                 if (rx.cap(2) == QString("/"))
                 {
@@ -408,7 +411,7 @@ void RegExpA(const Spell::entry* spellInfo, QRegExp rx, QString &str)
     }
     else if (!rx.cap(4).isEmpty())
     {
-        if (const Spell::entry* tSpell = Spell::getRecord(rx.cap(4).toInt(), true))
+        if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
         {
             str.replace(rx.cap(0), QString("%0")
                 .arg(tSpell->getRadius(rx.cap(6).toInt()-1)));
@@ -427,7 +430,7 @@ void RegExpD(const Spell::entry* spellInfo, QRegExp rx, QString &str)
     {
         if (!rx.cap(4).isEmpty())
         {
-            if (const Spell::entry* tSpell = Spell::getRecord(rx.cap(4).toInt(), true))
+            if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
             {
                 if (rx.cap(2) == QString("/"))
                 {
@@ -457,7 +460,7 @@ void RegExpD(const Spell::entry* spellInfo, QRegExp rx, QString &str)
     }
     else if (!rx.cap(4).isEmpty())
     {
-        if (const Spell::entry* tSpell = Spell::getRecord(rx.cap(4).toInt(), true))
+        if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
         {
             str.replace(rx.cap(0), QString("%0 seconds")
                 .arg(tSpell->getDuration()));
@@ -476,7 +479,7 @@ void RegExpO(const Spell::entry* spellInfo, QRegExp rx, QString &str)
     {
         if (!rx.cap(4).isEmpty())
         {
-            if (const Spell::entry* tSpell = Spell::getRecord(rx.cap(4).toInt(), true))
+            if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
             {
                 if (rx.cap(2) == QString("/"))
                 {
@@ -506,7 +509,7 @@ void RegExpO(const Spell::entry* spellInfo, QRegExp rx, QString &str)
     }
     else if (!rx.cap(4).isEmpty())
     {
-        if (const Spell::entry* tSpell = Spell::getRecord(rx.cap(4).toInt(), true))
+        if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
         {
             str.replace(rx.cap(0), QString("%0")
                 .arg(tSpell->getTicks(rx.cap(6).toInt()-1) * (tSpell->effectBasePoints[rx.cap(6).toInt()-1] + 1)));
@@ -525,7 +528,7 @@ void RegExpS(const Spell::entry* spellInfo, QRegExp rx, QString &str)
     {
         if (!rx.cap(4).isEmpty())
         {
-            if (const Spell::entry* tSpell = Spell::getRecord(rx.cap(4).toInt(), true))
+            if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
             {
                 if (rx.cap(2) == QString("/"))
                 {
@@ -555,7 +558,7 @@ void RegExpS(const Spell::entry* spellInfo, QRegExp rx, QString &str)
     }
     else if (!rx.cap(4).isEmpty())
     {
-        if (const Spell::entry* tSpell = Spell::getRecord(rx.cap(4).toInt(), true))
+        if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
         {
             str.replace(rx.cap(0), QString("%0")
                 .arg(abs(tSpell->effectBasePoints[rx.cap(6).toInt()-1] + 1)));
@@ -574,7 +577,7 @@ void RegExpT(const Spell::entry* spellInfo, QRegExp rx, QString &str)
     {
         if (!rx.cap(4).isEmpty())
         {
-            if (const Spell::entry* tSpell = Spell::getRecord(rx.cap(4).toInt(), true))
+            if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
             {
                 if (rx.cap(2) == QString("/"))
                 {
@@ -605,7 +608,7 @@ void RegExpT(const Spell::entry* spellInfo, QRegExp rx, QString &str)
     else if (!rx.cap(4).isEmpty())
     {
 
-        if (const Spell::entry* tSpell = Spell::getRecord(rx.cap(4).toInt(), true))
+        if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
         {
             if (tSpell->effectAmplitude[rx.cap(6).toInt()-1])
                 str.replace(rx.cap(0), QString("%0").arg(tSpell->getAmplitude(rx.cap(6).toInt()-1)));
@@ -624,7 +627,7 @@ void RegExpN(const Spell::entry* spellInfo, QRegExp rx, QString &str)
 {
     if (!rx.cap(4).isEmpty())
     {
-        if (const Spell::entry* tSpell = Spell::getRecord(rx.cap(4).toInt(), true))
+        if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
         {
             str.replace(rx.cap(0), QString("%0")
                 .arg(tSpell->procCharges));
@@ -641,7 +644,7 @@ void RegExpX(const Spell::entry* spellInfo, QRegExp rx, QString &str)
 {
     if (!rx.cap(4).isEmpty())
     {
-        if (const Spell::entry* tSpell = Spell::getRecord(rx.cap(4).toInt(), true))
+        if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
         {
             str.replace(rx.cap(0), QString("%0")
                 .arg(tSpell->effectChainTarget[rx.cap(6).toInt()-1]));
@@ -658,7 +661,7 @@ void RegExpE(const Spell::entry* spellInfo, QRegExp rx, QString &str)
 {
     if (!rx.cap(4).isEmpty())
     {
-        if (const Spell::entry* tSpell = Spell::getRecord(rx.cap(4).toInt(), true))
+        if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
         {
             str.replace(rx.cap(0), QString("%0")
                 .arg(tSpell->effectMultipleValue[rx.cap(6).toInt()-1], 0, 'f', 2));
@@ -712,7 +715,7 @@ QVariantHash SpellInfo::getValues(quint32 id) const
 {
     QVariantHash values;
 
-    const Spell::entry* spellInfo = Spell::getRecord(id, true);
+    const Spell::entry* spellInfo = Spell::getMetaRecord(id, true);
     if (!spellInfo)
         return values;
 
@@ -744,8 +747,7 @@ QVariantHash SpellInfo::getValues(quint32 id) const
     values["categoryId"] = spellInfo->category;
     values["spellIconId"] = spellInfo->spellIconId;
     values["activeIconId"] = spellInfo->activeIconId;
-    values["spellVisual1"] = spellInfo->spellVisual[0];
-    values["spellVisual2"] = spellInfo->spellVisual[1];
+    values["spellVisual"] = spellInfo->spellVisual;
 
     values["spellFamilyId"] = spellInfo->spellFamilyName;
     values["spellFamilyName"] = getEnums()["SpellFamily"][spellInfo->spellFamilyName];
@@ -768,43 +770,43 @@ QVariantHash SpellInfo::getValues(quint32 id) const
         if (spellInfo->attributes)
         {
             values["attr"] = QString("0x" + QString("%0").arg(spellInfo->attributes, 8, 16, QChar('0')).toUpper());
-            values["attrNames"] = splitMask(spellInfo->attributes, getEnums()["Attributes"]);
+            values["attrNames"] = splitMaskToList(spellInfo->attributes, getEnums()["Attributes"]);
         }
 
         if (spellInfo->attributesEx1)
         {
             values["attrEx1"] = QString("0x" + QString("%0").arg(spellInfo->attributesEx1, 8, 16, QChar('0')).toUpper());
-            values["attrEx1Names"] = splitMask(spellInfo->attributesEx1, getEnums()["AttributesEx1"]);
+            values["attrEx1Names"] = splitMaskToList(spellInfo->attributesEx1, getEnums()["AttributesEx1"]);
         }
 
         if (spellInfo->attributesEx2)
         {
             values["attrEx2"] = QString("0x" + QString("%0").arg(spellInfo->attributesEx2, 8, 16, QChar('0')).toUpper());
-            values["attrEx2Names"] = splitMask(spellInfo->attributesEx2, getEnums()["AttributesEx2"]);
+            values["attrEx2Names"] = splitMaskToList(spellInfo->attributesEx2, getEnums()["AttributesEx2"]);
         }
 
         if (spellInfo->attributesEx3)
         {
             values["attrEx3"] = QString("0x" + QString("%0").arg(spellInfo->attributesEx3, 8, 16, QChar('0')).toUpper());
-            values["attrEx3Names"] = splitMask(spellInfo->attributesEx3, getEnums()["AttributesEx3"]);
+            values["attrEx3Names"] = splitMaskToList(spellInfo->attributesEx3, getEnums()["AttributesEx3"]);
         }
 
         if (spellInfo->attributesEx4)
         {
             values["attrEx4"] = QString("0x" + QString("%0").arg(spellInfo->attributesEx4, 8, 16, QChar('0')).toUpper());
-            values["attrEx4Names"] = splitMask(spellInfo->attributesEx4, getEnums()["AttributesEx4"]);
+            values["attrEx4Names"] = splitMaskToList(spellInfo->attributesEx4, getEnums()["AttributesEx4"]);
         }
 
         if (spellInfo->attributesEx5)
         {
             values["attrEx5"] = QString("0x" + QString("%0").arg(spellInfo->attributesEx5, 8, 16, QChar('0')).toUpper());
-            values["attrEx5Names"] = splitMask(spellInfo->attributesEx5, getEnums()["AttributesEx5"]);
+            values["attrEx5Names"] = splitMaskToList(spellInfo->attributesEx5, getEnums()["AttributesEx5"]);
         }
 
         if (spellInfo->attributesEx6)
         {
             values["attrEx6"] = QString("0x" + QString("%0").arg(spellInfo->attributesEx6, 8, 16, QChar('0')).toUpper());
-            values["attrEx6Names"] = splitMask(spellInfo->attributesEx6, getEnums()["AttributesEx6"]);
+            values["attrEx6Names"] = splitMaskToList(spellInfo->attributesEx6, getEnums()["AttributesEx6"]);
         }
     }
 
@@ -864,8 +866,7 @@ QVariantHash SpellInfo::getValues(quint32 id) const
 
         if (spellInfo->equippedItemSubClassMask)
         {
-            QString sItemSubClassMask("0x" + QString("%0").arg(spellInfo->equippedItemSubClassMask, 8, 16, QChar('0')).toUpper());
-            values["equipItemSubClassMask"] = sItemSubClassMask;
+            values["equipItemSubClassMask"] = QString("0x" + QString("%0").arg(spellInfo->equippedItemSubClassMask, 8, 16, QChar('0')).toUpper());
 
             switch (spellInfo->equippedItemClass)
             {
@@ -939,9 +940,23 @@ QVariantHash SpellInfo::getValues(quint32 id) const
     values["manaPerSecond"] = spellInfo->manaPerSecond;
     values["manaPerSecondPerLevel"] =spellInfo->manaPerSecondPerLevel;
 
-    values["interruptFlags"] = QString("0x" + QString("%0").arg(spellInfo->interruptFlags, 8, 16, QChar('0')).toUpper());
-    values["auraInterruptFlags"] = QString("0x" + QString("%0").arg(spellInfo->auraInterruptFlags, 8, 16, QChar('0')).toUpper());
-    values["channelInterruptFlags"] = QString("0x" + QString("%0").arg(spellInfo->channelInterruptFlags, 8, 16, QChar('0')).toUpper());
+    if (spellInfo->interruptFlags)
+    {
+        values["interruptFlags"] = QString("0x" + QString("%0").arg(spellInfo->interruptFlags, 8, 16, QChar('0')).toUpper());
+        values["interruptFlagsNames"] = splitMaskToList(spellInfo->interruptFlags, getEnums()["SpellInterruptFlags"]);
+    }
+
+    if (spellInfo->auraInterruptFlags)
+    {
+        values["auraInterruptFlags"] = QString("0x" + QString("%0").arg(spellInfo->auraInterruptFlags, 8, 16, QChar('0')).toUpper());
+        values["auraInterruptFlagsNames"] = splitMaskToList(spellInfo->auraInterruptFlags, getEnums()["SpellAuraInterruptFlags"]);
+    }
+
+    if (spellInfo->channelInterruptFlags)
+    {
+        values["channelInterruptFlags"] = QString("0x" + QString("%0").arg(spellInfo->channelInterruptFlags, 8, 16, QChar('0')).toUpper());
+        values["channelInterruptFlagsNames"] = splitMaskToList(spellInfo->channelInterruptFlags, getEnums()["SpellChannelInterruptFlags"]);
+    }
 
     if (spellInfo->casterAuraState)
     {
@@ -1045,7 +1060,7 @@ QVariantHash SpellInfo::getValues(quint32 id) const
         if (const SpellRadius::entry* spellRadius = SpellRadius::getRecord(spellInfo->effectRadiusIndex[eff], true))
             effectValues["radiusValue"] = QString("%0").arg(spellRadius->radius, 0, 'f', 2);
 
-        if (const Spell::entry* triggerSpell = Spell::getRecord(spellInfo->effectTriggerSpell[eff], true))
+        if (const Spell::entry* triggerSpell = Spell::getMetaRecord(spellInfo->effectTriggerSpell[eff], true))
         {
             effectValues["triggerId"] = triggerSpell->id;
             effectValues["triggerName"] = triggerSpell->nameWithRank();
@@ -1085,9 +1100,9 @@ QVariantHash SpellInfo::getValues(quint32 id) const
             if (spellInfo->effect[eff] == 6)
             {
                 QVariantList affectList;
-                for (quint32 i = 0; i < Spell::getRecordCount(); ++i)
+                for (quint32 i = 0; i < Spell::getMetaSpellCount(); ++i)
                 {
-                    if (const Spell::entry* t_spellInfo = Spell::getRecord(i))
+                    if (const Spell::entry* t_spellInfo = Spell::getMetaRecord(i))
                     {
                         bool hasSkill = false;
                         if ((t_spellInfo->spellFamilyName == spellInfo->spellFamilyName) &&

@@ -1,12 +1,16 @@
-#ifndef SPELLINFO_H
-#define SPELLINFO_H
+#pragma once
 
 #include <QObject>
 #include <QtPlugin>
 
 #include "../interface.h"
 
-extern quint8 m_locale;
+extern EnumHash m_enums;
+extern QStringList m_names;
+extern QObjectList m_metaSpells;
+extern Indexes m_metaSpellIndexes;
+extern Indexes m_internalSpells;
+extern QStringList m_modifiedStrings;
 
 class SpellInfo : public QObject, SpellInfoInterface
 {
@@ -26,8 +30,5 @@ class SpellInfo : public QObject, SpellInfoInterface
         QVariantHash getValues(quint32 id) const;
         QObjectList getMetaSpells() const;
         EnumHash getEnums() const;
-        quint8 getLocale() const;
         QStringList getNames() const;
 };
-
-#endif // SPELLINFO_H
