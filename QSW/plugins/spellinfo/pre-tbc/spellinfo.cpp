@@ -135,6 +135,16 @@ QImage getSpellIcon(quint32 iconId)
     return (iconInfo ? BLP::getBLP(iconInfo->iconPath() + QString(".blp")) : QImage());
 }
 
+QString getSpellIconName(quint32 iconId)
+{
+    const SpellIcon::entry* iconInfo = SpellIcon::getRecord(iconId, true);
+
+    if (!iconInfo)
+        return QString();
+
+    return QString(iconInfo->iconPath()).section('\\', -1).toLower();
+}
+
 QVariantList getParentSpells(quint32 triggerId)
 {
     QVariantList parentSpells;
@@ -726,12 +736,18 @@ QVariantHash SpellInfo::getValues(quint32 id) const
         return values;
 
     QByteArray iconData;
-    QBuffer buffer;
-    buffer.setBuffer(&iconData);
-    buffer.open(QIODevice::WriteOnly);
+    QBuffer buffer(&iconData);
     getSpellIcon(spellInfo->spellIconId).save(&buffer, "PNG");
 
-    values["icon"] = iconData.toBase64().data();
+    // Try load from Wowhead
+    if (iconData.isEmpty())
+    {
+        values["icon"] = QString("http://wow.zamimg.com/images/wow/icons/large/%0.jpg").arg(getSpellIconName(spellInfo->spellIconId));
+    }
+    else
+    {
+        values["icon"] = QStringLiteral("data:image/png;base64,") + iconData.toBase64().data();
+    }
 
     values["id"] = spellInfo->id;
     values["name"] = spellInfo->name();
