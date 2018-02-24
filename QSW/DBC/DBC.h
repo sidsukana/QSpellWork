@@ -46,6 +46,7 @@ class QSW_EXPORT DBCFile
 
         const quint32 getRecordCount() const { return m_header->recordCount; }
         const quint32 getIndex(quint32 id) const { return m_indexes.indexOf(id); }
+        const Indexes getIndexes() const { return m_indexes; }
         const QString getString(quint32 offset) const { return QString::fromUtf8(m_strings + offset); }
 
     private:

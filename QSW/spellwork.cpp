@@ -4,6 +4,7 @@
 #include <QDir>
 #include <QPluginLoader>
 #include <QMessageBox>
+#include <QSqlQuery>
 
 #include "spellwork.h"
 #include "models.h"
@@ -35,6 +36,15 @@ void SpellWork::setActivePlugin(QString name)
             qCritical("Plugin '%s' is not loaded!", qPrintable(name));
             QMessageBox::warning(m_form, "Warning", "Please check directories settings!", QMessageBox::StandardButton::Ok);
             return;
+        }
+
+        // Modified SQL data
+        QStringList queries = plugin->getModifiedSqlDataQueries();
+        quint8 queryIndex = 0;
+        for (QString& query : queries)
+        {
+            QSqlQuery result = QSW::database().exec(query);
+            plugin->setModifiedSqlDataResult(queryIndex++, result);
         }
 
         QJsonObject metaData = m_spellInfoPlugins[name].first;

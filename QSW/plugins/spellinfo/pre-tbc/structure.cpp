@@ -62,9 +62,35 @@ const Spell::entry* Spell::getRecord(quint32 id, bool realId)
     return (realId ? getDbc().getEntry<entry>(id) : getDbc().getRecord<entry>(id));
 }
 
+quint32 Spell::getMetaSpellCount()
+{
+    return quint32(m_metaSpells.size());
+}
+
+Spell::meta *Spell::getMetaSpell(quint32 id, bool realId)
+{
+    if (!realId)
+        return (meta*)m_metaSpells.at(id);
+
+    quint32 index = m_metaSpellIndexes.indexOf(id);
+
+    if (index != -1)
+        return (meta*)m_metaSpells.at(index);
+
+    return nullptr;
+}
+
+const Spell::entry* Spell::getMetaRecord(quint32 id, bool realId)
+{
+    if (Spell::meta* meta = getMetaSpell(id, realId))
+        return meta->getInfo();
+
+    return nullptr;
+}
+
 const QString Spell::entry::name() const
 {
-    return getDbc().getString(nameOffset);
+    return m_internalSpells.contains(id) ? m_modifiedStrings.value(nameOffset) : getDbc().getString(nameOffset);
 }
 
 const QString Spell::entry::description() const
@@ -74,7 +100,7 @@ const QString Spell::entry::description() const
 
 const QString Spell::entry::rank() const
 {
-    return getDbc().getString(rankOffset);
+    return m_internalSpells.contains(id) ? m_modifiedStrings.value(nameOffset) : getDbc().getString(rankOffset);
 }
 
 const QString Spell::entry::toolTip() const
@@ -89,7 +115,7 @@ const QString Spell::entry::nameWithRank() const
 
 qint32 Spell::entry::getTriggerDuration(quint8 index) const
 {
-    const Spell::entry* triggerSpell = Spell::getRecord(effectTriggerSpell[index], true);
+    const Spell::entry* triggerSpell = Spell::getMetaRecord(effectTriggerSpell[index], true);
     if (triggerSpell)
         return triggerSpell->getDuration();
 

@@ -218,7 +218,8 @@ namespace Spell
         qint32     effectMiscValue[MAX_EFFECT_INDEX];               // 106-108
         quint32    effectTriggerSpell[MAX_EFFECT_INDEX];            // 109-111
         float      effectPointsPerComboPoint[MAX_EFFECT_INDEX];     // 112-114
-        quint32    spellVisual[2];                                  // 115-116
+        quint32    spellVisual;                                     // 115
+        quint32    spellVisual2;                                    // 116 not used
         quint32    spellIconId;                                     // 117
         quint32    activeIconId;                                    // 118
         quint32    spellPriority;                                   // 119
@@ -298,217 +299,239 @@ namespace Spell
     quint32 getRecordCount();
     const entry* getRecord(quint32 id, bool realId = false);
 
+    quint32 getMetaSpellCount();
+    meta* getMetaSpell(quint32 id, bool realId = false);
+    const entry* getMetaRecord(quint32 id, bool realId = false);
+
     class meta : public QObject
     {
         Q_OBJECT
 
         public:
 
-        meta(const entry* info) : m_info(info) {}
+            meta(const entry* info) : m_info(info), m_destroyInfo(false) {}
+
+            ~meta()
+            {
+                if (m_destroyInfo)
+                {
+                    delete m_info;
+                    m_info = nullptr;
+                }
+            }
+
+            void setSpellInfo(entry* info)
+            {
+                m_info = info;
+                m_destroyInfo = true;
+            }
+
+            const entry* getInfo() const { Q_ASSERT(m_info); return m_info; }
 
         public slots:
 
-        quint32 Id() { return m_info->id; }
-        quint32 School() { return m_info->school; }
-        quint32 Category() { return m_info->category; }
-        quint32 CastUI() { return m_info->castUI; }
-        quint32 Dispel() { return m_info->dispel; }
-        quint32 Mechanic() { return m_info->mechanic; }
-        quint32 Attributes() { return m_info->attributes; }
-        quint32 AttributesEx1() { return m_info->attributesEx1; }
-        quint32 AttributesEx2() { return m_info->attributesEx2; }
-        quint32 AttributesEx3() { return m_info->attributesEx3; }
-        quint32 AttributesEx4() { return m_info->attributesEx4; }
-        quint32 Stances() { return m_info->stances; }
-        quint32 StancesNot() { return m_info->stancesNot; }
-        quint32 Targets() { return m_info->targets; }
-        quint32 TargetCreatureType() { return m_info->targetCreatureType; }
-        quint32 RequiresSpellFocus() { return m_info->requiresSpellFocus; }
-        quint32 CasterAuraState() { return m_info->casterAuraState; }
-        quint32 TargetAuraState() { return m_info->targetAuraState; }
-        quint32 CastingTimeIndex() { return m_info->castingTimeIndex; }
-        quint32 RecoveryTime() { return m_info->recoveryTime; }
-        quint32 CategoryRecoveryTime() { return m_info->categoryRecoveryTime; }
-        quint32 InterruptFlags() { return m_info->interruptFlags; }
-        quint32 AuraInterruptFlags() { return m_info->auraInterruptFlags; }
-        quint32 ChannelInterruptFlags() { return m_info->channelInterruptFlags; }
-        quint32 ProcFlags() { return m_info->procFlags; }
-        quint32 ProcChance() { return m_info->procChance; }
-        quint32 ProcCharges() { return m_info->procCharges; }
-        quint32 MaxLevel() { return m_info->maxLevel; }
-        quint32 BaseLevel() { return m_info->baseLevel; }
-        quint32 SpellLevel() { return m_info->spellLevel; }
-        quint32 DurationIndex() { return m_info->durationIndex; }
-        qint32 PowerType() { return m_info->powerType; }
-        quint32 ManaCost() { return m_info->manaCost; }
-        quint32 ManaCostPerlevel() { return m_info->manaCostPerlevel; }
-        quint32 ManaPerSecond() { return m_info->manaPerSecond; }
-        quint32 ManaPerSecondPerLevel() { return m_info->manaPerSecondPerLevel; }
-        quint32 RangeIndex() { return m_info->rangeIndex; }
-        float Speed() { return m_info->speed; }
-        quint32 ModalNextSpell() { return m_info->modalNextSpell; }
-        quint32 StackAmount() { return m_info->stackAmount; }
-        quint32 Totem(quint8 index) { return m_info->totem[index]; }
-        qint32 Reagent(quint8 index) { return m_info->reagent[index]; }
-        quint32 ReagentCount(quint8 index) { return m_info->reagentCount[index]; }
-        qint32 EquippedItemClass() { return m_info->equippedItemClass; }
-        qint32 EquippedItemSubClassMask() { return m_info->equippedItemSubClassMask; }
-        qint32 EquippedItemInventoryTypeMask() { return m_info->equippedItemInventoryTypeMask; }
-        quint32 Effect(quint8 index) { return m_info->effect[index]; }
-        quint32 EffectDieSides(quint8 index) { return m_info->effectDieSides[index]; }
-        quint32 EffectBaseDice(quint8 index) { return m_info->effectBaseDice[index]; }
-        float EffectDicePerLevel(quint8 index) { return m_info->effectDicePerLevel[index]; }
-        float EffectRealPointsPerLevel(quint8 index) { return m_info->effectRealPointsPerLevel[index]; }
-        qint32 EffectBasePoints(quint8 index) { return m_info->effectBasePoints[index]; }
-        quint32 EffectMechanic(quint8 index) { return m_info->effectMechanic[index]; }
-        quint32 EffectImplicitTargetA(quint8 index) { return m_info->effectImplicitTargetA[index]; }
-        quint32 EffectImplicitTargetB(quint8 index) { return m_info->effectImplicitTargetB[index]; }
-        quint32 EffectRadiusIndex(quint8 index) { return m_info->effectRadiusIndex[index]; }
-        quint32 EffectApplyAuraName(quint8 index) { return m_info->effectApplyAuraName[index]; }
-        quint32 EffectAmplitude(quint8 index) { return m_info->effectAmplitude[index]; }
-        float EffectMultipleValue(quint8 index) { return m_info->effectMultipleValue[index]; }
-        quint32 EffectChainTarget(quint8 index) { return m_info->effectChainTarget[index]; }
-        quint32 EffectItemType(quint8 index) { return m_info->effectItemType[index]; }
-        qint32 EffectMiscValue(quint8 index) { return m_info->effectMiscValue[index]; }
-        quint32 EffectTriggerSpell(quint8 index) { return m_info->effectTriggerSpell[index]; }
-        float EffectPointsPerComboPoint(quint8 index) { return m_info->effectPointsPerComboPoint[index]; }
-        quint32 SpellVisual(quint8 index) { return m_info->spellVisual[index]; }
-        quint32 SpellIconId() { return m_info->spellIconId; }
-        quint32 ActiveIconId() { return m_info->activeIconId; }
-        quint32 SpellPriority() { return m_info->spellPriority; }
-        QString Name() { return m_info->name(); }
-        QString Rank() { return m_info->rank(); }
-        QString Description() { return m_info->description(); }
-        QString ToolTip() { return m_info->toolTip(); }
-        quint32 NameFlag() { return m_info->nameFlag; }
-        quint32 RankFlags() { return m_info->rankFlags; }
-        quint32 DescriptionFlags() { return m_info->descriptionFlags; }
-        quint32 ToolTipFlags() { return m_info->toolTipFlags; }
-        quint32 ManaCostPercentage() { return m_info->manaCostPercentage; }
-        quint32 StartRecoveryCategory() { return m_info->startRecoveryCategory; }
-        quint32 StartRecoveryTime() { return m_info->startRecoveryTime; }
-        quint32 MaxTargetLevel() { return m_info->maxTargetLevel; }
-        quint32 SpellFamilyName() { return m_info->spellFamilyName; }
-        quint64 SpellFamilyFlags() { return m_info->spellFamilyFlags; }
-        quint32 MaxAffectedTargets() { return m_info->maxAffectedTargets; }
-        quint32 DamageClass() { return m_info->damageClass; }
-        quint32 PreventionType() { return m_info->preventionType; }
-        qint32 StanceBarOrder() { return m_info->stanceBarOrder; }
-        float DamageMultiplier(quint8 index) { return m_info->damageMultiplier[index]; }
-        quint32 MinFactionId() { return m_info->minFactionId; }
-        quint32 MinReputation() { return m_info->minReputation; }
-        quint32 RequiredAuraVision() { return m_info->requiredAuraVision; }
-        qint32 Duration() { return m_info->getDuration(); }
-        qint32 TriggerDuration(quint8 index) { return m_info->getTriggerDuration(index); }
-        QString NameWithRank() { return m_info->nameWithRank(); }
+            quint32 Id() { return m_info->id; }
+            quint32 School() { return m_info->school; }
+            quint32 Category() { return m_info->category; }
+            quint32 CastUI() { return m_info->castUI; }
+            quint32 Dispel() { return m_info->dispel; }
+            quint32 Mechanic() { return m_info->mechanic; }
+            quint32 Attributes() { return m_info->attributes; }
+            quint32 AttributesEx1() { return m_info->attributesEx1; }
+            quint32 AttributesEx2() { return m_info->attributesEx2; }
+            quint32 AttributesEx3() { return m_info->attributesEx3; }
+            quint32 AttributesEx4() { return m_info->attributesEx4; }
+            quint32 Stances() { return m_info->stances; }
+            quint32 StancesNot() { return m_info->stancesNot; }
+            quint32 Targets() { return m_info->targets; }
+            quint32 TargetCreatureType() { return m_info->targetCreatureType; }
+            quint32 RequiresSpellFocus() { return m_info->requiresSpellFocus; }
+            quint32 CasterAuraState() { return m_info->casterAuraState; }
+            quint32 TargetAuraState() { return m_info->targetAuraState; }
+            quint32 CastingTimeIndex() { return m_info->castingTimeIndex; }
+            quint32 RecoveryTime() { return m_info->recoveryTime; }
+            quint32 CategoryRecoveryTime() { return m_info->categoryRecoveryTime; }
+            quint32 InterruptFlags() { return m_info->interruptFlags; }
+            quint32 AuraInterruptFlags() { return m_info->auraInterruptFlags; }
+            quint32 ChannelInterruptFlags() { return m_info->channelInterruptFlags; }
+            quint32 ProcFlags() { return m_info->procFlags; }
+            quint32 ProcChance() { return m_info->procChance; }
+            quint32 ProcCharges() { return m_info->procCharges; }
+            quint32 MaxLevel() { return m_info->maxLevel; }
+            quint32 BaseLevel() { return m_info->baseLevel; }
+            quint32 SpellLevel() { return m_info->spellLevel; }
+            quint32 DurationIndex() { return m_info->durationIndex; }
+            qint32 PowerType() { return m_info->powerType; }
+            quint32 ManaCost() { return m_info->manaCost; }
+            quint32 ManaCostPerlevel() { return m_info->manaCostPerlevel; }
+            quint32 ManaPerSecond() { return m_info->manaPerSecond; }
+            quint32 ManaPerSecondPerLevel() { return m_info->manaPerSecondPerLevel; }
+            quint32 RangeIndex() { return m_info->rangeIndex; }
+            float Speed() { return m_info->speed; }
+            quint32 ModalNextSpell() { return m_info->modalNextSpell; }
+            quint32 StackAmount() { return m_info->stackAmount; }
+            quint32 Totem(quint8 index) { return m_info->totem[index]; }
+            qint32 Reagent(quint8 index) { return m_info->reagent[index]; }
+            quint32 ReagentCount(quint8 index) { return m_info->reagentCount[index]; }
+            qint32 EquippedItemClass() { return m_info->equippedItemClass; }
+            qint32 EquippedItemSubClassMask() { return m_info->equippedItemSubClassMask; }
+            qint32 EquippedItemInventoryTypeMask() { return m_info->equippedItemInventoryTypeMask; }
+            quint32 Effect(quint8 index) { return m_info->effect[index]; }
+            quint32 EffectDieSides(quint8 index) { return m_info->effectDieSides[index]; }
+            quint32 EffectBaseDice(quint8 index) { return m_info->effectBaseDice[index]; }
+            float EffectDicePerLevel(quint8 index) { return m_info->effectDicePerLevel[index]; }
+            float EffectRealPointsPerLevel(quint8 index) { return m_info->effectRealPointsPerLevel[index]; }
+            qint32 EffectBasePoints(quint8 index) { return m_info->effectBasePoints[index]; }
+            quint32 EffectMechanic(quint8 index) { return m_info->effectMechanic[index]; }
+            quint32 EffectImplicitTargetA(quint8 index) { return m_info->effectImplicitTargetA[index]; }
+            quint32 EffectImplicitTargetB(quint8 index) { return m_info->effectImplicitTargetB[index]; }
+            quint32 EffectRadiusIndex(quint8 index) { return m_info->effectRadiusIndex[index]; }
+            quint32 EffectApplyAuraName(quint8 index) { return m_info->effectApplyAuraName[index]; }
+            quint32 EffectAmplitude(quint8 index) { return m_info->effectAmplitude[index]; }
+            float EffectMultipleValue(quint8 index) { return m_info->effectMultipleValue[index]; }
+            quint32 EffectChainTarget(quint8 index) { return m_info->effectChainTarget[index]; }
+            quint32 EffectItemType(quint8 index) { return m_info->effectItemType[index]; }
+            qint32 EffectMiscValue(quint8 index) { return m_info->effectMiscValue[index]; }
+            quint32 EffectTriggerSpell(quint8 index) { return m_info->effectTriggerSpell[index]; }
+            float EffectPointsPerComboPoint(quint8 index) { return m_info->effectPointsPerComboPoint[index]; }
+            quint32 SpellVisual() { return m_info->spellVisual; }
+            quint32 SpellIconId() { return m_info->spellIconId; }
+            quint32 ActiveIconId() { return m_info->activeIconId; }
+            quint32 SpellPriority() { return m_info->spellPriority; }
+            QString Name() { return m_info->name(); }
+            QString Rank() { return m_info->rank(); }
+            QString Description() { return m_info->description(); }
+            QString ToolTip() { return m_info->toolTip(); }
+            quint32 NameFlag() { return m_info->nameFlag; }
+            quint32 RankFlags() { return m_info->rankFlags; }
+            quint32 DescriptionFlags() { return m_info->descriptionFlags; }
+            quint32 ToolTipFlags() { return m_info->toolTipFlags; }
+            quint32 ManaCostPercentage() { return m_info->manaCostPercentage; }
+            quint32 StartRecoveryCategory() { return m_info->startRecoveryCategory; }
+            quint32 StartRecoveryTime() { return m_info->startRecoveryTime; }
+            quint32 MaxTargetLevel() { return m_info->maxTargetLevel; }
+            quint32 SpellFamilyName() { return m_info->spellFamilyName; }
+            quint64 SpellFamilyFlags() { return m_info->spellFamilyFlags; }
+            quint32 MaxAffectedTargets() { return m_info->maxAffectedTargets; }
+            quint32 DamageClass() { return m_info->damageClass; }
+            quint32 PreventionType() { return m_info->preventionType; }
+            qint32 StanceBarOrder() { return m_info->stanceBarOrder; }
+            float DamageMultiplier(quint8 index) { return m_info->damageMultiplier[index]; }
+            quint32 MinFactionId() { return m_info->minFactionId; }
+            quint32 MinReputation() { return m_info->minReputation; }
+            quint32 RequiredAuraVision() { return m_info->requiredAuraVision; }
+            qint32 Duration() { return m_info->getDuration(); }
+            qint32 TriggerDuration(quint8 index) { return m_info->getTriggerDuration(index); }
+            QString NameWithRank() { return m_info->nameWithRank(); }
 
-        bool hasAura(quint32 auraId)
-        {
-            for (quint8 i = 0; i < MAX_EFFECT_INDEX; ++i)
-                if (m_info->effectApplyAuraName[i] == auraId)
-                    return true;
-            return false;
-        }
+            bool hasAura(quint32 auraId)
+            {
+                for (quint8 i = 0; i < MAX_EFFECT_INDEX; ++i)
+                    if (m_info->effectApplyAuraName[i] == auraId)
+                        return true;
+                return false;
+            }
 
-        bool hasEffect(quint32 effectId)
-        {
-            for (quint8 i = 0; i < MAX_EFFECT_INDEX; ++i)
-                if (m_info->effect[i] == effectId)
-                    return true;
-            return false;
-        }
+            bool hasEffect(quint32 effectId)
+            {
+                for (quint8 i = 0; i < MAX_EFFECT_INDEX; ++i)
+                    if (m_info->effect[i] == effectId)
+                        return true;
+                return false;
+            }
 
-        bool hasTargetA(quint32 targetId)
-        {
-            for (quint8 i = 0; i < MAX_EFFECT_INDEX; ++i)
-                if (m_info->effectImplicitTargetA[i] == targetId)
-                    return true;
-            return false;
-        }
+            bool hasTargetA(quint32 targetId)
+            {
+                for (quint8 i = 0; i < MAX_EFFECT_INDEX; ++i)
+                    if (m_info->effectImplicitTargetA[i] == targetId)
+                        return true;
+                return false;
+            }
 
-        bool hasTargetB(quint32 targetId)
-        {
-            for (quint8 i = 0; i < MAX_EFFECT_INDEX; ++i)
-                if (m_info->effectImplicitTargetB[i] == targetId)
-                    return true;
-            return false;
-        }
+            bool hasTargetB(quint32 targetId)
+            {
+                for (quint8 i = 0; i < MAX_EFFECT_INDEX; ++i)
+                    if (m_info->effectImplicitTargetB[i] == targetId)
+                        return true;
+                return false;
+            }
 
-        bool isFitToFamilyMask(quint64 flags) { return !!(m_info->spellFamilyFlags & flags); }
+            bool isFitToFamilyMask(quint64 flags) { return !!(m_info->spellFamilyFlags & flags); }
 
         private:
 
-        const entry* m_info;
+            const entry* m_info;
+            bool m_destroyInfo;
 
-        Q_PROPERTY(quint32 Id READ Id)
-        Q_PROPERTY(quint32 School READ School)
-        Q_PROPERTY(quint32 Category READ Category)
-        Q_PROPERTY(quint32 CastUI READ CastUI)
-        Q_PROPERTY(quint32 Dispel READ Dispel)
-        Q_PROPERTY(quint32 Mechanic READ Mechanic)
-        Q_PROPERTY(quint32 Attributes READ Attributes)
-        Q_PROPERTY(quint32 AttributesEx1 READ AttributesEx1)
-        Q_PROPERTY(quint32 AttributesEx2 READ AttributesEx2)
-        Q_PROPERTY(quint32 AttributesEx3 READ AttributesEx3)
-        Q_PROPERTY(quint32 AttributesEx4 READ AttributesEx4)
-        Q_PROPERTY(quint32 Stances READ Stances)
-        Q_PROPERTY(quint32 StancesNot READ StancesNot)
-        Q_PROPERTY(quint32 Targets READ Targets)
-        Q_PROPERTY(quint32 TargetCreatureType READ TargetCreatureType)
-        Q_PROPERTY(quint32 RequiresSpellFocus READ RequiresSpellFocus)
-        Q_PROPERTY(quint32 CasterAuraState READ CasterAuraState)
-        Q_PROPERTY(quint32 TargetAuraState READ TargetAuraState)
-        Q_PROPERTY(quint32 CastingTimeIndex READ CastingTimeIndex)
-        Q_PROPERTY(quint32 RecoveryTime READ RecoveryTime)
-        Q_PROPERTY(quint32 CategoryRecoveryTime READ CategoryRecoveryTime)
-        Q_PROPERTY(quint32 InterruptFlags READ InterruptFlags)
-        Q_PROPERTY(quint32 AuraInterruptFlags READ AuraInterruptFlags)
-        Q_PROPERTY(quint32 ChannelInterruptFlags READ ChannelInterruptFlags)
-        Q_PROPERTY(quint32 ProcFlags READ ProcFlags)
-        Q_PROPERTY(quint32 ProcChance READ ProcChance)
-        Q_PROPERTY(quint32 ProcCharges READ ProcCharges)
-        Q_PROPERTY(quint32 MaxLevel READ MaxLevel)
-        Q_PROPERTY(quint32 BaseLevel READ BaseLevel)
-        Q_PROPERTY(quint32 SpellLevel READ SpellLevel)
-        Q_PROPERTY(quint32 DurationIndex READ DurationIndex)
-        Q_PROPERTY(qint32 PowerType READ PowerType)
-        Q_PROPERTY(quint32 ManaCost READ ManaCost)
-        Q_PROPERTY(quint32 ManaCostPerlevel READ ManaCostPerlevel)
-        Q_PROPERTY(quint32 ManaPerSecond READ ManaPerSecond)
-        Q_PROPERTY(quint32 ManaPerSecondPerLevel READ ManaPerSecondPerLevel)
-        Q_PROPERTY(quint32 RangeIndex READ RangeIndex)
-        Q_PROPERTY(float Speed READ Speed)
-        Q_PROPERTY(quint32 ModalNextSpell READ ModalNextSpell)
-        Q_PROPERTY(quint32 StackAmount READ StackAmount)
-        Q_PROPERTY(qint32 EquippedItemClass READ EquippedItemClass)
-        Q_PROPERTY(qint32 EquippedItemSubClassMask READ EquippedItemSubClassMask)
-        Q_PROPERTY(qint32 EquippedItemInventoryTypeMask READ EquippedItemInventoryTypeMask)
-        Q_PROPERTY(quint32 SpellIconId READ SpellIconId)
-        Q_PROPERTY(quint32 ActiveIconId READ ActiveIconId)
-        Q_PROPERTY(quint32 SpellPriority READ SpellPriority)
-        Q_PROPERTY(QString Name READ Name)
-        Q_PROPERTY(QString Rank READ Rank)
-        Q_PROPERTY(QString Description READ Description)
-        Q_PROPERTY(QString ToolTip READ ToolTip)
-        Q_PROPERTY(quint32 NameFlag READ NameFlag)
-        Q_PROPERTY(quint32 RankFlags READ RankFlags)
-        Q_PROPERTY(quint32 DescriptionFlags READ DescriptionFlags)
-        Q_PROPERTY(quint32 ToolTipFlags READ ToolTipFlags)
-        Q_PROPERTY(quint32 ManaCostPercentage READ ManaCostPercentage)
-        Q_PROPERTY(quint32 StartRecoveryCategory READ StartRecoveryCategory)
-        Q_PROPERTY(quint32 StartRecoveryTime READ StartRecoveryTime)
-        Q_PROPERTY(quint32 MaxTargetLevel READ MaxTargetLevel)
-        Q_PROPERTY(quint32 SpellFamilyName READ SpellFamilyName)
-        Q_PROPERTY(quint64 SpellFamilyFlags READ SpellFamilyFlags)
-        Q_PROPERTY(quint32 MaxAffectedTargets READ MaxAffectedTargets)
-        Q_PROPERTY(quint32 DamageClass READ DamageClass)
-        Q_PROPERTY(quint32 PreventionType READ PreventionType)
-        Q_PROPERTY(qint32 StanceBarOrder READ StanceBarOrder)
-        Q_PROPERTY(quint32 MinFactionId READ MinFactionId)
-        Q_PROPERTY(quint32 MinReputation READ MinReputation)
-        Q_PROPERTY(quint32 RequiredAuraVision READ RequiredAuraVision)
-        Q_PROPERTY(qint32 Duration READ Duration)
-        Q_PROPERTY(QString NameWithRank READ NameWithRank)
+            Q_PROPERTY(quint32 Id READ Id)
+            Q_PROPERTY(quint32 School READ School)
+            Q_PROPERTY(quint32 Category READ Category)
+            Q_PROPERTY(quint32 CastUI READ CastUI)
+            Q_PROPERTY(quint32 Dispel READ Dispel)
+            Q_PROPERTY(quint32 Mechanic READ Mechanic)
+            Q_PROPERTY(quint32 Attributes READ Attributes)
+            Q_PROPERTY(quint32 AttributesEx1 READ AttributesEx1)
+            Q_PROPERTY(quint32 AttributesEx2 READ AttributesEx2)
+            Q_PROPERTY(quint32 AttributesEx3 READ AttributesEx3)
+            Q_PROPERTY(quint32 AttributesEx4 READ AttributesEx4)
+            Q_PROPERTY(quint32 Stances READ Stances)
+            Q_PROPERTY(quint32 StancesNot READ StancesNot)
+            Q_PROPERTY(quint32 Targets READ Targets)
+            Q_PROPERTY(quint32 TargetCreatureType READ TargetCreatureType)
+            Q_PROPERTY(quint32 RequiresSpellFocus READ RequiresSpellFocus)
+            Q_PROPERTY(quint32 CasterAuraState READ CasterAuraState)
+            Q_PROPERTY(quint32 TargetAuraState READ TargetAuraState)
+            Q_PROPERTY(quint32 CastingTimeIndex READ CastingTimeIndex)
+            Q_PROPERTY(quint32 RecoveryTime READ RecoveryTime)
+            Q_PROPERTY(quint32 CategoryRecoveryTime READ CategoryRecoveryTime)
+            Q_PROPERTY(quint32 InterruptFlags READ InterruptFlags)
+            Q_PROPERTY(quint32 AuraInterruptFlags READ AuraInterruptFlags)
+            Q_PROPERTY(quint32 ChannelInterruptFlags READ ChannelInterruptFlags)
+            Q_PROPERTY(quint32 ProcFlags READ ProcFlags)
+            Q_PROPERTY(quint32 ProcChance READ ProcChance)
+            Q_PROPERTY(quint32 ProcCharges READ ProcCharges)
+            Q_PROPERTY(quint32 MaxLevel READ MaxLevel)
+            Q_PROPERTY(quint32 BaseLevel READ BaseLevel)
+            Q_PROPERTY(quint32 SpellLevel READ SpellLevel)
+            Q_PROPERTY(quint32 DurationIndex READ DurationIndex)
+            Q_PROPERTY(qint32 PowerType READ PowerType)
+            Q_PROPERTY(quint32 ManaCost READ ManaCost)
+            Q_PROPERTY(quint32 ManaCostPerlevel READ ManaCostPerlevel)
+            Q_PROPERTY(quint32 ManaPerSecond READ ManaPerSecond)
+            Q_PROPERTY(quint32 ManaPerSecondPerLevel READ ManaPerSecondPerLevel)
+            Q_PROPERTY(quint32 RangeIndex READ RangeIndex)
+            Q_PROPERTY(float Speed READ Speed)
+            Q_PROPERTY(quint32 ModalNextSpell READ ModalNextSpell)
+            Q_PROPERTY(quint32 StackAmount READ StackAmount)
+            Q_PROPERTY(qint32 EquippedItemClass READ EquippedItemClass)
+            Q_PROPERTY(qint32 EquippedItemSubClassMask READ EquippedItemSubClassMask)
+            Q_PROPERTY(qint32 EquippedItemInventoryTypeMask READ EquippedItemInventoryTypeMask)
+            Q_PROPERTY(quint32 SpellIconId READ SpellIconId)
+            Q_PROPERTY(quint32 ActiveIconId READ ActiveIconId)
+            Q_PROPERTY(quint32 SpellPriority READ SpellPriority)
+            Q_PROPERTY(QString Name READ Name)
+            Q_PROPERTY(QString Rank READ Rank)
+            Q_PROPERTY(QString Description READ Description)
+            Q_PROPERTY(QString ToolTip READ ToolTip)
+            Q_PROPERTY(quint32 NameFlag READ NameFlag)
+            Q_PROPERTY(quint32 RankFlags READ RankFlags)
+            Q_PROPERTY(quint32 DescriptionFlags READ DescriptionFlags)
+            Q_PROPERTY(quint32 ToolTipFlags READ ToolTipFlags)
+            Q_PROPERTY(quint32 ManaCostPercentage READ ManaCostPercentage)
+            Q_PROPERTY(quint32 StartRecoveryCategory READ StartRecoveryCategory)
+            Q_PROPERTY(quint32 StartRecoveryTime READ StartRecoveryTime)
+            Q_PROPERTY(quint32 MaxTargetLevel READ MaxTargetLevel)
+            Q_PROPERTY(quint32 SpellFamilyName READ SpellFamilyName)
+            Q_PROPERTY(quint64 SpellFamilyFlags READ SpellFamilyFlags)
+            Q_PROPERTY(quint32 MaxAffectedTargets READ MaxAffectedTargets)
+            Q_PROPERTY(quint32 DamageClass READ DamageClass)
+            Q_PROPERTY(quint32 PreventionType READ PreventionType)
+            Q_PROPERTY(qint32 StanceBarOrder READ StanceBarOrder)
+            Q_PROPERTY(quint32 MinFactionId READ MinFactionId)
+            Q_PROPERTY(quint32 MinReputation READ MinReputation)
+            Q_PROPERTY(quint32 RequiredAuraVision READ RequiredAuraVision)
+            Q_PROPERTY(qint32 Duration READ Duration)
+            Q_PROPERTY(QString NameWithRank READ NameWithRank)
     };
 }
 

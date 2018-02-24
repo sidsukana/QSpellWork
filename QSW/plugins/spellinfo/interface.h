@@ -1,7 +1,7 @@
-#ifndef SPELLINFO_INTERFACE_H
-#define SPELLINFO_INTERFACE_H
+#pragma once
 
 #include <QObject>
+#include <QSqlQuery>
 #include <QVariantHash>
 
 #include "../../qsw.h"
@@ -22,10 +22,11 @@ class SpellInfoInterface
         virtual QObjectList getMetaSpells() const = 0;
         virtual EnumHash getEnums() const = 0;
         virtual QStringList getNames() const = 0;
+
+        virtual QStringList getModifiedSqlDataQueries() { return QStringList(); }
+        virtual void setModifiedSqlDataResult(quint8 queryIndex, QSqlQuery& query) { Q_UNUSED(queryIndex) Q_UNUSED(query) }
 };
 
 #define SpellInfoInterface_iid "org.qsw.plugins.spellinfo"
 
 Q_DECLARE_INTERFACE(SpellInfoInterface, SpellInfoInterface_iid)
-
-#endif // SPELLINFO_INTERFACE_H

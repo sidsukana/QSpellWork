@@ -1,5 +1,6 @@
 TEMPLATE        = lib
 CONFIG         += plugin
+QT             += sql
 HEADERS         = spellinfo.h \
     structure.h
 SOURCES         = spellinfo.cpp \

@@ -5,6 +5,13 @@
 
 #include "../interface.h"
 
+extern EnumHash m_enums;
+extern QStringList m_names;
+extern QObjectList m_metaSpells;
+extern Indexes m_metaSpellIndexes;
+extern Indexes m_internalSpells;
+extern QStringList m_modifiedStrings;
+
 class SpellInfo : public QObject, SpellInfoInterface
 {
     Q_OBJECT
