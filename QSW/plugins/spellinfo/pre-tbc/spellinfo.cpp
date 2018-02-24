@@ -915,9 +915,23 @@ QVariantHash SpellInfo::getValues(quint32 id) const
     values["manaPerSecond"] = spellInfo->manaPerSecond;
     values["manaPerSecondPerLevel"] =spellInfo->manaPerSecondPerLevel;
 
-    values["interruptFlags"] = QString("0x" + QString("%0").arg(spellInfo->interruptFlags, 8, 16, QChar('0')).toUpper());
-    values["auraInterruptFlags"] = QString("0x" + QString("%0").arg(spellInfo->auraInterruptFlags, 8, 16, QChar('0')).toUpper());
-    values["channelInterruptFlags"] = QString("0x" + QString("%0").arg(spellInfo->channelInterruptFlags, 8, 16, QChar('0')).toUpper());
+    if (spellInfo->interruptFlags)
+    {
+        values["interruptFlags"] = QString("0x" + QString("%0").arg(spellInfo->interruptFlags, 8, 16, QChar('0')).toUpper());
+        values["interruptFlagsNames"] = splitMask(spellInfo->interruptFlags, getEnums()["SpellInterruptFlags"]);
+    }
+
+    if (spellInfo->auraInterruptFlags)
+    {
+        values["auraInterruptFlags"] = QString("0x" + QString("%0").arg(spellInfo->auraInterruptFlags, 8, 16, QChar('0')).toUpper());
+        values["auraInterruptFlagsNames"] = splitMask(spellInfo->auraInterruptFlags, getEnums()["SpellAuraInterruptFlags"]);
+    }
+
+    if (spellInfo->channelInterruptFlags)
+    {
+        values["channelInterruptFlags"] = QString("0x" + QString("%0").arg(spellInfo->channelInterruptFlags, 8, 16, QChar('0')).toUpper());
+        values["channelInterruptFlagsNames"] = splitMask(spellInfo->channelInterruptFlags, getEnums()["SpellChannelInterruptFlags"]);
+    }
 
     if (spellInfo->casterAuraState)
     {

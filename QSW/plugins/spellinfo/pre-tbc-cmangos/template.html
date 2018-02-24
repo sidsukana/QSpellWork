@@ -143,7 +143,9 @@ function toggleRegExp(event) {
 {{#manaPerSecondPerLevel}} + lvl * {{manaPerSecondPerLevel}}{{/manaPerSecondPerLevel}}
 </li>
 {{/costInfo}}
-<li>InterruptFlags: {{interruptFlags}}, AuraIF: {{auraInterruptFlags}}, ChannelIF: {{channelInterruptFlags}}</li>
+{{#interruptFlags}}<li>InterruptFlags: {{interruptFlags}} ({{interruptFlagsNames}})</li>{{/interruptFlags}}
+{{#auraInterruptFlags}}<li>AuraIF: {{auraInterruptFlags}} ({{auraInterruptFlagsNames}})</li>{{/auraInterruptFlags}}
+{{#channelInterruptFlags}}<li>ChannelIF: {{channelInterruptFlags}} ({{channelInterruptFlagsNames}})</li>{{/channelInterruptFlags}}
 {{#casterAuraState}}<li>CasterAuraState: {{casterAuraState}} ({{casterAuraStateName}})</li>{{/casterAuraState}}
 {{#targetAuraState}}<li>TargetAuraState: {{targetAuraState}} ({{targetAuraStateName}})</li>{{/targetAuraState}}
 {{#reqSpellFocus}}<li>RequiresSpellFocus: {{reqSpellFocus}}</li>{{/reqSpellFocus}}

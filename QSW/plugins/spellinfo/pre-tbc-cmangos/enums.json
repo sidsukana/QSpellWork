@@ -577,6 +577,50 @@
         { "key": "TARGET_FLAG_CORPSE", "value": "0x08000"},
         { "key": "TARGET_FLAG_UNK2", "value": "0x10000"}
     ],
+    "SpellInterruptFlags":
+    [
+        { "key": "SPELL_INTERRUPT_FLAG_MOVEMENT", "value": "0x01"},
+        { "key": "SPELL_INTERRUPT_FLAG_DAMAGE", "value": "0x02"},
+        { "key": "SPELL_INTERRUPT_FLAG_INTERRUPT", "value": "0x04"},
+        { "key": "SPELL_INTERRUPT_FLAG_AUTOATTACK", "value": "0x08"},
+        { "key": "SPELL_INTERRUPT_FLAG_ABORT_ON_DMG", "value": "0x10"}
+    ],
+    "SpellChannelInterruptFlags":
+    [
+        { "key": "CHANNEL_FLAG_DAMAGE", "value": "0x0002"},
+        { "key": "CHANNEL_FLAG_MOVEMENT", "value": "0x0008"},
+        { "key": "CHANNEL_FLAG_TURNING", "value": "0x0010"},
+        { "key": "CHANNEL_FLAG_DAMAGE2", "value": "0x0080"},
+        { "key": "CHANNEL_FLAG_DELAY", "value": "0x4000"}
+    ],
+    "SpellAuraInterruptFlags":
+    [
+        { "key": "AURA_INTERRUPT_FLAG_UNK0", "value": "0x00000001"},
+        { "key": "AURA_INTERRUPT_FLAG_DAMAGE", "value": "0x00000002"},
+        { "key": "AURA_INTERRUPT_FLAG_UNK2", "value": "0x00000004"},
+        { "key": "AURA_INTERRUPT_FLAG_MOVE", "value": "0x00000008"},
+        { "key": "AURA_INTERRUPT_FLAG_TURNING", "value": "0x00000010"},
+        { "key": "AURA_INTERRUPT_FLAG_ENTER_COMBAT", "value": "0x00000020"},
+        { "key": "AURA_INTERRUPT_FLAG_NOT_MOUNTED", "value": "0x00000040"},
+        { "key": "AURA_INTERRUPT_FLAG_NOT_ABOVEWATER", "value": "0x00000080"},
+        { "key": "AURA_INTERRUPT_FLAG_NOT_UNDERWATER", "value": "0x00000100"},
+        { "key": "AURA_INTERRUPT_FLAG_NOT_SHEATHED", "value": "0x00000200"},
+        { "key": "AURA_INTERRUPT_FLAG_TALK", "value": "0x00000400"},
+        { "key": "AURA_INTERRUPT_FLAG_USE", "value": "0x00000800"},
+        { "key": "AURA_INTERRUPT_FLAG_MELEE_ATTACK", "value": "0x00001000"},
+        { "key": "AURA_INTERRUPT_FLAG_UNK13", "value": "0x00002000"},
+        { "key": "AURA_INTERRUPT_FLAG_UNK14", "value": "0x00004000"},
+        { "key": "AURA_INTERRUPT_FLAG_UNK15", "value": "0x00008000"},
+        { "key": "AURA_INTERRUPT_FLAG_UNK16", "value": "0x00010000"},
+        { "key": "AURA_INTERRUPT_FLAG_MOUNTING", "value": "0x00020000"},
+        { "key": "AURA_INTERRUPT_FLAG_NOT_SEATED", "value": "0x00040000"},
+        { "key": "AURA_INTERRUPT_FLAG_CHANGE_MAP", "value": "0x00080000"},
+        { "key": "AURA_INTERRUPT_FLAG_IMMUNE_OR_LOST_SELECTION", "value": "0x00100000"},
+        { "key": "AURA_INTERRUPT_FLAG_UNK21", "value": "0x00200000"},
+        { "key": "AURA_INTERRUPT_FLAG_TELEPORTED", "value": "0x00400000"},
+        { "key": "AURA_INTERRUPT_FLAG_ENTER_PVP_COMBAT", "value": "0x00800000"},
+        { "key": "AURA_INTERRUPT_FLAG_DIRECT_DAMAGE", "value": "0x01000000"}
+    ],
     "SpellEffect":
     [
         { "key": "SPELL_EFFECT_NONE", "value": 0},
