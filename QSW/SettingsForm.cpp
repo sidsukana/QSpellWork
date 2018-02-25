@@ -26,38 +26,46 @@ SettingsForm::SettingsForm(QWidget *parent)
 
 void SettingsForm::slotEditMPQ()
 {
-    if (!mpqDir->text().isEmpty()) {
+    if (!mpqDir->text().isEmpty())
+    {
         QDir dir(mpqDir->text());
-        if (dir.exists()) {
+        if (dir.exists())
+        {
             mpqDir->setText(dir.absolutePath());
             dbcDir->setText("DBFilesClient");
             mpqLocale->clear();
             QStringList localeDirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
-            foreach (QString str, localeDirs) {
+            for (QString& str : localeDirs)
+            {
                 QString localeDir = str.section("\\", -1);
-                if (localeDir.size() == 4) {
+                if (localeDir.size() == 4)
+                {
                     mpqLocale->addItem(localeDir);
                 }
             }
             mpqLocale->addItem("");
         }
-    } else {
+    }
+    else
+    {
         mpqLocale->clear();
-        dbcDir->setText("");
     }
 }
 
 void SettingsForm::slotMPQ()
 {
     QDir dir(QFileDialog::getExistingDirectory(this, "Set MPQ directory", mpqDir->text()));
-    if (dir.exists()) {
+    if (dir.exists())
+    {
         mpqDir->setText(dir.absolutePath());
         dbcDir->setText("DBFilesClient");
         mpqLocale->clear();
         QStringList localeDirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
-        foreach (QString str, localeDirs) {
+        for (QString& str : localeDirs)
+        {
             QString localeDir = str.section("\\", -1);
-            if (localeDir.size() == 4) {
+            if (localeDir.size() == 4)
+            {
                 mpqLocale->addItem(localeDir);
             }
         }

@@ -66,7 +66,7 @@ function toggleRegExp(event) {
 <ul>
 {{#modalNextSpell}}<li>ModalNextSpell: {{modalNextSpell}}</li>{{/modalNextSpell}}
 <li>Category: {{categoryId}}, SpellIconId: {{spellIconId}}, ActiveIconId: {{activeIconId}}, SpellVisual: {{spellVisual}}</li>
-<li>SpellFamilyName: {{spellFamilyId}} ({{spellFamilyName}}), SpellFamilyFlags: {{spellFamilyFlags}}</li>
+<li>SpellFamilyName: {{spellFamilyId}} ({{spellFamilyName}}), SpellFamilyFlags: 0x{{spellFamilyFlags3}} {{spellFamilyFlags2}} {{spellFamilyFlags1}}</li>
 <li>SpellSchoolMask: {{spellSchoolMask}} ({{spellSchoolMaskNames}})</li>
 <li>DamageClass: {{damageClassId}} ({{damageClassName}})</li>
 <li>PreventionType: {{preventionTypeId}} ({{preventionTypeName}})</li>
@@ -121,6 +121,12 @@ function toggleRegExp(event) {
 <li>{{name}} - {{value}}</li>
 {{/attrEx6Names}}
 </ul></details></li>{{/attrEx6}}
+{{#attrEx7}}<li><details><summary>AttributesEx7: {{attrEx7}}</summary>
+<ul>
+{{#attrEx7Names}}
+<li>{{name}} - {{value}}</li>
+{{/attrEx7Names}}
+</ul></details></li>{{/attrEx7}}
 </ul>
 </div>
 </div>
@@ -262,7 +268,7 @@ function toggleRegExp(event) {
 {{/triggerId}}
 {{#chainTarget}}<li>EffectChainTarget: {{chainTarget}}</li>{{/chainTarget}}
 {{#mechanicId}}<li>EffectMechanic: {{mechanicId}} ({{mechanicName}})</li>{{/mechanicId}}
-{{#itemType}}<li>EffectItemType: {{itemType}}</li>{{/itemType}}
+{{#hasClassMask}}<li>ClassMask: 0x{{classMask3}} {{classMask2}} {{classMask1}}</li>{{/hasClassMask}}
 {{#affectInfo}}
 <ul>
 {{#hasSkill}}

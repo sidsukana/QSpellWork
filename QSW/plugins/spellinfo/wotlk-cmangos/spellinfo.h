@@ -15,7 +15,7 @@ extern QStringList m_modifiedStrings;
 class SpellInfo : public QObject, SpellInfoInterface
 {
     Q_OBJECT
-    Q_PLUGIN_METADATA(IID SpellInfoInterface_iid FILE "wotlk.json")
+    Q_PLUGIN_METADATA(IID SpellInfoInterface_iid FILE "wotlk-cmangos.json")
     Q_INTERFACES(SpellInfoInterface)
 
     public:
@@ -31,4 +31,7 @@ class SpellInfo : public QObject, SpellInfoInterface
         QObjectList getMetaSpells() const;
         EnumHash getEnums() const;
         QStringList getNames() const;
+
+        QStringList getModifiedSqlDataQueries();
+        void setModifiedSqlDataResult(quint8 queryIndex, QSqlQuery& query);
 };

@@ -1,7 +1,7 @@
 {
-    "name" : "wotlk",
-    "fullName" : "WoW 3.3.5a",
-    "version" : "1.1.0",
+    "name" : "wotlk-cmangos",
+    "fullName" : "WoW 3.3.5a (CMaNGOS)",
+    "version" : "1.0.0",
     "htmlFile" : "template.html",
     "cssFile" : "template.css",
     "enumsFile" : "enums.json"

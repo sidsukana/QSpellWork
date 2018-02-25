@@ -5,7 +5,7 @@ HEADERS         = spellinfo.h \
     structure.h
 SOURCES         = spellinfo.cpp \
     structure.cpp
-TARGET          = wotlk
+TARGET          = wotlk-cmangos
 
 defineTest(copyToDestdir) {
     files = $$1
