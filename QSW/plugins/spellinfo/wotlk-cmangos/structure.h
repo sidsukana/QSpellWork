@@ -334,7 +334,7 @@ namespace Spell
 
         public:
 
-            meta(const entry* info) : m_info(info), m_destroyInfo(false) {}
+            meta(const entry* info, bool serverSide = false) : m_info(info), m_destroyInfo(false), m_serverSide(serverSide) {}
 
             ~meta()
             {
@@ -468,6 +468,9 @@ namespace Spell
         qint32 TriggerDuration(quint8 index) { return m_info->getTriggerDuration(index); }
         QString NameWithRank() { return m_info->nameWithRank(); }
 
+        // Addition properties
+        bool IsServerSide() { return m_serverSide; }
+
         bool hasAura(quint32 auraId)
         {
             for (quint8 i = 0; i < MAX_EFFECT_INDEX; ++i)
@@ -506,6 +509,7 @@ namespace Spell
 
             const entry* m_info;
             bool m_destroyInfo;
+            bool m_serverSide;
 
         Q_PROPERTY(quint32 Id READ Id)
         Q_PROPERTY(quint32 Category READ Category)
@@ -591,6 +595,7 @@ namespace Spell
         Q_PROPERTY(quint32 SpellDifficultyId READ SpellDifficultyId)
         Q_PROPERTY(qint32 Duration READ Duration)
         Q_PROPERTY(QString NameWithRank READ NameWithRank)
+        Q_PROPERTY(bool IsServerSide READ IsServerSide)
     };
 }
 

@@ -115,7 +115,7 @@ void SpellInfo::setModifiedSqlDataResult(quint8 queryIndex, QSqlQuery& query)
             // add new index for meta spell
             m_metaSpellIndexes.append(id);
             m_internalSpells.append(id);
-            m_metaSpells.append(new Spell::meta(spell));
+            m_metaSpells.append(new Spell::meta(spell, true));
 
             QString str = query.value(124).toString();
             qint32 index = m_modifiedStrings.indexOf(str);
