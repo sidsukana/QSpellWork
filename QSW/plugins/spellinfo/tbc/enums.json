@@ -73,10 +73,7 @@
         { "key": "SCHOOL_MASK_NATURE", "value": "0x08"},
         { "key": "SCHOOL_MASK_FROST", "value": "0x10"},
         { "key": "SCHOOL_MASK_SHADOW", "value": "0x20"},
-        { "key": "SCHOOL_MASK_ARCANE", "value": "0x40"},
-        { "key": "SCHOOL_MASK_SPELL", "value": "0x7C"},
-        { "key": "SCHOOL_MASK_MAGIC", "value": "0x7E"},
-        { "key": "SCHOOL_MASK_ALL", "value": "0x7F"}
+        { "key": "SCHOOL_MASK_ARCANE", "value": "0x40"}
     ],
     "Power":
     [
