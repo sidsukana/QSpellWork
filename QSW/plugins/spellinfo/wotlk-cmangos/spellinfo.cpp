@@ -110,13 +110,14 @@ void SpellInfo::setModifiedSqlDataResult(quint8 queryIndex, QSqlQuery& query)
     while (query.next())
     {
         Spell::entry* spell = new Spell::entry();
+        Spell::meta* metaSpell = nullptr;
         quint32 id = query.value(0).toUInt();
         if (const Spell::entry* existSpell = Spell::getMetaRecord(id, true))
         {
             *spell = *existSpell;
 
             qint32 index = m_metaSpellIndexes.indexOf(id);
-            Spell::meta* metaSpell = qobject_cast<Spell::meta*>(m_metaSpells.at(index));
+            metaSpell = qobject_cast<Spell::meta*>(m_metaSpells.at(index));
             metaSpell->setSpellInfo(spell);
             m_metaSpells.replace(m_metaSpellIndexes.indexOf(id), metaSpell);
         }
@@ -125,7 +126,8 @@ void SpellInfo::setModifiedSqlDataResult(quint8 queryIndex, QSqlQuery& query)
             // add new index for meta spell
             m_metaSpellIndexes.append(id);
             m_internalSpells.append(id);
-            m_metaSpells.append(new Spell::meta(spell, true));
+            metaSpell = new Spell::meta(spell);
+            m_metaSpells.append(metaSpell);
 
             QString str = query.value(133).toString();
             qint32 index = m_modifiedStrings.indexOf(str);
@@ -266,6 +268,8 @@ void SpellInfo::setModifiedSqlDataResult(quint8 queryIndex, QSqlQuery& query)
         spell->schoolMask = query.value(181).toUInt();
         spell->runeCostId = query.value(182).toUInt();
         spell->spellDifficultyId = query.value(183).toUInt();
+
+        metaSpell->setProperty("ServerSide", query.value(184));
     }
 }
 
@@ -910,7 +914,11 @@ QVariantHash SpellInfo::getValues(quint32 id) const
 {
     QVariantHash values;
 
-    const Spell::entry* spellInfo = Spell::getMetaRecord(id, true);
+    Spell::meta* metaSpell = Spell::getMetaSpell(id, true);
+    if (!metaSpell)
+        return values;
+
+    const Spell::entry* spellInfo = metaSpell->getInfo();
     if (!spellInfo)
         return values;
 
@@ -936,6 +944,13 @@ QVariantHash SpellInfo::getValues(quint32 id) const
     values["descriptionRegExp"] = getDescription(spellInfo->description(), spellInfo);
     values["tooltip"] = spellInfo->toolTip();
     values["tooltipRegExp"] = getDescription(spellInfo->toolTip(), spellInfo);
+
+    switch (metaSpell->getServerSide())
+    {
+        case 1: values["serverSide"] = "SS"; break;
+        case 2: values["serverSide"] = "CSS"; break;
+        default: break;
+    }
 
     QVariantList parentSpells = getParentSpells(spellInfo->id);
     if (!parentSpells.isEmpty())

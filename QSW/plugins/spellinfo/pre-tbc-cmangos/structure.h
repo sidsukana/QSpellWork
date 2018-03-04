@@ -315,7 +315,7 @@ namespace Spell
 
         public:
 
-            meta(const entry* info, bool serverSide = false) : m_info(info), m_destroyInfo(false), m_serverSide(serverSide) {}
+            meta(const entry* info) : m_info(info), m_destroyInfo(false) {}
 
             ~meta()
             {
@@ -331,6 +331,10 @@ namespace Spell
                 m_info = info;
                 m_destroyInfo = true;
             }
+
+            // Addition properties
+            quint8 getServerSide() { return m_serverSide; }
+            void setServerSide(quint8 value) { m_serverSide = value; }
 
             const entry* getInfo() const { Q_ASSERT(m_info); return m_info; }
 
@@ -429,9 +433,6 @@ namespace Spell
             qint32 Duration() { return m_info->getDuration(); }
             qint32 TriggerDuration(quint8 index) { return m_info->getTriggerDuration(index); }
             QString NameWithRank() { return m_info->nameWithRank(); }
-
-            // Addition properties
-            bool IsServerSide() { return m_serverSide; }
 
             bool hasAura(quint32 auraId)
             {
@@ -542,7 +543,7 @@ namespace Spell
             Q_PROPERTY(quint32 RequiredAuraVision READ RequiredAuraVision)
             Q_PROPERTY(qint32 Duration READ Duration)
             Q_PROPERTY(QString NameWithRank READ NameWithRank)
-            Q_PROPERTY(bool IsServerSide READ IsServerSide)
+            Q_PROPERTY(quint8 ServerSide READ getServerSide WRITE setServerSide)
     };
 }
 

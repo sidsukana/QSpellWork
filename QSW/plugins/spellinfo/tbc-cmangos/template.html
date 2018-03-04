@@ -41,7 +41,10 @@ function toggleRegExp(event) {
 </div>
 </div>
 <div class='b-tooltip_body'>
-<b>Id:</b> {{id}}</br>
+<div>
+<div style="float: left"><b>Id:</b> {{id}}</div>
+<div style="float: right; color: red"><b>{{serverSide}}</b></div>
+</div></br>
 <b>Name:</b> {{nameWithRank}}</br>
 <div style="display:block;" id="desc" ondblclick="toggleRegExp(event)">{{#description}}<b>Description:</b> {{description}}</br>{{/description}}</div>
 <div style="display:none;" id="descRegExp" ondblclick="toggleRegExp(event)" >{{#descriptionRegExp}}<b>Description:</b> {{descriptionRegExp}}</br>{{/descriptionRegExp}}</div>
