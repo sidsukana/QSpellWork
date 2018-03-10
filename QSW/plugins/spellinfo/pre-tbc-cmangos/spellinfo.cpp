@@ -35,7 +35,7 @@ QMap<quint32, QString> procFlags = {
     { 0x00200000, "21 On trap activation" },
 };
 
-bool SpellInfo::init() const
+bool SpellInfo::init()
 {
     if (!SkillLine::getDbc().load())
         return false;
@@ -94,8 +94,11 @@ void SpellInfo::setModifiedSqlDataResult(quint8 queryIndex, QSqlQuery& query)
 {
     Q_UNUSED(queryIndex)
 
+    emit progressShow(query.size());
+
     while (query.next())
     {
+        emit progressStep(query.at());
         Spell::entry* spell = new Spell::entry();
         Spell::meta* metaSpell = nullptr;
         quint32 id = query.value(0).toUInt();
@@ -234,6 +237,7 @@ void SpellInfo::setModifiedSqlDataResult(quint8 queryIndex, QSqlQuery& query)
 
         metaSpell->setProperty("ServerSide", query.value(145));
     }
+    emit progressHide();
 }
 
 void SpellInfo::setEnums(EnumHash enums)

@@ -22,20 +22,26 @@ SpellWork::SpellWork(MainForm* form)
 
 void SpellWork::setActivePlugin(QString name)
 {
+    if (!_pluginLoaderMutex.tryLock())
+        return;
+
+    emit pluginLoadingInit();
     m_activeSpellInfoPlugin = nullptr;
 
     // load new plugin
-    if (m_spellInfoPlugins.contains(name)) {
-
+    if (m_spellInfoPlugins.contains(name))
+    {
         SpellInfoInterface* plugin = m_spellInfoPlugins[name].second;
         m_activeSpellInfoPluginName = name;
         m_form->loadSettings();
 
         MPQ::setMpqFiles(plugin->getMPQFiles());
 
-        if (!plugin->init()) {
+        if (!plugin->init())
+        {
             qCritical("Plugin '%s' is not loaded!", qPrintable(name));
-            QMessageBox::warning(m_form, "Warning", "Please check directories settings!", QMessageBox::StandardButton::Ok);
+            emit pluginLoadingFail();
+            _pluginLoaderMutex.unlock();
             return;
         }
 
@@ -74,6 +80,9 @@ void SpellWork::setActivePlugin(QString name)
         m_form->setLocale(MPQ::localeDir());
         m_activeSpellInfoPlugin = plugin;
     }
+
+    emit pluginLoaded();
+    _pluginLoaderMutex.unlock();
 }
 
 void SpellWork::loadPlugins()
@@ -90,6 +99,10 @@ void SpellWork::loadPlugins()
         QObject *plugin = pluginLoader.instance();
         if (plugin)
         {
+            connect(plugin, SIGNAL(progressShow(int)), this, SIGNAL(progressShow(int)));
+            connect(plugin, SIGNAL(progressStep(int)), this, SIGNAL(progressStep(int)));
+            connect(plugin, SIGNAL(progressHide()), this, SIGNAL(progressHide()));
+
             SpellInfoInterface* spellInfoPlugin = qobject_cast<SpellInfoInterface *>(plugin);
             if (spellInfoPlugin)
             {

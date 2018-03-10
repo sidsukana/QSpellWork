@@ -1,5 +1,4 @@
-#ifndef MAIN_FORM_H
-#define MAIN_FORM_H
+#pragma once
 
 #include <QSettings>
 #include <QFutureWatcher>
@@ -170,6 +169,13 @@ class MainForm : public QMainWindow, public Ui::main
         void slotCopyAll();
         void slotChangeActivePlugin();
 
+        void onPluginLoaded();
+        void onPluginLoadingFail();
+        void onPluginLoadingInit();
+
+        void showProgressBar(int maximum);
+        void hideProgressBar();
+
         bool event(QEvent* ev);
 
     private:
@@ -196,5 +202,3 @@ class MainForm : public QMainWindow, public Ui::main
 
         QSWPage* m_pages[QSW::PAGE_MAX];
 };
-
-#endif // MAIN_FORM_H

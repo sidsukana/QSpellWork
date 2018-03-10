@@ -20,7 +20,7 @@ class SpellInfo : public QObject, SpellInfoInterface
 
     public:
 
-        bool init() const;
+        bool init();
 
         void setEnums(EnumHash enums);
 
@@ -34,4 +34,9 @@ class SpellInfo : public QObject, SpellInfoInterface
 
         QStringList getModifiedSqlDataQueries();
         void setModifiedSqlDataResult(quint8 queryIndex, QSqlQuery& query);
+
+    signals:
+        void progressShow(int maximum);
+        void progressStep(int value);
+        void progressHide();
 };

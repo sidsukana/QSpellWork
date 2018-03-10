@@ -1,7 +1,5 @@
-#ifndef SPELLWORK_H
-#define SPELLWORK_H
+#pragma once
 
-#include <QMetaEnum>
 #include <QJSEngine>
 #include <QJSValue>
 #include <QJSValueList>
@@ -36,22 +34,24 @@ class SpellWork : public QObject
         void compare();
         EventList search(quint8 type);
 
-        QMetaEnum getMetaEnum() { return m_metaEnum; }
-        void setMetaEnum(const char* enumName);
-
         MainForm* getForm() { return m_form; }
+
+    signals:
+        void pluginLoadingInit();
+        void pluginLoadingFail();
+        void pluginLoaded();
+        void progressShow(int maximum);
+        void progressStep(int value);
+        void progressHide();
 
     private:
         MainForm *m_form;
 
-        QMetaEnum m_metaEnum;
-
         QByteArray m_templateHtml;
         QByteArray m_styleCss;
 
+        QMutex _pluginLoaderMutex;
         SpellInfoPlugins m_spellInfoPlugins;
         SpellInfoInterface* m_activeSpellInfoPlugin;
         QString m_activeSpellInfoPluginName;
 };
-
-#endif // SPELLWORK_H

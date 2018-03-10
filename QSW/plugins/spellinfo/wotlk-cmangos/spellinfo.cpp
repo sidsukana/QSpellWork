@@ -38,7 +38,7 @@ QMap<quint32, QString> procFlags = {
     { 0x01000000, "24 Unknown flag 24" }
 };
 
-bool SpellInfo::init() const
+bool SpellInfo::init()
 {
     if (!SkillLine::getDbc().load())
         return false;
@@ -107,8 +107,11 @@ void SpellInfo::setModifiedSqlDataResult(quint8 queryIndex, QSqlQuery& query)
 {
     Q_UNUSED(queryIndex)
 
+    emit progressShow(query.size());
+
     while (query.next())
     {
+        emit progressStep(query.at());
         Spell::entry* spell = new Spell::entry();
         Spell::meta* metaSpell = nullptr;
         quint32 id = query.value(0).toUInt();
@@ -271,6 +274,7 @@ void SpellInfo::setModifiedSqlDataResult(quint8 queryIndex, QSqlQuery& query)
 
         metaSpell->setProperty("ServerSide", query.value(184));
     }
+    emit progressHide();
 }
 
 void SpellInfo::setEnums(EnumHash enums)

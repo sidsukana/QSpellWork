@@ -35,7 +35,7 @@ QMap<quint32, QString> procFlags = {
     { 0x00200000, "21 On trap activation" },
 };
 
-bool SpellInfo::init() const
+bool SpellInfo::init()
 {
     if (!SkillLine::getDbc().load())
         return false;

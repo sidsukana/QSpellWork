@@ -20,7 +20,7 @@ class SpellInfo : public QObject, SpellInfoInterface
 
     public:
 
-        bool init() const;
+        bool init();
 
         void setEnums(EnumHash enums);
 

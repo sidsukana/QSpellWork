@@ -9,6 +9,7 @@
 #include <QClipboard>
 #include <QShortcut>
 #include <QSqlError>
+#include <QStatusBar>
 
 #include "MainForm.h"
 #include "AboutForm.h"
@@ -119,6 +120,8 @@ MainForm::MainForm(QWidget* parent)
     // Save settings on exit
     connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(saveSettings()));
 
+    progressBar->hide();
+
     // Load settings at end
     loadSettings();
 }
@@ -212,8 +215,7 @@ void MainForm::loadSettings()
 
         if (!pluginName.isEmpty())
         {
-            m_sw->setActivePlugin(pluginName);
-            updatePlguinButton();
+            QtConcurrent::run(m_sw, &SpellWork::setActivePlugin, pluginName);
         }
         return;
     }
@@ -358,6 +360,13 @@ void MainForm::createModeButton()
 
 void MainForm::createPluginButton()
 {
+    connect(m_sw, &SpellWork::progressShow, this, &MainForm::showProgressBar);
+    connect(m_sw, &SpellWork::progressStep, progressBar, &QProgressBar::setValue);
+    connect(m_sw, &SpellWork::progressHide, this, &MainForm::hideProgressBar);
+    connect(m_sw, &SpellWork::pluginLoadingInit, this, &MainForm::onPluginLoadingInit);
+    connect(m_sw, &SpellWork::pluginLoadingFail, this, &MainForm::onPluginLoadingFail);
+    connect(m_sw, &SpellWork::pluginLoaded, this, &MainForm::onPluginLoaded);
+
     m_pluginButton = new QToolButton(this);
     m_pluginButton->setText("Plugins");
     m_pluginButton->setPopupMode(QToolButton::InstantPopup);
@@ -388,8 +397,44 @@ void MainForm::slotChangeActivePlugin()
     // save current plugin settings
     saveSettings();
 
-    m_sw->setActivePlugin(actionPlugin->data().toString());
+    QtConcurrent::run(m_sw, &SpellWork::setActivePlugin, actionPlugin->data().toString());
+}
+
+void MainForm::showProgressBar(int maximum)
+{
+    progressBar->show();
+    progressBar->setMaximum(maximum);
+
     updatePlguinButton();
+}
+
+void MainForm::hideProgressBar()
+{
+    if (!progressBar->isHidden())
+    {
+        progressBar->reset();
+        progressBar->hide();
+    }
+}
+
+void MainForm::onPluginLoadingInit()
+{
+    setEnabled(false);
+    updatePlguinButton();
+}
+
+void MainForm::onPluginLoadingFail()
+{
+    onPluginLoaded();
+
+    QMessageBox::warning(this, "Warning", "Please check directories settings!", QMessageBox::StandardButton::Ok);
+}
+
+void MainForm::onPluginLoaded()
+{
+    setEnabled(true);
+    updatePlguinButton();
+    update();
 }
 
 void MainForm::setLocale(QString locale)

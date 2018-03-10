@@ -11,7 +11,7 @@ class SpellInfoInterface
     public:
         virtual ~SpellInfoInterface() {}
 
-        virtual bool init() const = 0;
+        virtual bool init() = 0;
 
         virtual void setEnums(EnumHash enums) = 0;
 
@@ -25,6 +25,13 @@ class SpellInfoInterface
 
         virtual QStringList getModifiedSqlDataQueries() { return QStringList(); }
         virtual void setModifiedSqlDataResult(quint8 queryIndex, QSqlQuery& query) { Q_UNUSED(queryIndex) Q_UNUSED(query) }
+
+    /*
+    signals:
+        void progressShow(int maximum);
+        void progressStep(int value);
+        void progressHide();
+     */
 };
 
 #define SpellInfoInterface_iid "org.qsw.plugins.spellinfo"
