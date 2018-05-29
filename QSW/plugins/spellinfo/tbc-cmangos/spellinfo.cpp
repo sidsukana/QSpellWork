@@ -10,34 +10,6 @@ Indexes m_metaSpellIndexes;
 Indexes m_internalSpells;
 QStringList m_modifiedStrings;
 
-QMap<quint32, QString> procFlags = {
-    { 0x00000001, "00 Killed by aggressor that receive experience or honor" },
-    { 0x00000002, "01 Kill that yields experience or honor" },
-    { 0x00000004, "02 Successful melee attack" },
-    { 0x00000008, "03 Taken damage from melee strike hit" },
-    { 0x00000010, "04 Successful attack by Spell that use melee weapon" },
-    { 0x00000020, "05 Taken damage by Spell that use melee weapon" },
-    { 0x00000040, "06 Successful Ranged attack (and wand spell cast)" },
-    { 0x00000080, "07 Taken damage from ranged attack" },
-    { 0x00000100, "08 Successful Ranged attack by Spell that use ranged weapon" },
-    { 0x00000200, "09 Taken damage by Spell that use ranged weapon" },
-    { 0x00000400, "10 Successful spell hit" },
-    { 0x00000800, "11 Taken spell hit" },
-    { 0x00001000, "12 Successful spell cast" },
-    { 0x00002000, "13 Taken spell hit" },
-    { 0x00004000, "14 Successful cast positive spell" },
-    { 0x00008000, "15 Taken positive spell hit" },
-    { 0x00010000, "16 Successful damage from harmful spell cast" },
-    { 0x00020000, "17 Taken spell damage" },
-    { 0x00040000, "18 Deal periodic damage" },
-    { 0x00080000, "19 Taken periodic damage" },
-    { 0x00100000, "20 Taken any damage" },
-    { 0x00200000, "21 On trap activation" },
-    { 0x00400000, "22 Taken off-hand melee attacks" },
-    { 0x00800000, "23 Successful off-hand melee attacks" },
-    { 0x01000000, "24 Unknown flag 24" }
-};
-
 bool SpellInfo::init()
 {
     if (!SkillLine::getDbc().load())
@@ -1005,25 +977,25 @@ QVariantHash SpellInfo::getValues(quint32 id) const
     if (spellInfo->targets)
     {
         values["targets"] = QString("0x" + QString("%0").arg(spellInfo->targets, 8, 16, QChar('0')).toUpper());
-        values["targetsNames"] = splitMask(spellInfo->targets, getEnums()["TargetFlag"]);
+        values["targetsNames"] = splitMaskToList(spellInfo->targets, getEnums()["TargetFlag"]);
     }
 
     if (spellInfo->targetCreatureType)
     {
         values["creatureType"] = QString("0x" + QString("%0").arg(spellInfo->targetCreatureType, 8, 16, QChar('0')).toUpper());
-        values["creatureTypeNames"] = splitMask(spellInfo->targetCreatureType, getEnums()["CreatureType"]);
+        values["creatureTypeNames"] = splitMaskToList(spellInfo->targetCreatureType, getEnums()["CreatureType"]);
     }
 
     if (spellInfo->stances)
     {
         values["stances"] = QString("0x" + QString("%0").arg(spellInfo->stances, 8, 16, QChar('0')).toUpper());
-        values["stancesNames"] = splitMask(spellInfo->stances, getEnums()["ShapeshiftForm"]);
+        values["stancesNames"] = splitMaskToList(spellInfo->stances, getEnums()["ShapeshiftForm"]);
     }
 
     if (spellInfo->stancesNot)
     {
         values["stancesNot"] = QString("0x" + QString("%0").arg(spellInfo->stancesNot, 8, 16, QChar('0')).toUpper());
-        values["stancesNotNames"] = splitMask(spellInfo->stancesNot, getEnums()["ShapeshiftForm"]);
+        values["stancesNotNames"] = splitMaskToList(spellInfo->stancesNot, getEnums()["ShapeshiftForm"]);
     }
 
     for (quint32 i = 0; i < SkillLineAbility::getRecordCount(); ++i)
@@ -1183,17 +1155,7 @@ QVariantHash SpellInfo::getValues(quint32 id) const
     if (spellInfo->procFlags)
     {
         values["procFlags"] = QString("0x" + QString("%0").arg(spellInfo->procFlags, 8, 16, QChar('0')).toUpper());
-
-        QVariantList procNames;
-        for (auto proc = procFlags.begin(); proc != procFlags.end(); ++proc) {
-            if (spellInfo->procFlags & proc.key()) {
-                QVariantHash procName;
-                procName["name"] = proc.value();
-                procNames.append(procName);
-            }
-        }
-
-        values["procNames"] = procNames;
+        values["procNames"] = splitMaskToList(spellInfo->procFlags, getEnums()["ProcFlags"]);
     }
 
     QVariantList effectList;
@@ -1265,18 +1227,8 @@ QVariantHash SpellInfo::getValues(quint32 id) const
 
             if (triggerSpell->procFlags)
             {
-                effectValues["triggerProcFlags"] = triggerSpell->procCharges;
-
-                QVariantList procNames;
-                for (auto proc = procFlags.begin(); proc != procFlags.end(); ++proc) {
-                    if (triggerSpell->procFlags & proc.key()) {
-                        QVariantHash procName;
-                        procName["name"] = proc.value();
-                        procNames.append(procName);
-                    }
-                }
-
-                effectValues["triggerProcNames"] = procNames;
+                effectValues["triggerProcFlags"] = QString("0x" + QString("%0").arg(triggerSpell->procFlags, 8, 16, QChar('0')).toUpper());
+                effectValues["triggerProcNames"] = splitMaskToList(triggerSpell->procFlags, getEnums()["ProcFlags"]);
             }
         }
 

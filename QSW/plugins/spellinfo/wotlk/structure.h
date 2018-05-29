@@ -89,7 +89,7 @@ namespace SpellCastTimes
     {
         quint32    id;                                              // 0
         qint32     castTime;                                        // 1
-        float      castTimePerLevel;                                // 2 unsure / per skill?
+        qint32     castTimePerLevel;                                // 2 unsure / per skill?
         qint32     minCastTime;                                     // 3 unsure
     };
 

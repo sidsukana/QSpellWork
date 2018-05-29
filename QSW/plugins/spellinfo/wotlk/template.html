@@ -81,50 +81,50 @@ function toggleRegExp(event) {
 {{#attr}}<li><details open><summary>Attributes: {{attr}}</summary>
 <ul>
 {{#attrNames}}
-<li>{{name}} - {{value}}</li>
+<li>{{value}} - {{name}}</li>
 {{/attrNames}}
 </ul>
 </details></li>{{/attr}}
 {{#attrEx1}}<li><details open><summary>AttributesEx1: {{attrEx1}}</summary>
 <ul>
 {{#attrEx1Names}}
-<li>{{name}} - {{value}}</li>
+<li>{{value}} - {{name}}</li>
 {{/attrEx1Names}}
 </ul></details></li>{{/attrEx1}}
 {{#attrEx2}}<li><details open><summary>AttributesEx2: {{attrEx2}}</summary>
 <ul>
 {{#attrEx2Names}}
-<li>{{name}} - {{value}}</li>
+<li>{{value}} - {{name}}</li>
 {{/attrEx2Names}}
 </ul></details></li>{{/attrEx2}}
 {{#attrEx3}}<li><details open><summary>AttributesEx3: {{attrEx3}}</summary>
 <ul>
 {{#attrEx3Names}}
-<li>{{name}} - {{value}}</li>
+<li>{{value}} - {{name}}</li>
 {{/attrEx3Names}}
 </ul></details></li>{{/attrEx3}}
 {{#attrEx4}}<li><details open><summary>AttributesEx4: {{attrEx4}}</summary>
 <ul>
 {{#attrEx4Names}}
-<li>{{name}} - {{value}}</li>
+<li>{{value}} - {{name}}</li>
 {{/attrEx4Names}}
 </ul></details></li>{{/attrEx4}}
 {{#attrEx5}}<li><details open><summary>AttributesEx5: {{attrEx5}}</summary>
 <ul>
 {{#attrEx5Names}}
-<li>{{name}} - {{value}}</li>
+<li>{{value}} - {{name}}</li>
 {{/attrEx5Names}}
 </ul></details></li>{{/attrEx5}}
 {{#attrEx6}}<li><details open><summary>AttributesEx6: {{attrEx6}}</summary>
 <ul>
 {{#attrEx6Names}}
-<li>{{name}} - {{value}}</li>
+<li>{{value}} - {{name}}</li>
 {{/attrEx6Names}}
 </ul></details></li>{{/attrEx6}}
 {{#attrEx7}}<li><details open><summary>AttributesEx7: {{attrEx7}}</summary>
 <ul>
 {{#attrEx7Names}}
-<li>{{name}} - {{value}}</li>
+<li>{{value}} - {{name}}</li>
 {{/attrEx7Names}}
 </ul></details></li>{{/attrEx7}}
 </ul>
@@ -135,10 +135,35 @@ function toggleRegExp(event) {
 <div class='b-box-body'>
 <div class='b-box'>
 <ul>
-{{#targetsRaw}}<li>TargetsMask: {{targets}} ({{targetsNames}})</li>{{/targetsRaw}}
-{{#creatureTypeRaw}}<li>CreatureTypeMask: {{creatureType}} ({{creatureTypeNames}})</li>{{/creatureTypeRaw}}
-{{#stancesRaw}}<li>StancesMask: {{stances}} ({{stancesNames}})</li>{{/stancesRaw}}
-{{#stancesNotRaw}}<li>StancesNotMask: {{stancesNot}} ({{stancesNotNames}})</li>{{/stancesNotRaw}}
+
+{{#targets}}<li><details open><summary>TargetsMask: {{targets}}</summary>
+<ul>
+{{#targetsNames}}
+<li>{{value}} - {{name}}</li>
+{{/targetsNames}}
+</ul></details></li>{{/targets}}
+
+{{#creatureType}}<li><details open><summary>CreatureTypeMask: {{creatureType}}</summary>
+<ul>
+{{#creatureTypeNames}}
+<li>{{value}} - {{name}}</li>
+{{/creatureTypeNames}}
+</ul></details></li>{{/creatureType}}
+
+{{#stances}}<li><details open><summary>StancesMask: {{stances}}</summary>
+<ul>
+{{#stancesNames}}
+<li>{{value}} - {{name}}</li>
+{{/stancesNames}}
+</ul></details></li>{{/stances}}
+
+{{#stancesNot}}<li><details open><summary>StancesNotMask: {{stancesNot}}</summary>
+<ul>
+{{#stancesNotNames}}
+<li>{{value}} - {{name}}</li>
+{{/stancesNotNames}}
+</ul></details></li>{{/stancesNot}}
+
 {{#skillId}}
 <li>Skill: {{skillId}} ({{skillName}})</li>
 <ul>
@@ -189,31 +214,32 @@ function toggleRegExp(event) {
 {{#interruptFlags}}<li><details open><summary>InterruptFlags: {{interruptFlags}}</summary>
 <ul>
 {{#interruptFlagsNames}}
-<li>{{name}} - {{value}}</li>
+<li>{{value}} - {{name}}</li>
 {{/interruptFlagsNames}}
 </ul></li>{{/interruptFlags}}
 {{#auraInterruptFlags}}<li><details open><summary>AuraIF: {{auraInterruptFlags}}</summary>
 <ul>
 {{#auraInterruptFlagsNames}}
-<li>{{name}} - {{value}}</li>
+<li>{{value}} - {{name}}</li>
 {{/auraInterruptFlagsNames}}
 </ul></li>{{/auraInterruptFlags}}
 {{#channelInterruptFlags}}<li><details open><summary>ChannelIF: {{channelInterruptFlags}}</summary>
 <ul>
 {{#channelInterruptFlagsNames}}
-<li>{{name}} - {{value}}</li>
+<li>{{value}} - {{name}}</li>
 {{/channelInterruptFlagsNames}}
 </ul></li>{{/channelInterruptFlags}}
 {{#casterAuraState}}<li>CasterAuraState: {{casterAuraState}} ({{casterAuraStateName}})</li>{{/casterAuraState}}
 {{#targetAuraState}}<li>TargetAuraState: {{targetAuraState}} ({{targetAuraStateName}})</li>{{/targetAuraState}}
 {{#reqSpellFocus}}<li>RequiresSpellFocus: {{reqSpellFocus}}</li>{{/reqSpellFocus}}
 {{#procFlags}}
-<li><b>ProcFlags: {{procFlags}}, Chance: {{procChance}}, Charges: {{procCharges}}</b></li>
+<li><details open><summary><b>ProcFlags: {{procFlags}}, Chance: {{procChance}}, Charges: {{procCharges}}</b></summary>
 <ul>
 {{#procNames}}
-<li>{{name}}</li>
+<li>{{value}} - {{name}}</li>
 {{/procNames}}
 </ul>
+</details></li>
 {{/procFlags}}
 {{^procFlags}}
 <li>Chance: {{procChance}}, Charges: {{procCharges}}</li>
@@ -253,12 +279,13 @@ function toggleRegExp(event) {
 <div style="display:block;" id="ttooltip" ondblclick="toggleRegExp(event)">{{#triggerToolTip}}<b>ToolTip:</b> {{triggerToolTip}}</br>{{/triggerToolTip}}</div>
 <div style="display:none;" id="ttooltipRegExp" ondblclick="toggleRegExp(event)">{{#triggerToolTipRegExp}}<b>ToolTip:</b> {{triggerToolTipRegExp}}</br>{{/triggerToolTipRegExp}}</div>
 {{#triggerProcFlags}}
-<li><b>ProcFlags: {{triggerProcFlags}}, Chance: {{triggerProcChance}}, Charges: {{triggerProcCharges}}</b></li>
+<li><details open><summary><b>ProcFlags: {{triggerProcFlags}}, Chance: {{triggerProcChance}}, Charges: {{triggerProcCharges}}</b></summary>
 <ul>
 {{#triggerProcNames}}
-<li>{{name}}</li>
+<li>{{value}} - {{name}}</li>
 {{/triggerProcNames}}
 </ul>
+</details></li>
 {{/triggerProcFlags}}
 {{^triggerProcFlags}}
 <li>Chance: {{triggerProcChance}}, Charges: {{triggerProcCharges}}</li>
@@ -280,7 +307,7 @@ function toggleRegExp(event) {
 {{/affectInfo}}
 {{/id}}
 {{^id}}
-<li>NO EFFECT</li>
+<li>NO EFFECT {{index}}</li>
 {{/id}}
 </ul>
 {{/effect}}

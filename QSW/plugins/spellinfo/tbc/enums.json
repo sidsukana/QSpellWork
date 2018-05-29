@@ -1170,5 +1170,33 @@
         { "key": "CR_WEAPON_SKILL_RANGED", "value": "0x200000"},
         { "key": "CR_EXPERTISE", "value": "0x400000"},
         { "key": "CR_ARMOR_PENETRATION", "value": "0x800000"}
+    ],
+    "ProcFlags":
+    [
+        { "key": "Killed by aggressor that receive experience or honor", "value": "0x00000001"},
+        { "key": "Kill that yields experience or honor", "value": "0x00000002"},
+        { "key": "Successful melee attack", "value": "0x00000004"},
+        { "key": "Taken damage from melee strike hit", "value": "0x00000008"},
+        { "key": "Successful attack by Spell that use melee weapon", "value": "0x00000010"},
+        { "key": "Taken damage by Spell that use melee weapon", "value": "0x00000020"},
+        { "key": "Successful Ranged attack (and wand spell cast)", "value": "0x00000040"},
+        { "key": "Taken damage from ranged attack", "value": "0x00000080"},
+        { "key": "Successful Ranged attack by Spell that use ranged weapon", "value": "0x00000100"},
+        { "key": "Taken damage by Spell that use ranged weapon", "value": "0x00000200"},
+        { "key": "Successful spell hit", "value": "0x00000400"},
+        { "key": "Taken spell hit", "value": "0x00000800"},
+        { "key": "Successful spell cast", "value": "0x00001000"},
+        { "key": "Taken spell hit", "value": "0x00002000"},
+        { "key": "Successful cast positive spell", "value": "0x00004000"},
+        { "key": "Taken positive spell hit", "value": "0x00008000"},
+        { "key": "Successful damage from harmful spell cast", "value": "0x00010000"},
+        { "key": "Taken spell damage", "value": "0x00020000"},
+        { "key": "Deal periodic damage", "value": "0x00040000"},
+        { "key": "Taken periodic damage", "value": "0x00080000"},
+        { "key": "Taken any damage", "value": "0x00100000"},
+        { "key": "On trap activation", "value": "0x00200000"},
+        { "key": "Taken off-hand melee attacks", "value": "0x00400000"},
+        { "key": "Successful off-hand melee attacks", "value": "0x00800000"},
+        { "key": "Unknown flag 24", "value": "0x01000000"}
     ]
 }
