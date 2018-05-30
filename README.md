@@ -33,6 +33,14 @@ function() {
 }
 ```
 
+You can also use the helper function `hasAura(id)`:
+
+```javascript
+function() {
+    return spell.SpellFamilyName == SPELLFAMILY_MAGE && spell.SpellFamilyFlags & 0x1 && spell.hasAura(3);
+}
+```
+
 ### Acknowledgements and Thanks
 
 **Chestr aka DiSlord** — for the idea and releasing the source of original SpellWork.
