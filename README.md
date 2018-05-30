@@ -8,6 +8,31 @@
 
 This application is written in C++ using the Qt 5 GUI framework.
 
+### How to use scripted filter
+
+**QSpellwork** binds the metaobject to the script engine as `spell` and you can write complex conditions in the JavaScript language. Also binds all enum constants. You can use **inline** or **function** conditions.
+
+Examples
+
+Inline condition:
+```javascript
+spell.SpellFamilyName == SPELLFAMILY_MAGE && spell.SpellFamilyFlags & 0x1 && spell.hasAura(3)
+```
+
+Same as function condition:
+```javascript
+function() {
+    var hasAura = false;
+    for (var i = 0; i < 3; i++) {
+        if (spell.EffectApplyAuraName(i) == 3) {
+            hasAura = true;
+            break;
+        }
+    }
+    return spell.SpellFamilyName == SPELLFAMILY_MAGE && spell.SpellFamilyFlags & 0x1 && hasAura;
+}
+```
+
 ### Acknowledgements and Thanks
 
 **Chestr aka DiSlord** — for the idea and releasing the source of original SpellWork.
