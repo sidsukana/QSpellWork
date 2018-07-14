@@ -1,3 +1,5 @@
+[![Github Releases](https://img.shields.io/github/downloads/sidsukana/QSpellWork/latest/total.svg)](https://github.com/sidsukana/QSpellWork/releases)
+
 # QSpellWork
 
 **QSpellWork** is an application for searching and viewing information about spells in **World of Warcraft**. Spell information is read from client DBC files. **QSpellWork** works with:
