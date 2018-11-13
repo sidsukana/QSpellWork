@@ -1,4 +1,4 @@
-#include "dbc/DBC.h"
+#include "DBC/DBC.h"
 #include "mpq/MPQ.h"
 #include "wovdbc.h"
 

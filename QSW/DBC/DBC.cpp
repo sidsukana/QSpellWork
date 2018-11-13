@@ -1,7 +1,7 @@
 #include <QFile>
 
 #include "mpq/MPQ.h"
-#include "dbc/DBC.h"
+#include "DBC/DBC.h"
 
 QString& DBC::dbcDir()
 {

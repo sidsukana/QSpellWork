@@ -2,7 +2,7 @@
 #define WOV_DBC_H
 
 #include <QString>
-#include "dbc/DBC.h"
+#include "DBC/DBC.h"
 
 namespace AnimationDataDBC
 {
