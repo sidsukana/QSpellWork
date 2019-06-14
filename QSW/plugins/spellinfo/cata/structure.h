@@ -1,5 +1,4 @@
-#ifndef DBCSTRUCTURE_H_
-#define DBCSTRUCTURE_H_
+#pragma once
 
 #include <QObject>
 #include <QMap>
@@ -10,7 +9,7 @@
 #define MAX_SPELL_TOTEMS   2
 #define MAX_EFFECT_INDEX   3
 
-#ifdef __GNUC__
+#if defined( __GNUC__ )
 #pragma pack(1)
 #else
 #pragma pack(push,1)
@@ -874,6 +873,4 @@ namespace Spell
 #pragma pack()
 #else
 #pragma pack(pop)
-#endif
-
 #endif

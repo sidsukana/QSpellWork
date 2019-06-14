@@ -36,7 +36,7 @@ QMap<quint32, QString> procFlags = {
     { 0x01000000, "24 Unknown flag 24" }
 };
 
-bool SpellInfo::init() const
+bool SpellInfo::init()
 {
     if (!SkillLine::getDbc().load())
         return false;

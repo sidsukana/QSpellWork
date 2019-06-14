@@ -1,5 +1,6 @@
 TEMPLATE        = lib
 CONFIG         += plugin
+QT             += sql
 HEADERS         = spellinfo.h \
     structure.h
 SOURCES         = spellinfo.cpp \
@@ -34,9 +35,9 @@ win32: {
         BUILDTYPE = "Release"
     }
 
-    LIBS += -L$$PWD/../../../../build-qsw/bin/$$PLATFORM/$$BUILDTYPE/ -lQSW
+    LIBS += -L$$PWD/../../../bin/$$PLATFORM/$$BUILDTYPE/ -lQSW
 
-    DLLDESTDIR = $$PWD/../../../../build-qsw/bin/$$PLATFORM/$$BUILDTYPE/plugins/spellinfo
+    DLLDESTDIR = $$PWD/../../../bin/$$PLATFORM/$$BUILDTYPE/plugins/spellinfo/$$TARGET
     DESTDIR = $$DLLDESTDIR
 
     copyToDestdir($$PWD/$$quote($$TARGET).css)

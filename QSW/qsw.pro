@@ -125,7 +125,7 @@ win32: {
 
     LIBS += -L$$PWD/mpq/StormLib/$$PLATFORM/$$BUILDTYPE/ -lStormLib
     LIBS += -L$$PWD/blp/squish/$$PLATFORM/$$BUILDTYPE/ -lsquish
-    DLLDESTDIR = $$OUT_PWD/bin/$$PLATFORM/$$BUILDTYPE/
+    DLLDESTDIR = bin/$$PLATFORM/$$BUILDTYPE/
     DESTDIR = $$DLLDESTDIR
 
     copyToDestdir($$PWD/mpq/StormLib/$$PLATFORM/$$BUILDTYPE/StormLib.dll)
