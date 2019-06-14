@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SPELLINFO_H
+#define SPELLINFO_H
 
 #include <QObject>
 #include <QtPlugin>
@@ -36,3 +37,4 @@ class SpellInfo : public QObject, SpellInfoInterface
         QStringList getNames() const;
 };
 
+#endif // SPELLINFO_H
