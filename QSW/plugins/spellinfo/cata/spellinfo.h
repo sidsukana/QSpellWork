@@ -8,6 +8,13 @@
 
 extern quint8 m_locale;
 
+extern EnumHash m_enums;
+extern QStringList m_names;
+extern QObjectList m_metaSpells;
+extern Indexes m_metaSpellIndexes;
+extern Indexes m_internalSpells;
+extern QStringList m_modifiedStrings;
+
 class SpellInfo : public QObject, SpellInfoInterface
 {
     Q_OBJECT
@@ -16,7 +23,7 @@ class SpellInfo : public QObject, SpellInfoInterface
 
     public:
 
-        bool init() const;
+        bool init();
 
         void setEnums(EnumHash enums);
 

@@ -35,9 +35,9 @@ win32: {
         BUILDTYPE = "Release"
     }
 
-    LIBS += -L$$PWD/../../../../build-qsw/bin/$$PLATFORM/$$BUILDTYPE/ -lQSW
+    LIBS += -L$$PWD/../../../bin/$$PLATFORM/$$BUILDTYPE/ -lQSW
 
-    DLLDESTDIR = $$PWD/../../../../build-qsw/bin/$$PLATFORM/$$BUILDTYPE/plugins/spellinfo/$$TARGET
+    DLLDESTDIR = $$PWD/../../../bin/$$PLATFORM/$$BUILDTYPE/plugins/spellinfo/$$TARGET
     DESTDIR = $$DLLDESTDIR
 
     copyToDestdir($$PWD/template.css)
