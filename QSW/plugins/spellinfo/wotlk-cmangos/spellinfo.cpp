@@ -120,10 +120,6 @@ void SpellInfo::setModifiedSqlDataResult(quint8 queryIndex, QSqlQuery& query)
             // Unused members
             spell->descriptionOffset = 0;
             spell->toolTipOffset = 0;
-            spell->stanceBarOrder = -1;
-            spell->minFactionId = 0;
-            spell->minReputation = 0;
-            spell->requiredAuraVision = 0;
         }
 
         spell->id = id;
@@ -172,79 +168,90 @@ void SpellInfo::setModifiedSqlDataResult(quint8 queryIndex, QSqlQuery& query)
         spell->manaPerSecondPerLevel = query.value(43).toUInt();
         spell->rangeIndex = query.value(44).toUInt();
         spell->speed = query.value(45).toFloat();
-        spell->modalNextSpell = query.value(46).toFloat();
-        spell->stackAmount = query.value(47).toFloat();
+        spell->modalNextSpell = query.value(46).toUInt();
+        spell->stackAmount = query.value(47).toUInt();
 
         for (quint8 i = 0; i < MAX_SPELL_TOTEMS; ++i)
         {
-            spell->totem[i] = query.value(47 + i).toUInt();
-            spell->totemCategory[i] = query.value(178 + i).toUInt();
+            spell->totem[i] = query.value(48 + i).toUInt();
+            spell->totemCategory[i] = query.value(184 + i).toUInt();
         }
 
         for (quint8 i = 0; i < MAX_SPELL_REAGENTS; ++i)
         {
-            spell->reagent[i] = query.value(49 + i).toInt();
-            spell->reagentCount[i] = query.value(57 + i).toUInt();
+            spell->reagent[i] = query.value(50 + i).toInt();
+            spell->reagentCount[i] = query.value(58 + i).toUInt();
         }
 
-        spell->equippedItemClass = query.value(65).toInt();
-        spell->equippedItemSubClassMask = query.value(66).toInt();
-        spell->equippedItemInventoryTypeMask = query.value(67).toInt();
+        spell->equippedItemClass = query.value(66).toInt();
+        spell->equippedItemSubClassMask = query.value(67).toInt();
+        spell->equippedItemInventoryTypeMask = query.value(68).toInt();
 
         for (quint8 i = 0; i < MAX_EFFECT_INDEX; ++i)
         {
-            spell->effect[i] = query.value(68 + i).toUInt();
-            spell->effectDieSides[i] = query.value(71 + i).toUInt();
+            spell->effect[i] = query.value(69 + i).toUInt();
+            spell->effectDieSides[i] = query.value(72 + i).toUInt();
             spell->effectRealPointsPerLevel[i] = query.value(74 + i).toFloat();
-            spell->effectBasePoints[i] = query.value(77 + i).toInt();
-            spell->effectMechanic[i] = query.value(80 + i).toUInt();
-            spell->effectImplicitTargetA[i] = query.value(83 + i).toUInt();
-            spell->effectImplicitTargetB[i] = query.value(86 + i).toUInt();
-            spell->effectRadiusIndex[i] = query.value(89 + i).toUInt();
-            spell->effectApplyAuraName[i] = query.value(92 + i).toUInt();
-            spell->effectAmplitude[i] = query.value(95 + i).toUInt();
-            spell->effectMultipleValue[i] = query.value(98 + i).toFloat();
-            spell->effectChainTarget[i] = query.value(101 + i).toUInt();
-            spell->effectItemType[i] = query.value(104 + i).toUInt();
-            spell->effectMiscValueA[i] = query.value(107 + i).toInt();
-            spell->effectMiscValueB[i] = query.value(110 + i).toInt();
-            spell->effectTriggerSpell[i] = query.value(113 + i).toUInt();
+            spell->effectBasePoints[i] = query.value(78 + i).toInt();
+            spell->effectMechanic[i] = query.value(81 + i).toUInt();
+            spell->effectImplicitTargetA[i] = query.value(84 + i).toUInt();
+            spell->effectImplicitTargetB[i] = query.value(87 + i).toUInt();
+            spell->effectRadiusIndex[i] = query.value(90 + i).toUInt();
+            spell->effectApplyAuraName[i] = query.value(93 + i).toUInt();
+            spell->effectAmplitude[i] = query.value(96 + i).toUInt();
+            spell->effectMultipleValue[i] = query.value(99 + i).toFloat();
+            spell->effectChainTarget[i] = query.value(102 + i).toUInt();
+            spell->effectItemType[i] = query.value(105 + i).toUInt();
+            spell->effectMiscValueA[i] = query.value(108 + i).toInt();
+            spell->effectMiscValueB[i] = query.value(111 + i).toInt();
+            spell->effectTriggerSpell[i] = query.value(114 + i).toUInt();
             spell->effectPointsPerComboPoint[i] = query.value(116 + i).toFloat();
             
-            spell->effectSpellClassMaskA[i] = query.value(119 + i).toUInt();
-            spell->effectSpellClassMaskB[i] = query.value(122 + i).toUInt();
-            spell->effectSpellClassMaskC[i] = query.value(125 + i).toUInt();
+            spell->effectSpellClassMaskA[i] = query.value(120 + i).toUInt();
+            spell->effectSpellClassMaskB[i] = query.value(123 + i).toUInt();
+            spell->effectSpellClassMaskC[i] = query.value(126 + i).toUInt();
             
-            spell->damageMultiplier[i] = query.value(175 + i).toFloat();
+            spell->damageMultiplier[i] = query.value(177 + i).toFloat();
+            spell->effectBonusMultiplier[i] = query.value(190 + i).toUInt();
         }
 
-        spell->spellVisual = query.value(128).toUInt();
-        spell->spellIconId = query.value(130).toUInt();
-        spell->activeIconId = query.value(131).toUInt();
-        spell->spellPriority = query.value(132).toUInt();
-        spell->manaCostPercentage = query.value(165).toUInt();
-        spell->startRecoveryCategory = query.value(166).toUInt();
-        spell->startRecoveryTime = query.value(167).toUInt();
-        spell->maxTargetLevel = query.value(168).toUInt();
-        spell->spellFamilyName = query.value(169).toUInt();
+        spell->spellVisual = query.value(129).toUInt();
+        spell->spellIconId = query.value(131).toUInt();
+        spell->activeIconId = query.value(132).toUInt();
+        spell->spellPriority = query.value(133).toUInt();
+
+        spell->manaCostPercentage = query.value(166).toUInt();
+        spell->startRecoveryCategory = query.value(167).toUInt();
+        spell->startRecoveryTime = query.value(168).toUInt();
+        spell->maxTargetLevel = query.value(169).toUInt();
+        spell->spellFamilyName = query.value(170).toUInt();
         
         UnionedValue unionedValue;
-        unionedValue.value = query.value(170).toLongLong();
+        unionedValue.value = query.value(171).toLongLong();
 
         spell->spellFamilyFlags[0] = unionedValue.high;
         spell->spellFamilyFlags[1] = unionedValue.low;
-        spell->spellFamilyFlags[2] = query.value(171).toUInt();
+        spell->spellFamilyFlags[2] = query.value(172).toUInt();
         
-        spell->maxAffectedTargets = query.value(172).toUInt();
-        spell->damageClass = query.value(173).toUInt();
-        spell->preventionType = query.value(174).toUInt();
-        
-        spell->areaId = query.value(180).toUInt();
-        spell->schoolMask = query.value(181).toUInt();
-        spell->runeCostId = query.value(182).toUInt();
-        spell->spellDifficultyId = query.value(183).toUInt();
+        spell->maxAffectedTargets = query.value(173).toUInt();
+        spell->damageClass = query.value(174).toUInt();
+        spell->preventionType = query.value(175).toUInt();
+        spell->stanceBarOrder = query.value(176).toInt();
 
-        metaSpell->setProperty("ServerSide", query.value(184));
+        spell->minFactionId = query.value(181).toUInt();
+        spell->minReputation = query.value(182).toUInt();
+        spell->requiredAuraVision = query.value(183).toUInt();
+        
+        spell->areaId = query.value(185).toUInt();
+        spell->schoolMask = query.value(186).toUInt();
+        spell->runeCostId = query.value(187).toUInt();
+        spell->spellMissileId = query.value(188).toUInt();
+        spell->powerDisplayId = query.value(189).toUInt();
+
+        spell->spellDescriptionVariableId = query.value(194).toUInt();
+        spell->spellDifficultyId = query.value(195).toUInt();
+
+        metaSpell->setProperty("ServerSide", query.value(185));
     }
     emit progressHide();
 }
