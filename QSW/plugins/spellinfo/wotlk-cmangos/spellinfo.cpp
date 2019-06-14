@@ -251,7 +251,7 @@ void SpellInfo::setModifiedSqlDataResult(quint8 queryIndex, QSqlQuery& query)
         spell->spellDescriptionVariableId = query.value(194).toUInt();
         spell->spellDifficultyId = query.value(195).toUInt();
 
-        metaSpell->setProperty("ServerSide", query.value(185));
+        metaSpell->setProperty("ServerSide", query.value(196));
     }
     emit progressHide();
 }
