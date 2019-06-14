@@ -212,7 +212,7 @@ void SpellInfo::setModifiedSqlDataResult(quint8 queryIndex, QSqlQuery& query)
             spell->effectSpellClassMaskC[i] = query.value(126 + i).toUInt();
             
             spell->damageMultiplier[i] = query.value(177 + i).toFloat();
-            spell->effectBonusMultiplier[i] = query.value(190 + i).toUInt();
+            spell->effectBonusMultiplier[i] = query.value(190 + i).toFloat();
         }
 
         spell->spellVisual = query.value(129).toUInt();
@@ -227,7 +227,7 @@ void SpellInfo::setModifiedSqlDataResult(quint8 queryIndex, QSqlQuery& query)
         spell->spellFamilyName = query.value(170).toUInt();
         
         UnionedValue unionedValue;
-        unionedValue.value = query.value(171).toLongLong();
+        unionedValue.value = query.value(171).toULongLong();
 
         spell->spellFamilyFlags[0] = unionedValue.high;
         spell->spellFamilyFlags[1] = unionedValue.low;
