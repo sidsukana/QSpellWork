@@ -120,7 +120,6 @@ void SpellInfo::setModifiedSqlDataResult(quint8 queryIndex, QSqlQuery& query)
             // Unused members
             spell->descriptionOffset = 0;
             spell->toolTipOffset = 0;
-            spell->modalNextSpell = 0;
             spell->stanceBarOrder = -1;
             spell->minFactionId = 0;
             spell->minReputation = 0;
@@ -173,7 +172,8 @@ void SpellInfo::setModifiedSqlDataResult(quint8 queryIndex, QSqlQuery& query)
         spell->manaPerSecondPerLevel = query.value(43).toUInt();
         spell->rangeIndex = query.value(44).toUInt();
         spell->speed = query.value(45).toFloat();
-        spell->stackAmount = query.value(46).toFloat();
+        spell->modalNextSpell = query.value(46).toFloat();
+        spell->stackAmount = query.value(47).toFloat();
 
         for (quint8 i = 0; i < MAX_SPELL_TOTEMS; ++i)
         {
