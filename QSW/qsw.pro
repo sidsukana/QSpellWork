@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT += core gui qml widgets webenginewidgets webengine webenginecore concurrent sql
+QT += core gui qml widgets webenginewidgets webenginecore concurrent sql opengl openglwidgets
 
 TARGET = QSW
 TEMPLATE = app
@@ -125,7 +125,7 @@ win32: {
 
     LIBS += -L$$PWD/mpq/StormLib/$$PLATFORM/$$BUILDTYPE/ -lStormLib
     LIBS += -L$$PWD/blp/squish/$$PLATFORM/$$BUILDTYPE/ -lsquish
-    DLLDESTDIR = bin/$$PLATFORM/$$BUILDTYPE/
+    DLLDESTDIR = ../QSW/bin/$$PLATFORM/$$BUILDTYPE/
     DESTDIR = $$DLLDESTDIR
 
     copyToDestdir($$PWD/mpq/StormLib/$$PLATFORM/$$BUILDTYPE/StormLib.dll)

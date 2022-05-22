@@ -119,13 +119,13 @@ void WovWidget::mouseMoved(QMouseEvent *event)
             if (fabs(y) <= 10.0f)
                 m_drag->setY(y);
         } else {
-            m_scene->setRotationX(m_scene->rotationX() + 360.0f * (event->x() - m_mouseX) / width());
-            m_scene->setRotationY(m_scene->rotationY() + 360.0f * (event->y() - m_mouseY) / height());
+            m_scene->setRotationX(m_scene->rotationX() + 360.0f * (event->position().x() - m_mouseX) / width());
+            m_scene->setRotationY(m_scene->rotationY() + 360.0f * (event->position().y() - m_mouseY) / height());
         }
     }
 
-    m_mouseX = event->x();
-    m_mouseY = event->y();
+    m_mouseX = event->position().x();
+    m_mouseY = event->position().y();
 
     m_worldX = m_scene->worldX();
     m_worldY = m_scene->worldY();
@@ -135,7 +135,7 @@ void WovWidget::mouseMoved(QMouseEvent *event)
 void WovWidget::wheelRotated(QWheelEvent *event)
 {
     if (m_drag)
-        m_drag->setOrientation(m_drag->orientation() + event->delta() / 8.0f);
+        m_drag->setOrientation(m_drag->orientation() + event->angleDelta().y() / 8.0f);
     else
-        m_scene->setDistance(m_scene->distance() - event->delta() / 120.0f);
+        m_scene->setDistance(m_scene->distance() - event->angleDelta().y() / 120.0f);
 }

@@ -1,5 +1,5 @@
 #include <QApplication>
-#include <QDesktopWidget>
+#include <QScreen>
 #include <QDir>
 #include <QMessageBox>
 
@@ -19,7 +19,8 @@ int main(int argc, char *argv[])
     
     // Set position to center about desktop widget
     QRect frameRect = form.frameGeometry();
-    frameRect.moveCenter(QDesktopWidget().availableGeometry().center());
+    QScreen *screen = QGuiApplication::primaryScreen();
+    frameRect.moveCenter(screen->geometry().center());
     form.move(frameRect.topLeft());
 
     form.show();

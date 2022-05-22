@@ -19,7 +19,6 @@ class MainForm;
 class SpellWork : public QObject
 {
     Q_OBJECT
-
     public:
         SpellWork(MainForm *form);
         ~SpellWork() {}

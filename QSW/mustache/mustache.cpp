@@ -195,8 +195,9 @@ void QtVariantContext::pop()
 
 int QtVariantContext::listCount(const QString& key) const
 {
-	const QVariant& item = value(key);
-	if (item.canConvert<QVariantList>()) {
+    const QVariant& item = value(key);
+    int type = item.userType();
+    if (type == QMetaType::QVariantList) {
 		return item.toList().count();
 	}
 	return 0;
@@ -284,10 +285,10 @@ QString Renderer::render(const QString& _template, int startPos, int endPos, Con
 	while (m_errorPos == -1) {
 		Tag tag = findTag(_template, lastTagEnd, endPos);
 		if (tag.type == Tag::Null) {
-			output += _template.midRef(lastTagEnd, endPos - lastTagEnd);
+            output += QStringView{_template}.mid(lastTagEnd, endPos - lastTagEnd);
 			break;
 		}
-		output += _template.midRef(lastTagEnd, tag.start - lastTagEnd);
+        output += QStringView{_template}.mid(lastTagEnd, tag.start - lastTagEnd);
 		switch (tag.type) {
 		case Tag::Value:
 		{

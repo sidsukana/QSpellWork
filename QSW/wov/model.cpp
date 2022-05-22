@@ -2,6 +2,7 @@
 #include "m2.h"
 #include "spellvisualkit.h"
 #include "wovdbc.h"
+#include <QElapsedTimer>
 
 Model::Model(ModelScene *scene)
     : m_scene(scene), m_displayId(0),
@@ -97,7 +98,7 @@ void Model::update(int timeDelta)
         if (m_model)
             delete m_model;
 
-        QTime time;
+        QElapsedTimer time;
         time.start();
 
         m_model = new M2(m_modelFileName, m_scene->context()->functions());

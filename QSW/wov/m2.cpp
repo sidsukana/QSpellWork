@@ -1,5 +1,5 @@
 #include <QUrl>
-#include <QRegExp>
+#include <QRegularExpression>>
 
 #include "m2.h"
 #include "wovdbc.h"
@@ -508,7 +508,7 @@ bool M2::attachModel(quint32 attachmentId, M2 *model)
     if (!m_attachments.contains(attachmentId))
         return false;
 
-    m_attachedModels.insertMulti(attachmentId, model);
+    m_attachedModels.insert(attachmentId, model);
 
     return true;
 }

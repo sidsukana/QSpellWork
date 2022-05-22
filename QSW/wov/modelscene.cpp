@@ -192,8 +192,8 @@ void ModelScene::mouseReleaseEvent(QMouseEvent *event)
 
 void ModelScene::mouseMoveEvent(QMouseEvent *event)
 {
-    m_mouseX = event->x();
-    m_mouseY = event->y();
+    m_mouseX = event->position().x();
+    m_mouseY = event->position().y();
 
     emit mouseMoved(event);
 }

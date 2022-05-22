@@ -1,4 +1,4 @@
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "spellvisualkit.h"
 #include "m2.h"
@@ -93,7 +93,7 @@ void SpellVisualKit::attachEffect(qint32 id, quint32 slot)
     if (!effectName)
         return;
 
-    QString modelName = QString(effectName->model()).replace(QRegExp(".md[xl]", Qt::CaseInsensitive), ".m2");
+    QString modelName = QString(effectName->model()).replace(QRegularExpression(".md[xl]", QRegularExpression::CaseInsensitiveOption), ".m2");
 
     M2 *effect = new M2(modelName, m_scene->context()->functions());
     effect->setAnimation(0, m_oneshot);

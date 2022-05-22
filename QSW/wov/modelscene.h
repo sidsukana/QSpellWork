@@ -2,7 +2,7 @@
 #define MODEL_SCENE_H
 
 #include <QOpenGLWidget>
-#include <QTime>
+#include <QElapsedTimer>
 #include <QOpenGLFunctions>
 
 #include "mvp.h"
@@ -12,6 +12,8 @@ class QOpenGLBuffer;
 
 class Model;
 class CameraShake;
+
+Q_MOC_INCLUDE("../QSW/wov/model.h")
 
 class ModelScene : public QOpenGLWidget
 {
@@ -71,7 +73,7 @@ private:
 
     QList<Model *> m_models;
 
-    QTime m_time;
+    QElapsedTimer m_time;
     float m_rotationX;
     float m_rotationY;
     float m_distance;

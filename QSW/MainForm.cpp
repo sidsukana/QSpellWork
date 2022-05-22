@@ -1,6 +1,6 @@
 #include <QtConcurrentRun>
 #include <QFuture>
-#include <QTime>
+#include <QElapsedTimer>
 #include <QStandardItemModel>
 #include <QStringListModel>
 #include <QDir>
@@ -20,7 +20,7 @@
 MainForm::MainForm(QWidget* parent)
     : QMainWindow(parent)
 {
-    QTime m_time;
+    QElapsedTimer m_time;
     m_time.start();
 
     setupUi(this);
@@ -215,7 +215,7 @@ void MainForm::loadSettings()
 
         if (!pluginName.isEmpty())
         {
-            QtConcurrent::run(m_sw, &SpellWork::setActivePlugin, pluginName);
+            QtConcurrent::run(&SpellWork::setActivePlugin, m_sw, pluginName);
         }
         return;
     }
@@ -397,7 +397,7 @@ void MainForm::slotChangeActivePlugin()
     // save current plugin settings
     saveSettings();
 
-    QtConcurrent::run(m_sw, &SpellWork::setActivePlugin, actionPlugin->data().toString());
+    QtConcurrent::run(&SpellWork::setActivePlugin, m_sw, actionPlugin->data().toString());
 }
 
 void MainForm::showProgressBar(int maximum)
@@ -576,7 +576,7 @@ void MainForm::slotSearch(quint8 type)
     delete model;
     model = nullptr;
 
-    m_watcher->setFuture(QtConcurrent::run(m_sw, &SpellWork::search, type));
+    m_watcher->setFuture(QtConcurrent::run(&SpellWork::search, m_sw, type));
 }
 
 void MainForm::slotSearchResult()

@@ -7,6 +7,8 @@
 #include <QMessageBox>
 #include <QSqlQuery>
 
+#include <fstream>
+
 #include "spellwork.h"
 #include "models.h"
 #include "blp/BLP.h"
@@ -306,6 +308,14 @@ void SpellWork::showInfo(quint32 id, QSW::Pages pageId)
     html = html.simplified();
     html.replace("> <", ">\n<");
 
+    std::ofstream MyFile("filename.txt");
+
+    // Write to the file
+    MyFile << html.toStdString();
+
+    // Close the file
+    MyFile.close();
+
     m_form->getPage(pageId)->setInfo(html, id);
 }
 
@@ -316,7 +326,7 @@ void SpellWork::compare()
 
     QString html1, html2;
 
-    QRegExp rx("(<[A-Za-z_0-9]*>)+([A-Za-z_0-9-!\"#$%&'()*+,./:;=?@[\\]_`{|}~\\s]*)+(</[A-Za-z_0-9]*>)");
+    QRegularExpression rx("(<[A-Za-z_0-9]*>)+([A-Za-z_0-9-!\"#$%&'()*+,./:;=?@[\\]_`{|}~\\s]*)+(</[A-Za-z_0-9]*>)");
 
     for (QStringList::iterator itr1 = list1.begin(); itr1 != list1.end(); ++itr1)
     {
@@ -333,12 +343,13 @@ void SpellWork::compare()
 
         if (yes)
         {
-            if (rx.indexIn((*itr1)) != -1)
+            QRegularExpressionMatch match = rx.match((*itr1));
+            if (match.hasMatch())
             {
                 // QString r1 = rx.cap(0); // Full
-                QString r2 = rx.cap(1); // <xxx>
-                QString r3 = rx.cap(2); // <>xxx</>
-                QString r4 = rx.cap(3); // </xxx>
+                QString r2 = match.captured(1); // <xxx>
+                QString r3 = match.captured(2); // <>xxx</>
+                QString r4 = match.captured(3); // </xxx>
 
                 if (r2 == "<b>")
                     html1.append(QString("<span style='background-color: cyan'>%0</span>").arg((*itr1)));
@@ -359,12 +370,13 @@ void SpellWork::compare()
         }
         else
         {
-            if (rx.indexIn((*itr1)) != -1)
+            QRegularExpressionMatch match = rx.match((*itr1));
+            if (match.hasMatch())
             {
-                // QString r1 = rx.cap(0); // Full
-                QString r2 = rx.cap(1); // <xxx>
-                QString r3 = rx.cap(2); // <>xxx</>
-                QString r4 = rx.cap(3); // </xxx>
+                // QString r1 = match.cap(0); // Full
+                QString r2 = match.captured(1); // <xxx>
+                QString r3 = match.captured(2); // <>xxx</>
+                QString r4 = match.captured(3); // </xxx>
 
                 if (r2 == "<b>")
                     html1.append(QString("<span style='background-color: salmon'>%0</span>").arg((*itr1)));
@@ -401,12 +413,13 @@ void SpellWork::compare()
 
         if (yes)
         {
-            if (rx.indexIn((*itr2)) != -1)
+            QRegularExpressionMatch match = rx.match((*itr2));
+            if (match.hasMatch())
             {
                 // QString r1 = rx.cap(0); // Full
-                QString r2 = rx.cap(1); // <xxx>
-                QString r3 = rx.cap(2); // <>xxx</>
-                QString r4 = rx.cap(3); // </xxx>
+                QString r2 = match.captured(1); // <xxx>
+                QString r3 = match.captured(2); // <>xxx</>
+                QString r4 = match.captured(3); // </xxx>
 
                 if (r2 == "<b>")
                     html2.append(QString("<span style='background-color: cyan'>%0</span>").arg((*itr2)));
@@ -427,12 +440,13 @@ void SpellWork::compare()
         }
         else
         {
-            if (rx.indexIn((*itr2)) != -1)
+            QRegularExpressionMatch match = rx.match((*itr2));
+            if (match.hasMatch())
             {
                 // QString r1 = rx.cap(0); // Full
-                QString r2 = rx.cap(1); // <xxx>
-                QString r3 = rx.cap(2); // <>xxx</>
-                QString r4 = rx.cap(3); // </xxx>
+                QString r2 = match.captured(1); // <xxx>
+                QString r3 = match.captured(2); // <>xxx</>
+                QString r4 = match.captured(3); // </xxx>
 
                 if (r2 == "<b>")
                     html2.append(QString("<span style='background-color: salmon'>%0</span>").arg((*itr2)));

@@ -257,6 +257,8 @@ namespace Spell
         quint32    totemCategory[MAX_SPELL_TOTEMS];                 // 212-213
         quint32    areaId;                                          // 214
         quint32    schoolMask;                                      // 215 school mask
+        quint32    isServerSide;                                    // 216 school mask
+        quint32    attributesServerside;                            // 217 school mask
 
         const QString name() const;
         const QString description() const;

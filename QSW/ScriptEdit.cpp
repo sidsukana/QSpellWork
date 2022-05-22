@@ -159,6 +159,6 @@ void ScriptEdit::setupCompleter(QObject* metaSpell)
             fields << methodName.replace("(qulonglong)", "(flags)");
     }
 
-    m_completerModel->setStringList(fields.toList());
+    m_completerModel->setStringList(fields.values());
     m_completerModel->sort(0);
 }
