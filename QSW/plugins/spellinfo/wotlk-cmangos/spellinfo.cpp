@@ -89,15 +89,13 @@ void SpellInfo::setModifiedSqlDataResult(quint8 queryIndex, QSqlQuery& query)
         quint32 id = query.value(0).toUInt();
         if (const Spell::entry* existSpell = Spell::getMetaRecord(id, true))
         {
-            *spell = *existSpell;
-
+            spell = const_cast<Spell::entry*>(existSpell);
             qint32 index = m_metaSpellIndexes.indexOf(id);
             metaSpell = qobject_cast<Spell::meta*>(m_metaSpells.at(index));
-            metaSpell->setSpellInfo(spell);
-            m_metaSpells.replace(m_metaSpellIndexes.indexOf(id), metaSpell);
         }
         else
         {
+            spell = new Spell::entry();
             // add new index for meta spell
             m_metaSpellIndexes.append(id);
             m_internalSpells.append(id);
