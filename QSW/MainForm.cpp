@@ -18,7 +18,7 @@
 #include "mpq/MPQ.h"
 
 MainForm::MainForm(QWidget* parent)
-    : QMainWindow(parent)
+    : QMainWindow(parent), m_pluginLoading(false)
 {
     QElapsedTimer m_time;
     m_time.start();
@@ -420,7 +420,8 @@ void MainForm::hideProgressBar()
 
 void MainForm::onPluginLoadingInit()
 {
-    setEnabled(false);
+    // setEnabled(false);
+    m_pluginLoading = true;
     updatePlguinButton();
 }
 
@@ -433,7 +434,8 @@ void MainForm::onPluginLoadingFail()
 
 void MainForm::onPluginLoaded()
 {
-    setEnabled(true);
+    // setEnabled(true);
+    m_pluginLoading = false;
     updatePlguinButton();
     update();
 }
@@ -562,6 +564,9 @@ void MainForm::slotFilterSearch()
 
 void MainForm::slotCompareSearch()
 {
+    if (m_pluginLoading)
+        return;
+
     if (!compareSpell_1->text().isEmpty() && !compareSpell_2->text().isEmpty())
     {
         m_sw->showInfo(compareSpell_1->text().toInt(), QSW::PAGE_CLEFT);
@@ -572,6 +577,9 @@ void MainForm::slotCompareSearch()
 
 void MainForm::slotSearch(quint8 type)
 {
+    if (m_pluginLoading)
+        return;
+
     SpellListSortedModel* smodel = static_cast<SpellListSortedModel*>(SpellList->model());
     SpellListModel* model = static_cast<SpellListModel*>(smodel->sourceModel());
     delete model;
@@ -582,6 +590,9 @@ void MainForm::slotSearch(quint8 type)
 
 void MainForm::slotSearchResult()
 {
+    if (m_pluginLoading)
+        return;
+
     SearchResultWatcher* watcher = (SearchResultWatcher*)QObject::sender();
 
     EventList eventList = watcher->future().result();
@@ -591,6 +602,9 @@ void MainForm::slotSearchResult()
 
 void MainForm::slotSearchFromList(const QModelIndex &index)
 {
+    if (m_pluginLoading)
+        return;
+
     QVariant var = SpellList->model()->data(SpellList->model()->index(index.row(), 0));
     m_sw->showInfo(var.toInt());
     SpellList->setFocus();

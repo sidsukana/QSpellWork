@@ -201,4 +201,6 @@ class MainForm : public QMainWindow, public Ui::main
         ScriptFilter* m_scriptFilter;
 
         QSWPage* m_pages[QSW::PAGE_MAX];
+
+        bool m_pluginLoading;
 };
