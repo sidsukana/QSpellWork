@@ -29,8 +29,16 @@ int main(int argc, char *argv[])
     MainForm form;
     form.loadSettings(overridenLastActivePlugin, activePlugin);
 
-    form.setWindowTitle(QString("Qt SpellWork %0")
-        .arg(QSW::VERSION));
+    QString pluginTitle = "";
+    if (activePlugin == "wotlk-cmangos")
+        pluginTitle = "WOTLK";
+    else if (activePlugin == "tbc-cmangos")
+        pluginTitle = "TBC";
+    else if (activePlugin == "pre-tbc-cmangos")
+        pluginTitle = "Classic";
+
+    form.setWindowTitle(QString("QSW %0 %1")
+        .arg(QSW::VERSION).arg(pluginTitle));
     
     // Set position to center about desktop widget
     QRect frameRect = form.frameGeometry();
