@@ -144,7 +144,7 @@ class MainForm : public QMainWindow, public Ui::main
 
     public slots:
         void saveSettings();
-        void loadSettings();
+        void loadSettings(bool overridenLastActivePlugin, QString activePlugin);
 
     signals:
         void signalSearch(quint8 type);

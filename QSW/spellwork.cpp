@@ -35,7 +35,7 @@ void SpellWork::setActivePlugin(QString name)
     {
         SpellInfoInterface* plugin = m_spellInfoPlugins[name].second;
         m_activeSpellInfoPluginName = name;
-        m_form->loadSettings();
+        m_form->loadSettings(false, QString());
 
         MPQ::setMpqFiles(plugin->getMPQFiles());
 

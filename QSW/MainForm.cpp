@@ -122,8 +122,7 @@ MainForm::MainForm(QWidget* parent)
 
     progressBar->hide();
 
-    // Load settings at end
-    loadSettings();
+    // load settings done in main.cpp
 }
 
 MainForm::~MainForm()
@@ -203,15 +202,17 @@ void MainForm::slotScriptApply()
     emit signalSearch(3);
 }
 
-void MainForm::loadSettings()
+void MainForm::loadSettings(bool overridenLastActivePlugin, QString activePlugin)
 {
     QString pluginName = m_sw->getActivePluginName();
-
     if (pluginName.isEmpty())
     {
         QSW::settings().beginGroup("Global");
         pluginName = QSW::settings().value("lastActivePlugin", QString()).toString();
         QSW::settings().endGroup();
+
+        if (overridenLastActivePlugin)
+            pluginName = activePlugin;
 
         if (!pluginName.isEmpty())
         {

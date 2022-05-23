@@ -10,9 +10,24 @@
 
 int main(int argc, char *argv[])
 {
+    bool overridenLastActivePlugin = false;
+    QString activePlugin = "";
+    for (int i = 0; i < argc; ++i)
+    {
+        if (strcmp(argv[i], "--plugin") == 0)
+        {
+            if (i + 1 < argc)
+            {
+                activePlugin = argv[i + 1];
+                overridenLastActivePlugin = true;
+            }
+        }
+    }
+
     QApplication app(argc, argv);
 
     MainForm form;
+    form.loadSettings(overridenLastActivePlugin, activePlugin);
 
     form.setWindowTitle(QString("Qt SpellWork %0")
         .arg(QSW::VERSION));
