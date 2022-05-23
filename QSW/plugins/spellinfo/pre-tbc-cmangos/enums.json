@@ -587,11 +587,31 @@
     ],
     "SpellChannelInterruptFlags":
     [
-        { "key": "CHANNEL_FLAG_DAMAGE", "value": "0x0002"},
-        { "key": "CHANNEL_FLAG_MOVEMENT", "value": "0x0008"},
-        { "key": "CHANNEL_FLAG_TURNING", "value": "0x0010"},
-        { "key": "CHANNEL_FLAG_DAMAGE2", "value": "0x0080"},
-        { "key": "CHANNEL_FLAG_DELAY", "value": "0x4000"}
+        { "key": "AURA_INTERRUPT_FLAG_HOSTILE_ACTION", "value": "0x00000001"},
+        { "key": "AURA_INTERRUPT_FLAG_DAMAGE", "value": "0x00000002"},
+        { "key": "AURA_INTERRUPT_FLAG_ACTION", "value": "0x00000004"},
+        { "key": "AURA_INTERRUPT_FLAG_MOVING", "value": "0x00000008"},
+        { "key": "AURA_INTERRUPT_FLAG_TURNING", "value": "0x00000010"},
+        { "key": "AURA_INTERRUPT_FLAG_ANIM_CANCELS", "value": "0x00000020"},
+        { "key": "AURA_INTERRUPT_FLAG_DISMOUNT", "value": "0x00000040"},
+        { "key": "AURA_INTERRUPT_FLAG_UNDERWATER_CANCELS", "value": "0x00000080"},
+        { "key": "AURA_INTERRUPT_FLAG_ABOVEWATER_CANCELS", "value": "0x00000100"},
+        { "key": "AURA_INTERRUPT_FLAG_SHEATHING_CANCELS", "value": "0x00000200"},
+        { "key": "AURA_INTERRUPT_FLAG_INTERACTING", "value": "0x00000400"},
+        { "key": "AURA_INTERRUPT_FLAG_LOOTING", "value": "0x00000800"},
+        { "key": "AURA_INTERRUPT_FLAG_ATTACKING", "value": "0x00001000"},
+        { "key": "AURA_INTERRUPT_FLAG_ITEM_USE", "value": "0x00002000"},
+        { "key": "AURA_INTERRUPT_FLAG_DAMAGE_CHANNEL_DURATION", "value": "0x00004000"},
+        { "key": "AURA_INTERRUPT_FLAG_SHAPESHIFTING", "value": "0x00008000"},
+        { "key": "AURA_INTERRUPT_FLAG_ACTION_LATE", "value": "0x00010000"},
+        { "key": "AURA_INTERRUPT_FLAG_MOUNTING", "value": "0x00020000"},
+        { "key": "AURA_INTERRUPT_FLAG_STANDING_CANCELS", "value": "0x00040000"},
+        { "key": "AURA_INTERRUPT_FLAG_LEAVE_WORLD", "value": "0x00080000"},
+        { "key": "AURA_INTERRUPT_FLAG_STEALTH_INVIS_CANCELS", "value": "0x00100000"},
+        { "key": "AURA_INTERRUPT_FLAG_INVULNERABILITY_BUFF_CANCELS", "value": "0x00200000"},
+        { "key": "AURA_INTERRUPT_FLAG_ENTER_WORLD", "value": "0x00400000"},
+        { "key": "AURA_INTERRUPT_FLAG_PVP_ACTIVE_CANCELS", "value": "0x00800000"},
+        { "key": "AURA_INTERRUPT_FLAG_NON_PERIODIC_DAMAGE", "value": "0x01000000"}
     ],
     "SpellAuraInterruptFlags":
     [
