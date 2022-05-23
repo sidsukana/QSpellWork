@@ -51,7 +51,7 @@ bool SpellInfo::init()
     }
 
     m_metaSpellIndexes = Spell::getDbc().getIndexes();
-    m_names = names.toList();
+    m_names = names.values();
     m_modifiedStrings.clear();
 
     return true;
@@ -182,120 +182,120 @@ QVariantList splitMaskToList(quint32 mask, Enumerator enumerator)
     return flags;
 }
 
-void RegExpU(const Spell::entry* spellInfo, QRegExp rx, QString &str)
+void RegExpU(const Spell::entry* spellInfo, QRegularExpressionMatch match, QString &str)
 {
-    if (!rx.cap(4).isEmpty())
+    if (!match.captured(4).isEmpty())
     {
-        if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
+        if (const Spell::entry* tSpell = Spell::getMetaRecord(match.captured(4).toInt(), true))
         {
-            str.replace(rx.cap(0), QString("%0")
+            str.replace(match.captured(0), QString("%0")
                 .arg(tSpell->stackAmount));
         }
     }
     else
     {
-        str.replace(rx.cap(0), QString("%0")
+        str.replace(match.captured(0), QString("%0")
             .arg(spellInfo->stackAmount));
     }
 }
 
-void RegExpH(const Spell::entry* spellInfo, QRegExp rx, QString &str)
+void RegExpH(const Spell::entry* spellInfo, QRegularExpressionMatch match, QString &str)
 {
-    if (!rx.cap(4).isEmpty())
+    if (!match.captured(4).isEmpty())
     {
-        if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
+        if (const Spell::entry* tSpell = Spell::getMetaRecord(match.captured(4).toInt(), true))
         {
-            str.replace(rx.cap(0), QString("%0")
+            str.replace(match.captured(0), QString("%0")
                 .arg(tSpell->procChance));
         }
     }
     else
     {
-        str.replace(rx.cap(0), QString("%0")
+        str.replace(match.captured(0), QString("%0")
             .arg(spellInfo->procChance));
     }
 }
 
-void RegExpV(const Spell::entry* spellInfo, QRegExp rx, QString &str)
+void RegExpV(const Spell::entry* spellInfo, QRegularExpressionMatch match, QString &str)
 {
-    if (!rx.cap(4).isEmpty())
+    if (!match.captured(4).isEmpty())
     {
-        if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
+        if (const Spell::entry* tSpell = Spell::getMetaRecord(match.captured(4).toInt(), true))
         {
-            str.replace(rx.cap(0), QString("%0")
+            str.replace(match.captured(0), QString("%0")
                 .arg(tSpell->maxTargetLevel));
         }
     }
     else
     {
-        str.replace(rx.cap(0), QString("%0")
+        str.replace(match.captured(0), QString("%0")
             .arg(spellInfo->maxTargetLevel));
     }
 }
 
-void RegExpQ(const Spell::entry* spellInfo, QRegExp rx, QString &str)
+void RegExpQ(const Spell::entry* spellInfo, QRegularExpressionMatch match, QString &str)
 {
-    if (!rx.cap(3).isEmpty())
+    if (!match.captured(3).isEmpty())
     {
-        if (!rx.cap(4).isEmpty())
+        if (!match.captured(4).isEmpty())
         {
-            if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
+            if (const Spell::entry* tSpell = Spell::getMetaRecord(match.captured(4).toInt(), true))
             {
-                if (rx.cap(2) == QString("/"))
+                if (match.captured(2) == QString("/"))
                 {
-                    str.replace(rx.cap(0), QString("%0")
-                        .arg(abs(qint32(tSpell->effectMiscValue[rx.cap(6).toInt()-1] / rx.cap(3).toInt()))));
+                    str.replace(match.captured(0), QString("%0")
+                        .arg(abs(qint32(tSpell->effectMiscValue[match.captured(6).toInt()-1] / match.captured(3).toInt()))));
                 }
-                else if (rx.cap(2) == QString("*"))
+                else if (match.captured(2) == QString("*"))
                 {
-                    str.replace(rx.cap(0), QString("%0")
-                        .arg(abs(qint32(tSpell->effectMiscValue[rx.cap(6).toInt()-1] * rx.cap(3).toInt()))));
+                    str.replace(match.captured(0), QString("%0")
+                        .arg(abs(qint32(tSpell->effectMiscValue[match.captured(6).toInt()-1] * match.captured(3).toInt()))));
                 }
             }
         }
         else
         {
-            if (rx.cap(2) == QString("/"))
+            if (match.captured(2) == QString("/"))
             {
-                str.replace(rx.cap(0), QString("%0")
-                    .arg(abs(qint32(spellInfo->effectMiscValue[rx.cap(6).toInt()-1] / rx.cap(3).toInt()))));
+                str.replace(match.captured(0), QString("%0")
+                    .arg(abs(qint32(spellInfo->effectMiscValue[match.captured(6).toInt()-1] / match.captured(3).toInt()))));
             }
-            else if (rx.cap(2) == QString("*"))
+            else if (match.captured(2) == QString("*"))
             {
-                str.replace(rx.cap(0), QString("%0")
-                    .arg(abs(qint32(spellInfo->effectMiscValue[rx.cap(6).toInt()-1] * rx.cap(3).toInt()))));
+                str.replace(match.captured(0), QString("%0")
+                    .arg(abs(qint32(spellInfo->effectMiscValue[match.captured(6).toInt()-1] * match.captured(3).toInt()))));
             }
         }
     }
-    else if (!rx.cap(4).isEmpty())
+    else if (!match.captured(4).isEmpty())
     {
-        if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
+        if (const Spell::entry* tSpell = Spell::getMetaRecord(match.captured(4).toInt(), true))
         {
-            str.replace(rx.cap(0), QString("%0")
-                .arg(abs(tSpell->effectMiscValue[rx.cap(6).toInt()-1])));
+            str.replace(match.captured(0), QString("%0")
+                .arg(abs(tSpell->effectMiscValue[match.captured(6).toInt()-1])));
         }
     }
     else
     {
-        str.replace(rx.cap(0), QString("%0")
-            .arg(abs(spellInfo->effectMiscValue[rx.cap(6).toInt()-1])));
+        str.replace(match.captured(0), QString("%0")
+            .arg(abs(spellInfo->effectMiscValue[match.captured(6).toInt()-1])));
     }
 }
 
-void RegExpI(const Spell::entry* spellInfo, QRegExp rx, QString &str)
+void RegExpI(const Spell::entry* spellInfo, QRegularExpressionMatch match, QString &str)
 {
-    if (!rx.cap(4).isEmpty())
+    if (!match.captured(4).isEmpty())
     {
-        if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
+        if (const Spell::entry* tSpell = Spell::getMetaRecord(match.captured(4).toInt(), true))
         {
             if (tSpell->maxAffectedTargets != 0)
             {
-                str.replace(rx.cap(0), QString("%0")
+                str.replace(match.captured(0), QString("%0")
                     .arg(tSpell->maxAffectedTargets));
             }
             else
             {
-                str.replace(rx.cap(0), QString("nearby"));
+                str.replace(match.captured(0), QString("nearby"));
             }
         }
     }
@@ -303,362 +303,362 @@ void RegExpI(const Spell::entry* spellInfo, QRegExp rx, QString &str)
     {
         if (spellInfo->maxAffectedTargets != 0)
         {
-            str.replace(rx.cap(0), QString("%0")
+            str.replace(match.captured(0), QString("%0")
                 .arg(spellInfo->maxAffectedTargets));
         }
         else
         {
-            str.replace(rx.cap(0), QString("nearby"));
+            str.replace(match.captured(0), QString("nearby"));
         }
     }
 }
 
-void RegExpB(const Spell::entry* spellInfo, QRegExp rx, QString &str)
+void RegExpB(const Spell::entry* spellInfo, QRegularExpressionMatch match, QString &str)
 {
-    if (!rx.cap(3).isEmpty())
+    if (!match.captured(3).isEmpty())
     {
-        if (!rx.cap(4).isEmpty())
+        if (!match.captured(4).isEmpty())
         {
 
-            if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
+            if (const Spell::entry* tSpell = Spell::getMetaRecord(match.captured(4).toInt(), true))
             {
-                if (rx.cap(2) == QString("/"))
+                if (match.captured(2) == QString("/"))
                 {
-                    str.replace(rx.cap(0), QString("%0")
-                        .arg(abs(qint32((tSpell->effectPointsPerComboPoint[rx.cap(6).toInt()-1]) / rx.cap(3).toInt()))));
+                    str.replace(match.captured(0), QString("%0")
+                        .arg(abs(qint32((tSpell->effectPointsPerComboPoint[match.captured(6).toInt()-1]) / match.captured(3).toInt()))));
                 }
-                else if (rx.cap(2) == QString("*"))
+                else if (match.captured(2) == QString("*"))
                 {
-                    str.replace(rx.cap(0), QString("%0")
-                        .arg(abs(qint32((tSpell->effectPointsPerComboPoint[rx.cap(6).toInt()-1]) * rx.cap(3).toInt()))));
+                    str.replace(match.captured(0), QString("%0")
+                        .arg(abs(qint32((tSpell->effectPointsPerComboPoint[match.captured(6).toInt()-1]) * match.captured(3).toInt()))));
                 }
             }
         }
         else
         {
-            if (rx.cap(2) == QString("/"))
+            if (match.captured(2) == QString("/"))
             {
-                str.replace(rx.cap(0), QString("%0")
-                    .arg(abs(qint32((spellInfo->effectPointsPerComboPoint[rx.cap(6).toInt()-1]) / rx.cap(3).toInt()))));
+                str.replace(match.captured(0), QString("%0")
+                    .arg(abs(qint32((spellInfo->effectPointsPerComboPoint[match.captured(6).toInt()-1]) / match.captured(3).toInt()))));
             }
-            else if (rx.cap(2) == QString("*"))
+            else if (match.captured(2) == QString("*"))
             {
-                str.replace(rx.cap(0), QString("%0")
-                    .arg(abs(qint32((spellInfo->effectPointsPerComboPoint[rx.cap(6).toInt()-1]) * rx.cap(3).toInt()))));
+                str.replace(match.captured(0), QString("%0")
+                    .arg(abs(qint32((spellInfo->effectPointsPerComboPoint[match.captured(6).toInt()-1]) * match.captured(3).toInt()))));
             }
         }
     }
-    else if (!rx.cap(4).isEmpty())
+    else if (!match.captured(4).isEmpty())
     {
-        if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
+        if (const Spell::entry* tSpell = Spell::getMetaRecord(match.captured(4).toInt(), true))
         {
-            str.replace(rx.cap(0), QString("%0")
-                .arg(abs(qint32(tSpell->effectPointsPerComboPoint[rx.cap(6).toInt()-1]))));
+            str.replace(match.captured(0), QString("%0")
+                .arg(abs(qint32(tSpell->effectPointsPerComboPoint[match.captured(6).toInt()-1]))));
         }
     }
     else
     {
-        str.replace(rx.cap(0), QString("%0")
-            .arg(abs(qint32(spellInfo->effectPointsPerComboPoint[rx.cap(6).toInt()-1]))));
+        str.replace(match.captured(0), QString("%0")
+            .arg(abs(qint32(spellInfo->effectPointsPerComboPoint[match.captured(6).toInt()-1]))));
     }
 }
 
-void RegExpA(const Spell::entry* spellInfo, QRegExp rx, QString &str)
+void RegExpA(const Spell::entry* spellInfo, QRegularExpressionMatch match, QString &str)
 {
-    if (!rx.cap(3).isEmpty())
+    if (!match.captured(3).isEmpty())
     {
-        if (!rx.cap(4).isEmpty())
+        if (!match.captured(4).isEmpty())
         {
-            if (const Spell::entry * tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
+            if (const Spell::entry * tSpell = Spell::getMetaRecord(match.captured(4).toInt(), true))
             {
-                if (rx.cap(2) == QString("/"))
+                if (match.captured(2) == QString("/"))
                 {
-                    str.replace(rx.cap(0), QString("%0")
-                        .arg(quint32(tSpell->getRadius(rx.cap(6).toInt()-1) / rx.cap(2).toInt())));
+                    str.replace(match.captured(0), QString("%0")
+                        .arg(quint32(tSpell->getRadius(match.captured(6).toInt()-1) / match.captured(2).toInt())));
                 }
-                else if (rx.cap(2) == QString("*"))
+                else if (match.captured(2) == QString("*"))
                 {
-                    str.replace(rx.cap(0), QString("%0")
-                        .arg(quint32(tSpell->getRadius(rx.cap(6).toInt()-1) * rx.cap(2).toInt())));
+                    str.replace(match.captured(0), QString("%0")
+                        .arg(quint32(tSpell->getRadius(match.captured(6).toInt()-1) * match.captured(2).toInt())));
                 }
             }
         }
         else
         {
-            if (rx.cap(2) == QString("/"))
+            if (match.captured(2) == QString("/"))
             {
-                str.replace(rx.cap(0), QString("%0")
-                    .arg(quint32(spellInfo->getRadius(rx.cap(6).toInt()-1) / rx.cap(2).toInt())));
+                str.replace(match.captured(0), QString("%0")
+                    .arg(quint32(spellInfo->getRadius(match.captured(6).toInt()-1) / match.captured(2).toInt())));
             }
-            else if (rx.cap(2) == QString("*"))
+            else if (match.captured(2) == QString("*"))
             {
-                str.replace(rx.cap(0), QString("%0")
-                    .arg(quint32(spellInfo->getRadius(rx.cap(6).toInt()-1) * rx.cap(2).toInt())));
+                str.replace(match.captured(0), QString("%0")
+                    .arg(quint32(spellInfo->getRadius(match.captured(6).toInt()-1) * match.captured(2).toInt())));
             }
         }
     }
-    else if (!rx.cap(4).isEmpty())
+    else if (!match.captured(4).isEmpty())
     {
-        if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
+        if (const Spell::entry* tSpell = Spell::getMetaRecord(match.captured(4).toInt(), true))
         {
-            str.replace(rx.cap(0), QString("%0")
-                .arg(tSpell->getRadius(rx.cap(6).toInt()-1)));
+            str.replace(match.captured(0), QString("%0")
+                .arg(tSpell->getRadius(match.captured(6).toInt()-1)));
         }
     }
     else
     {
-        str.replace(rx.cap(0), QString("%0")
-            .arg(spellInfo->getRadius(rx.cap(6).toInt()-1)));
+        str.replace(match.captured(0), QString("%0")
+            .arg(spellInfo->getRadius(match.captured(6).toInt()-1)));
     }
 }
 
-void RegExpD(const Spell::entry* spellInfo, QRegExp rx, QString &str)
+void RegExpD(const Spell::entry* spellInfo, QRegularExpressionMatch match, QString &str)
 {
-    if (!rx.cap(3).isEmpty())
+    if (!match.captured(3).isEmpty())
     {
-        if (!rx.cap(4).isEmpty())
+        if (!match.captured(4).isEmpty())
         {
-            if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
+            if (const Spell::entry* tSpell = Spell::getMetaRecord(match.captured(4).toInt(), true))
             {
-                if (rx.cap(2) == QString("/"))
+                if (match.captured(2) == QString("/"))
                 {
-                    str.replace(rx.cap(0), QString("%0")
-                        .arg(quint32(tSpell->getDuration() / rx.cap(3).toInt())));
+                    str.replace(match.captured(0), QString("%0")
+                        .arg(quint32(tSpell->getDuration() / match.captured(3).toInt())));
                 }
-                else if (rx.cap(2) == QString("*"))
+                else if (match.captured(2) == QString("*"))
                 {
-                    str.replace(rx.cap(0), QString("%0")
-                        .arg(quint32(tSpell->getDuration() * rx.cap(3).toInt())));
+                    str.replace(match.captured(0), QString("%0")
+                        .arg(quint32(tSpell->getDuration() * match.captured(3).toInt())));
                 }
             }
         }
         else
         {
-            if (rx.cap(2) == QString("/"))
+            if (match.captured(2) == QString("/"))
             {
-                str.replace(rx.cap(0), QString("%0")
-                    .arg(quint32(spellInfo->getDuration() / rx.cap(3).toInt())));
+                str.replace(match.captured(0), QString("%0")
+                    .arg(quint32(spellInfo->getDuration() / match.captured(3).toInt())));
             }
-            else if (rx.cap(2) == QString("*"))
+            else if (match.captured(2) == QString("*"))
             {
-                str.replace(rx.cap(0), QString("%0")
-                    .arg(quint32(spellInfo->getDuration() * rx.cap(3).toInt())));
+                str.replace(match.captured(0), QString("%0")
+                    .arg(quint32(spellInfo->getDuration() * match.captured(3).toInt())));
             }
         }
     }
-    else if (!rx.cap(4).isEmpty())
+    else if (!match.captured(4).isEmpty())
     {
-        if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
+        if (const Spell::entry* tSpell = Spell::getMetaRecord(match.captured(4).toInt(), true))
         {
-            str.replace(rx.cap(0), QString("%0 seconds")
+            str.replace(match.captured(0), QString("%0 seconds")
                 .arg(tSpell->getDuration()));
         }
     }
     else
     {
-        str.replace(rx.cap(0), QString("%0 seconds")
+        str.replace(match.captured(0), QString("%0 seconds")
             .arg(spellInfo->getDuration()));
     }
 }
 
-void RegExpO(const Spell::entry* spellInfo, QRegExp rx, QString &str)
+void RegExpO(const Spell::entry* spellInfo, QRegularExpressionMatch match, QString &str)
 {
-    if (!rx.cap(3).isEmpty())
+    if (!match.captured(3).isEmpty())
     {
-        if (!rx.cap(4).isEmpty())
+        if (!match.captured(4).isEmpty())
         {
-            if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
+            if (const Spell::entry* tSpell = Spell::getMetaRecord(match.captured(4).toInt(), true))
             {
-                if (rx.cap(2) == QString("/"))
+                if (match.captured(2) == QString("/"))
                 {
-                    str.replace(rx.cap(0), QString("%0")
-                        .arg(quint32((tSpell->getTicks(rx.cap(6).toInt()-1) * (tSpell->effectBasePoints[rx.cap(6).toInt()-1] + 1)) / rx.cap(3).toInt())));
+                    str.replace(match.captured(0), QString("%0")
+                        .arg(quint32((tSpell->getTicks(match.captured(6).toInt()-1) * (tSpell->effectBasePoints[match.captured(6).toInt()-1] + 1)) / match.captured(3).toInt())));
                 }
-                else if(rx.cap(2) == QString("*"))
+                else if(match.captured(2) == QString("*"))
                 {
-                    str.replace(rx.cap(0), QString("%0")
-                        .arg(quint32((tSpell->getTicks(rx.cap(6).toInt()-1) * (tSpell->effectBasePoints[rx.cap(6).toInt()-1] + 1)) * rx.cap(3).toInt())));
+                    str.replace(match.captured(0), QString("%0")
+                        .arg(quint32((tSpell->getTicks(match.captured(6).toInt()-1) * (tSpell->effectBasePoints[match.captured(6).toInt()-1] + 1)) * match.captured(3).toInt())));
                 }
             }
         }
         else
         {
-            if (rx.cap(2) == QString("/"))
+            if (match.captured(2) == QString("/"))
             {
-                str.replace(rx.cap(0), QString("%0")
-                    .arg(quint32((spellInfo->getTicks(rx.cap(6).toInt()-1) * (spellInfo->effectBasePoints[rx.cap(6).toInt()-1] + 1)) / rx.cap(3).toInt())));
+                str.replace(match.captured(0), QString("%0")
+                    .arg(quint32((spellInfo->getTicks(match.captured(6).toInt()-1) * (spellInfo->effectBasePoints[match.captured(6).toInt()-1] + 1)) / match.captured(3).toInt())));
             }
-            else if (rx.cap(2) == QString("*"))
+            else if (match.captured(2) == QString("*"))
             {
-                str.replace(rx.cap(0), QString("%0")
-                    .arg(quint32((spellInfo->getTicks(rx.cap(6).toInt()-1) * (spellInfo->effectBasePoints[rx.cap(6).toInt()-1] + 1)) * rx.cap(3).toInt())));
+                str.replace(match.captured(0), QString("%0")
+                    .arg(quint32((spellInfo->getTicks(match.captured(6).toInt()-1) * (spellInfo->effectBasePoints[match.captured(6).toInt()-1] + 1)) * match.captured(3).toInt())));
             }
         }
     }
-    else if (!rx.cap(4).isEmpty())
+    else if (!match.captured(4).isEmpty())
     {
-        if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
+        if (const Spell::entry* tSpell = Spell::getMetaRecord(match.captured(4).toInt(), true))
         {
-            str.replace(rx.cap(0), QString("%0")
-                .arg(tSpell->getTicks(rx.cap(6).toInt()-1) * (tSpell->effectBasePoints[rx.cap(6).toInt()-1] + 1)));
+            str.replace(match.captured(0), QString("%0")
+                .arg(tSpell->getTicks(match.captured(6).toInt()-1) * (tSpell->effectBasePoints[match.captured(6).toInt()-1] + 1)));
         }
     }
     else
     {
-        str.replace(rx.cap(0), QString("%0")
-            .arg(spellInfo->getTicks(rx.cap(6).toInt()-1) * (spellInfo->effectBasePoints[rx.cap(6).toInt()-1] + 1)));
+        str.replace(match.captured(0), QString("%0")
+            .arg(spellInfo->getTicks(match.captured(6).toInt()-1) * (spellInfo->effectBasePoints[match.captured(6).toInt()-1] + 1)));
     }
 }
 
-void RegExpS(const Spell::entry* spellInfo, QRegExp rx, QString &str)
+void RegExpS(const Spell::entry* spellInfo, QRegularExpressionMatch match, QString &str)
 {
-    if (!rx.cap(3).isEmpty())
+    if (!match.captured(3).isEmpty())
     {
-        if (!rx.cap(4).isEmpty())
+        if (!match.captured(4).isEmpty())
         {
-            if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
+            if (const Spell::entry* tSpell = Spell::getMetaRecord(match.captured(4).toInt(), true))
             {
-                if (rx.cap(2) == QString("/"))
+                if (match.captured(2) == QString("/"))
                 {
-                    str.replace(rx.cap(0), QString("%0")
-                        .arg(abs(qint32((tSpell->effectBasePoints[rx.cap(6).toInt()-1] + 1) / rx.cap(3).toInt()))));
+                    str.replace(match.captured(0), QString("%0")
+                        .arg(abs(qint32((tSpell->effectBasePoints[match.captured(6).toInt()-1] + 1) / match.captured(3).toInt()))));
                 }
-                else if (rx.cap(2) == QString("*"))
+                else if (match.captured(2) == QString("*"))
                 {
-                    str.replace(rx.cap(0), QString("%0")
-                        .arg(abs(qint32((tSpell->effectBasePoints[rx.cap(6).toInt()-1] + 1) * rx.cap(3).toInt()))));
+                    str.replace(match.captured(0), QString("%0")
+                        .arg(abs(qint32((tSpell->effectBasePoints[match.captured(6).toInt()-1] + 1) * match.captured(3).toInt()))));
                 }
             }
         }
         else
         {
-            if (rx.cap(2) == QString("/"))
+            if (match.captured(2) == QString("/"))
             {
-                str.replace(rx.cap(0), QString("%0")
-                    .arg(abs(qint32((spellInfo->effectBasePoints[rx.cap(6).toInt()-1] + 1) / rx.cap(3).toInt()))));
+                str.replace(match.captured(0), QString("%0")
+                    .arg(abs(qint32((spellInfo->effectBasePoints[match.captured(6).toInt()-1] + 1) / match.captured(3).toInt()))));
             }
-            else if (rx.cap(2) == QString("*"))
+            else if (match.captured(2) == QString("*"))
             {
-                str.replace(rx.cap(0), QString("%0")
-                    .arg(abs(qint32((spellInfo->effectBasePoints[rx.cap(6).toInt()-1] + 1) * rx.cap(3).toInt()))));
+                str.replace(match.captured(0), QString("%0")
+                    .arg(abs(qint32((spellInfo->effectBasePoints[match.captured(6).toInt()-1] + 1) * match.captured(3).toInt()))));
             }
         }
     }
-    else if (!rx.cap(4).isEmpty())
+    else if (!match.captured(4).isEmpty())
     {
-        if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
+        if (const Spell::entry* tSpell = Spell::getMetaRecord(match.captured(4).toInt(), true))
         {
-            str.replace(rx.cap(0), QString("%0")
-                .arg(abs(tSpell->effectBasePoints[rx.cap(6).toInt()-1] + 1)));
+            str.replace(match.captured(0), QString("%0")
+                .arg(abs(tSpell->effectBasePoints[match.captured(6).toInt()-1] + 1)));
         }
     }
     else
     {
-        str.replace(rx.cap(0), QString("%0")
-            .arg(abs(spellInfo->effectBasePoints[rx.cap(6).toInt()-1] + 1)));
+        str.replace(match.captured(0), QString("%0")
+            .arg(abs(spellInfo->effectBasePoints[match.captured(6).toInt()-1] + 1)));
     }
 }
 
-void RegExpT(const Spell::entry* spellInfo, QRegExp rx, QString &str)
+void RegExpT(const Spell::entry* spellInfo, QRegularExpressionMatch match, QString &str)
 {
-    if (!rx.cap(3).isEmpty())
+    if (!match.captured(3).isEmpty())
     {
-        if (!rx.cap(4).isEmpty())
+        if (!match.captured(4).isEmpty())
         {
-            if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
+            if (const Spell::entry* tSpell = Spell::getMetaRecord(match.captured(4).toInt(), true))
             {
-                if (rx.cap(2) == QString("/"))
+                if (match.captured(2) == QString("/"))
                 {
-                    str.replace(rx.cap(0), QString("%0")
-                        .arg(quint32(tSpell->getAmplitude(rx.cap(6).toInt()-1) / rx.cap(3).toInt())));
+                    str.replace(match.captured(0), QString("%0")
+                        .arg(quint32(tSpell->getAmplitude(match.captured(6).toInt()-1) / match.captured(3).toInt())));
                 }
-                else if (rx.cap(2) == QString("*"))
+                else if (match.captured(2) == QString("*"))
                 {
-                    str.replace(rx.cap(0), QString("%0")
-                        .arg(quint32(tSpell->getAmplitude(rx.cap(6).toInt()-1) * rx.cap(3).toInt())));
+                    str.replace(match.captured(0), QString("%0")
+                        .arg(quint32(tSpell->getAmplitude(match.captured(6).toInt()-1) * match.captured(3).toInt())));
                 }
             }
         }
         else
         {
-            if (rx.cap(2) == QString("/"))
+            if (match.captured(2) == QString("/"))
             {
-                str.replace(rx.cap(0), QString("%0")
-                    .arg(quint32(spellInfo->getAmplitude(rx.cap(6).toInt()-1) / rx.cap(3).toInt())));
+                str.replace(match.captured(0), QString("%0")
+                    .arg(quint32(spellInfo->getAmplitude(match.captured(6).toInt()-1) / match.captured(3).toInt())));
             }
-            else if (rx.cap(2) == QString("*"))
+            else if (match.captured(2) == QString("*"))
             {
-                str.replace(rx.cap(0), QString("%0")
-                    .arg(quint32(spellInfo->getAmplitude(rx.cap(6).toInt()-1) * rx.cap(3).toInt())));
+                str.replace(match.captured(0), QString("%0")
+                    .arg(quint32(spellInfo->getAmplitude(match.captured(6).toInt()-1) * match.captured(3).toInt())));
             }
         }
     }
-    else if (!rx.cap(4).isEmpty())
+    else if (!match.captured(4).isEmpty())
     {
 
-        if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
+        if (const Spell::entry* tSpell = Spell::getMetaRecord(match.captured(4).toInt(), true))
         {
-            if (tSpell->effectAmplitude[rx.cap(6).toInt()-1])
-                str.replace(rx.cap(0), QString("%0").arg(tSpell->getAmplitude(rx.cap(6).toInt()-1)));
+            if (tSpell->effectAmplitude[match.captured(6).toInt()-1])
+                str.replace(match.captured(0), QString("%0").arg(tSpell->getAmplitude(match.captured(6).toInt()-1)));
             else
-                str.replace(rx.cap(0), QString("%0").arg(tSpell->getAmplitude()));
+                str.replace(match.captured(0), QString("%0").arg(tSpell->getAmplitude()));
         }
     }
     else
     {
-        str.replace(rx.cap(0), QString("%0")
-            .arg(quint32(spellInfo->effectAmplitude[rx.cap(6).toInt()-1] / 1000)));
+        str.replace(match.captured(0), QString("%0")
+            .arg(quint32(spellInfo->effectAmplitude[match.captured(6).toInt()-1] / 1000)));
     }
 }
 
-void RegExpN(const Spell::entry* spellInfo, QRegExp rx, QString &str)
+void RegExpN(const Spell::entry* spellInfo, QRegularExpressionMatch match, QString &str)
 {
-    if (!rx.cap(4).isEmpty())
+    if (!match.captured(4).isEmpty())
     {
-        if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
+        if (const Spell::entry* tSpell = Spell::getMetaRecord(match.captured(4).toInt(), true))
         {
-            str.replace(rx.cap(0), QString("%0")
+            str.replace(match.captured(0), QString("%0")
                 .arg(tSpell->procCharges));
         }
     }
     else
     {
-        str.replace(rx.cap(0), QString("%0")
+        str.replace(match.captured(0), QString("%0")
             .arg(spellInfo->procCharges));
     }
 }
 
-void RegExpX(const Spell::entry* spellInfo, QRegExp rx, QString &str)
+void RegExpX(const Spell::entry* spellInfo, QRegularExpressionMatch match, QString &str)
 {
-    if (!rx.cap(4).isEmpty())
+    if (!match.captured(4).isEmpty())
     {
-        if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
+        if (const Spell::entry* tSpell = Spell::getMetaRecord(match.captured(4).toInt(), true))
         {
-            str.replace(rx.cap(0), QString("%0")
-                .arg(tSpell->effectChainTarget[rx.cap(6).toInt()-1]));
+            str.replace(match.captured(0), QString("%0")
+                .arg(tSpell->effectChainTarget[match.captured(6).toInt()-1]));
         }
     }
     else
     {
-        str.replace(rx.cap(0), QString("%0")
-            .arg(spellInfo->effectChainTarget[rx.cap(6).toInt()-1]));
+        str.replace(match.captured(0), QString("%0")
+            .arg(spellInfo->effectChainTarget[match.captured(6).toInt()-1]));
     }
 }
 
-void RegExpE(const Spell::entry* spellInfo, QRegExp rx, QString &str)
+void RegExpE(const Spell::entry* spellInfo, QRegularExpressionMatch match, QString &str)
 {
-    if (!rx.cap(4).isEmpty())
+    if (!match.captured(4).isEmpty())
     {
-        if (const Spell::entry* tSpell = Spell::getMetaRecord(rx.cap(4).toInt(), true))
+        if (const Spell::entry* tSpell = Spell::getMetaRecord(match.captured(4).toInt(), true))
         {
-            str.replace(rx.cap(0), QString("%0")
-                .arg(tSpell->effectMultipleValue[rx.cap(6).toInt()-1], 0, 'f', 2));
+            str.replace(match.captured(0), QString("%0")
+                .arg(tSpell->effectMultipleValue[match.captured(6).toInt()-1], 0, 'f', 2));
         }
     }
     else
     {
-        str.replace(rx.cap(0), QString("%0")
-            .arg(spellInfo->effectMultipleValue[rx.cap(6).toInt()-1], 0, 'f', 2));
+        str.replace(match.captured(0), QString("%0")
+            .arg(spellInfo->effectMultipleValue[match.captured(6).toInt()-1], 0, 'f', 2));
     }
 }
 
@@ -667,34 +667,35 @@ QString getDescription(QString str, const Spell::entry* spellInfo)
     //if (!m_form->isRegExp())
     //    return str;
 
-    QRegExp rx("\\$+(([/,*])?([0-9]*);)?([d+\\;)(\\d*)?([1-9]*)([A-z])([1-3]*)(([A-z, ]*)\\:([A-z, ]*)\\;)?");
+    QRegularExpression rx("\\$+(([/,*])?([0-9]*);)?([d+\\;)(\\d*)?([1-9]*)([A-z])([1-3]*)(([A-z, ]*)\\:([A-z, ]*)\\;)?");
     while (str.contains(rx))
     {
-        if (rx.indexIn(str) != -1)
+        QRegularExpressionMatch match = rx.match(str);
+        if (match.hasMatch())
         {
-            QChar symbol = rx.cap(5)[0].toLower();
+            QChar symbol = match.captured(5)[0].toLower();
             switch (symbol.toLatin1())
             {
-                case 'u': RegExpU(spellInfo, rx, str); break;
-                case 'h': RegExpH(spellInfo, rx, str); break;
-                case 'v': RegExpV(spellInfo, rx, str); break;
-                case 'q': RegExpQ(spellInfo, rx, str); break;
-                case 'i': RegExpI(spellInfo, rx, str); break;
-                case 'b': RegExpB(spellInfo, rx, str); break;
+                case 'u': RegExpU(spellInfo, match, str); break;
+                case 'h': RegExpH(spellInfo, match, str); break;
+                case 'v': RegExpV(spellInfo, match, str); break;
+                case 'q': RegExpQ(spellInfo, match, str); break;
+                case 'i': RegExpI(spellInfo, match, str); break;
+                case 'b': RegExpB(spellInfo, match, str); break;
                 case 'm':
                 case 's':
-                    RegExpS(spellInfo, rx, str);
+                    RegExpS(spellInfo, match, str);
                     break;
-                case 'a': RegExpA(spellInfo, rx, str); break;
-                case 'd': RegExpD(spellInfo, rx, str); break;
-                case 'o': RegExpO(spellInfo, rx, str); break;
-                case 't': RegExpT(spellInfo, rx, str); break;
-                case 'n': RegExpN(spellInfo, rx, str); break;
-                case 'x': RegExpX(spellInfo, rx, str); break;
-                case 'e': RegExpE(spellInfo, rx, str); break;
-                case 'l': str.replace(rx.cap(0), rx.cap(9)); break;
-                case 'g': str.replace(rx.cap(0), rx.cap(8)); break;
-                case 'z': str.replace(rx.cap(0), QString("[Home]")); break;
+                case 'a': RegExpA(spellInfo, match, str); break;
+                case 'd': RegExpD(spellInfo, match, str); break;
+                case 'o': RegExpO(spellInfo, match, str); break;
+                case 't': RegExpT(spellInfo, match, str); break;
+                case 'n': RegExpN(spellInfo, match, str); break;
+                case 'x': RegExpX(spellInfo, match, str); break;
+                case 'e': RegExpE(spellInfo, match, str); break;
+                case 'l': str.replace(match.captured(0), match.captured(9)); break;
+                case 'g': str.replace(match.captured(0), match.captured(8)); break;
+                case 'z': str.replace(match.captured(0), QString("[Home]")); break;
                 default: return str;
             }
         }

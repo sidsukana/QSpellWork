@@ -52,7 +52,10 @@ void SpellWork::setActivePlugin(QString name)
         quint8 queryIndex = 0;
         for (QString& query : queries)
         {
-            QSqlQuery result = QSW::database().exec(query);
+            QSqlQuery result(QSW::database());
+            result.setForwardOnly(true);
+            result.prepare(query);
+            result.exec();
             plugin->setModifiedSqlDataResult(queryIndex++, result);
         }
 
