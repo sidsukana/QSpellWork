@@ -10,7 +10,7 @@ extern QStringList m_names;
 extern QObjectList m_metaSpells;
 extern Indexes m_metaSpellIndexes;
 extern Indexes m_internalSpells;
-extern QStringList m_modifiedStrings;
+extern std::vector<QString> m_modifiedStrings;
 
 class SpellInfo : public QObject, SpellInfoInterface
 {

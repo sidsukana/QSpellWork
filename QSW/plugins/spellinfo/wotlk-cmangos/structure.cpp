@@ -95,7 +95,7 @@ const Spell::entry* Spell::getMetaRecord(quint32 id, bool realId)
 
 const QString Spell::entry::name() const
 {
-    return m_internalSpells.contains(id) ? m_modifiedStrings.value(nameOffset) : getDbc().getString(nameOffset);
+    return m_internalSpells.contains(id) ? m_modifiedStrings[nameOffset] : getDbc().getString(nameOffset);
 }
 
 const QString Spell::entry::description() const
@@ -105,7 +105,7 @@ const QString Spell::entry::description() const
 
 const QString Spell::entry::rank() const
 {
-    return m_internalSpells.contains(id) ? m_modifiedStrings.value(nameOffset) : getDbc().getString(rankOffset);
+    return m_internalSpells.contains(id) ? m_modifiedStrings[nameOffset] : getDbc().getString(rankOffset);
 }
 
 const QString Spell::entry::toolTip() const

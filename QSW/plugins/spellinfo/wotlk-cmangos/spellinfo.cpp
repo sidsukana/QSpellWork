@@ -3,12 +3,15 @@
 #include <QBuffer>
 #include <QSet>
 
+#include <iostream>
+#include <vector>
+
 EnumHash m_enums;
 QStringList m_names;
 QObjectList m_metaSpells;
 Indexes m_metaSpellIndexes;
 Indexes m_internalSpells;
-QStringList m_modifiedStrings;
+std::vector<QString> m_modifiedStrings;
 
 bool SpellInfo::init()
 {
@@ -79,6 +82,8 @@ void SpellInfo::setModifiedSqlDataResult(quint8 queryIndex, QSqlQuery& query)
 {
     Q_UNUSED(queryIndex)
 
+    auto t0 = std::chrono::high_resolution_clock::now();
+
     emit progressShow(query.size());
 
     while (query.next())
@@ -103,17 +108,15 @@ void SpellInfo::setModifiedSqlDataResult(quint8 queryIndex, QSqlQuery& query)
             m_metaSpells.append(metaSpell);
 
             QString str = query.value(136).toString();
-            qint32 index = m_modifiedStrings.indexOf(str);
-            spell->nameOffset = index != -1 ? index : m_modifiedStrings.size();
-            m_modifiedStrings.append(str);
+            spell->nameOffset = m_modifiedStrings.size();
+            m_modifiedStrings.push_back(str);
 
             if (!m_names.contains(str))
                 m_names.append(str);
 
             str = query.value(152).toString();
-            index = m_modifiedStrings.indexOf(str);
             spell->rankOffset = m_modifiedStrings.size();
-            m_modifiedStrings.append(str);
+            m_modifiedStrings.push_back(str);
 
             // Unused members
             spell->descriptionOffset = 0;
@@ -204,11 +207,11 @@ void SpellInfo::setModifiedSqlDataResult(quint8 queryIndex, QSqlQuery& query)
             spell->effectMiscValueB[i] = query.value(113 + i).toInt();
             spell->effectTriggerSpell[i] = query.value(116 + i).toUInt();
             spell->effectPointsPerComboPoint[i] = query.value(119 + i).toFloat();
-            
+
             spell->effectSpellClassMaskA[i] = query.value(122 + i).toUInt();
             spell->effectSpellClassMaskB[i] = query.value(125 + i).toUInt();
             spell->effectSpellClassMaskC[i] = query.value(128 + i).toUInt();
-            
+
             spell->damageMultiplier[i] = query.value(179 + i).toFloat();
             spell->effectBonusMultiplier[i] = query.value(192 + i).toUInt();
         }
@@ -223,14 +226,14 @@ void SpellInfo::setModifiedSqlDataResult(quint8 queryIndex, QSqlQuery& query)
         spell->startRecoveryTime = query.value(170).toUInt();
         spell->maxTargetLevel = query.value(171).toUInt();
         spell->spellFamilyName = query.value(172).toUInt();
-        
+
         UnionedValue unionedValue;
         unionedValue.value = query.value(173).toLongLong();
 
         spell->spellFamilyFlags[0] = unionedValue.high;
         spell->spellFamilyFlags[1] = unionedValue.low;
         spell->spellFamilyFlags[2] = query.value(174).toUInt();
-        
+
         spell->maxAffectedTargets = query.value(175).toUInt();
         spell->damageClass = query.value(176).toUInt();
         spell->preventionType = query.value(177).toUInt();
@@ -239,7 +242,7 @@ void SpellInfo::setModifiedSqlDataResult(quint8 queryIndex, QSqlQuery& query)
         spell->minFactionId = query.value(183).toUInt();
         spell->minReputation = query.value(184).toUInt();
         spell->requiredAuraVision = query.value(185).toUInt();
-        
+
         spell->areaId = query.value(187).toUInt();
         spell->schoolMask = query.value(188).toUInt();
         spell->runeCostId = query.value(189).toUInt();
@@ -252,6 +255,9 @@ void SpellInfo::setModifiedSqlDataResult(quint8 queryIndex, QSqlQuery& query)
         metaSpell->setProperty("ServerSide", query.value(198));
     }
     emit progressHide();
+
+    auto t1 = std::chrono::high_resolution_clock::now();
+    std::cout << (t1 - t0).count() << std::endl;
 }
 
 void SpellInfo::setEnums(EnumHash enums)
