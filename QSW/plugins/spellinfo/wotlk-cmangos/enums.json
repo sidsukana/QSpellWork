@@ -755,7 +755,7 @@
         { "key": "TARGET_FLAG_STRING", "value": "0x02000"},
         { "key": "TARGET_FLAG_LOCKED", "value": "0x04000"},
         { "key": "TARGET_FLAG_CORPSE_ALLY", "value": "0x08000"},
-        { "key": "TARGET_FLAG_UNIT_MINIPET", "value": "0x10000"}
+        { "key": "TARGET_FLAG_UNIT_MINIPET", "value": "0x10000"},
         { "key": "TARGET_FLAG_GLYPH", "value": "0x20000"},
         { "key": "TARGET_FLAG_UNK3", "value": "0x40000"},
         { "key": "TARGET_FLAG_VISUAL_CHAIN", "value": "0x80000"}
@@ -795,7 +795,7 @@
         { "key": "AURA_INTERRUPT_FLAG_INVULNERABILITY_BUFF_CANCELS", "value": "0x00200000"},
         { "key": "AURA_INTERRUPT_FLAG_ENTER_WORLD", "value": "0x00400000"},
         { "key": "AURA_INTERRUPT_FLAG_PVP_ACTIVE_CANCELS", "value": "0x00800000"},
-        { "key": "AURA_INTERRUPT_FLAG_NON_PERIODIC_DAMAGE", "value": "0x01000000"}
+        { "key": "AURA_INTERRUPT_FLAG_NON_PERIODIC_DAMAGE", "value": "0x01000000"},
         { "key": "AURA_INTERRUPT_FLAG_LANDING_CANCELS", "value": "0x02000000"},
         { "key": "AURA_INTERRUPT_FLAG_RELEASE_CANCELS", "value": "0x04000000"},
         { "key": "AURA_INTERRUPT_FLAG_DAMAGE_CANCELS_SCRIPT", "value": "0x08000000"},
@@ -830,7 +830,7 @@
         { "key": "AURA_INTERRUPT_FLAG_INVULNERABILITY_BUFF_CANCELS", "value": "0x00200000"},
         { "key": "AURA_INTERRUPT_FLAG_ENTER_WORLD", "value": "0x00400000"},
         { "key": "AURA_INTERRUPT_FLAG_PVP_ACTIVE_CANCELS", "value": "0x00800000"},
-        { "key": "AURA_INTERRUPT_FLAG_NON_PERIODIC_DAMAGE", "value": "0x01000000"}
+        { "key": "AURA_INTERRUPT_FLAG_NON_PERIODIC_DAMAGE", "value": "0x01000000"},
         { "key": "AURA_INTERRUPT_FLAG_LANDING_CANCELS", "value": "0x02000000"},
         { "key": "AURA_INTERRUPT_FLAG_RELEASE_CANCELS", "value": "0x04000000"},
         { "key": "AURA_INTERRUPT_FLAG_DAMAGE_CANCELS_SCRIPT", "value": "0x08000000"},
