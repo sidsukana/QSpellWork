@@ -666,29 +666,29 @@
         { "key": "TARGET_FLAG_SELF", "value": "0x00000"},
         { "key": "TARGET_FLAG_UNUSED1", "value": "0x00001"},
         { "key": "TARGET_FLAG_UNIT", "value": "0x00002"},
-        { "key": "TARGET_FLAG_UNUSED2", "value": "0x00004"},
-        { "key": "TARGET_FLAG_UNUSED3", "value": "0x00008"},
+        { "key": "TARGET_FLAG_UNIT_RAID", "value": "0x00004"},
+        { "key": "TARGET_FLAG_UNIT_PARTY", "value": "0x00008"},
         { "key": "TARGET_FLAG_ITEM", "value": "0x00010"},
         { "key": "TARGET_FLAG_SOURCE_LOCATION", "value": "0x00020"},
         { "key": "TARGET_FLAG_DEST_LOCATION", "value": "0x00040"},
-        { "key": "TARGET_FLAG_OBJECT_UNK", "value": "0x00080"},
-        { "key": "TARGET_FLAG_UNIT_UNK", "value": "0x00100"},
-        { "key": "TARGET_FLAG_PVP_CORPSE", "value": "0x00200"},
-        { "key": "TARGET_FLAG_UNIT_CORPSE", "value": "0x00400"},
-        { "key": "TARGET_FLAG_OBJECT", "value": "0x00800"},
+        { "key": "TARGET_FLAG_UNIT_ENEMY", "value": "0x00080"},
+        { "key": "TARGET_FLAG_UNIT_ALLY", "value": "0x00100"},
+        { "key": "TARGET_FLAG_CORPSE_ENEMY", "value": "0x00200"},
+        { "key": "TARGET_FLAG_UNIT_DEAD", "value": "0x00400"},
+        { "key": "TARGET_FLAG_GAMEOBJECT", "value": "0x00800"},
         { "key": "TARGET_FLAG_TRADE_ITEM", "value": "0x01000"},
         { "key": "TARGET_FLAG_STRING", "value": "0x02000"},
-        { "key": "TARGET_FLAG_GAMEOBJECT_ITEM", "value": "0x04000"},
-        { "key": "TARGET_FLAG_CORPSE", "value": "0x08000"},
-        { "key": "TARGET_FLAG_UNK2", "value": "0x10000"}
+        { "key": "TARGET_FLAG_LOCKED", "value": "0x04000"},
+        { "key": "TARGET_FLAG_CORPSE_ALLY", "value": "0x08000"},
+        { "key": "TARGET_FLAG_UNIT_MINIPET", "value": "0x10000"}
     ],
     "SpellInterruptFlags":
     [
         { "key": "SPELL_INTERRUPT_FLAG_MOVEMENT", "value": "0x01"},
-        { "key": "SPELL_INTERRUPT_FLAG_DAMAGE", "value": "0x02"},
-        { "key": "SPELL_INTERRUPT_FLAG_INTERRUPT", "value": "0x04"},
-        { "key": "SPELL_INTERRUPT_FLAG_AUTOATTACK", "value": "0x08"},
-        { "key": "SPELL_INTERRUPT_FLAG_ABORT_ON_DMG", "value": "0x10"}
+        { "key": "SPELL_INTERRUPT_FLAG_DAMAGE_PUSHBACK", "value": "0x02"},
+        { "key": "SPELL_INTERRUPT_FLAG_STUN", "value": "0x04"},
+        { "key": "SPELL_INTERRUPT_FLAG_COMBAT", "value": "0x08"},
+        { "key": "SPELL_INTERRUPT_FLAG_DAMAGE_CANCELS", "value": "0x10"}
     ],
     "SpellChannelInterruptFlags":
     [
