@@ -114,14 +114,14 @@ void SpellInfo::setModifiedSqlDataResult(quint8 queryIndex, QSqlQuery& query)
             m_metaSpells.append(metaSpell);
 
             QString str = query.value(136).toString();
-            spell->nameOffset = m_modifiedStrings.size();
+            spell->nameOffset = (quint32)m_modifiedStrings.size();
             m_modifiedStrings.push_back(str);
 
             if (!m_names.contains(str))
                 m_names.append(str);
 
             str = query.value(152).toString();
-            spell->rankOffset = m_modifiedStrings.size();
+            spell->rankOffset = (quint32)m_modifiedStrings.size();
             m_modifiedStrings.push_back(str);
 
             // Unused members
