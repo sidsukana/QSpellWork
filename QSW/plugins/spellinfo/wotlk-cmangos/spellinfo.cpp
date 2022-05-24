@@ -36,6 +36,12 @@ bool SpellInfo::init()
     if (!SpellIcon::getDbc().load())
         return false;
 
+    if (!SpellDifficulty::getDbc().load())
+        return false;
+
+    if (!SpellRuneCost::getDbc().load())
+        return false;
+
     if (!Spell::getDbc().load())
         return false;
 
@@ -213,7 +219,7 @@ void SpellInfo::setModifiedSqlDataResult(quint8 queryIndex, QSqlQuery& query)
             spell->effectSpellClassMaskC[i] = query.value(128 + i).toUInt();
 
             spell->damageMultiplier[i] = query.value(179 + i).toFloat();
-            spell->effectBonusMultiplier[i] = query.value(192 + i).toUInt();
+            spell->effectBonusMultiplier[i] = query.value(192 + i).toFloat();
         }
 
         spell->spellVisual = query.value(131).toUInt();
@@ -249,10 +255,10 @@ void SpellInfo::setModifiedSqlDataResult(quint8 queryIndex, QSqlQuery& query)
         spell->spellMissileId = query.value(190).toUInt();
         spell->powerDisplayId = query.value(191).toUInt();
 
-        spell->spellDescriptionVariableId = query.value(196).toUInt();
-        spell->spellDifficultyId = query.value(197).toUInt();
+        spell->spellDescriptionVariableId = query.value(195).toUInt();
+        spell->spellDifficultyId = query.value(196).toUInt();
 
-        metaSpell->setProperty("ServerSide", query.value(198));
+        metaSpell->setProperty("ServerSide", query.value(197));
     }
     emit progressHide();
 
@@ -1154,6 +1160,15 @@ QVariantHash SpellInfo::getValues(quint32 id) const
     values["manaPerSecond"] = spellInfo->manaPerSecond;
     values["manaPerSecondPerLevel"] =spellInfo->manaPerSecondPerLevel;
 
+    if (const SpellRuneCost::entry* runeCostInfo = SpellRuneCost::getRecord(spellInfo->runeCostId, true))
+    {
+        values["runeCost"] = runeCostInfo->runeCost[0] || runeCostInfo->runeCost[1] || runeCostInfo->runeCost[2];
+        values["bloodRune"] = runeCostInfo->runeCost[0];
+        values["frostRune"] = runeCostInfo->runeCost[1];
+        values["unholyRune"] = runeCostInfo->runeCost[2];
+        values["runePowerGain"] = runeCostInfo->runePowerGain;
+    }
+
     if (spellInfo->interruptFlags)
     {
         values["interruptFlags"] = QString("0x" + QString("%0").arg(spellInfo->interruptFlags, 8, 16, QChar('0')).toUpper());
@@ -1243,6 +1258,42 @@ QVariantHash SpellInfo::getValues(quint32 id) const
     if (spellInfo->maxAffectedTargets)
         values["maxAffectedTargets"] = QString("%0").arg(spellInfo->maxAffectedTargets);
 
+    if (const SpellDifficulty::entry* spellDifficultyInfo = SpellDifficulty::getRecord(spellInfo->spellDifficultyId, true))
+    {
+        if (spellDifficultyInfo->spellId[0])
+        {
+            values["spellDifficultySpells10Normal"] = QString("%0").arg(spellDifficultyInfo->spellId[0]);
+            if (const Spell::entry* triggerSpell = Spell::getMetaRecord(spellDifficultyInfo->spellId[0], true))
+                values["spellDifficultySpells10NormalName"] = QString("%0").arg(triggerSpell->nameWithRank());
+            else
+                values["spellDifficultySpells10NormalName"] = "Missing";
+        }
+        if (spellDifficultyInfo->spellId[1])
+        {
+            values["spellDifficultySpells10Heroic"] = QString("%0").arg(spellDifficultyInfo->spellId[1]);
+            if (const Spell::entry* triggerSpell = Spell::getMetaRecord(spellDifficultyInfo->spellId[1], true))
+                values["spellDifficultySpells10HeroicName"] = QString("%0").arg(triggerSpell->nameWithRank());
+            else
+                values["spellDifficultySpells10HeroicName"] = "Missing";
+        }
+        if (spellDifficultyInfo->spellId[2])
+        {
+            values["spellDifficultySpells25Normal"] = QString("%0").arg(spellDifficultyInfo->spellId[2]);
+            if (const Spell::entry* triggerSpell = Spell::getMetaRecord(spellDifficultyInfo->spellId[2], true))
+                values["spellDifficultySpells25NormalName"] = QString("%0").arg(triggerSpell->nameWithRank());
+            else
+                values["spellDifficultySpells25NormalName"] = "Missing";
+        }
+        if (spellDifficultyInfo->spellId[3])
+        {
+            values["spellDifficultySpells25Heroic"] = QString("%0").arg(spellDifficultyInfo->spellId[3]);
+            if (const Spell::entry* triggerSpell = Spell::getMetaRecord(spellDifficultyInfo->spellId[3], true))
+                values["spellDifficultySpells25HeroicName"] = QString("%0").arg(triggerSpell->nameWithRank());
+            else
+                values["spellDifficultySpells25HeroicName"] = "Missing";
+        }
+    }
+
     QVariantList effectList;
     for (quint8 eff = 0; eff < MAX_EFFECT_INDEX; ++eff)
     {
@@ -1267,6 +1318,9 @@ QVariantHash SpellInfo::getValues(quint32 id) const
 
         if (spellInfo->effectMultipleValue[eff])
             effectValues["multipleValue"] = QString("%0").arg(spellInfo->effectMultipleValue[eff], 0, 'f', 2);
+
+        if (spellInfo->effectBonusMultiplier[eff])
+            effectValues["bonusMultiplier"] = QString("%0").arg(spellInfo->effectBonusMultiplier[eff], 0, 'f', 2);
 
         effectValues["targetA"] = spellInfo->effectImplicitTargetA[eff];
         effectValues["targetB"] = spellInfo->effectImplicitTargetB[eff];
@@ -1385,7 +1439,7 @@ QVariantHash SpellInfo::getValues(quint32 id) const
             }
         }
 
-        // TODO: MaxAffectedTargets, EffectBonusCoefficient1, SpellDifficultyId, RuneCostID
+        // TODO: EffectBonusCoefficient1
 
         effectList.append(effectValues);
     }

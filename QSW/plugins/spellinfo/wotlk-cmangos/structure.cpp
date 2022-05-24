@@ -33,6 +33,40 @@ const QString SkillLine::entry::verb() const
     return getDbc().getString(verbOffset);
 }
 
+// SpellDifficulty.dbc
+DBCFile& SpellDifficulty::getDbc()
+{
+    static DBCFile dbc("SpellDifficulty.dbc");
+    return dbc;
+}
+
+quint32 SpellDifficulty::getRecordCount()
+{
+    return getDbc().getRecordCount();
+}
+
+const SpellDifficulty::entry* SpellDifficulty::getRecord(quint32 id, bool realId)
+{
+    return (realId ? getDbc().getEntry<entry>(id) : getDbc().getRecord<entry>(id));
+}
+
+// SpellRuneCost.dbc
+DBCFile& SpellRuneCost::getDbc()
+{
+    static DBCFile dbc("SpellRuneCost.dbc");
+    return dbc;
+}
+
+quint32 SpellRuneCost::getRecordCount()
+{
+    return getDbc().getRecordCount();
+}
+
+const SpellRuneCost::entry* SpellRuneCost::getRecord(quint32 id, bool realId)
+{
+    return (realId ? getDbc().getEntry<entry>(id) : getDbc().getRecord<entry>(id));
+}
+
 // SkillLineAbility.dbc
 DBCFile& SkillLineAbility::getDbc()
 {

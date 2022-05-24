@@ -68,6 +68,33 @@ namespace SkillLineAbility
     const entry* getRecord(quint32 id, bool realId = false);
 }
 
+namespace SpellDifficulty
+{
+    struct entry
+    {
+        quint32    id;                                              // 0
+        quint32    spellId[4];
+    };
+
+    DBCFile& getDbc();
+    quint32 getRecordCount();
+    const entry* getRecord(quint32 id, bool realId = false);
+}
+
+namespace SpellRuneCost
+{
+    struct entry
+    {
+        quint32    id;                                              // 0
+        quint32    runeCost[3];
+        quint32    runePowerGain;
+    };
+
+    DBCFile& getDbc();
+    quint32 getRecordCount();
+    const entry* getRecord(quint32 id, bool realId = false);
+}
+
 namespace SpellDuration
 {
     struct entry

@@ -214,6 +214,8 @@ function toggleRegExp(event) {
 {{#manaPerSecondPerLevel}} + lvl * {{manaPerSecondPerLevel}}{{/manaPerSecondPerLevel}}
 </li>
 {{/costInfo}}
+{{#runeCost}}<li>Rune Costs:{{#bloodRune}} Blood: {{bloodRune}}{{/bloodRune}}{{#frostRune}} Frost: {{frostRune}}{{/frostRune}}{{#unholyRune}} Unholy: {{unholyRune}}{{/unholyRune}}</li>{{/runeCost}}
+{{#runePowerGain}}<li>Rune Power Gained: {{runePowerGain}}</li>{{/runePowerGain}}
 {{#interruptFlags}}<li><details open><summary>InterruptFlags: {{interruptFlags}}</summary>
 <ul>
 {{#interruptFlagsNames}}
@@ -248,6 +250,10 @@ function toggleRegExp(event) {
 <li>Chance: {{procChance}}, Charges: {{procCharges}}</li>
 {{/procFlags}}
 {{#maxAffectedTargets}}<li>MaxAffectedTargets: {{maxAffectedTargets}}</li>{{/maxAffectedTargets}}
+{{#spellDifficultySpells10Normal}}<li><b>Difficulty 10-normal spell:</b> <a href='http://spellwork/{{spellDifficultySpells10Normal}}' class='blue_link'>{{spellDifficultySpells10Normal}} - {{spellDifficultySpells10NormalName}}</a></li>{{/spellDifficultySpells10Normal}}
+{{#spellDifficultySpells10Heroic}}<li><b>Difficulty 25-normal spell:</b> <a href='http://spellwork/{{spellDifficultySpells10Heroic}}' class='blue_link'>{{spellDifficultySpells10Heroic}} - {{spellDifficultySpells10HeroicName}}</a></li>{{/spellDifficultySpells10Heroic}}
+{{#spellDifficultySpells25Normal}}<li><b>Difficulty 10-heroic spell:</b> <a href='http://spellwork/{{spellDifficultySpells25Normal}}' class='blue_link'>{{spellDifficultySpells25Normal}} - {{spellDifficultySpells25NormalName}}</a></li>{{/spellDifficultySpells25Normal}}
+{{#spellDifficultySpells25Heroic}}<li><b>Difficulty 25-heroic spell:</b> <a href='http://spellwork/{{spellDifficultySpells25Heroic}}' class='blue_link'>{{spellDifficultySpells25Heroic}} - {{spellDifficultySpells25HeroicName}}</a></li>{{/spellDifficultySpells25Heroic}}
 </ul>
 </div>
 </div>
@@ -264,7 +270,8 @@ function toggleRegExp(event) {
 {{#dieSidesPoints}} to {{dieSidesPoints}}{{#perLevelPoints}} + Level * {{perLevelPoints}}{{/perLevelPoints}}{{/dieSidesPoints}}
 {{#perComboPoints}} + combo * {{perComboPoints}}{{/perComboPoints}}
 {{#damageMultiplier}} * {{damageMultiplier}}{{/damageMultiplier}}
-{{#multipleValue}}, Multiple: {{multipleValue}}{{/multipleValue}}</li>
+{{#multipleValue}}, Multiple: {{multipleValue}}{{/multipleValue}}
+{{#bonusMultiplier}}, Bonus Coeff: {{bonusMultiplier}}{{/bonusMultiplier}}</li>
 <li>Targets: ({{targetA}}, {{targetB}}) ({{targetNameA}}, {{targetNameB}})</li>
 {{#auraId}}
 <li>Aura: {{auraId}} ({{auraName}}), value: {{basePoints}}, miscA: {{miscValueA}} ({{mods}}), miscB: {{miscValueB}}, periodic: {{amplitude}}</li>
