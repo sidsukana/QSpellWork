@@ -1240,6 +1240,9 @@ QVariantHash SpellInfo::getValues(quint32 id) const
         values["procNames"] = splitMaskToList(spellInfo->procFlags, getEnums()["ProcFlags"]);
     }
 
+    if (spellInfo->maxAffectedTargets)
+        values["maxAffectedTargets"] = QString("%0").arg(spellInfo->maxAffectedTargets);
+
     QVariantList effectList;
     for (quint8 eff = 0; eff < MAX_EFFECT_INDEX; ++eff)
     {
@@ -1381,6 +1384,9 @@ QVariantHash SpellInfo::getValues(quint32 id) const
                 effectValues["affectInfo"] = affectList;
             }
         }
+
+        // TODO: MaxAffectedTargets, EffectBonusCoefficient1, SpellDifficultyId, RuneCostID
+
         effectList.append(effectValues);
     }
 
