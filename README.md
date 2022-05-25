@@ -45,7 +45,6 @@ function() {
 
 ### Acknowledgements and Thanks
 
-**Chestr aka DiSlord** — for the idea and releasing the source of original SpellWork.
-**LordJZ** and **Konstantin** — for releasing the source of C# SpellWork
-
-[![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.me/sidsukana)
+- **Chestr aka DiSlord** — for the idea and releasing the source of original SpellWork.
+- **LordJZ** and **Konstantin** — for releasing the source of C# SpellWork
+- [**killerwife**](https://github.com/killerwife) for active support and contributions
