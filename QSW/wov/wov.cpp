@@ -1,3 +1,5 @@
+#include <math.h>
+
 #include <QLineEdit>
 #include <QPushButton>
 #include <QHBoxLayout>

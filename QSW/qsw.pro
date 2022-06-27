@@ -23,8 +23,8 @@ SOURCES += \
     MainForm.cpp \
     ScriptEdit.cpp \
     SettingsForm.cpp \
-    blp/blp.cpp \
-    dbc/DBC.cpp \
+    blp/BLP.cpp \
+    DBC/DBC.cpp \
     mpq/MPQ.cpp \
     wov/bone.cpp \
     wov/camerashake.cpp \
@@ -53,8 +53,8 @@ HEADERS  += \
     MainForm.h \
     ScriptEdit.h \
     SettingsForm.h \
-    blp/blp.h \
-    dbc/DBC.h \
+    blp/BLP.h \
+    DBC/DBC.h \
     mpq/MPQ.h \
     wov/animatedvalue.h \
     wov/bone.h \
@@ -131,4 +131,8 @@ win32: {
     copyToDestdir($$PWD/mpq/StormLib/$$PLATFORM/$$BUILDTYPE/StormLib.dll)
 
     QMAKE_POST_LINK += windeployqt --no-system-d3d-compiler --no-opengl-sw --no-svg --no-qmltooling $${DESTDIR}$${TARGET}.exe
+}
+
+unix: {
+    LIBS += -lz -lbz2 -lsquish -lstorm
 }
