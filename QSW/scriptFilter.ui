@@ -115,7 +115,7 @@
   <customwidget>
    <class>ScriptEdit</class>
    <extends>QTextEdit</extends>
-   <header>scriptedit.h</header>
+   <header>ScriptEdit.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

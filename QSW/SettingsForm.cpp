@@ -3,7 +3,7 @@
 
 #include "SettingsForm.h"
 #include "mpq/MPQ.h"
-#include "dbc/DBC.h"
+#include "DBC/DBC.h"
 
 SettingsForm::SettingsForm(QWidget *parent)
     : QDialog(parent)
