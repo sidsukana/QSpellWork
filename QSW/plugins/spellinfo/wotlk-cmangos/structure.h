@@ -299,8 +299,8 @@ namespace Spell
         quint32    spellMissileId;                                  // 227
         quint32    powerDisplayId;                                  // 228
         float      effectBonusMultiplier[3];                        // 229-231
-        quint32    spellDescriptionVariableId;                      // 232
-        quint32    spellDifficultyId;                               // 233
+        quint32    spellDescriptionVariableId;                      // 235
+        quint32    spellDifficultyId;                               // 236
 
         const QString name() const;
         const QString description() const;
@@ -383,6 +383,8 @@ namespace Spell
             void setServerSide(quint8 value) { m_serverSide = value; }
 
             const entry* getInfo() const { Q_ASSERT(m_info); return m_info; }
+
+            float      effectBonusMultiplierAP[3];                      // 232-234
 
         public slots:
 

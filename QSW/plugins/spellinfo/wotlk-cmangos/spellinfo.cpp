@@ -220,6 +220,7 @@ void SpellInfo::setModifiedSqlDataResult(quint8 queryIndex, QSqlQuery& query)
 
             spell->damageMultiplier[i] = query.value(179 + i).toFloat();
             spell->effectBonusMultiplier[i] = query.value(192 + i).toFloat();
+            metaSpell->effectBonusMultiplierAP[i] = query.value(195 + i).toFloat();
         }
 
         spell->spellVisual = query.value(131).toUInt();
@@ -255,10 +256,10 @@ void SpellInfo::setModifiedSqlDataResult(quint8 queryIndex, QSqlQuery& query)
         spell->spellMissileId = query.value(190).toUInt();
         spell->powerDisplayId = query.value(191).toUInt();
 
-        spell->spellDescriptionVariableId = query.value(195).toUInt();
-        spell->spellDifficultyId = query.value(196).toUInt();
+        spell->spellDescriptionVariableId = query.value(198).toUInt();
+        spell->spellDifficultyId = query.value(199).toUInt();
 
-        metaSpell->setProperty("ServerSide", query.value(197));
+        metaSpell->setProperty("ServerSide", query.value(200));
     }
     emit progressHide();
 
@@ -868,6 +869,7 @@ void RegExpE(const Spell::entry* spellInfo, QRegularExpressionMatch match, QStri
 
 QString getDescription(QString str, const Spell::entry* spellInfo)
 {
+    str.replace("$?","$");
     QRegularExpression rx("\\$+(([/,*])?([0-9]*);)?([d+\\;)(\\d*)?([1-9]*)([A-z])([1-3]*)(([A-z, ]*)\\:([A-z, ]*)\\;)?");
     while (str.contains(rx))
     {
@@ -1321,6 +1323,9 @@ QVariantHash SpellInfo::getValues(quint32 id) const
 
         if (spellInfo->effectBonusMultiplier[eff])
             effectValues["bonusMultiplier"] = QString("%0").arg(spellInfo->effectBonusMultiplier[eff], 0, 'f', 2);
+
+        if (metaSpell->effectBonusMultiplierAP[eff])
+            effectValues["bonusMultiplierAP"] = QString("%0").arg(metaSpell->effectBonusMultiplierAP[eff], 0, 'f', 2);
 
         effectValues["targetA"] = spellInfo->effectImplicitTargetA[eff];
         effectValues["targetB"] = spellInfo->effectImplicitTargetB[eff];

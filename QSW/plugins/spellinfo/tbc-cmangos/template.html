@@ -258,7 +258,9 @@ function toggleRegExp(event) {
 {{#dieSidesPoints}} to {{dieSidesPoints}}{{#perLevelPoints}} + Level * {{perLevelPoints}}{{/perLevelPoints}}{{/dieSidesPoints}}
 {{#perComboPoints}} + combo * {{perComboPoints}}{{/perComboPoints}}
 {{#damageMultiplier}} * {{damageMultiplier}}{{/damageMultiplier}}
-{{#multipleValue}}, Multiple: {{multipleValue}}{{/multipleValue}}</li>
+{{#multipleValue}}, Multiple: {{multipleValue}}{{/multipleValue}}
+{{#bonusMultiplier}}, SP Coeff: {{bonusMultiplier}}{{/bonusMultiplier}}
+{{#bonusMultiplierAP}}, AP Coeff: {{bonusMultiplierAP}}{{/bonusMultiplierAP}}</li>
 <li>Targets: ({{targetA}}, {{targetB}}) ({{targetNameA}}, {{targetNameB}})</li>
 {{#auraId}}
 <li>Aura: {{auraId}} ({{auraName}}), value: {{basePoints}}, miscA: {{miscValueA}} ({{mods}}), miscB: {{miscValueB}}, periodic: {{amplitude}}</li>

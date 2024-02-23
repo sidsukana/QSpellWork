@@ -17,7 +17,7 @@ typedef QMapIterator<qint64, QString> EnumIterator;
 
 namespace QSW {
 
-    static QString VERSION = "2.36";
+    static QString VERSION = "2.39";
 
     enum Pages
     {

@@ -187,6 +187,8 @@ void SpellInfo::setModifiedSqlDataResult(quint8 queryIndex, QSqlQuery& query)
             spell->effectTriggerSpell[i] = query.value(109 + i).toUInt();
             spell->effectPointsPerComboPoint[i] = query.value(112 + i).toFloat();
             spell->damageMultiplier[i] = query.value(145 + i).toFloat();
+            metaSpell->effectBonusMultiplier[i] = query.value(151 + i).toFloat();
+            metaSpell->effectBonusMultiplierAP[i] = query.value(154 + i).toFloat();
         }
 
         spell->spellVisual = query.value(115).toUInt();
@@ -207,7 +209,7 @@ void SpellInfo::setModifiedSqlDataResult(quint8 queryIndex, QSqlQuery& query)
         spell->minReputation = query.value(149).toUInt();
         spell->requiredAuraVision = query.value(150).toUInt();
 
-        metaSpell->setProperty("ServerSide", query.value(151));
+        metaSpell->setProperty("ServerSide", query.value(157));
     }
     emit progressHide();
 }
@@ -819,9 +821,7 @@ void RegExpE(const Spell::entry* spellInfo, QRegularExpressionMatch match, QStri
 
 QString getDescription(QString str, const Spell::entry* spellInfo)
 {
-    //if (!m_form->isRegExp())
-    //    return str;
-
+    str.replace("$?","$");
     QRegularExpression rx("\\$+(([/,*])?([0-9]*);)?([d+\\;)(\\d*)?([1-9]*)([A-z])([1-3]*)(([A-z, ]*)\\:([A-z, ]*)\\;)?");
     while (str.contains(rx))
     {
@@ -1160,6 +1160,12 @@ QVariantHash SpellInfo::getValues(quint32 id) const
 
         if (spellInfo->effectMultipleValue[eff])
             effectValues["multipleValue"] = QString("%0").arg(spellInfo->effectMultipleValue[eff], 0, 'f', 2);
+
+        if (metaSpell->effectBonusMultiplier[eff])
+            effectValues["bonusMultiplier"] = QString("%0").arg(metaSpell->effectBonusMultiplier[eff], 0, 'f', 2);
+
+        if (metaSpell->effectBonusMultiplierAP[eff])
+            effectValues["bonusMultiplierAP"] = QString("%0").arg(metaSpell->effectBonusMultiplierAP[eff], 0, 'f', 2);
 
         effectValues["targetA"] = spellInfo->effectImplicitTargetA[eff];
         effectValues["targetB"] = spellInfo->effectImplicitTargetB[eff];

@@ -664,9 +664,7 @@ void RegExpE(const Spell::entry* spellInfo, QRegularExpressionMatch match, QStri
 
 QString getDescription(QString str, const Spell::entry* spellInfo)
 {
-    //if (!m_form->isRegExp())
-    //    return str;
-
+    str.replace("$?","$");
     QRegularExpression rx("\\$+(([/,*])?([0-9]*);)?([d+\\;)(\\d*)?([1-9]*)([A-z])([1-3]*)(([A-z, ]*)\\:([A-z, ]*)\\;)?");
     while (str.contains(rx))
     {

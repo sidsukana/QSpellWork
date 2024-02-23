@@ -338,6 +338,9 @@ namespace Spell
 
             const entry* getInfo() const { Q_ASSERT(m_info); return m_info; }
 
+            float      effectBonusMultiplier[3];                        // 173-175
+            float      effectBonusMultiplierAP[3];                      // 176-178
+
         public slots:
 
             quint32 Id() { return m_info->id; }

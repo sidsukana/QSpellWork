@@ -130,7 +130,7 @@ win32: {
 
     copyToDestdir($$PWD/mpq/StormLib/$$PLATFORM/$$BUILDTYPE/StormLib.dll)
 
-    QMAKE_POST_LINK += windeployqt --no-system-d3d-compiler --no-opengl-sw --no-svg --no-qmltooling $${DESTDIR}$${TARGET}.exe
+    QMAKE_POST_LINK += windeployqt --no-system-d3d-compiler --no-opengl-sw --no-svg $${DESTDIR}$${TARGET}.exe
 }
 
 unix: {
