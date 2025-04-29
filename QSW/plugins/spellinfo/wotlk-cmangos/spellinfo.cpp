@@ -140,7 +140,7 @@ void SpellInfo::setModifiedSqlDataResult(quint8 queryIndex, QSqlQuery& query)
         spell->attributesEx4 = query.value(8).toUInt();
         spell->attributesEx5 = query.value(9).toUInt();
         spell->attributesEx6 = query.value(10).toUInt();
-        spell->attributesEx6 = query.value(11).toUInt();
+        spell->attributesEx7 = query.value(11).toUInt();
         spell->stances = query.value(12).toUInt() + (quint64(query.value(13).toUInt()) << 32);
         spell->stancesNot = query.value(14).toUInt() + (quint64(query.value(15).toUInt()) << 32);
         spell->targets = query.value(16).toUInt();
