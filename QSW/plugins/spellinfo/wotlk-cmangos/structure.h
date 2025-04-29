@@ -14,6 +14,37 @@
 #pragma pack(push,1)
 #endif
 
+namespace AreaTable
+{
+    struct entry
+    {
+        quint32    id;                                              // 0
+        quint32    mapId;
+        quint32    zone;
+        quint32    exploreFlag;
+        quint32    flags;
+        quint32    soundProvider;
+        quint32    soundProviderUnderwater;
+        quint32    ambience;
+        quint32    zoneMusic;
+        quint32    introSound;
+        quint32    areaLevel;
+        quint32    nameOffset;                                      //
+        quint32    nameLocalizedOffset[15];                         //
+        quint32    nameFlags;
+        quint32    team;
+        quint32    liquidTypeOverride[4];
+        quint32    minElevation;
+        quint32    ambientMultiplier;
+        quint32    lightId;
+
+        const QString name() const;
+    };
+
+    DBCFile& getDbc();
+    quint32 getRecordCount();
+    const entry* getRecord(quint32 id, bool realId = false);
+}
 
 namespace SkillLine
 {
@@ -174,6 +205,20 @@ namespace SpellIcon
         quint32 iconPathOffset;                         // 1 Path offset
 
         const QString iconPath() const;
+    };
+
+    DBCFile& getDbc();
+    quint32 getRecordCount();
+    const entry* getRecord(quint32 id, bool realId = false);
+}
+
+namespace AreaGroup
+{
+    struct entry
+    {
+        quint32 id;                                     // 0 Id
+        quint32 areaId[6];                              // 1-6 Path offset
+        quint32 nextGroup;                              // 7 Next group
     };
 
     DBCFile& getDbc();

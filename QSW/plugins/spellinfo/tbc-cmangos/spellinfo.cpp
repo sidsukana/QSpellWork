@@ -1161,6 +1161,9 @@ QVariantHash SpellInfo::getValues(quint32 id) const
     if (spellInfo->maxAffectedTargets)
         values["maxAffectedTargets"] = QString("%0").arg(spellInfo->maxAffectedTargets);
 
+    if (spellInfo->areaId)
+        values["areaId"] = QString("%0").arg(spellInfo->areaId);
+
     QVariantList effectList;
     for (quint8 eff = 0; eff < MAX_EFFECT_INDEX; ++eff)
     {

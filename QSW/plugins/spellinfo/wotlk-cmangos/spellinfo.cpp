@@ -42,6 +42,12 @@ bool SpellInfo::init()
     if (!SpellRuneCost::getDbc().load())
         return false;
 
+    if (!AreaGroup::getDbc().load())
+        return false;
+
+    if (!AreaTable::getDbc().load())
+        return false;
+
     if (!Spell::getDbc().load())
         return false;
 
@@ -1260,6 +1266,56 @@ QVariantHash SpellInfo::getValues(quint32 id) const
     if (spellInfo->maxAffectedTargets)
         values["maxAffectedTargets"] = QString("%0").arg(spellInfo->maxAffectedTargets);
 
+    if (spellInfo->areaId)
+    {
+        QVariantList areaList;
+
+        quint32 areaId = spellInfo->areaId;
+        while (areaId > 0) {
+            if (const AreaGroup::entry* spellArea = AreaGroup::getRecord(areaId, true)) {
+                QVariantHash areaValues;
+                if (spellArea->areaId[0] > 0) {
+                    if (const AreaTable::entry* areaTableEntry = AreaTable::getRecord(spellArea->areaId[0], true)) {
+                        areaValues["areaId0"] = QString("%0 - %1").arg(spellArea->areaId[0]).arg(areaTableEntry->name());
+                    }
+                }
+                if (spellArea->areaId[1] > 0) {
+                    if (const AreaTable::entry* areaTableEntry = AreaTable::getRecord(spellArea->areaId[1], true)) {
+                        areaValues["areaId1"] = QString("%0 - %1").arg(spellArea->areaId[1]).arg(areaTableEntry->name());
+                    }
+                }
+                if (spellArea->areaId[2] > 0) {
+                    if (const AreaTable::entry* areaTableEntry = AreaTable::getRecord(spellArea->areaId[2], true)) {
+                        areaValues["areaId2"] = QString("%0 - %1").arg(spellArea->areaId[2]).arg(areaTableEntry->name());
+                    }
+                }
+                if (spellArea->areaId[3] > 0) {
+                    if (const AreaTable::entry* areaTableEntry = AreaTable::getRecord(spellArea->areaId[3], true)) {
+                        areaValues["areaId3"] = QString("%0 - %1").arg(spellArea->areaId[3]).arg(areaTableEntry->name());
+                    }
+                }
+                if (spellArea->areaId[4] > 0) {
+                    if (const AreaTable::entry* areaTableEntry = AreaTable::getRecord(spellArea->areaId[4], true)) {
+                        areaValues["areaId4"] = QString("%0 - %1").arg(spellArea->areaId[4]).arg(areaTableEntry->name());
+                    }
+                }
+                if (spellArea->areaId[5] > 0) {
+                    if (const AreaTable::entry* areaTableEntry = AreaTable::getRecord(spellArea->areaId[5], true)) {
+                        areaValues["areaId5"] = QString("%0 - %1").arg(spellArea->areaId[5]).arg(areaTableEntry->name());
+                    }
+                }
+
+                areaId = spellArea->nextGroup;
+                areaList.append(areaValues);
+            }
+            else
+                areaId = 0; // avoid infinite loop
+        }
+
+        values["areas"] = 1;
+        values["areaInfo"] = areaList;
+    }
+
     if (const SpellDifficulty::entry* spellDifficultyInfo = SpellDifficulty::getRecord(spellInfo->spellDifficultyId, true))
     {
         if (spellDifficultyInfo->spellId[0])
@@ -1443,8 +1499,6 @@ QVariantHash SpellInfo::getValues(quint32 id) const
                 effectValues["affectInfo"] = affectList;
             }
         }
-
-        // TODO: EffectBonusCoefficient1
 
         effectList.append(effectValues);
     }

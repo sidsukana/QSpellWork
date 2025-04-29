@@ -250,6 +250,16 @@ function toggleRegExp(event) {
 <li>Chance: {{procChance}}, Charges: {{procCharges}}</li>
 {{/procFlags}}
 {{#maxAffectedTargets}}<li>MaxAffectedTargets: {{maxAffectedTargets}}</li>{{/maxAffectedTargets}}
+{{#areas}}<li>Areas:
+{{#areaInfo}}
+{{#areaId0}}<ul>{{areaId0}}</ul>{{/areaId0}}
+{{#areaId1}}<ul>{{areaId1}}</ul>{{/areaId1}}
+{{#areaId2}}<ul>{{areaId2}}</ul>{{/areaId2}}
+{{#areaId3}}<ul>{{areaId3}}</ul>{{/areaId3}}
+{{#areaId4}}<ul>{{areaId4}}</ul>{{/areaId4}}
+{{#areaId5}}<ul>{{areaId5}}</ul>{{/areaId5}}
+{{/areaInfo}}
+</li>{{/areas}}
 {{#spellDifficultySpells10Normal}}<li><b>Difficulty 10-normal spell:</b> <a href='http://spellwork/{{spellDifficultySpells10Normal}}' class='blue_link'>{{spellDifficultySpells10Normal}} - {{spellDifficultySpells10NormalName}}</a></li>{{/spellDifficultySpells10Normal}}
 {{#spellDifficultySpells10Heroic}}<li><b>Difficulty 25-normal spell:</b> <a href='http://spellwork/{{spellDifficultySpells10Heroic}}' class='blue_link'>{{spellDifficultySpells10Heroic}} - {{spellDifficultySpells10HeroicName}}</a></li>{{/spellDifficultySpells10Heroic}}
 {{#spellDifficultySpells25Normal}}<li><b>Difficulty 10-heroic spell:</b> <a href='http://spellwork/{{spellDifficultySpells25Normal}}' class='blue_link'>{{spellDifficultySpells25Normal}} - {{spellDifficultySpells25NormalName}}</a></li>{{/spellDifficultySpells25Normal}}
