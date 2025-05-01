@@ -33,6 +33,9 @@ bool SpellInfo::init()
     if (!SpellIcon::getDbc().load())
         return false;
 
+    if (!AreaTable::getDbc().load())
+        return false;
+
     if (!Spell::getDbc().load())
         return false;
 
@@ -1162,7 +1165,12 @@ QVariantHash SpellInfo::getValues(quint32 id) const
         values["maxAffectedTargets"] = QString("%0").arg(spellInfo->maxAffectedTargets);
 
     if (spellInfo->areaId)
-        values["areaId"] = QString("%0").arg(spellInfo->areaId);
+    {
+        if (const AreaTable::entry* areaTableEntry = AreaTable::getRecord(spellInfo->areaId, true)) {
+            values["areaId"] = QString("%0 - %1").arg(spellInfo->areaId).arg(areaTableEntry->name());
+        }
+    }
+
 
     QVariantList effectList;
     for (quint8 eff = 0; eff < MAX_EFFECT_INDEX; ++eff)

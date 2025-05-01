@@ -1,6 +1,28 @@
 #include "structure.h"
 #include "spellinfo.h"
 
+// AreaTable.dbc
+DBCFile& AreaTable::getDbc()
+{
+    static DBCFile dbc("AreaTable.dbc");
+    return dbc;
+}
+
+quint32 AreaTable::getRecordCount()
+{
+    return getDbc().getRecordCount();
+}
+
+const AreaTable::entry* AreaTable::getRecord(quint32 id, bool realId)
+{
+    return (realId ? getDbc().getEntry<entry>(id) : getDbc().getRecord<entry>(id));
+}
+
+const QString AreaTable::entry::name() const
+{
+    return getDbc().getString(nameOffset);
+}
+
 // SkillLine.dbc
 DBCFile& SkillLine::getDbc()
 {
