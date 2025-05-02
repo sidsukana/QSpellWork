@@ -1,0 +1,9 @@
+[submodule "dep/qt-mustache"]
+	path = dep/qt-mustache
+	url = https://github.com/robertknight/qt-mustache.git
+[submodule "dep/StormLib"]
+	path = dep/StormLib
+	url = https://github.com/ladislav-zezula/StormLib.git
+[submodule "dep/plugins/imageformats/blp"]
+	path = dep/plugins/imageformats/blp
+	url = https://github.com/sidsukana/QBlpPlugin.git

@@ -1,0 +1,299 @@
+<html>
+<head>
+<script>
+function toggleRegExp(event) {
+
+    event = event || window.event;
+
+    var el = event.target || event.srcElement;
+
+    var regexp = 0;
+    var noregexp = 0;
+
+    if (el.id.indexOf('RegExp') == -1) {
+        noregexp = el.style;
+        regexp = document.getElementById(el.id + 'RegExp').style;
+        
+    } else {
+        noregexp = document.getElementById(el.id.replace('RegExp','')).style;
+        regexp = el.style;
+    }
+    
+    if (regexp.display == 'none'){
+        noregexp.display = 'none';
+        regexp.display = 'block';
+    } else {
+        noregexp.display = 'block';
+        regexp.display = 'none';
+    } 
+}
+</script>
+<style type="text/css">{{style}}</style>
+</head>
+<body>
+<div class='b-tooltip_icon'>
+<style>div.icon { width: 68px; height: 68px; background: url("{{icon}}") no-repeat center; }div.icon div { background: url("qrc:/png/border.png") no-repeat center;}div.icon div div:hover { background: url("qrc:/png/borderHover.png") no-repeat center; }div.icon div div {width: 68px; height: 68px;}</style>
+<div class='icon'>
+<div>
+<div>
+</div>
+</div>
+</div>
+</div>
+<div class='b-tooltip_body'>
+<b>Id:</b> {{id}}</br>
+<b>Name:</b> {{nameWithRank}}</br>
+<div style="display:block;" id="desc" ondblclick="toggleRegExp(event)">{{#description}}<b>Description:</b> {{description}}</br>{{/description}}</div>
+<div style="display:none;" id="descRegExp" ondblclick="toggleRegExp(event)" >{{#descriptionRegExp}}<b>Description:</b> {{descriptionRegExp}}</br>{{/descriptionRegExp}}</div>
+<div style="display:block;" id="tooltip" ondblclick="toggleRegExp(event)">{{#tooltip}}<b>ToolTip:</b> {{tooltip}}</br>{{/tooltip}}</div>
+<div style="display:none;" id="tooltipRegExp" ondblclick="toggleRegExp(event)">{{#tooltipRegExp}}<b>ToolTip:</b> {{tooltipRegExp}}</br>{{/tooltipRegExp}}</div>
+</div>
+{{#hasParents}}
+<div class='b-box-title'>Parent spells</div>
+<div class='b-box-body'>
+<div class='b-box'>
+<ul>
+{{#parentSpells}}
+<li><a href='http://spellwork/{{id}}' class='blue_link'>{{id}} - {{name}}</a></li>
+{{/parentSpells}}
+</ul>
+</div>
+</div>
+{{/hasParents}}
+<div class='b-box-title'>General info</div>
+<div class='b-box-body'>
+<div class='b-box'>
+<ul>
+{{#modalNextSpell}}<li>ModalNextSpell: {{modalNextSpell}}</li>{{/modalNextSpell}}
+<li>Category: {{categoryId}}, SpellIconId: {{spellIconId}}, ActiveIconId: {{activeIconId}}, SpellVisual: {{spellVisual}}</li>
+<li>SpellFamilyName: {{spellFamilyId}} ({{spellFamilyName}}), SpellFamilyFlags: {{spellFamilyFlags}}</li>
+<li>SpellSchool: {{spellSchoolId}} ({{spellSchoolName}})</li>
+<li>DamageClass: {{damageClassId}} ({{damageClassName}})</li>
+<li>PreventionType: {{preventionTypeId}} ({{preventionTypeName}})</li>
+</ul>
+</div>
+</div>
+{{#hasAttributes}}
+<div class='b-box-title'>Attributes</div>
+<div class='b-box-body'>
+<div class='b-box'>
+<ul>
+{{#attr}}<li><details open><summary>Attributes: {{attr}}</summary>
+<ul>
+{{#attrNames}}
+<li>{{value}} - {{name}}</li>
+{{/attrNames}}
+</ul>
+</details></li>{{/attr}}
+{{#attrEx1}}<li><details open><summary>AttributesEx1: {{attrEx1}}</summary>
+<ul>
+{{#attrEx1Names}}
+<li>{{value}} - {{name}}</li>
+{{/attrEx1Names}}
+</ul></details></li>{{/attrEx1}}
+{{#attrEx2}}<li><details open><summary>AttributesEx2: {{attrEx2}}</summary>
+<ul>
+{{#attrEx2Names}}
+<li>{{value}} - {{name}}</li>
+{{/attrEx2Names}}
+</ul></details></li>{{/attrEx2}}
+{{#attrEx3}}<li><details open><summary>AttributesEx3: {{attrEx3}}</summary>
+<ul>
+{{#attrEx3Names}}
+<li>{{value}} - {{name}}</li>
+{{/attrEx3Names}}
+</ul></details></li>{{/attrEx3}}
+{{#attrEx4}}<li><details open><summary>AttributesEx4: {{attrEx4}}</summary>
+<ul>
+{{#attrEx4Names}}
+<li>{{value}} - {{name}}</li>
+{{/attrEx4Names}}
+</ul></details></li>{{/attrEx4}}
+</ul>
+</div>
+</div>
+{{/hasAttributes}}
+<div class='b-box-title'>Advanced info</div>
+<div class='b-box-body'>
+<div class='b-box'>
+<ul>
+
+{{#targets}}<li><details open><summary>TargetsMask: {{targets}}</summary>
+<ul>
+{{#targetsNames}}
+<li>{{value}} - {{name}}</li>
+{{/targetsNames}}
+</ul></details></li>{{/targets}}
+
+{{#creatureType}}<li><details open><summary>CreatureTypeMask: {{creatureType}}</summary>
+<ul>
+{{#creatureTypeNames}}
+<li>{{value}} - {{name}}</li>
+{{/creatureTypeNames}}
+</ul></details></li>{{/creatureType}}
+
+{{#stances}}<li><details open><summary>StancesMask: {{stances}}</summary>
+<ul>
+{{#stancesNames}}
+<li>{{value}} - {{name}}</li>
+{{/stancesNames}}
+</ul></details></li>{{/stances}}
+
+{{#stancesNot}}<li><details open><summary>StancesNotMask: {{stancesNot}}</summary>
+<ul>
+{{#stancesNotNames}}
+<li>{{value}} - {{name}}</li>
+{{/stancesNotNames}}
+</ul></details></li>{{/stancesNot}}
+
+{{#skillId}}
+<li>Skill: {{skillId}} ({{skillName}})</li>
+<ul>
+<li>ReqSkillValue: {{reqSkillValue}}</li>
+<li>ForwardSpell: {{forwardSpellId}}</li>
+<li>MinMaxValue: ({{minSkillValue}}, {{maxSkillValue}})</li>
+<li>CharacterPoints: ({{charPoints1}}, {{charPoints2}})</li>
+</ul>
+{{/skillId}}
+<li>SpellLevel: {{spellLevel}}, BaseLevel: {{baseLevel}}, MaxLevel: {{maxLevel}}, MaxTargetLevel: {{maxTargetLevel}}</li>
+{{#equipItemClass}}
+<li>EquippedItemClass: {{equipItemClass}} ({{equipItemClassName}})</li>
+{{#equipItemSubClassMask}}
+<ul>
+<li>EquippedItemSubClassMask: {{equipItemSubClassMask}} ({{equipItemSubClassMaskNames}})</li>
+</ul>
+{{/equipItemSubClassMask}}
+{{#equipItemInventoryTypeMask}}
+<li>EquippedInventoryTypeMask: {{equipItemInventoryTypeMask}} ({{equipItemInventoryTypeMaskNames}})</li>
+{{/equipItemInventoryTypeMask}}
+{{/equipItemClass}}
+<li>DispelType: {{dispelId}} ({{dispelName}})</li>
+<li>Mechanic: {{mechanicId}} ({{mechanicName}})</li>
+{{#rangeId}}
+<li>SpellRange: {{rangeId}} ({{rangeName}})</li>
+<ul>
+<li>MinRange: {{minRange}}</li>
+<li>MaxRange: {{maxRange}}</li>
+</ul>
+{{/rangeId}}
+{{#speed}}<li>Speed: {{speed}}</li>{{/speed}}
+{{#stackAmount}}<li>StackAmount {{stackAmount}}</li>{{/stackAmount}}
+{{#castTimeId}}<li>CastingTime: {{castTimeId}} ({{castTimeValue}})</li>{{/castTimeId}}
+{{#recoveryInfo}}
+<li>RecoveryTime: {{recoveryTime}} ms, CategoryRecoveryTime: {{categoryRecoveryTime}} ms</li>
+<li>StartRecoveryCategory: {{startRecoveryCategory}}, StartRecoveryTime: {{startRecoveryTime}} ms</li>
+{{/recoveryInfo}}
+{{#durationId}}<li>Duration: {{durationId}}, base: {{durationBase}}, perLevel: {{durationPerLevel}}, max: {{durationMax}}</li>{{/durationId}}
+{{#costInfo}}
+<li>PowerType: {{powerTypeId}} ({{powerTypeName}})
+{{#manaCost}}, Cost: {{manaCost}}{{/manaCost}}
+{{#manaCostPercentage}}, Cost: {{manaCostPercentage}}% of base mana{{/manaCostPercentage}}
+{{#manaCostPerLevel}} + lvl * {{manaCostPerLevel}}{{/manaCostPerLevel}}
+{{#manaPerSecond}} + {{manaPerSecond}} perSecond{{/manaPerSecond}}
+{{#manaPerSecondPerLevel}} + lvl * {{manaPerSecondPerLevel}}{{/manaPerSecondPerLevel}}
+</li>
+{{/costInfo}}
+{{#interruptFlags}}<li><details open><summary>InterruptFlags: {{interruptFlags}}</summary>
+<ul>
+{{#interruptFlagsNames}}
+<li>{{value}} - {{name}}</li>
+{{/interruptFlagsNames}}
+</ul></li>{{/interruptFlags}}
+{{#auraInterruptFlags}}<li><details open><summary>AuraIF: {{auraInterruptFlags}}</summary>
+<ul>
+{{#auraInterruptFlagsNames}}
+<li>{{value}} - {{name}}</li>
+{{/auraInterruptFlagsNames}}
+</ul></li>{{/auraInterruptFlags}}
+{{#channelInterruptFlags}}<li><details open><summary>ChannelIF: {{channelInterruptFlags}}</summary>
+<ul>
+{{#channelInterruptFlagsNames}}
+<li>{{value}} - {{name}}</li>
+{{/channelInterruptFlagsNames}}
+</ul></li>{{/channelInterruptFlags}}
+{{#casterAuraState}}<li>CasterAuraState: {{casterAuraState}} ({{casterAuraStateName}})</li>{{/casterAuraState}}
+{{#targetAuraState}}<li>TargetAuraState: {{targetAuraState}} ({{targetAuraStateName}})</li>{{/targetAuraState}}
+{{#reqSpellFocus}}<li>RequiresSpellFocus: {{reqSpellFocus}}</li>{{/reqSpellFocus}}
+{{#procFlags}}
+<li><details open><summary><b>ProcFlags: {{procFlags}}, Chance: {{procChance}}, Charges: {{procCharges}}</b></summary>
+<ul>
+{{#procNames}}
+<li>{{value}} - {{name}}</li>
+{{/procNames}}
+</ul>
+</details></li>
+{{/procFlags}}
+{{^procFlags}}
+<li>Chance: {{procChance}}, Charges: {{procCharges}}</li>
+{{/procFlags}}
+{{#maxAffectedTargets}}<li>MaxAffectedTargets: {{maxAffectedTargets}}</li>{{/maxAffectedTargets}}
+</ul>
+</div>
+</div>
+<div class='b-box-title'>Effects</div>
+<div class='b-box-body'>
+<div class='b-box'>
+{{#effect}}
+<div class='b-effect_name'>Effect {{index}}:</div>
+<ul>
+{{#id}}
+<li>Id: {{id}} ({{name}})</li>
+<li>BasePoints: {{basePoints}}
+{{#perLevelPoints}} + Level * {{perLevelPoints}}{{/perLevelPoints}}
+{{#dieSidesPoints}} to {{dieSidesPoints}}{{#perLevelPoints}} + Level * {{perLevelPoints}}{{/perLevelPoints}}{{/dieSidesPoints}}
+{{#perComboPoints}} + combo * {{perComboPoints}}{{/perComboPoints}}
+{{#damageMultiplier}} * {{damageMultiplier}}{{/damageMultiplier}}
+{{#multipleValue}}, Multiple: {{multipleValue}}{{/multipleValue}}</li>
+<li>Targets: ({{targetA}}, {{targetB}}) ({{targetNameA}}, {{targetNameB}})</li>
+{{#auraId}}
+<li>Aura: {{auraId}} ({{auraName}}), value: {{basePoints}}, misc: {{miscValue}} ({{mods}}), periodic: {{amplitude}}</li>
+{{/auraId}}
+{{^auraId}}
+{{#miscValue}}<li>EffectMiscValue: {{miscValue}}</li>{{/miscValue}}
+{{#amplitude}}<li>EffectAmplitude: {{amplitude}}</li>{{/amplitude}}
+{{/auraId}}
+{{#radiusId}}<li>Radius: {{radiusId}} ({{radiusValue}})</li>{{/radiusId}}
+{{#triggerId}}
+<li><b>Trigger spell:</b> <a href='http://spellwork/{{triggerId}}' class='blue_link'>{{triggerId}} - {{triggerName}}</a></li>
+<ul>
+<div style="display:block;" id="tdesc" ondblclick="toggleRegExp(event)">{{#triggerDescription}}<b>Description:</b> {{triggerDescription}}</br>{{/triggerDescription}}</div>
+<div style="display:none;" id="tdescRegExp" ondblclick="toggleRegExp(event)">{{#triggerDescriptionRegExp}}<b>Description:</b> {{triggerDescriptionRegExp}}</br>{{/triggerDescriptionRegExp}}</div>
+<div style="display:block;" id="ttooltip" ondblclick="toggleRegExp(event)">{{#triggerToolTip}}<b>ToolTip:</b> {{triggerToolTip}}</br>{{/triggerToolTip}}</div>
+<div style="display:none;" id="ttooltipRegExp" ondblclick="toggleRegExp(event)">{{#triggerToolTipRegExp}}<b>ToolTip:</b> {{triggerToolTipRegExp}}</br>{{/triggerToolTipRegExp}}</div>
+{{#triggerProcFlags}}
+<li><b><details open><summary>ProcFlags: {{triggerProcFlags}}, Chance: {{triggerProcChance}}, Charges: {{triggerProcCharges}}</b></summary>
+<ul>
+{{#triggerProcNames}}
+<li>{{value}} - {{name}}</li>
+{{/triggerProcNames}}
+</ul>
+</details></li>
+{{/triggerProcFlags}}
+{{^triggerProcFlags}}
+<li>Chance: {{triggerProcChance}}, Charges: {{triggerProcCharges}}</li>
+{{/triggerProcFlags}}
+</ul>
+{{/triggerId}}
+{{#chainTarget}}<li>EffectChainTarget: {{chainTarget}}</li>{{/chainTarget}}
+{{#mechanicId}}<li>EffectMechanic: {{mechanicId}} ({{mechanicName}})</li>{{/mechanicId}}
+{{#itemType}}<li>EffectItemType: {{itemType}}</li>{{/itemType}}
+{{#affectInfo}}
+<ul>
+{{#hasSkill}}
+<li><a href='http://spellwork/{{id}}' class='blue_link'>+ {{id}} - {{name}}</a></li>
+{{/hasSkill}}
+{{^hasSkill}}
+<li><a href='http://spellwork/{{id}}' class='red_link'>+ {{id}} - {{name}}</a></li>
+{{/hasSkill}}
+</ul>
+{{/affectInfo}}
+{{/id}}
+{{^id}}
+<li>NO EFFECT {{index}}</li>
+{{/id}}
+</ul>
+{{/effect}}
+</div>
+</div>
+</body>
+</html>

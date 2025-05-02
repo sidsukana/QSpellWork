@@ -62,3 +62,4 @@ ipch
 /QSW/bin
 /QSW/*.rc
 /QSW/*.res
+/Debug

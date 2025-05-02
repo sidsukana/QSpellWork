@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/ico">
+        <file>mangos.ico</file>
+    </qresource>
+    <qresource prefix="/png">
+        <file>application.png</file>
+        <file>application_tile_horizontal.png</file>
+        <file>border.png</file>
+        <file>borderHover.png</file>
+        <file>cog.png</file>
+        <file>information.png</file>
+        <file>wand.png</file>
+    </qresource>
+</RCC>
