@@ -1,0 +1,7 @@
+set(WINDEPLOYQT_EXECUTABLE "@WINDEPLOYQT_EXECUTABLE@")
+set(TARGET_NAME "@TARGET_NAME@")
+
+execute_process(COMMAND ${WINDEPLOYQT_EXECUTABLE}  
+    --no-compiler-runtime
+    --plugindir ${CMAKE_INSTALL_PREFIX}/plugins
+    ${CMAKE_INSTALL_PREFIX}/${TARGET_NAME}.exe)

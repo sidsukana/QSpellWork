@@ -91,11 +91,15 @@ void SpellWork::setActivePlugin(QString name)
 
 void SpellWork::loadPlugins()
 {
-    QDir pluginsDir(qApp->applicationDirPath());
-    pluginsDir.cd("plugins/spellinfo");
-    pluginsDir.setNameFilters({"*.dll"});
+    QDir dir = QDir::current();
 
-    QDirIterator itr(pluginsDir, QDirIterator::Subdirectories);
+    if (!dir.cd("plugins/spellinfo")) {
+        return;
+    }
+
+    dir.setNameFilters({"*.dll"});
+
+    QDirIterator itr(dir, QDirIterator::Subdirectories);
 
     while (itr.hasNext())
     {
@@ -103,13 +107,13 @@ void SpellWork::loadPlugins()
         QObject *plugin = pluginLoader.instance();
         if (plugin)
         {
-            connect(plugin, SIGNAL(progressShow(int)), this, SIGNAL(progressShow(int)));
-            connect(plugin, SIGNAL(progressStep(int)), this, SIGNAL(progressStep(int)));
-            connect(plugin, SIGNAL(progressHide()), this, SIGNAL(progressHide()));
-
             SpellInfoInterface* spellInfoPlugin = qobject_cast<SpellInfoInterface *>(plugin);
             if (spellInfoPlugin)
             {
+                connect(plugin, SIGNAL(progressShow(int)), this, SIGNAL(progressShow(int)));
+                connect(plugin, SIGNAL(progressStep(int)), this, SIGNAL(progressStep(int)));
+                connect(plugin, SIGNAL(progressHide()), this, SIGNAL(progressHide()));
+
                 QJsonObject metaData = pluginLoader.metaData().value("MetaData").toObject();
                 m_spellInfoPlugins[metaData.value("name").toString()] = SpellInfoPluginPair(metaData, spellInfoPlugin);
             }

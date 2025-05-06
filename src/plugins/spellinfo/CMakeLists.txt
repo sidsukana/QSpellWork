@@ -1,1 +1,6 @@
 add_subdirectory(pre-tbc)
+add_subdirectory(pre-tbc-cmangos)
+add_subdirectory(tbc)
+add_subdirectory(tbc-cmangos)
+add_subdirectory(wotlk)
+add_subdirectory(wotlk-cmangos)

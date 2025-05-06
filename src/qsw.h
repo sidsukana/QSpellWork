@@ -7,6 +7,7 @@
 
 #include "dbc.h"
 #include "mpq.h"
+#include "blp.h"
 
 #include "settings.h"
 
@@ -15,9 +16,6 @@ typedef QHash<QString, Enumerator> EnumHash;
 typedef QMapIterator<qint64, QString> EnumIterator;
 
 namespace QSW {
-
-    static QString VERSION = "2.40";
-
     enum Pages
     {
         PAGE_MAIN       = 0,

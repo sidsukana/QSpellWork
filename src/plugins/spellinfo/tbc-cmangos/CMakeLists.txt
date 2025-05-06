@@ -1,13 +1,13 @@
 cmake_minimum_required(VERSION 3.27)
 
-project(pre-tbc LANGUAGES CXX)
+project(tbc-cmangos LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_DEBUG_POSTFIX d)
 
-find_package(Qt6 REQUIRED COMPONENTS Core Gui)
+find_package(Qt6 REQUIRED COMPONENTS Core Gui Sql)
 
 add_library(${PROJECT_NAME} SHARED
     spellinfo.h
@@ -20,6 +20,7 @@ add_library(${PROJECT_NAME} SHARED
 target_link_libraries(${PROJECT_NAME} PRIVATE
     Qt${QT_VERSION_MAJOR}::Core
     Qt${QT_VERSION_MAJOR}::Gui
+    Qt${QT_VERSION_MAJOR}::Sql
     QSW
 )
 

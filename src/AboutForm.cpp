@@ -1,5 +1,5 @@
 #include "AboutForm.h"
-#include "qsw.h"
+#include "version.h"
 
 AboutForm::AboutForm(QWidget *parent)
     : QDialog(parent)
@@ -8,7 +8,7 @@ AboutForm::AboutForm(QWidget *parent)
 
     QString versionString = label->text();
 
-    label->setText(versionString.arg(QSW::VERSION));
+    label->setText(versionString.arg(APP_VERSION.toString()));
 
     connect(pushButton_2, SIGNAL(clicked()), qApp, SLOT(aboutQt()));
 

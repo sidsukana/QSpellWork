@@ -1,3 +1,3 @@
-add_subdirectory(StormLib)
-add_subdirectory(qt-mustache)
+add_subdirectory(StormLib EXCLUDE_FROM_ALL)
+add_subdirectory(qt-mustache EXCLUDE_FROM_ALL)
 add_subdirectory(plugins)

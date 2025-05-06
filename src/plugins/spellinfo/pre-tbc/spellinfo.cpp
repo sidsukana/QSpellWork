@@ -108,7 +108,7 @@ QImage getSpellIcon(quint32 iconId)
 {
     const SpellIcon::entry* iconInfo = SpellIcon::getRecord(iconId, true);
 
-    return (iconInfo ? QImage(iconInfo->iconPath() + QString(".blp")) : QImage());
+    return (iconInfo ? BLP::fromMPQ(iconInfo->iconPath() + QString(".blp")) : QImage());
 }
 
 QString getSpellIconName(quint32 iconId)

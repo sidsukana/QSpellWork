@@ -31,4 +31,9 @@ class SpellInfo : public QObject, SpellInfoInterface
         QObjectList getMetaSpells() const;
         EnumHash getEnums() const;
         QStringList getNames() const;
+
+    signals:
+        void progressShow(int maximum);
+        void progressStep(int value);
+        void progressHide();
 };

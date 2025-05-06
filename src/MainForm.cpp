@@ -102,7 +102,7 @@ MainForm::MainForm(QWidget* parent)
 
     for (quint8 i = QSW::PAGE_MAIN; i < QSW::PAGE_MAX; ++i)
     {
-        m_pages[i] = new QSWPage(QSW::Pages(i));
+        m_pages[i] = new QSWPage(QSW::Pages(i), this);
         connect(m_pages[i], SIGNAL(linkClicked(QUrl)), this, SLOT(slotLinkClicked(QUrl)));
 
         switch (i)
@@ -127,7 +127,6 @@ MainForm::MainForm(QWidget* parent)
 
 MainForm::~MainForm()
 {
-
 }
 
 void MainForm::slotSettings()

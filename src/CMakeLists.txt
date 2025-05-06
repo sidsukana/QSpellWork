@@ -30,9 +30,12 @@ file(GLOB UI_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
     *.ui
 )
 
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/version.h.in ${CMAKE_CURRENT_SOURCE_DIR}/version.h @ONLY)
+
 qt_add_resources(SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/assets/assets.qrc)
 
 qt_add_executable(${PROJECT_NAME}
+    WIN32
     MANUAL_FINALIZATION
         ${SOURCES}
         ${HEADERS}
@@ -47,6 +50,37 @@ qt_add_ui(${PROJECT_NAME}
         ${UI_FILES}
 )
 
-target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Core Qt6::Gui Qt6::Widgets Qt6::Sql Qt6::Concurrent Qt6::Qml Qt6::WebEngineCore Qt6::WebEngineWidgets storm qt-mustache)
+target_link_libraries(${PROJECT_NAME} PRIVATE
+    Qt${QT_VERSION_MAJOR}::Core
+    Qt${QT_VERSION_MAJOR}::Gui
+    Qt${QT_VERSION_MAJOR}::Widgets
+    Qt${QT_VERSION_MAJOR}::Sql
+    Qt${QT_VERSION_MAJOR}::Concurrent
+    Qt${QT_VERSION_MAJOR}::Qml
+    Qt${QT_VERSION_MAJOR}::WebEngineCore
+    Qt${QT_VERSION_MAJOR}::WebEngineWidgets
+    storm
+    qt-mustache
+)
 
 add_subdirectory(plugins)
+
+install(TARGETS ${PROJECT_NAME}
+    RUNTIME DESTINATION . COMPONENT Application
+    BUNDLE DESTINATION . COMPONENT Application
+)
+
+if(WIN32)
+    set(TARGET_NAME "QSW")
+    set(CONFIGURED_SCRIPT_PATH "${CMAKE_CURRENT_BINARY_DIR}/deploy-qt-windows.cmake")
+
+    configure_file(
+        "${CMAKE_SOURCE_DIR}/cmake/deploy-qt-windows.cmake.in"
+        "${CONFIGURED_SCRIPT_PATH}"
+        @ONLY
+    )
+
+    install(SCRIPT "${CONFIGURED_SCRIPT_PATH}"
+            COMPONENT Application
+    )
+endif()

@@ -4,9 +4,7 @@
 #include <QtWidgets/QMessageBox>
 
 #include "mainform.h"
-#include "settingsform.h"
-#include "qsw.h"
-#include "mpq.h"
+#include "version.h"
 
 int main(int argc, char *argv[])
 {
@@ -38,7 +36,7 @@ int main(int argc, char *argv[])
         pluginTitle = "Classic";
 
     form.setWindowTitle(QString("QSW %0 %1")
-        .arg(QSW::VERSION).arg(pluginTitle));
+        .arg(APP_VERSION.toString(), pluginTitle));
     
     // Set position to center about desktop widget
     QRect frameRect = form.frameGeometry();

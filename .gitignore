@@ -59,7 +59,8 @@ ipch
 *.opendb
 *.VC.db
 
-/QSW/bin
-/QSW/*.rc
-/QSW/*.res
+/src/version.h
+/cmake/deploy-qt-windows.cmake
+
 /Debug
+/RelWithDebInfo
