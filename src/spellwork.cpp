@@ -325,156 +325,99 @@ void SpellWork::showInfo(quint32 id, QSW::Pages pageId)
     m_form->getPage(pageId)->setInfo(html, id);
 }
 
+// COPILOT AI GENERATED FOR QUICK FIX COMPARE FUNCTION
 void SpellWork::compare()
 {
-    QStringList list1 = m_form->getPage(QSW::PAGE_CLEFT)->getSourceHtml().split("\n");
-    QStringList list2 = m_form->getPage(QSW::PAGE_CRIGHT)->getSourceHtml().split("\n");
+    static const QRegularExpression reSplit(R"((<[^>]+>)|([^<]+))");
+    static const QRegularExpression reStripTags(R"(<[^>]+>)");
 
-    QString html1, html2;
+    auto stripText = [&](const QString &html) {
+        QString t = html;
+        t.remove(reStripTags);
+        return t.simplified();
+    };
 
-    QRegularExpression rx("(<[A-Za-z_0-9]*>)+([A-Za-z_0-9-!\"#$%&'()*+,./:;=?@[\\]_`{|}~\\s]*)+(</[A-Za-z_0-9]*>)");
+    auto highlightText = [&](const QString &text, const QString &bg) {
+        return QString("<span style=\"background-color:%1;\">%2</span>")
+        .arg(bg, text.toHtmlEscaped());
+    };
 
-    for (QStringList::iterator itr1 = list1.begin(); itr1 != list1.end(); ++itr1)
-    {
-        bool yes = false;
-
-        for (QStringList::iterator itr2 = list2.begin(); itr2 != list2.end(); ++itr2)
-        {
-            if ((*itr1) == (*itr2))
-            {
-                yes = true;
-                break;
-            }
+    auto renderLine = [&](const QString &line, const QString &bg) {
+        QString out;
+        auto it = reSplit.globalMatch(line);
+        while (it.hasNext()) {
+            auto m = it.next();
+            if (!m.captured(1).isEmpty())
+                out += m.captured(1);
+            else if (!m.captured(2).isEmpty())
+                out += highlightText(m.captured(2), bg);
         }
+        return out;
+    };
 
-        if (yes)
-        {
-            QRegularExpressionMatch match = rx.match((*itr1));
-            if (match.hasMatch())
-            {
-                // QString r1 = rx.cap(0); // Full
-                QString r2 = match.captured(1); // <xxx>
-                QString r3 = match.captured(2); // <>xxx</>
-                QString r4 = match.captured(3); // </xxx>
 
-                if (r2 == "<b>")
-                    html1.append(QString("<span style='background-color: cyan'>%0</span>").arg((*itr1)));
-                else if (r2 == "<style>")
-                {
-                    html1.append((*itr1));
-                }
-                else
-                {
-                    r3 = QString("<span style='background-color: cyan'>%0</span>").arg(r3);
-                    r3.prepend(r2);
-                    r3.append(r4);
-                    html1.append(r3);
-                }
-            }
+    QStringList rawL = m_form->getPage(QSW::PAGE_CLEFT )->getSourceHtml().split('\n');
+    QStringList rawR = m_form->getPage(QSW::PAGE_CRIGHT)->getSourceHtml().split('\n');
+    int n = rawL.size(), m = rawR.size();
+
+    QVector<QString> L(n), R(m);
+    for (int i = 0; i < n; ++i) L[i] = stripText(rawL[i]);
+    for (int j = 0; j < m; ++j) R[j] = stripText(rawR[j]);
+
+    QVector<QVector<int>> dp(n+1, QVector<int>(m+1, 0));
+    for (int i = n-1; i >= 0; --i) {
+        for (int j = m-1; j >= 0; --j) {
+            if (!L[i].isEmpty() && L[i] == R[j])
+                dp[i][j] = dp[i+1][j+1] + 1;
             else
-                html1.append((*itr1));
-        }
-        else
-        {
-            QRegularExpressionMatch match = rx.match((*itr1));
-            if (match.hasMatch())
-            {
-                // QString r1 = match.cap(0); // Full
-                QString r2 = match.captured(1); // <xxx>
-                QString r3 = match.captured(2); // <>xxx</>
-                QString r4 = match.captured(3); // </xxx>
-
-                if (r2 == "<b>")
-                    html1.append(QString("<span style='background-color: salmon'>%0</span>").arg((*itr1)));
-                else if (r2 == "<style>")
-                {
-                    html1.append((*itr1));
-                }
-                else
-                {
-                    r3 = QString("<span style='background-color: salmon'>%0</span>").arg(r3);
-                    r3.prepend(r2);
-                    r3.append(r4);
-                    html1.append(r3);
-                }
-            }
-            else
-                html1.append((*itr1));
+                dp[i][j] = qMax(dp[i+1][j], dp[i][j+1]);
         }
     }
 
-    // second
-    for (QStringList::iterator itr2 = list2.begin(); itr2 != list2.end(); ++itr2)
-    {
-        bool yes = false;
+    QVector<QPair<int,int>> matches;
+    int i = 0, j = 0;
+    while (i < n && j < m) {
+        if (!L[i].isEmpty() && L[i] == R[j]) {
+            matches.append(qMakePair(i, j));
+            ++i; ++j;
+        }
+        else if (dp[i+1][j] >= dp[i][j+1]) ++i;
+        else ++j;
+    }
 
-        for (QStringList::iterator itr1 = list1.begin(); itr1 != list1.end(); ++itr1)
-        {
-            if ((*itr2) == (*itr1))
-            {
-                yes = true;
-                break;
-            }
+    matches.prepend(qMakePair(-1, -1));
+    matches.append(qMakePair(n, m));
+
+    const QString COL_CHANGED = "#FFA500"; // orange
+    const QString COL_ONLY    = "#90EE90"; // lightgreen
+
+    QString outL, outR;
+    for (int k = 0; k+1 < matches.size(); ++k) {
+        int i1 = matches[k].first,  j1 = matches[k].second;
+        int i2 = matches[k+1].first, j2 = matches[k+1].second;
+
+        int countL = i2 - i1 - 1;
+        int countR = j2 - j1 - 1;
+
+        if (countL > 0 && countR > 0) {
+            for (int x = i1+1; x < i2; ++x)
+                outL += renderLine(rawL[x], COL_CHANGED) + '\n';
+            for (int y = j1+1; y < j2; ++y)
+                outR += renderLine(rawR[y], COL_CHANGED) + '\n';
+        }
+        else {
+            for (int x = i1+1; x < i2; ++x)
+                outL += renderLine(rawL[x], COL_ONLY) + '\n';
+            for (int y = j1+1; y < j2; ++y)
+                outR += renderLine(rawR[y], COL_ONLY) + '\n';
         }
 
-        if (yes)
-        {
-            QRegularExpressionMatch match = rx.match((*itr2));
-            if (match.hasMatch())
-            {
-                // QString r1 = rx.cap(0); // Full
-                QString r2 = match.captured(1); // <xxx>
-                QString r3 = match.captured(2); // <>xxx</>
-                QString r4 = match.captured(3); // </xxx>
-
-                if (r2 == "<b>")
-                    html2.append(QString("<span style='background-color: cyan'>%0</span>").arg((*itr2)));
-                else if (r2 == "<style>")
-                {
-                    html2.append((*itr2));
-                }
-                else
-                {
-                    r3 = QString("<span style='background-color: cyan'>%0</span>").arg(r3);
-                    r3.prepend(r2);
-                    r3.append(r4);
-                    html2.append(r3);
-                }
-            }
-            else
-                html2.append((*itr2));
-        }
-        else
-        {
-            QRegularExpressionMatch match = rx.match((*itr2));
-            if (match.hasMatch())
-            {
-                // QString r1 = rx.cap(0); // Full
-                QString r2 = match.captured(1); // <xxx>
-                QString r3 = match.captured(2); // <>xxx</>
-                QString r4 = match.captured(3); // </xxx>
-
-                if (r2 == "<b>")
-                    html2.append(QString("<span style='background-color: salmon'>%0</span>").arg((*itr2)));
-                else if (r2 == "<style>")
-                {
-                    html2.append((*itr2));
-                }
-                else
-                {
-                    r3 = QString("<span style='background-color: salmon'>%0</span>").arg(r3);
-                    r3.prepend(r2);
-                    r3.append(r4);
-                    html2.append(r3);
-                }
-            }
-            else
-                html2.append((*itr2));
+        if (i2 >= 0 && i2 < n && j2 >= 0 && j2 < m) {
+            outL += rawL[i2] + '\n';
+            outR += rawR[j2] + '\n';
         }
     }
 
-    m_form->getPage(QSW::PAGE_CLEFT)->setCompareInfo(html1);
-    m_form->getPage(QSW::PAGE_CRIGHT)->setCompareInfo(html2);
+    m_form->getPage(QSW::PAGE_CLEFT )->setCompareInfo(outL);
+    m_form->getPage(QSW::PAGE_CRIGHT)->setCompareInfo(outR);
 }
-
-
