@@ -1269,11 +1269,14 @@ QVariantHash SpellInfo::getValues(quint32 id) const
     if (spellInfo->areaId)
     {
         QVariantList areaList;
-
+        bool first = true;
         quint32 areaId = spellInfo->areaId;
         while (areaId > 0) {
             if (const AreaGroup::entry* spellArea = AreaGroup::getRecord(areaId, true)) {
                 QVariantHash areaValues;
+                if (!first)
+                    areaValues["areaSecond"] = true;
+                first = false;
                 if (spellArea->areaId[0] > 0) {
                     if (const AreaTable::entry* areaTableEntry = AreaTable::getRecord(spellArea->areaId[0], true)) {
                         areaValues["areaId0"] = QString("%0 - %1").arg(spellArea->areaId[0]).arg(areaTableEntry->name());

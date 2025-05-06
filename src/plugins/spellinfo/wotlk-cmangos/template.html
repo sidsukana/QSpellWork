@@ -250,9 +250,9 @@ function toggleRegExp(event) {
 <li>Chance: {{procChance}}, Charges: {{procCharges}}</li>
 {{/procFlags}}
 {{#maxAffectedTargets}}<li>MaxAffectedTargets: {{maxAffectedTargets}}</li>{{/maxAffectedTargets}}
-{{#areas}}<li>Areas:
+{{#areas}}<li>Areas: 
 {{#areaInfo}}
-{{#areaId0}}<ul>{{areaId0}}</ul>{{/areaId0}}
+{{#areaId0}}{{#areaSecond}}<ul>{{/areaSecond}}{{areaId0}}{{#areaSecond}}</ul>{{/areaSecond}}{{/areaId0}}
 {{#areaId1}}<ul>{{areaId1}}</ul>{{/areaId1}}
 {{#areaId2}}<ul>{{areaId2}}</ul>{{/areaId2}}
 {{#areaId3}}<ul>{{areaId3}}</ul>{{/areaId3}}
