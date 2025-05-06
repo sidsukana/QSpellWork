@@ -906,7 +906,7 @@
         { "key": "SPELL_EFFECT_POWER_BURN", "value": 62},
         { "key": "SPELL_EFFECT_THREAT", "value": 63},
         { "key": "SPELL_EFFECT_TRIGGER_SPELL", "value": 64},
-        { "key": "SPELL_EFFECT_HEALTH_FUNNEL", "value": 65},
+        { "key": "SPELL_EFFECT_APPLY_AREA_AURA_RAID", "value": 65},
         { "key": "SPELL_EFFECT_POWER_FUNNEL", "value": 66},
         { "key": "SPELL_EFFECT_HEAL_MAX_HEALTH", "value": 67},
         { "key": "SPELL_EFFECT_INTERRUPT_CAST", "value": 68},
