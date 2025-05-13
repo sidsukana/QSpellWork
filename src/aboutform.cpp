@@ -1,4 +1,4 @@
-#include "AboutForm.h"
+#include "aboutform.h"
 #include "version.h"
 
 AboutForm::AboutForm(QWidget *parent)

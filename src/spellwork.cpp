@@ -97,7 +97,11 @@ void SpellWork::loadPlugins()
         return;
     }
 
+#ifdef Q_OS_LINUX
+    dir.setNameFilters({"*.so"});
+#else
     dir.setNameFilters({"*.dll"});
+#endif
 
     QDirIterator itr(dir, QDirIterator::Subdirectories);
 
