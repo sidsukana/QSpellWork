@@ -686,6 +686,9 @@ void RegExpS(const Spell::entry* spellInfo, QRegularExpressionMatch match, QStri
                         .arg(abs(qint32((tSpell->effectBasePoints[match.captured(6).toInt()-1] + 1) * match.captured(3).toInt()))));
                 }
             }
+            else
+                str.replace(match.captured(0), QString("%0")
+                    .arg("<spell_not_found>"));
         }
         else
         {
@@ -708,6 +711,9 @@ void RegExpS(const Spell::entry* spellInfo, QRegularExpressionMatch match, QStri
             str.replace(match.captured(0), QString("%0")
                 .arg(abs(tSpell->effectBasePoints[match.captured(6).toInt()-1] + 1)));
         }
+        else
+            str.replace(match.captured(0), QString("%0")
+                .arg("<spell_not_found>"));
     }
     else
     {

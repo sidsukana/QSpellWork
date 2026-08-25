@@ -721,7 +721,7 @@ void RegExpO(const Spell::entry* spellInfo, QRegularExpressionMatch match, QStri
     }
 }
 
-void RegExpS(const Spell::entry* spellInfo, QRegularExpressionMatch match, QString &str)
+bool RegExpS(const Spell::entry* spellInfo, QRegularExpressionMatch match, QString &str)
 {
     if (!match.captured(3).isEmpty())
     {
@@ -740,6 +740,9 @@ void RegExpS(const Spell::entry* spellInfo, QRegularExpressionMatch match, QStri
                         .arg(abs(qint32((tSpell->effectBasePoints[match.captured(6).toInt()-1] + 1) * match.captured(3).toInt()))));
                 }
             }
+            else
+                str.replace(match.captured(0), QString("%0")
+                    .arg("<spell_not_found>"));
         }
         else
         {
@@ -760,14 +763,19 @@ void RegExpS(const Spell::entry* spellInfo, QRegularExpressionMatch match, QStri
         if (const Spell::entry* tSpell = Spell::getMetaRecord(match.captured(4).toInt(), true))
         {
             str.replace(match.captured(0), QString("%0")
-                .arg(abs(tSpell->effectBasePoints[match.captured(6).toInt()-1] + 1)));
+                .arg(abs(tSpell->effectBasePoints[match.captured(6).toInt() - 1] + 1)));
         }
+        else
+            str.replace(match.captured(0), QString("%0")
+                .arg("<spell_not_found>"));
     }
     else
     {
         str.replace(match.captured(0), QString("%0")
             .arg(abs(spellInfo->effectBasePoints[match.captured(6).toInt()-1] + 1)));
     }
+
+    return true;
 }
 
 void RegExpT(const Spell::entry* spellInfo, QRegularExpressionMatch match, QString &str)
@@ -893,8 +901,10 @@ QString getDescription(QString str, const Spell::entry* spellInfo)
                 case 'b': RegExpB(spellInfo, match, str); break;
                 case 'm':
                 case 's':
+                {
                     RegExpS(spellInfo, match, str);
                     break;
+                }
                 case 'a': RegExpA(spellInfo, match, str); break;
                 case 'd': RegExpD(spellInfo, match, str); break;
                 case 'o': RegExpO(spellInfo, match, str); break;
