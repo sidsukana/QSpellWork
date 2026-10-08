@@ -419,6 +419,9 @@ void RegExpH(const Spell::entry* spellInfo, QRegularExpressionMatch match, QStri
             str.replace(match.captured(0), QString("%0")
                 .arg(tSpell->procChance));
         }
+        else
+            str.replace(match.captured(0), QString("%0")
+                .arg("<spell_not_found>"));
     }
     else
     {
@@ -436,6 +439,9 @@ void RegExpV(const Spell::entry* spellInfo, QRegularExpressionMatch match, QStri
             str.replace(match.captured(0), QString("%0")
                 .arg(tSpell->maxTargetLevel));
         }
+        else
+            str.replace(match.captured(0), QString("%0")
+                .arg("<spell_not_found>"));
     }
     else
     {
@@ -463,6 +469,9 @@ void RegExpQ(const Spell::entry* spellInfo, QRegularExpressionMatch match, QStri
                         .arg(abs(qint32(tSpell->effectMiscValueA[match.captured(6).toInt()-1] * match.captured(3).toInt()))));
                 }
             }
+            else
+                str.replace(match.captured(0), QString("%0")
+                    .arg("<spell_not_found>"));
         }
         else
         {
@@ -485,6 +494,9 @@ void RegExpQ(const Spell::entry* spellInfo, QRegularExpressionMatch match, QStri
             str.replace(match.captured(0), QString("%0")
                 .arg(abs(tSpell->effectMiscValueA[match.captured(6).toInt()-1])));
         }
+        else
+            str.replace(match.captured(0), QString("%0")
+                .arg("<spell_not_found>"));
     }
     else
     {
@@ -509,6 +521,9 @@ void RegExpI(const Spell::entry* spellInfo, QRegularExpressionMatch match, QStri
                 str.replace(match.captured(0), QString("nearby"));
             }
         }
+        else
+            str.replace(match.captured(0), QString("%0")
+                .arg("<spell_not_found>"));
     }
     else
     {
@@ -530,7 +545,6 @@ void RegExpB(const Spell::entry* spellInfo, QRegularExpressionMatch match, QStri
     {
         if (!match.captured(4).isEmpty())
         {
-
             if (const Spell::entry* tSpell = Spell::getMetaRecord(match.captured(4).toInt(), true))
             {
                 if (match.captured(2) == QString("/"))
@@ -544,6 +558,9 @@ void RegExpB(const Spell::entry* spellInfo, QRegularExpressionMatch match, QStri
                         .arg(abs(qint32((tSpell->effectPointsPerComboPoint[match.captured(6).toInt()-1]) * match.captured(3).toInt()))));
                 }
             }
+            else
+                str.replace(match.captured(0), QString("%0")
+                    .arg("<spell_not_found>"));
         }
         else
         {
@@ -593,6 +610,9 @@ void RegExpA(const Spell::entry* spellInfo, QRegularExpressionMatch match, QStri
                         .arg(quint32(tSpell->getRadius(match.captured(6).toInt()-1) * match.captured(2).toInt())));
                 }
             }
+            else
+                str.replace(match.captured(0), QString("%0")
+                    .arg("<spell_not_found>"));
         }
         else
         {
@@ -615,6 +635,9 @@ void RegExpA(const Spell::entry* spellInfo, QRegularExpressionMatch match, QStri
             str.replace(match.captured(0), QString("%0")
                 .arg(tSpell->getRadius(match.captured(6).toInt()-1)));
         }
+        else
+            str.replace(match.captured(0), QString("%0")
+                .arg("<spell_not_found>"));
     }
     else
     {
@@ -642,6 +665,9 @@ void RegExpD(const Spell::entry* spellInfo, QRegularExpressionMatch match, QStri
                         .arg(quint32(tSpell->getDuration() * match.captured(3).toInt())));
                 }
             }
+            else
+                str.replace(match.captured(0), QString("%0")
+                    .arg("<spell_not_found>"));
         }
         else
         {
@@ -664,6 +690,9 @@ void RegExpD(const Spell::entry* spellInfo, QRegularExpressionMatch match, QStri
             str.replace(match.captured(0), QString("%0 seconds")
                 .arg(tSpell->getDuration()));
         }
+        else
+            str.replace(match.captured(0), QString("%0")
+                .arg("<spell_not_found>"));
     }
     else
     {
@@ -691,6 +720,9 @@ void RegExpO(const Spell::entry* spellInfo, QRegularExpressionMatch match, QStri
                         .arg(quint32((tSpell->getTicks(match.captured(6).toInt()-1) * (tSpell->effectBasePoints[match.captured(6).toInt()-1] + 1)) * match.captured(3).toInt())));
                 }
             }
+            else
+                str.replace(match.captured(0), QString("%0")
+                    .arg("<spell_not_found>"));
         }
         else
         {
@@ -713,6 +745,9 @@ void RegExpO(const Spell::entry* spellInfo, QRegularExpressionMatch match, QStri
             str.replace(match.captured(0), QString("%0")
                 .arg(tSpell->getTicks(match.captured(6).toInt()-1) * (tSpell->effectBasePoints[match.captured(6).toInt()-1] + 1)));
         }
+        else
+            str.replace(match.captured(0), QString("%0")
+                .arg("<spell_not_found>"));
     }
     else
     {
@@ -797,6 +832,9 @@ void RegExpT(const Spell::entry* spellInfo, QRegularExpressionMatch match, QStri
                         .arg(quint32(tSpell->getAmplitude(match.captured(6).toInt()-1) * match.captured(3).toInt())));
                 }
             }
+            else
+                str.replace(match.captured(0), QString("%0")
+                    .arg("<spell_not_found>"));
         }
         else
         {
@@ -814,7 +852,6 @@ void RegExpT(const Spell::entry* spellInfo, QRegularExpressionMatch match, QStri
     }
     else if (!match.captured(4).isEmpty())
     {
-
         if (const Spell::entry* tSpell = Spell::getMetaRecord(match.captured(4).toInt(), true))
         {
             if (tSpell->effectAmplitude[match.captured(6).toInt()-1])
@@ -822,6 +859,9 @@ void RegExpT(const Spell::entry* spellInfo, QRegularExpressionMatch match, QStri
             else
                 str.replace(match.captured(0), QString("%0").arg(tSpell->getAmplitude()));
         }
+        else
+            str.replace(match.captured(0), QString("%0")
+                .arg("<spell_not_found>"));
     }
     else
     {
@@ -839,6 +879,9 @@ void RegExpN(const Spell::entry* spellInfo, QRegularExpressionMatch match, QStri
             str.replace(match.captured(0), QString("%0")
                 .arg(tSpell->procCharges));
         }
+        else
+            str.replace(match.captured(0), QString("%0")
+                .arg("<spell_not_found>"));
     }
     else
     {
@@ -856,6 +899,9 @@ void RegExpX(const Spell::entry* spellInfo, QRegularExpressionMatch match, QStri
             str.replace(match.captured(0), QString("%0")
                 .arg(tSpell->effectChainTarget[match.captured(6).toInt()-1]));
         }
+        else
+            str.replace(match.captured(0), QString("%0")
+                .arg("<spell_not_found>"));
     }
     else
     {
@@ -873,6 +919,9 @@ void RegExpE(const Spell::entry* spellInfo, QRegularExpressionMatch match, QStri
             str.replace(match.captured(0), QString("%0")
                 .arg(tSpell->effectMultipleValue[match.captured(6).toInt()-1], 0, 'f', 2));
         }
+        else
+            str.replace(match.captured(0), QString("%0")
+                .arg("<spell_not_found>"));
     }
     else
     {
