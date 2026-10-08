@@ -110,7 +110,7 @@
         { "key": "SPELLMOD_CHANCE_OF_SUCCESS", "value": 18},
         { "key": "SPELLMOD_ACTIVATION_TIME", "value": 19},
         { "key": "SPELLMOD_EFFECT_PAST_FIRST", "value": 20},
-        { "key": "SPELLMOD_CASTING_TIME_OLD", "value": 21},
+        { "key": "SPELLMOD_GLOBAL_COOLDOWN", "value": 21},
         { "key": "SPELLMOD_DOT", "value": 22},
         { "key": "SPELLMOD_EFFECT3", "value": 23},
         { "key": "SPELLMOD_SPELL_BONUS_DAMAGE", "value": 24},
